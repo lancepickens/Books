@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter XV · Holography: AdS/CFT — String Theory: A Primer</title>
+  <meta name="description" content="Chapter 15 of String Theory: A Primer. The Maldacena conjecture, the AdS/CFT dictionary, and the deepest geometric statement string theory has produced." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter XV of XV</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter XV</p>
+      <h1 class="chapter-title">Holography — AdS/CFT</h1>
+      <p class="lede">A theory of quantum gravity in $d+1$ dimensions can be exactly equivalent to an ordinary quantum field theory in $d$ dimensions. The geometry that makes this work is a particularly clean negatively curved space called Anti-de Sitter spacetime.</p>
+
+      <h2><span class="sec-num">§1</span>The setup: a stack of D3-branes</h2>
+
+      <p>Take Type IIB string theory in flat 10-dimensional spacetime and place a stack of $N$ coincident D3-branes. The branes fill a 4-dimensional submanifold and back-react on the geometry.</p>
+
+      <p>There are two ways to think about what one has built, both equally valid as descriptions of low-energy physics:</p>
+
+      <p><strong>The open-string description.</strong> Open strings have endpoints on the branes; at energies well below the string scale, the only open-string excitations are the massless ones, which form a 4-dimensional $\mathcal{N} = 4$ supersymmetric $SU(N)$ Yang–Mills theory living on the brane worldvolume (Chapter XIII §3). Closed strings — gravity — exist in the bulk 10-d spacetime but, at low energies, decouple from the brane theory.</p>
+
+      <p><strong>The closed-string description.</strong> The $N$ branes deform spacetime around them; the geometry is a particular extremal black-brane solution of 10-d type IIB supergravity. Near the branes (the "near-horizon" region), this geometry takes a particularly clean form:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{d}s^2 \;=\; \frac{r^2}{L^2}\left( -\mathrm{d}t^2 + \mathrm{d}\vec x^2_3 \right) + \frac{L^2}{r^2}\, \mathrm{d}r^2 + L^2\, \mathrm{d}\Omega_5^2, $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$r$</dt><dd>Radial coordinate from the brane stack; $r \to \infty$ is the boundary, $r \to 0$ is the deep bulk.</dd>
+          <dt>$L$</dt><dd>AdS curvature radius: $L^4 = 4\pi g_s N\, \alpha'^2$.</dd>
+          <dt>$\mathrm{d}\Omega_5^2$</dt><dd>Round metric on the 5-sphere.</dd>
+        </dl>
+      </aside>
+
+      <p>The first six coordinates form <strong>Anti-de Sitter space</strong> AdS$_5$ — a maximally symmetric solution of Einstein's equations with negative cosmological constant. The remaining five coordinates form a round $S^5$. The full near-horizon geometry is</p>
+
+      <div class="equation-block">
+        $$ \mathrm{AdS}_5 \times S^5. $$
+      </div>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The Maldacena conjecture</h2>
+
+      <p>The two descriptions are describing the same physics — the low-energy theory of a stack of $N$ D3-branes. Equating them gives Maldacena's <strong>AdS/CFT conjecture</strong> (1997):</p>
+
+      <blockquote>Type IIB string theory on AdS$_5 \times S^5$ with $N$ units of 5-form flux is exactly equivalent to 4-dimensional $\mathcal{N} = 4$ super-Yang–Mills theory with gauge group $SU(N)$, living on the boundary of AdS$_5$.</blockquote>
+
+      <p>This is a duality between a $d+1$ dimensional theory of gravity (10-dim string theory on AdS$_5 \times S^5$) and a $d = 4$ dimensional QFT without gravity (the boundary $\mathcal{N} = 4$ SYM). It is the sharpest realization of the <strong>holographic principle</strong> proposed by 't Hooft (1993) and Susskind (1995): the degrees of freedom of a quantum theory of gravity in a region of spacetime are encoded on its lower-dimensional boundary, like a 2-d hologram encoding a 3-d image.</p>
+
+      <aside class="jargon">
+        <h4>Anti-de Sitter, geometrically</h4>
+        <p>AdS$_{d+1}$ is the maximally symmetric solution of Einstein's equations with negative cosmological constant. It is the Lorentzian analogue of <em>hyperbolic space</em> — a space of constant negative curvature, with isometry group $SO(d, 2)$. A spatial slice of AdS$_{d+1}$ is the hyperbolic ball; its conformal boundary is the sphere $S^{d-1}$ (or, in the Poincaré patch, $\mathbb{R}^{d-1,1}$). Most remarkably, light reaches the boundary in finite coordinate time — so the boundary is reachable, and conditions there must be specified for a well-defined dynamics.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The dictionary</h2>
+
+      <p>The duality is not metaphorical; it is a precise dictionary between operators in the boundary QFT and fields in the bulk gravity theory. The simplest entry: every primary operator $\mathcal{O}_\Delta$ in the CFT of conformal dimension $\Delta$ corresponds to a bulk field of mass</p>
+
+      <div class="equation-block">
+        $$ m^2 L^2 \;=\; \Delta(\Delta - d). $$
+      </div>
+
+      <p>Correlation functions follow the GKP–Witten prescription (Gubser–Klebanov–Polyakov 1998, Witten 1998):</p>
+
+      <div class="equation-block">
+        $$ \langle e^{\int \mathrm{d}^d x\, J(x)\, \mathcal{O}(x)} \rangle_{\mathrm{CFT}} \;=\; Z_{\mathrm{gravity}}[\,\phi(\partial \mathrm{AdS}) = J\,], $$
+      </div>
+
+      <p>which says: the generating functional of CFT correlators equals the gravitational partition function with bulk field boundary values fixed to the CFT sources.</p>
+
+      <p>Crucially, the dictionary maps strong coupling to weak coupling. The 't Hooft coupling $\lambda = g_{\mathrm{YM}}^2 N$ and the bulk curvature are related by</p>
+
+      <div class="equation-block">
+        $$ \frac{L^4}{\alpha'^2} \;=\; \lambda. $$
+      </div>
+
+      <p>For large $\lambda$ (strongly coupled gauge theory) the AdS radius is much larger than the string length, so the bulk theory is well-approximated by classical Einstein gravity on AdS$_5 \times S^5$. The hardest regime for QFT — strong coupling — becomes the easiest regime for the dual gravity description.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>What we can compute</h2>
+
+      <p>Concrete things that AdS/CFT has delivered, calculable with classical bulk Einstein gravity and matching the strong-coupling boundary theory:</p>
+
+      <ul>
+        <li><strong>Thermodynamics of $\mathcal{N}=4$ SYM at finite temperature</strong> — modeled by adding a Schwarzschild horizon in AdS$_5$. The free energy, entropy, and equation of state are computable from horizon thermodynamics.</li>
+        <li><strong>Shear viscosity to entropy density ratio.</strong> Kovtun–Son–Starinets (2005) showed that any holographic plasma has $\eta / s = \hbar/(4\pi k_B)$ — a bound saturated by all known examples, and remarkably close to what the QCD plasma at RHIC and LHC actually shows.</li>
+        <li><strong>Entanglement entropy.</strong> Ryu–Takayanagi (2006): the entanglement entropy of a region $A$ in the boundary CFT equals the area of a particular minimal surface in the bulk that ends on the boundary of $A$. Entanglement is geometric.</li>
+        <li><strong>Subleading corrections to BH entropy.</strong> The macroscopic and microscopic counts of Chapter XIV are extended to subleading orders in the AdS/CFT framework.</li>
+      </ul>
+
+      <p>The duality has also generated tools used outside string theory: holographic methods are applied to condensed matter (strange metals, high-temperature superconductors), QCD-like theories, and hydrodynamics. Whether the duality holds beyond its narrowest forms is an open question, but the structural insight is now embedded in modern theoretical physics.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>What it suggests about quantum gravity</h2>
+
+      <p>Three lessons stand out.</p>
+
+      <p><strong>Quantum gravity may be lower-dimensional.</strong> The microscopic degrees of freedom of a $(d+1)$-dim gravitational theory are organized as those of a $d$-dim theory. The naïve count of "field theory at every point of space" overcounts; the true count scales with area, not volume — exactly the Bekenstein–Hawking pattern. Gravity is, in this precise sense, holographic.</p>
+
+      <p><strong>Spacetime is emergent.</strong> The bulk spacetime is built out of the entanglement structure of the boundary CFT (Van Raamsdonk 2010, Maldacena–Susskind 2013). Pulling apart the entanglement disconnects bulk spacetime. Spacetime is not a primary input to the theory; it is woven from quantum correlations on a lower-dimensional system.</p>
+
+      <p><strong>The information puzzle has a clean expression.</strong> Hawking's question — does information escape a black hole? — becomes, in AdS/CFT, the question of whether the unitary boundary CFT can encode the formation and evaporation of an AdS-Schwarzschild black hole. Because the boundary theory is manifestly unitary, the answer must be yes. Working out the bulk picture of how this happens (the Page curve, the island formula) is a current frontier.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Where we still are</h2>
+
+      <p>AdS/CFT is established for several specific bulk geometries and boundary CFTs: AdS$_5 \times S^5 \leftrightarrow$ $\mathcal{N}=4$ SYM, AdS$_4 \times S^7 \leftrightarrow$ ABJM theory, AdS$_3 \times S^3 \times T^4 \leftrightarrow$ symmetric-product orbifold CFT. The recipes for constructing such pairs are reasonably understood for highly supersymmetric, near-extremal brane configurations.</p>
+
+      <p>What is <em>not</em> understood:</p>
+
+      <ul>
+        <li><strong>Holography for our universe.</strong> We live in an approximately de Sitter spacetime, not Anti-de Sitter. dS/CFT proposals exist but are not on the same firm footing.</li>
+        <li><strong>Flat-space holography.</strong> Asymptotically flat spacetime — the setting of any actual scattering experiment — does not yet have a fully understood holographic dual; the BMS / celestial holography programs are works in progress.</li>
+        <li><strong>Selection of the vacuum.</strong> Among the $\sim 10^{500}$ candidate string vacua, no principle yet picks out ours. The landscape problem persists.</li>
+      </ul>
+
+      <p>String theory has not delivered a theory of everything, and may not. What it has delivered is striking: a mathematically consistent quantum theory of gravity in a precise corner of parameter space (asymptotically AdS), exact agreement with semiclassical black-hole physics, and a structural reorganization — geometric, in every step — of what we thought quantum gravity could be.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>The Poincaré disk</h2>
+
+      <p>The cleanest geometric picture of AdS in two dimensions is the <strong>Poincaré disk model</strong> of hyperbolic space — a disk where the boundary circle is "at infinity," and geodesics are arcs perpendicular to the boundary. The widget below lets you place two points in the bulk and see the geodesic connecting them, plus where each point ends up on the boundary. This is the 2-d version of how AdS/CFT works: bulk excitations leave fingerprints on the boundary, where the dual field theory lives.</p>
+
+      <section class="interactive" data-widget="ads-disk" aria-label="Poincare disk model">
+        <header>
+          <h4>Interactive · Poincaré disk and bulk geodesics</h4>
+          <span class="hint">drag the bulk points</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The disk represents a spatial slice of AdS$_2$. The dual CFT$_1$ lives on the boundary circle. Geodesics in the bulk are circular arcs perpendicular to the boundary; their lengths (using the hyperbolic metric) compute boundary CFT correlation functions. The Ryu–Takayanagi proposal says that this geometric length equals the entanglement entropy of the corresponding boundary region — entanglement in the CFT = geometry in the bulk.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§8</span>End of the climb</h2>
+
+      <p>Fifteen chapters. We started with a single observation — that string theory replaces the point particle's worldline with a string's worldsheet — and followed its logic from manifolds and actions through quantization, dimension reduction, dualities, branes, and finally to the precise statement that a quantum theory of gravity is dual to an ordinary quantum field theory.</p>
+
+      <p>The book is a primer; whole textbooks await on every chapter. But the essential geometric picture should now feel complete:</p>
+
+      <ul>
+        <li>The string sweeps a 2-d worldsheet; its action is the area of this surface.</li>
+        <li>Worldsheet reparametrization + Weyl invariance is the gauge symmetry whose consistent quantization fixes everything: critical dimension, mass spectrum, the emergence of the graviton.</li>
+        <li>Strings see geometry differently than particles. Below the string scale, T-duality identifies "large" with "small." The Calabi–Yau geometry of compactifications has mirror partners. Brane geometry is gauge geometry.</li>
+        <li>Black-hole entropy is microstate-counting on the worldvolume of bound branes — quantum gravity computed from first principles.</li>
+        <li>Holography is the duality between a bulk gravitational theory and a boundary field theory, and the deepest statement so far about what quantum gravity is.</li>
+      </ul>
+
+      <p>None of this proves string theory describes our universe. But every step is internally consistent, and the geometric coherence — the way <em>all of it</em> falls out of a single change in the dimension of the fundamental object — is, even granting all caveats, one of the most remarkable structural achievements of theoretical physics.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Juan M. Maldacena.</span> "The large N limit of superconformal field theories and supergravity." <em>Adv. Theor. Math. Phys.</em> 2, 231 (1998), <code>hep-th/9711200</code> — the founding paper.</li>
+          <li><span class="src-title">S. S. Gubser, I. R. Klebanov, A. M. Polyakov.</span> "Gauge theory correlators from non-critical string theory." <em>Phys. Lett.</em> B428, 105 (1998), <code>hep-th/9802109</code>.</li>
+          <li><span class="src-title">Edward Witten.</span> "Anti-de Sitter space and holography." <em>Adv. Theor. Math. Phys.</em> 2, 253 (1998), <code>hep-th/9802150</code> — the GKP–Witten dictionary.</li>
+          <li><span class="src-title">G. 't Hooft.</span> "Dimensional reduction in quantum gravity." <code>gr-qc/9310026</code> (1993); <span class="src-title">L. Susskind.</span> "The world as a hologram." <em>J. Math. Phys.</em> 36, 6377 (1995), <code>hep-th/9409089</code> — the holographic principle.</li>
+          <li><span class="src-title">S. Ryu, T. Takayanagi.</span> "Holographic derivation of entanglement entropy from AdS/CFT." <em>Phys. Rev. Lett.</em> 96, 181602 (2006), <code>hep-th/0603001</code>.</li>
+          <li><span class="src-title">Mark Van Raamsdonk.</span> "Building up spacetime with quantum entanglement." <em>Gen. Rel. Grav.</em> 42, 2323 (2010), <code>arXiv:1005.3035</code>.</li>
+          <li><span class="src-title">Horatiu Nastase.</span> <em>Introduction to the AdS/CFT Correspondence.</em> Cambridge University Press, 2015 — modern textbook.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="14-black-holes-strominger-vafa.html"><span class="label">← Previous</span>XIV · Black Holes and Strominger–Vafa</a>
+      <a class="next" href="../index.html"><span class="label">End</span>Back to Contents →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/ads-disk.js"></script>
+</body>
+</html>

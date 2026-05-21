@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter II · Hartree–Fock — Computational Chemistry: A Primer</title>
+  <meta name="description" content="Chapter 2: Slater determinants, the variational principle, the Fock operator, and the self-consistent field iteration." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter II of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter II</p>
+      <h1 class="chapter-title">Hartree–Fock: Mean-Field Electrons</h1>
+      <p class="lede">If every electron saw only the average cloud of every other electron, the $N$-body problem would collapse to $N$ one-body problems. Hartree–Fock is the price you pay — and the picture you get — for taking that shortcut seriously.</p>
+
+      <h2><span class="sec-num">§1</span>The mean-field idea</h2>
+
+      <p>The electronic Hamiltonian of Chapter I has one term that makes it hard: the $\sum_{i<j} 1/r_{ij}$ that couples every pair of electrons. If we ignored it, each electron would solve its own one-body Schrödinger equation in the nuclear potential, and the total wavefunction would be a product of those one-electron solutions. The energy would be a sum of one-electron energies. The problem would be linear in $N$.</p>
+
+      <p>We cannot just throw away electron–electron repulsion, but we <em>can</em> replace it with a self-consistent average. Each electron sees, instead of the explicit Coulomb pull of the other $N-1$ electrons, the mean charge distribution they produce. The mean field is determined by the orbitals, the orbitals are determined by the mean field, and we iterate until they agree.</p>
+
+      <p>This is the <dfn title="Mean-field approximation to the electronic Schrödinger equation: each electron moves in the average field of the others, with a single Slater determinant as the wavefunction.">Hartree–Fock approximation</dfn>. Done correctly — with antisymmetry — it produces the orbital picture every chemist already uses to think about molecules.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Slater determinants</h2>
+
+      <p>Antisymmetry is non-negotiable. The cleanest way to build an antisymmetric $N$-electron wavefunction from $N$ one-electron functions $\chi_i(\mathbf{x})$ — the <dfn title="A one-electron function of combined spatial and spin coordinates: χ(x) = ψ(r) α(σ) or ψ(r) β(σ).">spin orbitals</dfn> — is the <strong>Slater determinant</strong>:</p>
+
+      <div class="equation-block">
+        $$ \Psi(\mathbf{x}_1, \mathbf{x}_2, \dots, \mathbf{x}_N) \;=\; \frac{1}{\sqrt{N!}}\, \begin{vmatrix} \chi_1(\mathbf{x}_1) & \chi_2(\mathbf{x}_1) & \cdots & \chi_N(\mathbf{x}_1) \\ \chi_1(\mathbf{x}_2) & \chi_2(\mathbf{x}_2) & \cdots & \chi_N(\mathbf{x}_2) \\ \vdots & \vdots & & \vdots \\ \chi_1(\mathbf{x}_N) & \chi_2(\mathbf{x}_N) & \cdots & \chi_N(\mathbf{x}_N) \end{vmatrix}. $$
+      </div>
+
+      <p>A determinant changes sign when any two rows are swapped, so $\Psi$ is automatically antisymmetric under exchange of any two electrons (rows). Two electrons in the same spin orbital make two identical columns and the determinant is zero — that is the Pauli exclusion principle. The factor $1/\sqrt{N!}$ normalizes $\Psi$ when the $\chi_i$ are orthonormal.</p>
+
+      <p>Hartree–Fock makes one large assumption: $\Psi$ is a <em>single</em> Slater determinant. This is the smallest antisymmetric wavefunction we can write down. Chapter III will rebuild $\Psi$ as a linear combination of many determinants; everything in this chapter is what we get from one.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The variational principle</h2>
+
+      <p>How do we pick the orbitals? Through the <dfn title="For any trial wavefunction Φ, ⟨Φ|H|Φ⟩/⟨Φ|Φ⟩ ≥ E₀, with equality only when Φ is the ground state.">variational principle</dfn>:</p>
+
+      <div class="equation-block">
+        $$ E[\Psi] \;=\; \frac{\langle \Psi | \hat H_{\text{el}} | \Psi \rangle}{\langle \Psi | \Psi \rangle} \;\geq\; E_0, $$
+      </div>
+
+      <p>with equality only when $\Psi$ is the exact ground state. So if we restrict $\Psi$ to be a single Slater determinant and minimize $E[\Psi]$ over the orbitals, we get the best possible single-determinant approximation to the true ground-state energy. That is the Hartree–Fock energy $E_{\text{HF}}$.</p>
+
+      <p>Substituting the determinant into $E[\Psi]$ and using the rules for matrix elements between determinants (the <em>Slater–Condon rules</em>, SO §2.3) gives</p>
+
+      <div class="equation-block">
+        $$ E_{\text{HF}} \;=\; \sum_{i=1}^{N} h_{ii} \;+\; \frac{1}{2}\sum_{i,j=1}^{N} \big[\, (ii|jj) \,-\, (ij|ji) \,\big]. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$h_{ii}$</dt><dd>One-electron core integral: $h_{ii} = \int \chi_i^*(\mathbf{x})\bigl[-\tfrac{1}{2}\nabla^2 - \sum_A Z_A/|\mathbf{r}-\mathbf{R}_A|\bigr]\chi_i(\mathbf{x})\,\dd\mathbf{x}$. The kinetic energy plus the electron–nucleus attraction of an electron in spin orbital $\chi_i$.</dd>
+          <dt>$(ii|jj)$</dt><dd>Coulomb integral in <em>chemists' notation</em>: $(ij|kl) = \iint \chi_i^*(1)\chi_j(1)\,\frac{1}{r_{12}}\,\chi_k^*(2)\chi_l(2)\,\dd 1\,\dd 2$. So $(ii|jj)$ is the classical Coulomb repulsion between charge clouds $|\chi_i|^2$ and $|\chi_j|^2$.</dd>
+          <dt>$(ij|ji)$</dt><dd>Exchange integral. Has no classical analogue; it is the term antisymmetry adds to mean-field repulsion. Same-spin electrons repel each other less than classical Coulomb would predict — they "exchange" through the antisymmetrizer.</dd>
+        </dl>
+      </aside>
+
+      <p>The factor of $1/2$ in front of the two-electron sum avoids double counting; the $j = i$ term contributes zero because $(ii|ii) - (ii|ii) = 0$.</p>
+
+      <p>Two integrals capture the full structure of mean-field electron–electron interaction: Coulomb, which any classical theory would write down, and exchange, which is the price antisymmetry charges and the source of every interesting quantum effect HF describes.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The Fock operator</h2>
+
+      <p>Minimizing $E_{\text{HF}}$ with respect to the orbitals (subject to orthonormality, via Lagrange multipliers) gives a single-particle eigenvalue equation. For each spin orbital,</p>
+
+      <div class="equation-block">
+        $$ \hat f\, \chi_i(\mathbf{x}) \;=\; \varepsilon_i\, \chi_i(\mathbf{x}), $$
+      </div>
+
+      <p>where the <strong>Fock operator</strong> is</p>
+
+      <div class="equation-block">
+        $$ \hat f \;=\; \hat h \;+\; \sum_{j=1}^{N} \big[\, \hat J_j - \hat K_j \,\big]. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\hat h$</dt><dd>The one-electron core Hamiltonian: kinetic energy plus all electron–nucleus attractions.</dd>
+          <dt>$\hat J_j$</dt><dd>Coulomb operator: $\hat J_j(1) \chi_i(1) = \chi_i(1)\int |\chi_j(2)|^2/r_{12}\,\dd 2$. The classical electrostatic field of orbital $j$ acting on orbital $i$.</dd>
+          <dt>$\hat K_j$</dt><dd>Exchange operator: $\hat K_j(1)\chi_i(1) = \chi_j(1)\int \chi_j^*(2)\chi_i(2)/r_{12}\,\dd 2$. A nonlocal operator with no classical counterpart.</dd>
+          <dt>$\varepsilon_i$</dt><dd>Orbital energy. Loosely, the negative of the ionization energy from that orbital (Koopmans' theorem, §6).</dd>
+        </dl>
+      </aside>
+
+      <p>This is the moment to notice the self-referential structure. The Fock operator $\hat f$ is built from the occupied orbitals $\{\chi_j\}_{j=1}^N$. Solving $\hat f \chi_i = \varepsilon_i \chi_i$ gives a new set of orbitals, from which we rebuild $\hat f$. The orbitals satisfy a fixed-point equation: <em>the orbitals that diagonalize the Fock operator are the same ones that build it</em>. That is what <strong>self-consistent</strong> means.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>From integrals to matrices: Roothaan–Hall</h2>
+
+      <p>In practice we never solve the Fock equation on a grid in $\mathbf{x}$-space. We expand each molecular orbital $\psi_i(\mathbf{r})$ in a finite basis of atom-centered functions $\phi_\mu(\mathbf{r})$ (Gaussians, in Chapter III):</p>
+
+      <div class="equation-block">
+        $$ \psi_i(\mathbf{r}) \;=\; \sum_{\mu=1}^{K} C_{\mu i}\, \phi_\mu(\mathbf{r}). $$
+      </div>
+
+      <p>Substituting into the Hartree–Fock equation collapses an integrodifferential equation into a generalized matrix eigenvalue problem — the <strong>Roothaan–Hall equations</strong>:</p>
+
+      <div class="equation-block">
+        $$ \mathbf{F}\, \mathbf{C} \;=\; \mathbf{S}\, \mathbf{C}\, \boldsymbol{\varepsilon}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathbf{F}$</dt><dd>Fock matrix: $F_{\mu\nu} = h_{\mu\nu} + \sum_{\lambda\sigma} P_{\lambda\sigma}\bigl[(\mu\nu|\lambda\sigma) - \tfrac{1}{2}(\mu\sigma|\lambda\nu)\bigr]$ for closed-shell molecules.</dd>
+          <dt>$\mathbf{S}$</dt><dd>Overlap matrix: $S_{\mu\nu} = \int \phi_\mu^*(\mathbf{r})\phi_\nu(\mathbf{r})\,\dd\mathbf{r}$. Atom-centered Gaussians are not orthogonal, so $\mathbf{S} \neq \mathbf{I}$.</dd>
+          <dt>$\mathbf{C}$</dt><dd>MO coefficients: column $i$ holds the basis-function weights of molecular orbital $\psi_i$.</dd>
+          <dt>$\mathbf{P}$</dt><dd>Density matrix: $P_{\lambda\sigma} = 2\sum_{i \in \text{occ}} C_{\lambda i}^* C_{\sigma i}$ (factor 2 for closed-shell double occupancy).</dd>
+          <dt>$\boldsymbol{\varepsilon}$</dt><dd>Diagonal matrix of orbital energies.</dd>
+        </dl>
+      </aside>
+
+      <p>The self-consistency is now visible in code: $\mathbf{P}$ is built from $\mathbf{C}$, $\mathbf{F}$ is built from $\mathbf{P}$, $\mathbf{C}$ is obtained by diagonalizing $\mathbf{F}$ in the $\mathbf{S}$-metric. Loop until $\mathbf{P}$ stops changing.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The SCF cycle</h2>
+
+      <p>The <strong>self-consistent field</strong> (SCF) algorithm — Hartree–Fock with finite basis — is a fixed-point iteration:</p>
+
+      <ol>
+        <li>Build the one-electron matrices $\mathbf{S}$, $\mathbf{h}$ and all two-electron integrals $(\mu\nu|\lambda\sigma)$ from the basis and the geometry. (Done once, before the loop.)</li>
+        <li>Guess an initial density matrix $\mathbf{P}^{(0)}$. (Often: $\mathbf{P} = 0$, i.e. core-Hamiltonian guess; or superposition of atomic densities.)</li>
+        <li>Build $\mathbf{F}^{(k)}$ from $\mathbf{P}^{(k)}$.</li>
+        <li>Solve $\mathbf{F}^{(k)} \mathbf{C} = \mathbf{S}\, \mathbf{C}\, \boldsymbol\varepsilon$.</li>
+        <li>Build $\mathbf{P}^{(k+1)}$ from $\mathbf{C}$. Compute total energy $E_{\text{HF}}^{(k+1)}$.</li>
+        <li>Check convergence: is $\|\mathbf{P}^{(k+1)} - \mathbf{P}^{(k)}\| < \tau$? If not, go to 3.</li>
+      </ol>
+
+      <p>Plain fixed-point iteration is fragile — it can oscillate or diverge. In real codes the iteration is accelerated by <dfn title="Direct Inversion in the Iterative Subspace: build the new Fock matrix as a linear combination of recent ones, minimizing the residual. Standard since Pulay 1980.">DIIS</dfn>, which extrapolates from previous iterates to suppress oscillation.</p>
+
+      <p>When the loop converges, you have the orbitals $\{\chi_i\}$, their energies $\{\varepsilon_i\}$, and the total energy. <dfn title="The HOMO energy is approximately the negative of the ionization energy; the LUMO energy is approximately the negative of the electron affinity. Exact within HF if orbital relaxation is ignored.">Koopmans' theorem</dfn> reads chemistry off the orbital energies: the highest occupied orbital energy $\varepsilon_{\text{HOMO}}$ approximates $-\text{IP}$, the ionization potential.</p>
+
+      <section class="interactive" data-widget="scf-iteration" aria-label="Self-consistent field iteration">
+        <header>
+          <h4>Interactive · Self-consistent field on H₂ (STO-3G)</h4>
+          <span class="hint">step or run · toggle DIIS</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">A real SCF on H₂ in the minimal STO-3G basis. Two basis functions, one occupied bonding orbital. The plot shows the energy and density-matrix change per iteration; with DIIS disabled the iteration can drift, with DIIS the residual collapses in a few cycles. At convergence the total energy reaches $\approx -1.117\,\mathrm{Ha}$ — about $0.057\,\mathrm{Ha}$ above the exact FCI value $-1.174\,\mathrm{Ha}$ (Helgaker et al., Tab. 11.1). That gap is the <strong>correlation energy</strong>, the subject of Chapter III.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>What HF gets right, and what it misses</h2>
+
+      <p>Hartree–Fock typically recovers about <strong>99%</strong> of the total electronic energy and roughly the right shape for the wavefunction. It produces a correct orbital picture: HOMO and LUMO, bonding and antibonding, the symmetry adaptation of orbitals, the qualitative shapes that chemistry teaches every undergraduate. Geometries and dipole moments are usually within ~10% of experiment.</p>
+
+      <p>The missing 1% is the <dfn title="Difference between the exact non-relativistic energy and the Hartree–Fock energy in a given basis. Roughly 1% of total energy, but often comparable to entire chemical bond energies.">correlation energy</dfn>,</p>
+
+      <div class="equation-block">
+        $$ E_{\text{corr}} \;\equiv\; E_{\text{exact}} \,-\, E_{\text{HF}}. $$
+      </div>
+
+      <p>It is small as a fraction of the total but comparable in magnitude to chemical bond energies, reaction barriers, and intermolecular forces — exactly the quantities chemistry cares about. Hartree–Fock energies are wrong by tens of kilocalories per mole. HF systematically underbinds molecules, overestimates bond lengths, misses van der Waals interactions entirely (they require correlation to exist), and breaks qualitatively at the dissociation of any bond made of more than one electron pair.</p>
+
+      <p>What HF leaves out is the correlated motion of opposite-spin electrons. Two electrons of opposite spin can sit on top of each other in the mean-field picture; in reality they avoid each other, and that avoidance lowers the energy. Same-spin electrons already avoid each other through exchange — that part HF gets right. The dynamics correlation of opposite-spin pairs is what every method in Chapter III adds back.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§8</span>Restricted, unrestricted, open shells</h2>
+
+      <p>Three flavors of HF appear constantly in the literature:</p>
+
+      <ul>
+        <li><strong>RHF</strong> (restricted Hartree–Fock): closed-shell molecules. Each spatial orbital holds one α and one β electron, so spatial orbitals are doubly occupied. The simplest and cleanest.</li>
+        <li><strong>UHF</strong> (unrestricted): α and β electrons get independent spatial orbitals. Necessary for radicals and at bond-breaking geometries. Buys flexibility at the cost of spin contamination: the UHF determinant is not an eigenfunction of $\hat S^2$.</li>
+        <li><strong>ROHF</strong> (restricted open-shell): doubly occupied orbitals share spatial parts; singly occupied orbitals get their own. Restores spin purity at the cost of more delicate equations.</li>
+      </ul>
+
+      <p>The interactive above runs RHF. UHF appears again in Chapter IV (DFT inherits the spin restrictions) and Chapter VII (spin contamination affects excited-state methods).</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Szabo &amp; Ostlund.</span> <em>Modern Quantum Chemistry</em>, Chapter 3 — the canonical pedagogical derivation of Hartree–Fock, the Slater–Condon rules (§2.3), the Roothaan equations (§3.4), and a fully worked H₂/STO-3G example (§3.5) that the interactive above reproduces.</li>
+          <li><span class="src-title">Helgaker, Jørgensen, Olsen.</span> <em>Molecular Electronic-Structure Theory</em>, Wiley 2000 — Chapter 10 for second-quantized HF and Chapter 11 for SCF algorithms in production codes.</li>
+          <li><span class="src-title">P. Pulay.</span> "Convergence acceleration of iterative sequences. The case of SCF iteration." <em>Chem. Phys. Lett.</em> 73, 393 (1980) — DIIS, the trick that makes SCF practical.</li>
+          <li><span class="src-title">C. C. J. Roothaan.</span> "New developments in molecular orbital theory." <em>Rev. Mod. Phys.</em> 23, 69 (1951) — the original matrix formulation of Hartree–Fock in a basis.</li>
+          <li><span class="src-title">T. Koopmans.</span> "Über die Zuordnung von Wellenfunktionen und Eigenwerten zu den einzelnen Elektronen eines Atoms." <em>Physica</em> 1, 104 (1934) — the orbital-energy interpretation, still the simplest way to get ionization potentials out of an HF calculation.</li>
+          <li><span class="src-title">V. Fock.</span> "Näherungsmethode zur Lösung des quantenmechanischen Mehrkörperproblems." <em>Z. Phys.</em> 61, 126 (1930) — the original paper introducing antisymmetry into Hartree's mean-field method.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="01-pes-and-the-problem.html"><span class="label">Previous chapter</span>← I · The PES and the Problem</a>
+      <a class="next" href="03-basis-sets-and-correlation.html"><span class="label">Next chapter</span>III · Basis Sets and Correlation →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/scf-iteration.js"></script>
+</body>
+</html>

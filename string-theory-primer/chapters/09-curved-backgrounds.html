@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter IX · Strings on Curved Backgrounds — String Theory: A Primer</title>
+  <meta name="description" content="Chapter 9 of String Theory: A Primer. The non-linear sigma model, beta functions, and how Einstein's equations emerge from worldsheet conformal invariance." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter IX of XV</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter IX</p>
+      <h1 class="chapter-title">Strings on Curved Backgrounds</h1>
+      <p class="lede">Put the string on a curved spacetime. Demand that its worldsheet remain a conformal field theory. Out fall Einstein's equations — with calculable, finite stringy corrections.</p>
+
+      <h2><span class="sec-num">§1</span>The non-linear sigma model</h2>
+
+      <p>So far the target spacetime has been flat Minkowski with metric $\eta_{\mu\nu}$. To do interesting physics we have to allow it to curve. Replace $\eta_{\mu\nu}$ everywhere with a general metric $g_{\mu\nu}(X)$, and add two other massless background fields — the antisymmetric Kalb–Ramond field $B_{\mu\nu}(X)$ and the scalar dilaton $\Phi(X)$ — that we will see emerge naturally from the spectrum. The full worldsheet action is</p>
+
+      <div class="equation-block">
+        $$ S \;=\; -\frac{1}{4\pi\alpha'} \int_\Sigma \mathrm{d}^2\sigma\, \sqrt{-h}\left[ h^{ab}\, g_{\mu\nu}(X) + \epsilon^{ab}\, B_{\mu\nu}(X) \right] \partial_a X^\mu\, \partial_b X^\nu \;+\; \frac{1}{4\pi} \int_\Sigma \mathrm{d}^2\sigma\, \sqrt{-h}\, R^{(2)}\, \Phi(X). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$g_{\mu\nu}(X)$</dt><dd>Target spacetime metric. The dependence on $X$ makes this a non-linear sigma model on the worldsheet.</dd>
+          <dt>$B_{\mu\nu}(X)$</dt><dd>Antisymmetric 2-form field — the Kalb–Ramond gauge field that strings couple to electrically.</dd>
+          <dt>$\Phi(X)$</dt><dd>Dilaton — a scalar field whose expectation value sets the string coupling, $g_s = e^\Phi$.</dd>
+          <dt>$\epsilon^{ab}$</dt><dd>2-d Levi-Civita symbol (densitized; antisymmetric in $a, b$).</dd>
+          <dt>$R^{(2)}$</dt><dd>Worldsheet Ricci scalar — a curvature invariant of $h_{ab}$, not of target spacetime.</dd>
+        </dl>
+      </aside>
+
+      <p>The three background fields are exactly the massless modes of the closed-string spectrum from Chapter VII §6: graviton, Kalb–Ramond, dilaton. We are now letting these massless modes acquire spacetime-dependent expectation values — a non-trivial "background" in which the string propagates.</p>
+
+      <p>Geometrically, the worldsheet theory has become a map $\Sigma \to (M, g, B, \Phi)$. It is the natural 2-dimensional analogue of a particle worldline in a curved metric, but with two additional gauge backgrounds.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Conformal invariance as a consistency condition</h2>
+
+      <p>In flat target space, the worldsheet theory was free and Weyl invariance was automatic. With curved $g, B, \Phi$, the theory is interacting and Weyl invariance becomes a non-trivial demand. The trace of the worldsheet stress tensor picks up contributions from each background field:</p>
+
+      <div class="equation-block">
+        $$ \langle T^a{}_a \rangle \;=\; -\frac{1}{2\alpha'}\, \beta^g_{\mu\nu}\, h^{ab}\, \partial_a X^\mu\, \partial_b X^\nu \;-\; \frac{1}{2\alpha'}\, \beta^B_{\mu\nu}\, \epsilon^{ab}\, \partial_a X^\mu\, \partial_b X^\nu \;-\; \frac{1}{2}\, \beta^\Phi\, R^{(2)}. $$
+      </div>
+
+      <p>The coefficients $\beta^g, \beta^B, \beta^\Phi$ are the <strong>renormalization-group beta functions</strong> of the sigma-model couplings. For Weyl invariance to hold, every one must vanish:</p>
+
+      <div class="equation-block">
+        $$ \beta^g_{\mu\nu} \;=\; 0, \qquad \beta^B_{\mu\nu} \;=\; 0, \qquad \beta^\Phi \;=\; 0. $$
+      </div>
+
+      <p>These are equations on the background fields $g, B, \Phi$, derived purely from worldsheet consistency. They are not put in by hand. The point of this chapter is to read them out.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The leading $\alpha'$ result</h2>
+
+      <p>Computing the beta functions perturbatively in $\alpha'$ (small worldsheet curvature) is a careful exercise; the result to leading order is</p>
+
+      <div class="equation-block">
+        $$ \beta^g_{\mu\nu} \;=\; \alpha'\left( R_{\mu\nu} + 2\nabla_\mu \nabla_\nu \Phi - \tfrac{1}{4} H_{\mu\rho\sigma}\, H_\nu{}^{\rho\sigma} \right) + O(\alpha'^2), $$
+      </div>
+
+      <div class="equation-block">
+        $$ \beta^B_{\mu\nu} \;=\; \alpha'\left( -\tfrac{1}{2} \nabla^\rho H_{\rho\mu\nu} + (\nabla^\rho \Phi)\, H_{\rho\mu\nu} \right) + O(\alpha'^2), $$
+      </div>
+
+      <div class="equation-block">
+        $$ \beta^\Phi \;=\; \alpha'\left( -\tfrac{1}{2} \nabla^2 \Phi + (\nabla \Phi)^2 - \tfrac{1}{24} H_{\mu\nu\rho} H^{\mu\nu\rho} \right) + \frac{D - 26}{6} + O(\alpha'^2), $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$R_{\mu\nu}$</dt><dd>Ricci tensor of the target spacetime metric $g_{\mu\nu}$.</dd>
+          <dt>$H_{\mu\nu\rho}$</dt><dd>Field strength of $B$: $H = \mathrm{d}B$, with components $H_{\mu\nu\rho} = \partial_\mu B_{\nu\rho} + \partial_\nu B_{\rho\mu} + \partial_\rho B_{\mu\nu}$.</dd>
+          <dt>$\nabla_\mu$</dt><dd>Covariant derivative built from the Levi-Civita connection of $g_{\mu\nu}$.</dd>
+        </dl>
+      </aside>
+
+      <p>The dilaton beta function carries an explicit $(D - 26)/6$ piece — the bosonic critical-dimension anomaly from Chapter VIII reappearing here as a contribution to the worldsheet conformal anomaly. Setting $D = 26$ removes it; this is the same constraint as before, in a different language.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Einstein's equations from worldsheet consistency</h2>
+
+      <p>Look at $\beta^g_{\mu\nu} = 0$ with $B = 0$ and constant $\Phi$. It reduces to</p>
+
+      <div class="equation-block">
+        $$ R_{\mu\nu} \;=\; 0. $$
+      </div>
+
+      <p>This is exactly <strong>Einstein's vacuum equation</strong>. A consistent string background must be Ricci-flat at leading order in $\alpha'$ — and Einstein gravity is the unique low-energy effective theory of a massless spin-2 field. Quantum-mechanical consistency of the worldsheet has derived (the vacuum form of) general relativity from scratch.</p>
+
+      <p>Including matter — say, a non-trivial $H$-flux — gives Einstein's equations sourced by the stress-energy of the Kalb–Ramond field:</p>
+
+      <div class="equation-block">
+        $$ R_{\mu\nu} \;=\; \tfrac{1}{4} H_{\mu\rho\sigma}\, H_\nu{}^{\rho\sigma} \quad (\Phi \text{ constant}). $$
+      </div>
+
+      <p>Including the dilaton produces additional terms, all of which assemble into the Einstein equations of a particular low-energy effective action — the <strong>type-II / heterotic low-energy supergravity</strong> in the superstring case, or its bosonic ancestor in 26 dimensions. The effective action is</p>
+
+      <div class="equation-block">
+        $$ S_{\text{eff}} \;=\; \frac{1}{2\kappa^2} \int \mathrm{d}^D X\, \sqrt{-g}\, e^{-2\Phi}\left( R + 4(\nabla\Phi)^2 - \tfrac{1}{12} H_{\mu\nu\rho} H^{\mu\nu\rho} \right) + O(\alpha'). $$
+      </div>
+
+      <p>This is gravity coupled to a 2-form field and a scalar, in the so-called <em>string frame</em>. A field redefinition (the Weyl rescaling $g_{\mu\nu} \to e^{4\Phi/(D-2)} g_{\mu\nu}$) puts it into the more familiar <em>Einstein frame</em> form.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The stringy corrections</h2>
+
+      <p>The $O(\alpha'^2)$ terms in the beta functions yield curvature-squared and higher corrections to Einstein's equations. Schematically,</p>
+
+      <div class="equation-block">
+        $$ \beta^g_{\mu\nu} \;\sim\; \alpha' R_{\mu\nu} + \alpha'^2 R_{\mu\rho\sigma\tau}\, R_\nu{}^{\rho\sigma\tau} + \alpha'^3\, R^3 + \cdots, $$
+      </div>
+
+      <p>so the full equation of motion is an infinite series in $\alpha'$:</p>
+
+      <div class="equation-block">
+        $$ R_{\mu\nu} + \alpha'\, R^2\text{-corrections} + \alpha'^2\, R^3\text{-corrections} + \cdots \;=\; 0. $$
+      </div>
+
+      <p>At length scales much larger than $\ell_s = \sqrt{\alpha'}$, the higher terms are tiny — string theory looks like Einstein gravity. At length scales comparable to $\ell_s$, the corrections become important and the geometry departs from the smooth-manifold picture of GR. Geometrically, the string has a finite size and cannot resolve features smaller than itself; the corrections to Einstein encode this.</p>
+
+      <p>This is a fundamentally different prediction from generic theories of quantum gravity. The corrections are computable, finite, and ordered by a single small parameter $\alpha'$.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Background visualizer</h2>
+
+      <p>The widget below sketches how the relative size of stringy corrections grows with the target spacetime's curvature scale $K$. We plot the contribution at each order in $\alpha'$, schematically $|\beta^{(n)}| \sim (\alpha' K)^n K$, and the sum:</p>
+
+      <section class="interactive" data-widget="beta-flow" aria-label="Sigma-model corrections">
+        <header>
+          <h4>Interactive · $\alpha'$ expansion of $\beta^g$</h4>
+          <span class="hint">drag curvature scale</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The leading $R_{\mu\nu}$ term and the first three corrections, plotted on a log scale against the dimensionless curvature $\alpha' K$. For small $\alpha' K$ (low curvature, large radius of geometry) Einstein dominates and string theory looks like GR. At $\alpha' K \sim 1$ the corrections become comparable; the geometry approaches the string scale and the expansion breaks down.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>What we carry forward</h2>
+
+      <ol>
+        <li>The string couples to its three massless modes $g_{\mu\nu}, B_{\mu\nu}, \Phi$ as background fields in a 2-d non-linear sigma model.</li>
+        <li>Worldsheet conformal invariance — Weyl invariance of the quantum theory — is a constraint on these backgrounds, expressed as the vanishing of the sigma-model beta functions.</li>
+        <li>At leading order in $\alpha'$, $\beta^g_{\mu\nu} = 0$ <strong>is Einstein's equation</strong> (sourced by $H$ and $\Phi$). General relativity is the low-energy approximation of string consistency, not an input.</li>
+        <li>Higher orders in $\alpha'$ produce calculable curvature-squared and higher corrections — predictions of string theory beyond GR.</li>
+        <li>The dilaton beta function carries the critical-dimension anomaly $(D - 26)/6$, recovering $D = 26$ from a different route than Chapter VIII.</li>
+      </ol>
+
+      <p>With curved backgrounds in hand we are equipped to handle compactification — making most of spacetime small enough to hide. Chapter X first finishes the matter sector by adding fermions (the superstring), then Chapter XI compactifies and we meet Calabi–Yau manifolds.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Joseph Polchinski.</span> <em>String Theory, Vol. I.</em> §3.7 (sigma-model beta functions and the low-energy effective action).</li>
+          <li><span class="src-title">David Tong.</span> <em>Lectures on String Theory.</em> §7 ("The Low-Energy Effective Action") — derivations of the beta functions and the effective action in the closest notation to ours.</li>
+          <li><span class="src-title">C. G. Callan, D. Friedan, E. Martinec, M. J. Perry.</span> "Strings in background fields." <em>Nucl. Phys.</em> B262, 593 (1985) — original calculation of the leading $\beta$ functions identifying $\beta^g = 0$ with Einstein.</li>
+          <li><span class="src-title">D. Friedan.</span> "Nonlinear models in $2+\epsilon$ dimensions." <em>Phys. Rev. Lett.</em> 45, 1057 (1980) — the geometric derivation of $\beta^g \propto R_{\mu\nu}$ at one loop.</li>
+          <li><span class="src-title">Katrin Becker, Melanie Becker, John H. Schwarz.</span> <em>String Theory and M-Theory.</em> §3.5 — clean treatment of the supersymmetric version (which we will need in Chapter X).</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="08-critical-dimension.html"><span class="label">← Previous</span>VIII · The Critical Dimension</a>
+      <a class="next" href="10-superstrings-fermions.html"><span class="label">Next chapter</span>X · Superstrings and Fermions →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/beta-flow.js"></script>
+</body>
+</html>

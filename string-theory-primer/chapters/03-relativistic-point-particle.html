@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter III · The Relativistic Point Particle — String Theory: A Primer</title>
+  <meta name="description" content="Chapter 3 of String Theory: A Primer. The worldline action, reparametrization invariance, the geodesic equation, and the einbein form — every structure we will reuse for the string." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter III of XV</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter III</p>
+      <h1 class="chapter-title">The Relativistic Point Particle</h1>
+      <p class="lede">Before we promote points to strings, let us understand a single relativistic particle from first principles. Its geometric action — mass times proper time — already contains every symmetry and structural move we will need for the string.</p>
+
+      <h2><span class="sec-num">§1</span>The worldline as a curve in spacetime</h2>
+
+      <p>A relativistic point particle in spacetime $M$ traces out a one-dimensional submanifold: its <strong>worldline</strong>. We describe it by an embedding</p>
+
+      <div class="equation-block">
+        $$ X^\mu : \mathbb{R} \to M, \qquad \lambda \mapsto X^\mu(\lambda), $$
+      </div>
+
+      <p>where $\lambda$ is an arbitrary parameter along the curve. The tangent vector to the worldline at parameter $\lambda$ is $\dot X^\mu \equiv \mathrm{d}X^\mu / \mathrm{d}\lambda$.</p>
+
+      <p>For a massive particle, the worldline must be everywhere <strong>timelike</strong>:</p>
+
+      <div class="equation-block">
+        $$ \eta_{\mu\nu}\, \dot X^\mu\, \dot X^\nu \;<\; 0. $$
+      </div>
+
+      <p>This is the geometric statement that the particle moves slower than light: its tangent vector lies inside the local light cone. For massless particles the tangent is <strong>null</strong>, $\eta_{\mu\nu} \dot X^\mu \dot X^\nu = 0$. We will work with flat Minkowski spacetime and metric $\eta_{\mu\nu}$ in this chapter; replacing $\eta_{\mu\nu}$ with a general $g_{\mu\nu}(X)$ generalizes everything to curved backgrounds with no extra ideas.</p>
+
+      <aside class="note">
+        <h4>The worldline is the geometric object</h4>
+        <p>$\lambda$ is just a label — a coordinate on the worldline. The physically meaningful object is the <em>curve</em> in spacetime, not how fast we walk along it. Anything we write should ultimately depend only on the curve, never on the parameterization.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The Nambu-style action</h2>
+
+      <p>The simplest reparametrization-invariant quantity attached to a worldline is its length — or, in Lorentzian spacetime, its <strong>proper time</strong>. For a timelike worldline,</p>
+
+      <div class="equation-block">
+        $$ \tau \;=\; \int \mathrm{d}\lambda\, \sqrt{-\eta_{\mu\nu}\, \dot X^\mu\, \dot X^\nu}. $$
+      </div>
+
+      <p>We define the action of a relativistic point particle of mass $m$ to be $-m$ times this:</p>
+
+      <div class="equation-block">
+        $$ \boxed{\; S_{\mathrm{pp}}[X] \;=\; -m \int \mathrm{d}\lambda\, \sqrt{-\eta_{\mu\nu}\, \dot X^\mu\, \dot X^\nu}. \;} $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$m$</dt><dd>Rest mass of the particle. Positive for massive particles; we treat $m=0$ separately in §5.</dd>
+          <dt>$X^\mu(\lambda)$</dt><dd>Embedding of the worldline in target spacetime; $\mu = 0,1,\dots,D-1$.</dd>
+          <dt>$\dot X^\mu$</dt><dd>Tangent to the worldline, $\mathrm{d}X^\mu/\mathrm{d}\lambda$.</dd>
+          <dt>$\eta_{\mu\nu}$</dt><dd>Mostly-plus Minkowski metric, $\mathrm{diag}(-1,+1,+1,\dots)$.</dd>
+        </dl>
+      </aside>
+
+      <p>The minus sign in front of $m$ exists precisely so that the principle of stationary action — which selects critical points of $S$ — picks out paths that <em>maximize</em> proper time (Chapter II §5). The free relativistic particle is exactly the geometric object whose action is its swept-out length.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Reparametrization invariance</h2>
+
+      <p>The crucial property of $S_{\mathrm{pp}}$ is that it does not care how we parameterize the worldline. Replace $\lambda$ by any orientation-preserving smooth reparametrization $\lambda \mapsto \lambda'(\lambda)$, $\mathrm{d}\lambda'/\mathrm{d}\lambda > 0$. Under such a change,</p>
+
+      <div class="equation-block">
+        $$ \dot X^\mu \;\equiv\; \frac{\mathrm{d}X^\mu}{\mathrm{d}\lambda} \;=\; \frac{\mathrm{d}X^\mu}{\mathrm{d}\lambda'}\,\frac{\mathrm{d}\lambda'}{\mathrm{d}\lambda}, $$
+      </div>
+
+      <p>so the square-root piece transforms as $\sqrt{-\dot X^2}\,\mathrm{d}\lambda \;=\; \sqrt{-(\mathrm{d}X/\mathrm{d}\lambda')^2}\,\mathrm{d}\lambda'$, and the action is unchanged:</p>
+
+      <div class="equation-block">
+        $$ S_{\mathrm{pp}}\big[X(\lambda)\big] \;=\; S_{\mathrm{pp}}\big[X(\lambda'(\lambda))\big]. $$
+      </div>
+
+      <p>Geometrically: the action depends only on the image of the worldline in spacetime, not on the coordinate we drew on it. This is a redundancy in our description — a <strong>gauge symmetry</strong> of the worldline. We will eventually fix it (e.g., by setting $\lambda = \tau$, the proper time itself), but the underlying invariance is what makes the action manifestly geometric.</p>
+
+      <aside class="jargon">
+        <h4>Gauge symmetry, in one sentence</h4>
+        <p>A gauge symmetry is a transformation that changes how we <em>describe</em> a physical state but not the state itself. Worldline reparametrization is gauge: the same curve, written in different parameter coordinates, is one physical worldline. The corresponding symmetry on the string worldsheet — diffeomorphism + Weyl invariance — is the engine of every consistency condition we will meet, including the critical dimension.</p>
+      </aside>
+
+      <p>This is the structural template we will reuse: <em>parameter-redundancy of the embedded object</em>. For a worldline, it's a 1-parameter freedom. For a worldsheet, it's 2-parameter — and the same proof, with one more index, will go through unchanged.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Equations of motion</h2>
+
+      <p>Vary $S_{\mathrm{pp}}$ with respect to $X^\mu$, with endpoints held fixed. Writing $\mathcal{L} = -m\sqrt{-\dot X^2}$ (using $\dot X^2 \equiv \eta_{\mu\nu} \dot X^\mu \dot X^\nu$), the canonical momentum is</p>
+
+      <div class="equation-block">
+        $$ p_\mu \;=\; \frac{\partial \mathcal{L}}{\partial \dot X^\mu} \;=\; \frac{m\, \eta_{\mu\nu}\, \dot X^\nu}{\sqrt{-\dot X^2}}. $$
+      </div>
+
+      <p>Notice immediately that $p_\mu$ obeys a constraint:</p>
+
+      <div class="equation-block">
+        $$ p^\mu p_\mu \;=\; -m^2. $$
+      </div>
+
+      <p>This is the <strong>mass-shell condition</strong>. It is enforced automatically by the square root in the action — there is no choice of $\dot X$ for which $p^\mu p_\mu \neq -m^2$. It is the algebraic shadow of reparametrization invariance, and it will reappear as the Virasoro constraint for the string.</p>
+
+      <p>The Euler–Lagrange equation $\mathrm{d}p_\mu/\mathrm{d}\lambda = 0$, after choosing the proper-time gauge $\lambda = \tau$ so that $\sqrt{-\dot X^2} = 1$, simplifies to</p>
+
+      <div class="equation-block">
+        $$ \ddot X^\mu \;=\; 0 \qquad (\text{flat spacetime}). $$
+      </div>
+
+      <p>The particle moves in a straight line, at constant 4-velocity. On a curved background $g_{\mu\nu}(X)$, the same variation produces the geodesic equation of Chapter II §5,</p>
+
+      <div class="equation-block">
+        $$ \ddot X^\mu + \Gamma^\mu{}_{\nu\rho}\, \dot X^\nu\, \dot X^\rho \;=\; 0, $$
+      </div>
+
+      <p>with $\Gamma$ now built from $g_{\mu\nu}(X)$. Nothing changes structurally.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The square-root problem and the einbein</h2>
+
+      <p>The Nambu-style action has two cosmetic awkwardnesses:</p>
+
+      <ol>
+        <li>The square root is hard to handle in a path integral.</li>
+        <li>It is singular at $m = 0$: a massless particle has no action this way.</li>
+      </ol>
+
+      <p>Both issues are cured by an equivalent action that introduces an auxiliary field $e(\lambda)$, called the <strong>einbein</strong>:</p>
+
+      <div class="equation-block">
+        $$ \boxed{\; S_{\mathrm{pp}}'[X, e] \;=\; \tfrac{1}{2} \int \mathrm{d}\lambda\, \Big[ e^{-1}(\lambda)\, \eta_{\mu\nu}\, \dot X^\mu\, \dot X^\nu - e(\lambda)\, m^2 \Big]. \;} $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$e(\lambda)$</dt><dd>A positive auxiliary field on the worldline. Geometrically it is the "vielbein" of a 1-dim metric $g_{\lambda\lambda} = e^2$ on the worldline — the einbein gives the worldline its own length scale.</dd>
+        </dl>
+      </aside>
+
+      <p>The einbein must transform under reparametrization $\lambda \to \lambda'(\lambda)$ as $e \to e\, \mathrm{d}\lambda / \mathrm{d}\lambda'$ — so that the combination $e\, \mathrm{d}\lambda$ (the worldline volume element) is invariant. With that rule, $S_{\mathrm{pp}}'[X, e]$ is manifestly reparametrization-invariant, even though the integrand is no longer a square root.</p>
+
+      <p>The equation of motion for $e$ comes from varying $\partial S_{\mathrm{pp}}'/\partial e = 0$:</p>
+
+      <div class="equation-block">
+        $$ -\frac{1}{e^2}\, \eta_{\mu\nu}\, \dot X^\mu\, \dot X^\nu \;=\; m^2 \quad\Longrightarrow\quad e \;=\; \frac{1}{m}\, \sqrt{-\eta_{\mu\nu}\, \dot X^\mu\, \dot X^\nu}. $$
+      </div>
+
+      <p>Substituting this back into $S_{\mathrm{pp}}'$ gives exactly $-m \int \mathrm{d}\lambda\, \sqrt{-\dot X^2} = S_{\mathrm{pp}}$. So the two actions are <strong>classically equivalent</strong> — they agree on every physical solution.</p>
+
+      <p>But the einbein form has two advantages the Nambu form does not:</p>
+
+      <ul>
+        <li><strong>No square root.</strong> The Lagrangian is a polynomial in $\dot X^\mu$, ready for canonical quantization or path-integration.</li>
+        <li><strong>Massless particles included.</strong> Setting $m = 0$ leaves a perfectly good action $\tfrac{1}{2} \int \mathrm{d}\lambda\, e^{-1} \dot X^2$. The $e$-EOM now reads $\dot X^2 = 0$ — the worldline is null, as it should be for a massless particle.</li>
+      </ul>
+
+      <p>This is the key structural rehearsal. When we move to strings in the next chapter, we will write the Nambu–Goto action (worldsheet area) and then immediately introduce a worldsheet metric $h_{ab}$ — the 2-dimensional analogue of the einbein $e$ — to get the Polyakov action. The two will be classically equivalent for the same reason as here.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The geometric punchline</h2>
+
+      <p>The structural correspondences we have just built will carry through every page of this book:</p>
+
+      <table style="margin: 1.5rem auto; border-collapse: collapse; font-family: var(--sans); font-size: 0.92rem; width: 100%; max-width: 38rem; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);">
+        <thead>
+          <tr style="background: var(--bg-soft);">
+            <th style="text-align: left; padding: 0.6rem 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.72rem;">Particle (this chapter)</th>
+            <th style="text-align: left; padding: 0.6rem 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.72rem;">String (Chapter IV →)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">Worldline $\lambda$</td><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">Worldsheet $(\tau, \sigma)$</td></tr>
+          <tr><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">Nambu action $-m \int \mathrm{d}s$</td><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">Nambu–Goto action $-T \int \mathrm{d}A$</td></tr>
+          <tr><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">Einbein $e(\lambda)$</td><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">Worldsheet metric $h_{ab}(\sigma)$</td></tr>
+          <tr><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">Reparametrization invariance</td><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">Diff $(\Sigma)$ $\times$ Weyl invariance</td></tr>
+          <tr><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">Mass-shell constraint $p^2 + m^2 = 0$</td><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">Virasoro constraints $L_n = 0$</td></tr>
+          <tr><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">Mass $m$</td><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">Tension $T = 1/(2\pi\alpha')$</td></tr>
+        </tbody>
+      </table>
+
+      <p>Every row is just "promote the worldline ($d=1$) to a worldsheet ($d=2$)." The geometric content is the same; only the dimension of the object being integrated over changes.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>The geodesic maximizes proper time</h2>
+
+      <p>The action $S_{\mathrm{pp}} = -m\, \tau$ is geometric: it is $-m$ times the proper-time length of the worldline. Stationary points are critical points of proper time. For nearby timelike paths between two events $A$ and $B$, the geodesic (straight line in flat space) is a <em>maximum</em> of $\tau$ — every wiggle decreases it. This is the geometric content of the classical twin paradox.</p>
+
+      <p>The widget below makes this concrete. The "stay-at-home" twin (red) takes the geodesic from $A$ to $B$: a straight vertical worldline. The "traveler" (blue) takes a kinked path through an intermediate event $C$ that you control. Drag $C$ left or right (spatial offset) or up and down (when the turnaround happens) and watch the traveler's accumulated proper time fall below the stay-at-home's. The maximum lives precisely at $C$ on the straight line.</p>
+
+      <section class="interactive" data-widget="twin-paradox" aria-label="Twin paradox / geodesic maximizes proper time">
+        <header>
+          <h4>Interactive · Geodesic = max proper time</h4>
+          <span class="hint">drag C · reset</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">A Minkowski diagram with $c = 1$ so that 45° lines are light rays. The shaded region is the future light cone of $A$; events $B$ and $C$ must lie inside it for both paths to be timelike. The geodesic from $A$ to $B$ — straight line, no acceleration — accumulates the most proper time. Every other timelike path is shorter.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§8</span>What we carry forward</h2>
+
+      <ol>
+        <li>The action of a free relativistic particle is $S = -m \int \mathrm{d}s$ — mass times the proper length of its worldline. It is a geometric invariant of the curve.</li>
+        <li>It is invariant under reparametrizations of the worldline. This redundancy is a gauge symmetry of the theory.</li>
+        <li>Its equations of motion are the geodesic equation; for nearby timelike paths the geodesic <em>maximizes</em> proper time.</li>
+        <li>An equivalent <strong>einbein</strong> action $S' = \tfrac{1}{2}\int \mathrm{d}\lambda\, (e^{-1}\dot X^2 - e m^2)$ replaces the square root with a polynomial Lagrangian and admits massless particles.</li>
+        <li>The mass-shell condition $p^2 + m^2 = 0$ is the algebraic content of reparametrization invariance.</li>
+      </ol>
+
+      <p>In the next chapter we promote $\lambda$ to $(\tau, \sigma)$, the worldline to a worldsheet, and the einbein $e$ to a worldsheet metric $h_{ab}$. Every move we just made will have a 2-dimensional analogue, and the action that comes out is the Polyakov action of the bosonic string.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Joseph Polchinski.</span> <em>String Theory, Volume I.</em> Cambridge University Press, 1998 — §1.2 ("Relativistic strings as 1+1-dimensional field theories") opens with exactly the point-particle warm-up of this chapter; eqs. 1.2.2 and 1.2.5 are our two boxed actions.</li>
+          <li><span class="src-title">David Tong.</span> <em>Lectures on String Theory</em>, Cambridge DAMTP, 2009 — §1.1 for a clean derivation with the einbein form; available free at <code>damtp.cam.ac.uk/user/tong/string.html</code>.</li>
+          <li><span class="src-title">Katrin Becker, Melanie Becker, John H. Schwarz.</span> <em>String Theory and M-Theory: A Modern Introduction.</em> Cambridge University Press, 2007 — §2.1 covers the same material in a slightly different convention.</li>
+          <li><span class="src-title">Barton Zwiebach.</span> <em>A First Course in String Theory</em>, 2nd ed., Cambridge University Press, 2009 — Chapter 4 gives a very pedagogical treatment of the relativistic point particle, including the Hamiltonian and constraint analysis.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="02-manifolds-metrics-action.html"><span class="label">← Previous</span>II · Manifolds, Metrics, and the Action Principle</a>
+      <a class="next" href="04-worldline-to-worldsheet.html"><span class="label">Next chapter</span>IV · From Worldline to Worldsheet →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/twin-paradox.js"></script>
+</body>
+</html>

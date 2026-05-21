@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter III · Basis Sets and Correlation — Computational Chemistry: A Primer</title>
+  <meta name="description" content="Chapter 3: Gaussian basis sets, the correlation problem, and the ladder MP2 → CCSD → CCSD(T)." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter III of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter III</p>
+      <h1 class="chapter-title">Basis Sets and Correlation</h1>
+      <p class="lede">Hartree–Fock left two big problems: a discrete basis that limits how flexibly orbitals can deform, and the correlated motion of opposite-spin electrons. Solving the first is bookkeeping; solving the second is most of the rest of wavefunction theory.</p>
+
+      <h2><span class="sec-num">§1</span>Why Gaussians, not Slaters</h2>
+
+      <p>Atomic orbitals decay exponentially: an electron bound to a nucleus dies off as $e^{-\zeta r}$. The natural <dfn title="A basis function of the form r^l e^{-ζr} times a spherical harmonic; matches the cusp at the nucleus and the exponential tail.">Slater-type orbital</dfn> (STO) gets that decay exactly:</p>
+
+      <div class="equation-block">
+        $$ \phi^{\text{STO}}(\mathbf{r}) \;\propto\; r^{l}\, e^{-\zeta r}\, Y_l^m(\theta, \varphi). $$
+      </div>
+
+      <p>STOs are physically right but computationally awful: the four-center two-electron integrals $(\mu\nu|\lambda\sigma)$ between Slater functions on different centers have no closed form. For all but the smallest molecules they must be computed numerically, and there are $O(K^4)$ of them.</p>
+
+      <p>Boys's 1950 insight was that <dfn title="A basis function with a Gaussian e^{-αr²} radial dependence. Wrong cusp behavior at the nucleus, but the product of two Gaussians on different centers is another Gaussian — so integrals are analytic.">Gaussian-type orbitals</dfn> (GTOs) have the wrong shape — flat at the nucleus instead of cusped, faster decay than exponential — but they have a magic property:</p>
+
+      <div class="equation-block">
+        $$ e^{-\alpha |\mathbf{r} - \mathbf{A}|^2}\, e^{-\beta |\mathbf{r} - \mathbf{B}|^2} \;=\; K_{AB}\, e^{-(\alpha + \beta)|\mathbf{r} - \mathbf{P}|^2}, $$
+      </div>
+
+      <p>where $\mathbf{P} = (\alpha \mathbf{A} + \beta \mathbf{B})/(\alpha + \beta)$. The product of two Gaussians on different centers is a single Gaussian on a third center, with a known prefactor $K_{AB}$. Four-center integrals reduce to two-center integrals, which reduce to known integrals over a single Gaussian. Everything has an analytic form. The price — wrong cusp, wrong tail — is paid by combining several Gaussians into a single basis function.</p>
+
+      <p>A <strong>contracted Gaussian basis function</strong> is a fixed linear combination of primitive Gaussians,</p>
+
+      <div class="equation-block">
+        $$ \phi_\mu(\mathbf{r}) \;=\; \sum_{p=1}^{N_p} d_{\mu p}\, g_p(\mathbf{r}; \alpha_p, \mathbf{A}, l, m). $$
+      </div>
+
+      <p>The contraction coefficients $d_{\mu p}$ and exponents $\alpha_p$ are tabulated once (in a "basis set library") so that the contracted function approximates an STO or an atomic SCF orbital. A few Gaussians with cleverly chosen exponents reproduce both the cusp and the tail well enough for chemistry. Every modern code uses contracted Gaussians for molecules.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The basis-set zoo</h2>
+
+      <p>Three families dominate.</p>
+
+      <p><strong>Pople sets:</strong> minimal STO-3G (one contracted function per atomic orbital), then split-valence 3-21G, 6-31G, 6-311G. Add polarization $(d)$ on heavy atoms and $(p)$ on hydrogens with $*$ or $**$; add diffuse functions for anions and excited states with $+$ or $++$. <code>6-31G**</code> means six primitives for the core, three+one for the valence, plus polarization. Cheap, ubiquitous, useful as a baseline.</p>
+
+      <p><strong>Correlation-consistent (Dunning) sets:</strong> cc-pVDZ, cc-pVTZ, cc-pVQZ, cc-pV5Z, cc-pV6Z. Each successive set adds one more shell of higher-angular-momentum polarization functions, designed so that <em>correlation energy</em> converges monotonically toward the basis-set limit. The augmented prefix <code>aug-</code> adds diffuse functions; the prefix <code>cc-pCVnZ</code> adds tight functions for core correlation. This family is the workhorse for correlated calculations because it admits a known extrapolation to the CBS limit.</p>
+
+      <p><strong>Karlsruhe (Ahlrichs) sets:</strong> def2-SVP, def2-TZVP, def2-QZVP. Designed for DFT and large molecules; balanced across the periodic table; in widespread use in TURBOMOLE and ORCA.</p>
+
+      <p>Two more knobs you will see:</p>
+
+      <ul>
+        <li><strong>Polarization functions</strong> — basis functions of higher angular momentum than the valence orbitals (e.g. $d$ functions on carbon). They allow orbitals to deform away from spherical symmetry — needed for any directional bonding.</li>
+        <li><strong>Diffuse functions</strong> — additional Gaussians with very small exponents, providing amplitude far from the nucleus. Essential for anions, weakly bound electrons, Rydberg states, and the tails of donor–acceptor interactions.</li>
+      </ul>
+
+      <aside class="jargon">
+        <h4>Basis-set superposition error (BSSE)</h4>
+        <p>When two molecules approach to form a complex, each can "borrow" basis functions from the other to lower its own energy artificially. The complex looks more bound than it is. The standard fix is the <em>counterpoise</em> correction (Boys &amp; Bernardi 1970): compute monomer energies in the full dimer basis (with ghost atoms) and subtract. Disappears in the CBS limit; matters most at small bases.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>What HF misses</h2>
+
+      <p>Hartree–Fock treats each electron in the mean field of the others. Same-spin electrons are kept apart by antisymmetry (the exchange term); opposite-spin electrons are not — in the mean-field picture, two electrons of opposite spin can sit on top of each other. In reality they avoid each other. The energy gained from this avoidance is the <strong>correlation energy</strong>,</p>
+
+      <div class="equation-block">
+        $$ E_{\text{corr}} \;\equiv\; E_{\text{exact}} - E_{\text{HF}}, $$
+      </div>
+
+      <p>defined within a given basis. There are two qualitatively distinct kinds.</p>
+
+      <p><strong>Dynamic correlation</strong> is the local, short-range avoidance of opposite-spin electrons — the Coulomb hole around each electron. It is what HF misses when the right ground state is still <em>basically</em> a single determinant: nearly all closed-shell molecules at equilibrium. Recovered by single-reference methods (MP2, CCSD, CCSD(T)).</p>
+
+      <p><strong>Static (or non-dynamical) correlation</strong> is what HF misses when the ground state is not even close to a single determinant: stretched bonds, biradicals, transition-metal complexes with near-degenerate $d$-orbitals. The mean-field reference itself is wrong; perturbing around it fails. Requires multi-reference methods (CASSCF, CASPT2, NEVPT2), which we touch in Chapter VII.</p>
+
+      <p>Most "ordinary" chemistry — barriers, equilibria, vibrational frequencies of stable molecules — is dominated by dynamic correlation. The ladder of methods below handles it.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>MP2: perturbation around HF</h2>
+
+      <p>Write the electronic Hamiltonian as $\hat H = \hat H_0 + \hat V$, where $\hat H_0 = \sum_i \hat f(i)$ is the sum of Fock operators (a "non-interacting" Hamiltonian whose ground state is the HF determinant) and $\hat V$ is the fluctuation potential — what is left over of the true electron–electron repulsion after the mean field has been subtracted. Apply Rayleigh–Schrödinger perturbation theory to $\hat H_0$.</p>
+
+      <p>The zeroth-plus-first-order energy is the HF energy: $E^{(0)} + E^{(1)} = E_{\text{HF}}$. The first correction beyond HF is the <strong>second-order Møller–Plesset</strong> energy:</p>
+
+      <div class="equation-block">
+        $$ E_{\text{MP2}} \;=\; -\frac{1}{4} \sum_{ij}^{\text{occ}} \sum_{ab}^{\text{virt}} \frac{|(ia|jb) - (ib|ja)|^2}{\varepsilon_a + \varepsilon_b - \varepsilon_i - \varepsilon_j}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$i, j$</dt><dd>Indices over <em>occupied</em> HF spin orbitals.</dd>
+          <dt>$a, b$</dt><dd>Indices over <em>virtual</em> (unoccupied) HF spin orbitals.</dd>
+          <dt>$(ia|jb)$</dt><dd>Two-electron integral in chemists' notation, in the molecular-orbital basis. Transforming these from the atomic-orbital basis $(\mu\nu|\lambda\sigma)$ is itself an $O(N^5)$ operation — the dominant cost of MP2.</dd>
+          <dt>$\varepsilon_a + \varepsilon_b - \varepsilon_i - \varepsilon_j$</dt><dd>Orbital-energy denominator. It penalizes excitations to far-removed virtuals, so the sum converges quickly for ordinary molecules.</dd>
+        </dl>
+      </aside>
+
+      <p>MP2 typically recovers 80–90% of the correlation energy at a modest $O(N^5)$ cost — and at no additional cost beyond the integral transformation, once HF is done. It is the cheapest method that captures van der Waals attraction (though it overshoots for $\pi$-stacking and underbinds metallic systems). MP2 is the default first step beyond HF for almost any problem where correlation matters and you cannot afford coupled cluster.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Coupled cluster: the exponential ansatz</h2>
+
+      <p>The deepest single-reference method available is <strong>coupled-cluster</strong> theory. Its central insight is that the exact wavefunction can be written as the action of an exponential operator on the HF reference:</p>
+
+      <div class="equation-block">
+        $$ |\Psi_{\text{CC}}\rangle \;=\; e^{\hat T}\, |\Psi_{\text{HF}}\rangle, \qquad \hat T \;=\; \hat T_1 + \hat T_2 + \hat T_3 + \cdots $$
+      </div>
+
+      <p>where $\hat T_n$ promotes $n$ electrons from occupied to virtual orbitals:</p>
+
+      <div class="equation-block">
+        $$ \hat T_1 \;=\; \sum_{ia} t_i^a\, \hat a_a^\dagger \hat a_i, \qquad \hat T_2 \;=\; \frac{1}{4}\sum_{ijab} t_{ij}^{ab}\, \hat a_a^\dagger \hat a_b^\dagger \hat a_j \hat a_i. $$
+      </div>
+
+      <p>The unknown <em>amplitudes</em> $t_i^a, t_{ij}^{ab}, \dots$ are determined by projecting the Schrödinger equation $\hat H e^{\hat T}|\Psi_{\text{HF}}\rangle = E\, e^{\hat T}|\Psi_{\text{HF}}\rangle$ onto excited determinants. Two non-obvious properties make the method powerful:</p>
+
+      <ul>
+        <li><strong>Size-extensivity.</strong> Because the wavefunction is an exponential, the energy of two well-separated subsystems is exactly the sum of their energies. Truncated CI does not have this property; truncated CC does. This is the single most important reason CC dominates high-accuracy work.</li>
+        <li><strong>Even the truncated cluster operator generates all higher excitations.</strong> Expanding $e^{\hat T_2}$ gives $1 + \hat T_2 + \tfrac{1}{2}\hat T_2^2 + \cdots$, where $\hat T_2^2$ generates quadruple excitations. So CCSD ($\hat T = \hat T_1 + \hat T_2$) implicitly includes a controlled amount of higher-excitation character.</li>
+      </ul>
+
+      <p>The standard truncation is <dfn title="Coupled cluster with single and double excitations. Iteratively solves nonlinear amplitude equations; O(N^6) scaling. The cheapest CC method, accurate to a few kcal/mol for closed shells.">CCSD</dfn>: keep $\hat T_1$ and $\hat T_2$, drop the rest. The amplitude equations are nonlinear in $t$; they are solved iteratively until convergence.</p>
+
+      <p>The "gold standard" of single-reference electronic structure adds a <em>perturbative</em> estimate of triple excitations on top of converged CCSD:</p>
+
+      <div class="equation-block">
+        $$ E_{\text{CCSD(T)}} \;=\; E_{\text{CCSD}} + E^{(T)}_{\text{pert}}. $$
+      </div>
+
+      <p>The $(T)$ correction is non-iterative — built from converged CCSD amplitudes via a fourth-and-fifth-order perturbative expression (Raghavachari et al. 1989). Including it raises the cost from $O(N^6)$ to $O(N^7)$ but gives near-exact answers for closed-shell ground states in large basis sets.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The cost–accuracy plane</h2>
+
+      <p>Stack the methods we now have by scaling and typical error in a CBS-quality basis:</p>
+
+      <div class="equation-block">
+        $$ \underbrace{\text{HF}}_{O(N^4),\;\sim 1\%\text{ correlation}} \;\to\; \underbrace{\text{MP2}}_{O(N^5),\;80–90\%} \;\to\; \underbrace{\text{CCSD}}_{O(N^6),\;\sim 99\%} \;\to\; \underbrace{\text{CCSD(T)}}_{O(N^7),\;\geq 99.9\%}. $$
+      </div>
+
+      <p>For closed-shell molecules at equilibrium geometries, CCSD(T) extrapolated to the CBS limit is accurate to roughly <strong>1 kcal/mol</strong> in bond energies, barriers, and atomization energies — the "chemical accuracy" target. Below that, relativistic corrections, core correlation, and post-CCSD(T) effects start to matter; this is the territory of W4 / HEAT thermochemistry protocols.</p>
+
+      <p>For systems with significant static correlation (stretched bonds, biradicals, transition-metal centers), this hierarchy can fail badly. The single-reference assumption breaks; Chapter VII picks up multireference methods. For non-covalent interactions in large complexes, MP2 + counterpoise + a CBS extrapolation is often a reasonable compromise.</p>
+
+      <section class="interactive" data-widget="basis-convergence" aria-label="Basis set and method convergence">
+        <header>
+          <h4>Interactive · Basis-set and method convergence on H₂O</h4>
+          <span class="hint">toggle methods · click a basis</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">Total energy of H₂O at its experimental geometry across basis sets (Pople and Dunning families) and methods (HF, MP2, CCSD(T)). The HF curve converges to the Hartree–Fock limit; the correlated curves drop below it by the correlation energy. The "chemical accuracy" band (±1 kcal/mol around the CCSD(T)/CBS estimate) is marked for reference. Values are rounded literature numbers; treat them as illustrative.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Extrapolating to the basis-set limit</h2>
+
+      <p>For correlation-consistent basis sets, two empirical formulae get you close to the complete-basis-set (CBS) limit from finite-basis data. The Helgaker–Klopper extrapolation for the correlation energy is</p>
+
+      <div class="equation-block">
+        $$ E_{\text{corr}}(X) \;=\; E_{\text{corr}}^{\text{CBS}} + A\, X^{-3}, $$
+      </div>
+
+      <p>where $X$ is the cardinal number of cc-pVXZ (X = 2 for DZ, 3 for TZ, ...). The $X^{-3}$ scaling reflects the slow convergence of correlation due to the electron–electron cusp. The HF energy converges much faster — typically exponentially — and uses a separate formula. Doing a CCSD(T)/cc-pVTZ + CCSD(T)/cc-pVQZ pair of calculations and extrapolating gets you within ~0.1 kcal/mol of the CBS limit for many properties; this is the standard practice in high-accuracy thermochemistry.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Helgaker, Jørgensen, Olsen.</span> <em>Molecular Electronic-Structure Theory.</em> Wiley 2000 — the definitive reference. Chapter 6 on Gaussian basis sets, Chapter 8 on MP perturbation theory, Chapters 13–14 on coupled-cluster theory.</li>
+          <li><span class="src-title">S. F. Boys.</span> "Electronic wave functions. I. A general method of calculation for the stationary states of any molecular system." <em>Proc. Roy. Soc. A</em> 200, 542 (1950) — the original argument for Gaussian basis functions.</li>
+          <li><span class="src-title">T. H. Dunning, Jr.</span> "Gaussian basis sets for use in correlated molecular calculations. I." <em>J. Chem. Phys.</em> 90, 1007 (1989) — the cc-pVnZ correlation-consistent family.</li>
+          <li><span class="src-title">C. Møller and M. S. Plesset.</span> "Note on an approximation treatment for many-electron systems." <em>Phys. Rev.</em> 46, 618 (1934) — the perturbative expansion underlying MP2.</li>
+          <li><span class="src-title">R. J. Bartlett and M. Musiał.</span> "Coupled-cluster theory in quantum chemistry." <em>Rev. Mod. Phys.</em> 79, 291 (2007) — comprehensive review of modern CC theory.</li>
+          <li><span class="src-title">K. Raghavachari, G. W. Trucks, J. A. Pople, M. Head-Gordon.</span> "A fifth-order perturbation comparison of electron correlation theories." <em>Chem. Phys. Lett.</em> 157, 479 (1989) — the original CCSD(T) paper.</li>
+          <li><span class="src-title">T. Helgaker, W. Klopper, H. Koch, J. Noga.</span> "Basis-set convergence of correlated calculations on water." <em>J. Chem. Phys.</em> 106, 9639 (1997) — the $X^{-3}$ extrapolation formula and a meticulous study of H₂O.</li>
+          <li><span class="src-title">S. F. Boys and F. Bernardi.</span> "The calculation of small molecular interactions by the differences of separate total energies." <em>Mol. Phys.</em> 19, 553 (1970) — counterpoise correction for BSSE.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="02-hartree-fock.html"><span class="label">Previous chapter</span>← II · Hartree–Fock</a>
+      <a class="next" href="04-density-functional-theory.html"><span class="label">Next chapter</span>IV · Density Functional Theory →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/basis-convergence.js"></script>
+</body>
+</html>

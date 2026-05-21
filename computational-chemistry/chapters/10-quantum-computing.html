@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter X · Quantum Computing for Chemistry — Computational Chemistry: A Primer</title>
+  <meta name="description" content="Chapter 10: second quantization on qubits, the variational quantum eigensolver, UCC ansatz, and the long road to fault-tolerant quantum chemistry." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter X of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter X</p>
+      <h1 class="chapter-title">Quantum Computing for Chemistry</h1>
+      <p class="lede">The exponential dimension that defeats classical electronic structure is, in principle, just a polynomial number of qubits. Whether that promise becomes a practical advantage — for real chemistry, on real hardware — is the open question of the next decade.</p>
+
+      <h2><span class="sec-num">§1</span>Why quantum, why chemistry first</h2>
+
+      <p>Feynman's 1982 observation that "Nature isn't classical, dammit" was made about chemistry. A many-electron wavefunction lives in a Hilbert space of dimension $\binom{2K}{N}$, growing factorially with system size — the wall every method from Chapters II–V was built around. A quantum computer manipulates an $n$-qubit state vector of dimension $2^n$. If we can encode $N$ electrons in $O(N)$ qubits, the exponential cost of representing the wavefunction is gone.</p>
+
+      <p>That is the structural argument. The practical reality is messier: present-day quantum hardware has noisy qubits, limited connectivity, and gate counts that bound circuit depth long before chemistry gets interesting. The current literature is mostly about how to get useful chemistry out of NISQ machines, and how the resource estimates look for the fault-tolerant era when those constraints disappear.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The chemistry Hamiltonian in second quantization</h2>
+
+      <p>Quantum computers manipulate spins, not fermionic wavefunctions. To put electrons on qubits we first rewrite the electronic Hamiltonian in <strong>second quantization</strong>:</p>
+
+      <div class="equation-block">
+        $$ \hat H \;=\; \sum_{pq} h_{pq}\, \hat a_p^\dagger \hat a_q \;+\; \frac{1}{2} \sum_{pqrs} h_{pqrs}\, \hat a_p^\dagger \hat a_q^\dagger \hat a_s \hat a_r. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\hat a_p^\dagger, \hat a_p$</dt><dd>Fermionic creation and annihilation operators for spin orbital $p$. They obey $\{\hat a_p, \hat a_q^\dagger\} = \delta_{pq}$ and $\{\hat a_p, \hat a_q\} = 0$ (anticommute).</dd>
+          <dt>$h_{pq}$</dt><dd>One-electron integral $\int \chi_p^*(\mathbf{x})\, \hat h(\mathbf{x})\, \chi_q(\mathbf{x})\,\dd\mathbf{x}$ — the same matrix element we used in Chapter II.</dd>
+          <dt>$h_{pqrs}$</dt><dd>Two-electron integral, here in physicists' notation: $h_{pqrs} = \int \chi_p^*(1)\chi_q^*(2)\,\tfrac{1}{r_{12}}\,\chi_r(1)\chi_s(2)\,\dd 1\,\dd 2$.</dd>
+        </dl>
+      </aside>
+
+      <p>Antisymmetry has been pushed into the algebra of the $\hat a^\dagger, \hat a$ — every Slater determinant becomes a Fock-space basis state $\hat a^\dagger_{i_1}\cdots \hat a^\dagger_{i_N}|0\rangle$, and any antisymmetric many-electron state is a linear combination.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Putting fermions on qubits</h2>
+
+      <p>Spin orbitals are mapped to qubits one-to-one: $K$ spatial orbitals × 2 spins = $2K$ qubits. Occupation $\ket{1}$ means "this spin orbital is filled," $\ket{0}$ means empty. The Hartree–Fock determinant, in this convention, is a single computational-basis state — say $\ket{1100\dots 0}$ for $N$ electrons in the lowest $N$ spin orbitals.</p>
+
+      <p>The challenge is that $\hat a_p, \hat a_p^\dagger$ anticommute, while qubit operators on different sites commute. The <strong>Jordan–Wigner transformation</strong> fixes this by attaching a string of $\hat Z$ operators that tracks the fermionic parity:</p>
+
+      <div class="equation-block">
+        $$ \hat a_j \;=\; \Bigl(\bigotimes_{k=0}^{j-1} \hat Z_k\Bigr) \otimes \frac{\hat X_j + i \hat Y_j}{2}, \qquad \hat a_j^\dagger \;=\; \Bigl(\bigotimes_{k=0}^{j-1} \hat Z_k\Bigr) \otimes \frac{\hat X_j - i \hat Y_j}{2}. $$
+      </div>
+
+      <p>The cost of the parity string is that each fermionic operator becomes an $O(N)$-weight Pauli string. The <strong>Bravyi–Kitaev transformation</strong> (2002) reorganizes the bookkeeping so that both occupation and parity have $O(\log N)$ Pauli weight — better for large systems but with more complex bookkeeping. <strong>Parity</strong> and the more recent <strong>fermion-to-qubit codes</strong> (e.g. compact mappings of Derby & Klassen 2021) trade these costs in various ways.</p>
+
+      <p>After encoding, the electronic Hamiltonian becomes</p>
+
+      <div class="equation-block">
+        $$ \hat H \;=\; \sum_{j} c_j\, \hat P_j, $$
+      </div>
+
+      <p>a weighted sum of Pauli strings $\hat P_j \in \{\hat I, \hat X, \hat Y, \hat Z\}^{\otimes n}$ — concretely $O(N^4)$ such terms for the full electronic Hamiltonian. Measuring its expectation value on a parameterized state is the inner loop of every NISQ-era quantum chemistry algorithm.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The variational quantum eigensolver</h2>
+
+      <p>The <strong>variational quantum eigensolver</strong> (VQE; Peruzzo et al. 2014) is the NISQ algorithm for ground-state chemistry. It is a hybrid quantum–classical loop:</p>
+
+      <ol>
+        <li>Prepare a parameterized state $\ket{\psi(\boldsymbol\theta)} = \hat U(\boldsymbol\theta)\ket{\psi_0}$ on the quantum computer, where $\ket{\psi_0}$ is a simple reference (usually $\ket{\text{HF}}$).</li>
+        <li>Measure $\langle \hat H \rangle_{\boldsymbol\theta} = \sum_j c_j \langle \hat P_j\rangle_{\boldsymbol\theta}$. Each Pauli string requires its own measurement basis; partition into commuting groups to reduce shot count.</li>
+        <li>Classically optimize $\boldsymbol\theta$ to minimize $\langle \hat H\rangle$. Repeat.</li>
+      </ol>
+
+      <p>By the variational principle, $\langle \hat H\rangle \geq E_0$, so the procedure delivers an upper bound that tightens as $\hat U(\boldsymbol\theta)$ explores more of Hilbert space. Practical accuracy depends entirely on how expressive the <strong>ansatz</strong> $\hat U(\boldsymbol\theta)$ is, and how robust the optimizer is against shot noise and hardware noise.</p>
+
+      <h3>Unitary coupled cluster</h3>
+
+      <p>The chemistry-motivated choice is the <strong>unitary coupled-cluster</strong> ansatz:</p>
+
+      <div class="equation-block">
+        $$ \hat U_{\text{UCC}}(\boldsymbol\theta) \;=\; e^{\hat T(\boldsymbol\theta) - \hat T^\dagger(\boldsymbol\theta)}, \qquad \hat T = \hat T_1 + \hat T_2 + \cdots, $$
+      </div>
+
+      <p>analogous to classical CC but with a unitary in place of the non-Hermitian $e^{\hat T}$. Truncated at $\hat T_1 + \hat T_2$ this becomes <strong>UCCSD</strong>. Trotterizing the exponential gives a circuit whose depth scales as $O(N^4)$ in the number of cluster amplitudes — already at the edge of what current hardware can handle for $N \gtrsim 10$.</p>
+
+      <h3>Hardware-efficient ansätze</h3>
+
+      <p>For NISQ devices, <em>hardware-efficient</em> ansätze use generic short-depth circuits — alternating layers of single-qubit rotations and entangling gates native to the device — and rely on the optimizer to find a useful subspace. Cheaper in gate count, more prone to <em>barren plateaus</em> (parameter landscapes where gradients vanish exponentially in system size). The state of the art mixes ideas: <em>ADAPT-VQE</em>, <em>k-UpCCGSD</em>, <em>qubit-coupled-cluster</em>.</p>
+
+      <section class="interactive" data-widget="vqe-h2" aria-label="VQE on H2">
+        <header>
+          <h4>Interactive · VQE on H₂ in minimal basis</h4>
+          <span class="hint">tune θ · auto-optimize</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">A 1-parameter UCC ansatz for H₂/STO-3G. The two-determinant Hilbert space is spanned by the HF reference $\ket{1100}$ and the doubly excited determinant $\ket{0011}$ (in Jordan–Wigner ordering). The ansatz $\ket{\psi(\theta)} = \cos\theta \ket{1100} - \sin\theta\, \ket{0011}$ interpolates between them. The energy $E(\theta)$ has a single minimum that lands exactly at the FCI energy. This is the simplest non-trivial VQE problem and the textbook demo for the field.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Quantum phase estimation and the fault-tolerant horizon</h2>
+
+      <p>The "right" quantum algorithm for chemistry isn't VQE — it is <strong>quantum phase estimation</strong> (QPE). Given the ability to implement $e^{-i\hat H t}$ as a unitary (the controlled time evolution), QPE returns the eigenphases of $\hat H$ to any desired precision in polynomial time. The catch: QPE needs deep coherent circuits, well beyond what NISQ hardware sustains. It is a <em>fault-tolerant</em> algorithm.</p>
+
+      <p>Recent fault-tolerant resource estimates for chemistry problems of interest — Lee et al. (PRX Quantum 2021) for chromium dimer, von Burg et al. (Phys. Rev. Res. 2021) for FeMoco, Goings et al. (PNAS 2022) for cytochrome P450 — converge on numbers like $\sim 10^6$ physical qubits and $\sim 10^{10}$ T gates for problems classically out of reach. These are not impossible numbers; they are the headline targets that fault-tolerant architectures (surface codes, lattice-surgery error correction) aim at, with the first logical-qubit demonstrations in 2024–25 hitting low double-digit logical qubits at code distance $\sim 7$.</p>
+
+      <p>The honest 2026 picture: VQE-style NISQ chemistry is producing $\sim 10$-qubit demonstrations of small molecules (H₂, LiH, BeH₂, H₂O) with energies within chemical accuracy of FCI, but no problem on this scale is competitive with classical CCSD(T). The crossover where a quantum algorithm beats classical for a chemistry problem of real interest is — best estimates — somewhere in the next 5–10 years, contingent on fault tolerance scaling as roadmaps project.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Error mitigation</h2>
+
+      <p>Between today's noisy hardware and tomorrow's fault-tolerant computers sits a layer of techniques that extract better answers from imperfect circuits without full error correction.</p>
+
+      <ul>
+        <li><strong>Zero-noise extrapolation</strong> (ZNE): run the circuit at several artificially amplified noise levels and extrapolate to zero noise.</li>
+        <li><strong>Probabilistic error cancellation</strong> (PEC): represent the ideal channel as a quasi-probability distribution over noisy channels; sample and reweight.</li>
+        <li><strong>Symmetry verification</strong>: discard shots that violate a known symmetry of the true state (particle number, total spin).</li>
+        <li><strong>Clifford data regression</strong>: train a classical model on noisy-vs-noiseless outputs of Clifford circuits and apply the correction to the full ansatz.</li>
+      </ul>
+
+      <p>These techniques exchange a manageable amount of additional sampling for substantial bias reduction. They are the bridge keeping NISQ chemistry interesting while error correction matures.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Closing the book</h2>
+
+      <p>Across ten chapters we built up a single object — the potential energy surface — and stepped through ways of computing, sampling, traversing, learning, and (now) simulating it on quantum hardware. The unifying frame survived contact with every method. The Schrödinger equation never went away; what changed at each chapter was how we approximated, parameterized, or replaced it.</p>
+
+      <p>The state of the art in 2026, in one paragraph: density functional theory remains the workhorse, with foundation NNPs increasingly carrying long-time simulations at near-DFT accuracy; CCSD(T) sets the reference for small-molecule energetics; multi-reference methods handle the strongly correlated systems where everything else breaks; and quantum computing has produced beautiful small-molecule demonstrations while the resources for chemistry of practical interest remain a decade out. Each branch of the field is moving fast enough that any printed version of this chapter will look quaint in three years. The frame — the PES, the methods built around it, the symmetries every method must respect — should not.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">S. McArdle, S. Endo, A. Aspuru-Guzik, S. C. Benjamin, X. Yuan.</span> "Quantum computational chemistry." <em>Rev. Mod. Phys.</em> 92, 015003 (2020) — the comprehensive modern review; covers second quantization on qubits, VQE, error mitigation, and FTQC algorithms in one place.</li>
+          <li><span class="src-title">Y. Cao, J. Romero, J. P. Olson, M. Degroote, P. D. Johnson, M. Kieferová, I. D. Kivlichan, T. Menke, B. Peropadre, N. P. D. Sawaya, S. Sim, L. Veis, A. Aspuru-Guzik.</span> "Quantum chemistry in the age of quantum computing." <em>Chem. Rev.</em> 119, 10856 (2019) — companion review with emphasis on the chemistry side.</li>
+          <li><span class="src-title">A. Peruzzo, J. McClean, P. Shadbolt, M.-H. Yung, X.-Q. Zhou, P. J. Love, A. Aspuru-Guzik, J. L. O'Brien.</span> "A variational eigenvalue solver on a photonic quantum processor." <em>Nat. Commun.</em> 5, 4213 (2014) — the original VQE paper.</li>
+          <li><span class="src-title">A. Kandala, A. Mezzacapo, K. Temme, M. Takita, M. Brink, J. M. Chow, J. M. Gambetta.</span> "Hardware-efficient variational quantum eigensolver for small molecules and quantum magnets." <em>Nature</em> 549, 242 (2017) — hardware-efficient ansatz on IBM superconducting qubits, the first multi-qubit chemistry VQE demonstration.</li>
+          <li><span class="src-title">S. B. Bravyi and A. Y. Kitaev.</span> "Fermionic quantum computation." <em>Ann. Phys.</em> 298, 210 (2002) — the Bravyi–Kitaev transformation.</li>
+          <li><span class="src-title">J. Lee, D. W. Berry, C. Gidney, W. J. Huggins, J. R. McClean, N. Wiebe, R. Babbush.</span> "Even more efficient quantum computations of chemistry through tensor hypercontraction." <em>PRX Quantum</em> 2, 030305 (2021) — modern fault-tolerant resource estimates.</li>
+          <li><span class="src-title">V. von Burg, G. H. Low, T. Häner, D. S. Steiger, M. Reiher, M. Roetteler, M. Troyer.</span> "Quantum computing enhanced computational catalysis." <em>Phys. Rev. Research</em> 3, 033055 (2021) — FeMoco resource estimate; the canonical "quantum advantage" target for chemistry.</li>
+          <li><span class="src-title">K. Temme, S. Bravyi, J. M. Gambetta.</span> "Error mitigation for short-depth quantum circuits." <em>Phys. Rev. Lett.</em> 119, 180509 (2017) — ZNE and PEC.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="09-equivariant-nnps.html"><span class="label">Previous chapter</span>← IX · Equivariant Neural Potentials</a>
+      <a class="next" href="../index.html"><span class="label">End of book</span>Contents →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/vqe-h2.js"></script>
+</body>
+</html>

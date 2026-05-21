@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter XIII · D-branes — String Theory: A Primer</title>
+  <meta name="description" content="Chapter 13 of String Theory: A Primer. D-branes as dynamical submanifolds, the DBI action, and the gauge theories that live on stacks of branes." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter XIII of XV</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter XIII</p>
+      <h1 class="chapter-title">D-branes</h1>
+      <p class="lede">The submanifolds where open strings end are not auxiliary scaffolding. They are dynamical, charged objects in their own right — and the gauge theories that live on them are the bridge from string theory to holography.</p>
+
+      <h2><span class="sec-num">§1</span>From boundary condition to dynamical object</h2>
+
+      <p>In Chapter VI we found that demanding Dirichlet boundary conditions on certain open-string coordinates forces the endpoints to lie on a $(p+1)$-dimensional submanifold of spacetime — a D$p$-brane. At first glance the brane looks like a passive setting: a hyperplane in which the endpoints happen to sit.</p>
+
+      <p>The Polchinski insight of 1995 was that D-branes are not passive. They are physical objects, with their own tension and charge. They can move; they fluctuate; they back-react on the spacetime around them. Geometrically, a D$p$-brane is a $(p+1)$-dimensional submanifold $\Sigma_p \subset M$ together with a worldvolume gauge field $A_a$ living on it.</p>
+
+      <p>This shift in perspective — from boundary condition to dynamical extended object — is the conceptual centerpiece of much of modern string theory.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The Dirac–Born–Infeld action</h2>
+
+      <p>The low-energy action governing a single D$p$-brane is the <strong>Dirac–Born–Infeld (DBI) action</strong>:</p>
+
+      <div class="equation-block">
+        $$ S_{\mathrm{DBI}} \;=\; -T_p \int \mathrm{d}^{p+1}\xi\, e^{-\Phi}\, \sqrt{-\det\!\left( g_{ab} + B_{ab} + 2\pi\alpha'\, F_{ab} \right)}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\xi^a$</dt><dd>Worldvolume coordinates on the brane, $a = 0, \dots, p$.</dd>
+          <dt>$T_p$</dt><dd>D$p$-brane tension; $T_p = 1/[(2\pi)^p\, g_s\, (\alpha')^{(p+1)/2}]$ in the standard conventions.</dd>
+          <dt>$g_{ab}, B_{ab}$</dt><dd>Pullbacks of the spacetime metric and Kalb–Ramond field to the brane worldvolume.</dd>
+          <dt>$F_{ab}$</dt><dd>Field strength of a $U(1)$ gauge field $A_a$ that lives on the brane worldvolume.</dd>
+          <dt>$\Phi$</dt><dd>Dilaton; the brane tension is inversely proportional to the string coupling $g_s = e^\Phi$.</dd>
+        </dl>
+      </aside>
+
+      <p>Geometric structure: the $-\sqrt{-\det g_{ab}}$ piece is exactly the Nambu–Goto-like worldvolume action — the brane resists deformation in the same way the string resisted being stretched. The $F_{ab}$ piece is the Born–Infeld extension of Maxwell's theory, an early 1930s proposal for a non-linear electromagnetism that string theory has rediscovered and made compulsory.</p>
+
+      <p>Expanding the DBI action to leading order in $F_{ab}$ and assuming a flat embedding gives</p>
+
+      <div class="equation-block">
+        $$ S_{\mathrm{DBI}} \;\approx\; -T_p\, V_{p+1} \;-\; \frac{(2\pi\alpha')^2 T_p}{4} \int \mathrm{d}^{p+1}\xi\, e^{-\Phi}\, F_{ab} F^{ab} \;+\; \cdots, $$
+      </div>
+
+      <p>where $V_{p+1}$ is the worldvolume of the brane. The second term is recognizable: it is the Maxwell action of a $(p+1)$-dim gauge theory. <strong>A D$p$-brane carries a $U(1)$ gauge field on its worldvolume</strong>, and at low energies it does ordinary electromagnetism on the brane.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Stacks of branes and non-abelian gauge theory</h2>
+
+      <p>Take $N$ parallel coincident D$p$-branes. An open string can end on any one of them, so the endpoints carry two labels, each running over $1, 2, \dots, N$. The open string's wavefunction is thus an $N \times N$ matrix — the <strong>Chan–Paton factor</strong> — and the worldvolume gauge field gets promoted to an $N \times N$ Hermitian matrix:</p>
+
+      <div class="equation-block">
+        $$ A_a \;\to\; (A_a)^i{}_j, \qquad i, j = 1, \dots, N. $$
+      </div>
+
+      <p>The resulting low-energy theory is a $(p+1)$-dimensional <strong>$U(N)$ Yang–Mills theory</strong> living on the stack of branes:</p>
+
+      <div class="equation-block">
+        $$ S_{\mathrm{YM}} \;=\; -\frac{1}{4 g_{\mathrm{YM}}^2} \int \mathrm{d}^{p+1}\xi\, \mathrm{tr}\, F_{ab} F^{ab}, $$
+      </div>
+
+      <p>with coupling $g_{\mathrm{YM}}^2 \sim g_s (\alpha')^{(p-3)/2}$. This is one of the most consequential geometric facts in modern physics: <em>gauge theories live on stacks of branes</em>. The non-abelian structure isn't put in by hand — it falls out of having multiple branes for the open strings to land on.</p>
+
+      <p>Separating one brane from the stack breaks $U(N) \to U(N-1) \times U(1)$, and some open strings — those stretched between the separated brane and the remaining stack — become massive. Their mass is</p>
+
+      <div class="equation-block">
+        $$ M_{ij} \;=\; \frac{|y_i - y_j|}{2\pi\alpha'}, $$
+      </div>
+
+      <p>where $y_i$ are the transverse positions of the branes. This is precisely the Higgs mechanism: the brane separations are the Higgs vacuum expectation values, and the geometric distance between branes turns into gauge-boson mass.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>RR charge and BPS branes</h2>
+
+      <p>The other big content of Polchinski's 1995 paper is that D-branes carry charge under the Ramond–Ramond gauge fields of the superstring. A D$p$-brane is electrically charged under the RR $(p+1)$-form $C_{p+1}$ — exactly the right rank to couple to a $(p+1)$-dimensional worldvolume:</p>
+
+      <div class="equation-block">
+        $$ S_{\mathrm{WZ}} \;=\; \mu_p \int_{\Sigma_p} C_{p+1}, \qquad \mu_p = T_p. $$
+      </div>
+
+      <p>This is the Wess–Zumino term. The fact that $\mu_p = T_p$ means the brane is <strong>BPS</strong>: it saturates a bound between its tension and its charge, and its mass cannot be lowered by quantum corrections without violating supersymmetry. BPS states are exactly the protected states that allow string theory to make exact predictions across coupling regimes — this is what powers both the Strominger–Vafa entropy calculation (Chapter XIV) and the AdS/CFT dictionary (Chapter XV).</p>
+
+      <p>The RR charge content explains which D-branes exist in which superstring theory:</p>
+
+      <ul>
+        <li><strong>Type IIA:</strong> RR fields $C_1, C_3, C_5, C_7$, so D$p$-branes for $p = 0, 2, 4, 6$ (even).</li>
+        <li><strong>Type IIB:</strong> RR fields $C_0, C_2, C_4, C_6, C_8$, so D$p$-branes for $p = -1, 1, 3, 5, 7$ (odd; the D$(-1)$-brane is a localized instanton).</li>
+        <li><strong>Type I:</strong> D1 and D5 branes after taking the orientifold projection.</li>
+      </ul>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Branes wrapping cycles</h2>
+
+      <p>In a compactification $M = M_{1,3} \times K$, a D-brane in the 10-d theory becomes, viewed from 4-d, an object whose dimension depends on how it sits inside $K$. A D$p$-brane that completely wraps a $q$-cycle of $K$ looks 4-d-like as a $(p - q)$-brane in $M_{1,3}$. Different cycles of $K$ give different effective 4-d objects.</p>
+
+      <p>This is geometrically rich: the topology of $K$ — its homology groups $H_q(K, \mathbb{Z})$ — directly determines the BPS spectrum of the 4-d theory. Branes wrapping non-trivial cycles give bound states of multiple branes ("BPS towers") whose count depends on $K$'s topology in calculable ways. This is precisely the construction Strominger and Vafa used in 1996 to count black-hole microstates (Chapter XIV).</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The geometric upshot</h2>
+
+      <ol>
+        <li>The geometry of spacetime is dressed with submanifolds — branes — on which open strings end.</li>
+        <li>Each brane carries a gauge theory on its worldvolume; stacks give non-abelian gauge theories.</li>
+        <li>Brane positions are gauge-theory moduli (Higgs VEVs); brane separations are gauge-boson masses.</li>
+        <li>Branes are charged under spacetime $p$-form fields, and these charges are exactly conserved.</li>
+        <li>The combination of geometric brane configurations and worldvolume gauge theory is what allows string theory to compute black-hole microstates and to formulate holographic dualities.</li>
+      </ol>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>A brane stack</h2>
+
+      <p>The widget below shows a stack of D-branes (lines in a 2-d projection), with open strings stretched between them. Each separation $y_i - y_j$ gives a stretched-string mass $M_{ij} = |y_i - y_j| / (2\pi\alpha')$. Drag a brane out of the stack and watch the previously massless gauge bosons become massive — the geometric Higgs mechanism in real time.</p>
+
+      <section class="interactive" data-widget="brane-stack" aria-label="Brane stack and Higgs mechanism">
+        <header>
+          <h4>Interactive · Brane separation as a Higgs VEV</h4>
+          <span class="hint">drag a brane</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">A stack of $N$ branes carries a $U(N)$ gauge theory; strings between branes are gauge bosons with mass proportional to brane separation. Moving a brane out of the stack breaks $U(N) \to U(N-1) \times U(1)$, with the now-stretched strings acquiring mass. Brane geometry $=$ gauge symmetry breaking.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§8</span>What we carry forward</h2>
+
+      <ol>
+        <li>D-branes are dynamical $(p+1)$-dim submanifolds of spacetime, governed by the DBI action.</li>
+        <li>A single D$p$-brane carries a $U(1)$ gauge field; a stack of $N$ branes gives a $U(N)$ gauge theory at low energies.</li>
+        <li>D-branes are BPS — they saturate a tension-equals-charge bound — and so survive at strong coupling without quantum corrections.</li>
+        <li>Different superstring theories have different brane content, dictated by their RR field structure.</li>
+        <li>Branes wrapping cycles of a compactification manifold give 4-d BPS states whose count is set by the topology of the manifold.</li>
+      </ol>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Joseph Polchinski.</span> "Dirichlet branes and Ramond–Ramond charges." <em>Phys. Rev. Lett.</em> 75, 4724 (1995), <code>hep-th/9510017</code>.</li>
+          <li><span class="src-title">Joseph Polchinski.</span> "TASI Lectures on D-branes." <code>hep-th/9611050</code> — pedagogical introduction by the discoverer.</li>
+          <li><span class="src-title">Joseph Polchinski.</span> <em>String Theory, Vol. II.</em> Ch. 8 and 13 — full coverage of D-branes and their actions.</li>
+          <li><span class="src-title">C. P. Bachas.</span> "Lectures on D-branes." <code>hep-th/9806199</code> — clear lectures emphasizing the DBI action.</li>
+          <li><span class="src-title">M. Born, L. Infeld.</span> "Foundations of the new field theory." <em>Proc. Roy. Soc.</em> A144, 425 (1934) — the original Born–Infeld electrodynamics that reappears as the brane action.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="12-dualities-geometry.html"><span class="label">← Previous</span>XII · Dualities as Geometry</a>
+      <a class="next" href="14-black-holes-strominger-vafa.html"><span class="label">Next chapter</span>XIV · Black Holes and Strominger–Vafa →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/brane-stack.js"></script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter XI · Compactification and Calabi–Yau Manifolds — String Theory: A Primer</title>
+  <meta name="description" content="Chapter 11 of String Theory: A Primer. Kaluza–Klein compactification, the geometric conditions for N=1 SUSY in 4D, and an introduction to Calabi–Yau threefolds." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter XI of XV</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter XI</p>
+      <h1 class="chapter-title">Compactification and Calabi–Yau Manifolds</h1>
+      <p class="lede">The superstring lives in ten dimensions. Hide six of them in a tiny manifold of just the right shape and you get a four-dimensional world with the right amount of supersymmetry and a particle spectrum determined by topology.</p>
+
+      <h2><span class="sec-num">§1</span>The compactification idea</h2>
+
+      <p>The superstring is consistent only in $D = 10$. We observe four. The standard resolution, going back to <strong>Kaluza</strong> in 1921 and <strong>Klein</strong> in 1926, is to hypothesize that the extra dimensions form a small compact manifold $K$:</p>
+
+      <div class="equation-block">
+        $$ M_{10} \;=\; M_{1,3} \times K. $$
+      </div>
+
+      <p>If $K$ has typical size $R$, energies below $1/R$ cannot resolve it and the world looks four-dimensional. With $R$ near the string scale ($\sim 10^{-32}$ m), the extra dimensions are easy to miss.</p>
+
+      <p>This works pedagogically because of two structural facts:</p>
+
+      <ol>
+        <li>Fields on $M_{10}$ decompose into Fourier modes on $K$, called <strong>Kaluza–Klein modes</strong>.</li>
+        <li>Each KK mode looks like a 4-d field with a mass set by the eigenvalue of the Laplacian on $K$.</li>
+      </ol>
+
+      <p>For a circle of radius $R$, the KK eigenvalues are $(n/R)^2$ with $n \in \mathbb{Z}$, so the 4-d spectrum is</p>
+
+      <div class="equation-block">
+        $$ M_n^2 \;=\; M_0^2 + \frac{n^2}{R^2}, \qquad n = 0, \pm 1, \pm 2, \dots. $$
+      </div>
+
+      <p>The zero mode ($n=0$) is the visible 4-d field; the higher modes ($n \neq 0$) form a tower of progressively heavier copies, invisible at low energies.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>What we need from the internal manifold</h2>
+
+      <p>For string-theory compactification, $K$ is a 6-dimensional manifold. We want the resulting 4-d theory to have several desirable features:</p>
+
+      <ul>
+        <li><strong>Solve Einstein's equations</strong> — at leading order, $\beta^g = 0$ requires $K$ to be Ricci-flat.</li>
+        <li><strong>Preserve some supersymmetry</strong> — generally we want $\mathcal{N} = 1$ supersymmetry in 4-d, which protects the theory from quantum instabilities and matches the structure of realistic phenomenology.</li>
+        <li><strong>Have a sensible spectrum of fields</strong> — set by the topology of $K$.</li>
+      </ul>
+
+      <p>Preserving $\mathcal{N} = 1$ supersymmetry in 4-d means we need exactly one covariantly constant spinor on $K$. Geometrically this is a strong demand: most 6-manifolds admit no such spinor at all.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>From SUSY to special holonomy</h2>
+
+      <p>Parallel-transport a spinor around a closed loop on $K$ and it generally comes back rotated. The set of all possible rotations forms the <strong>holonomy group</strong> $\mathrm{Hol}(K) \subseteq SO(6)$. A spinor is covariantly constant if and only if it is left invariant by every holonomy transformation — i.e., if the holonomy group has a fixed spinor.</p>
+
+      <p>For generic 6-manifolds, holonomy is all of $SO(6)$ and no spinor is fixed. For special manifolds, the holonomy is reduced to a subgroup, and the more it is reduced the more covariantly constant spinors (and hence supercharges) survive:</p>
+
+      <table style="margin: 1.5rem auto; border-collapse: collapse; font-family: var(--sans); font-size: 0.88rem; width: 100%; max-width: 42rem; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);">
+        <thead>
+          <tr style="background: var(--bg-soft);">
+            <th style="text-align: left; padding: 0.55rem 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7rem;">Holonomy of $K^6$</th>
+            <th style="text-align: left; padding: 0.55rem 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7rem;">Geometric type</th>
+            <th style="text-align: left; padding: 0.55rem 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7rem;">4-d SUSY</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">$SO(6)$</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">generic Ricci-flat</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">none</td></tr>
+          <tr><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">$U(3)$</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">complex (not Ricci-flat)</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">none</td></tr>
+          <tr><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">$SU(3)$</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);"><strong>Calabi–Yau 3-fold</strong></td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">$\mathcal{N} = 1$</td></tr>
+          <tr><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">$SU(2)$</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">$K3 \times T^2$ or hyperkähler</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">$\mathcal{N} = 2$</td></tr>
+          <tr><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">trivial</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">$T^6$</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">$\mathcal{N} = 4$</td></tr>
+        </tbody>
+      </table>
+
+      <p>For phenomenology — a 4-d theory close to the Standard Model — we want $\mathcal{N} = 1$, so the canonical choice is a 6-manifold with $SU(3)$ holonomy. Such manifolds are called <strong>Calabi–Yau threefolds</strong>.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Calabi–Yau threefolds, geometrically</h2>
+
+      <p>A <strong>Calabi–Yau $n$-fold</strong> is a compact complex $n$-dimensional manifold (real dimension $2n$) that is:</p>
+
+      <ol>
+        <li><strong>Kähler</strong> — its metric is Hermitian and the associated 2-form $\omega = i g_{i\bar j}\, dz^i \wedge d\bar z^j$ is closed, $d\omega = 0$. Kähler manifolds carry a compatible complex structure, symplectic structure, and metric.</li>
+        <li><strong>Ricci-flat</strong> — $R_{\mu\nu} = 0$, so the leading-order $\beta$-function condition is satisfied.</li>
+        <li>Equivalently to (1)+(2): the holonomy group of the Levi-Civita connection sits inside $SU(n)$ rather than all of $U(n)$.</li>
+      </ol>
+
+      <p><strong>Yau's theorem</strong> (1976) — which solved the Calabi conjecture — guarantees that on a compact Kähler manifold with vanishing first Chern class $c_1 = 0$, a Ricci-flat metric exists in each Kähler class. CY manifolds therefore exist; they are not just hypothetical structures.</p>
+
+      <aside class="jargon">
+        <h4>Calabi–Yau, in one image</h4>
+        <p>Geometrically, a CY 3-fold is the higher-dimensional analogue of a 2-torus. It is compact, has no boundary, carries a complex structure (you can locally write down holomorphic coordinates), and admits a non-vanishing holomorphic volume form $\Omega = \Omega_{ijk}\, dz^i \wedge dz^j \wedge dz^k$ that pins down its $SU(3)$ holonomy. The simplest non-trivial example is the <em>quintic</em>: the hypersurface in $\mathbb{CP}^4$ cut out by a degree-5 polynomial like $z_1^5 + z_2^5 + z_3^5 + z_4^5 + z_5^5 = 0$.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Topology determines particle content</h2>
+
+      <p>The 4-d effective field theory after CY compactification has a particle spectrum set by the topology of $K$ — specifically, by its <strong>Hodge numbers</strong> $h^{p,q}$, which count independent harmonic $(p,q)$-forms. For a CY 3-fold the only independent ones are $h^{1,1}$ and $h^{2,1}$, and they have a direct physical meaning:</p>
+
+      <ul>
+        <li>$h^{1,1}$ counts independent <strong>Kähler moduli</strong> — sizes of the various 2-cycles in $K$. Each contributes a complex scalar field to the 4-d theory.</li>
+        <li>$h^{2,1}$ counts independent <strong>complex-structure moduli</strong> — shape parameters of $K$. Each also gives a 4-d complex scalar.</li>
+      </ul>
+
+      <p>The number of chiral matter generations in the resulting 4-d theory is fixed by the Euler characteristic,</p>
+
+      <div class="equation-block">
+        $$ \chi(K) \;=\; 2\big( h^{1,1} - h^{2,1} \big), $$
+      </div>
+
+      <p>via the relation $N_{\text{gen}} = |\chi|/2$. To match the three generations of the Standard Model we want $|\chi| = 6$ — a topologically very specific demand on $K$. For instance, the quintic has $h^{1,1} = 1$ and $h^{2,1} = 101$, giving $|\chi| = 200$, so it doesn't directly produce three generations; one orbifolds or otherwise modifies it.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The landscape</h2>
+
+      <p>How many CY 3-folds are there? Not classified, but estimates suggest at least $10^5$ topologically distinct CY 3-folds, and on each one a moduli space of metric choices. Add in flux and brane configurations and the count rises to estimates of $10^{500}$ distinct vacua — the so-called <strong>string landscape</strong>. Different compactifications give different 4-d effective theories with different particle content, coupling strengths, and cosmological constants.</p>
+
+      <p>This is both a feature (it makes string theory rich) and a serious problem (we do not yet have a principle that selects a unique vacuum). It is the central open issue in connecting string theory to observed Standard Model physics.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>A Kaluza–Klein tower</h2>
+
+      <p>The widget below shows the KK tower of a scalar field on $M_{1,3} \times S^1$, with circle radius $R$ varying. As $R$ shrinks, the spacing $1/R$ grows and the heavy modes become inaccessible — only the zero mode remains light. This is what happens to ten-dimensional fields when six dimensions are made small enough to vanish from low-energy view.</p>
+
+      <section class="interactive" data-widget="kk-tower" aria-label="Kaluza-Klein tower">
+        <header>
+          <h4>Interactive · Kaluza–Klein tower on $S^1$</h4>
+          <span class="hint">drag the radius</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">Each horizontal line is a KK level with mass $M_n = n/R$ (taking the higher-dim field to be massless). The zero mode is the field we'd actually observe. As $R$ shrinks (compactification becomes "small"), the tower spreads out and only the zero mode remains in reach of any finite energy scale.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§8</span>What we carry forward</h2>
+
+      <ol>
+        <li>Compactification on a compact manifold $K$ reduces $D = 10$ to four observable dimensions; KK modes give a tower of heavy 4-d states, invisible at low energy.</li>
+        <li>Preserving $\mathcal{N} = 1$ supersymmetry in 4-d requires $K$ to have $SU(3)$ holonomy — a <strong>Calabi–Yau 3-fold</strong>: Kähler, Ricci-flat, complex.</li>
+        <li>Yau's theorem guarantees Calabi–Yau manifolds exist for compact Kähler manifolds with vanishing first Chern class.</li>
+        <li>The particle content of the 4-d effective theory is fixed by the topology of $K$, in particular by its Hodge numbers $h^{1,1}, h^{2,1}$ and Euler characteristic.</li>
+        <li>The number of consistent compactifications is enormous — the "landscape" — and selecting the one that matches our universe is an open problem.</li>
+      </ol>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">P. Candelas, G. T. Horowitz, A. Strominger, E. Witten.</span> "Vacuum configurations for superstrings." <em>Nucl. Phys.</em> B258, 46 (1985) — the foundational paper proposing CY compactification for the heterotic string.</li>
+          <li><span class="src-title">S.-T. Yau.</span> "On the Ricci curvature of a compact Kähler manifold and the complex Monge–Ampère equation, I." <em>Comm. Pure Appl. Math.</em> 31, 339 (1978) — the proof that Calabi–Yau metrics exist.</li>
+          <li><span class="src-title">Brian R. Greene.</span> "String theory on Calabi–Yau manifolds." Lectures at TASI 1996, <code>hep-th/9702155</code> — pedagogical introduction.</li>
+          <li><span class="src-title">Katrin Becker, Melanie Becker, John H. Schwarz.</span> <em>String Theory and M-Theory.</em> Ch. 9 — clear treatment of CY compactification.</li>
+          <li><span class="src-title">T. Hübsch.</span> <em>Calabi–Yau Manifolds: A Bestiary for Physicists.</em> World Scientific, 1992 — practical reference for the geometry.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="10-superstrings-fermions.html"><span class="label">← Previous</span>X · Superstrings and Fermions</a>
+      <a class="next" href="12-dualities-geometry.html"><span class="label">Next chapter</span>XII · Dualities as Geometry →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/kk-tower.js"></script>
+</body>
+</html>

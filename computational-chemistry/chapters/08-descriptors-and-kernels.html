@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter VIII · Descriptors and Kernel Potentials — Computational Chemistry: A Primer</title>
+  <meta name="description" content="Chapter 8: atom-centered symmetry functions, SOAP, Gaussian Approximation Potentials, and active learning." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter VIII of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter VIII</p>
+      <h1 class="chapter-title">Learning the Surface I: Descriptors and Kernels</h1>
+      <p class="lede">If $V(\mathbf{R})$ is just a function, why don't we fit it? The answer used to be "because it lives in $3N$ dimensions and respects symmetries no off-the-shelf regressor knows about." Atom-centered descriptors plus Gaussian process regression were the first clean way around both problems.</p>
+
+      <h2><span class="sec-num">§1</span>What a learned PES has to obey</h2>
+
+      <p>A model $\hat V(\mathbf{R})$ that learns the energy from data has to respect three exact symmetries:</p>
+
+      <ul>
+        <li><strong>Translation:</strong> $\hat V(\mathbf{R} + \mathbf{t}) = \hat V(\mathbf{R})$ for any vector $\mathbf{t}$.</li>
+        <li><strong>Rotation:</strong> $\hat V(R\,\mathbf{R}) = \hat V(\mathbf{R})$ for any rotation matrix $R$.</li>
+        <li><strong>Permutation:</strong> $\hat V(P\,\mathbf{R}) = \hat V(\mathbf{R})$ for any permutation $P$ acting on atoms of the same element.</li>
+      </ul>
+
+      <p>A vanilla neural net taking Cartesian coordinates as input has none of these. It will fit the training set but answer differently when you rotate or relabel — a non-starter. The trick is to feed the model only quantities that are <em>already</em> invariant under all three. These quantities are called <strong>descriptors</strong>.</p>
+
+      <p>Equally important: $\hat V$ should be <strong>size-extensive</strong>. Two non-interacting fragments far apart should have energy equal to the sum of their isolated energies. Behler and Parrinello (2007) achieved this with a simple ansatz that has dominated the field ever since.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The Behler–Parrinello decomposition</h2>
+
+      <p>Write the total energy as a sum over atomic contributions:</p>
+
+      <div class="equation-block">
+        $$ \hat V(\mathbf{R}) \;=\; \sum_{i=1}^{N_{\text{atoms}}} E_i\bigl(\{\mathbf{r}_{ij}\}_{j \in \mathcal{N}_i}\bigr), $$
+      </div>
+
+      <p>where $E_i$ depends only on atoms $j$ within a cutoff radius $R_c$ of atom $i$. Each $E_i$ is a function of relative coordinates inside a local sphere — translationally invariant by construction, and size-extensive because non-overlapping fragments contribute independent sums. Permutation invariance among same-element neighbors and rotation invariance still need to be built into the input descriptor.</p>
+
+      <p>Behler and Parrinello fed each $E_i$ through a per-element neural network, with the input vector built from <strong>atom-centered symmetry functions</strong>. The two standard types:</p>
+
+      <div class="equation-block">
+        $$ G_i^{\text{rad}}(\eta, R_s) \;=\; \sum_{j \neq i} e^{-\eta (r_{ij} - R_s)^2}\, f_c(r_{ij}), $$
+      </div>
+
+      <div class="equation-block">
+        $$ G_i^{\text{ang}}(\eta, \zeta, \lambda) \;=\; 2^{1-\zeta}\!\!\sum_{j, k \neq i}\!\! \bigl(1 + \lambda \cos\theta_{ijk}\bigr)^{\zeta}\, e^{-\eta(r_{ij}^2 + r_{ik}^2 + r_{jk}^2)}\, f_c(r_{ij}) f_c(r_{ik}) f_c(r_{jk}), $$
+      </div>
+
+      <p>with the cosine cutoff function $f_c(r) = \tfrac{1}{2}\bigl[\cos(\pi r / R_c) + 1\bigr]$ for $r < R_c$ and zero outside. Each $G_i^{\text{rad}}$ probes the radial distribution of neighbors at distance $\sim R_s$ with width $\sim 1/\sqrt{2\eta}$. Each $G_i^{\text{ang}}$ probes the angular distribution of triplets around atom $i$. A typical descriptor stack uses 30–80 such functions per atom with hand-chosen $\{\eta, R_s, \zeta, \lambda\}$.</p>
+
+      <aside class="jargon">
+        <h4>Why these functions?</h4>
+        <p>Summing over neighbors makes the descriptor invariant under permutation. The Gaussian-times-cutoff form is smoothly differentiable, so forces — the gradients $-\nabla_i \hat V$ — exist cleanly. The radial and angular forms together capture two-body and three-body structure; symmetry functions of higher order are possible but rarely needed in practice. Geometrically, each $G_i$ is a smoothed moment of the neighbor density inside the cutoff sphere.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>SOAP: the smooth-density picture</h2>
+
+      <p>An elegant generalization, due to Bartók, Kondor and Csányi (2013), starts from the <strong>local atomic density</strong> around each atom $i$,</p>
+
+      <div class="equation-block">
+        $$ \rho_i(\mathbf{r}) \;=\; \sum_{j \in \mathcal{N}_i} e^{-(\mathbf{r} - \mathbf{r}_{ij})^2 / (2\sigma^2)}, $$
+      </div>
+
+      <p>and expands it in a basis of radial functions $g_n(r)$ times spherical harmonics:</p>
+
+      <div class="equation-block">
+        $$ \rho_i(\mathbf{r}) \;=\; \sum_{nlm} c^{(i)}_{nlm}\, g_n(r)\, Y_l^m(\hat{\mathbf{r}}). $$
+      </div>
+
+      <p>From the expansion coefficients $c^{(i)}_{nlm}$ build the <strong>SOAP power spectrum</strong>,</p>
+
+      <div class="equation-block">
+        $$ p^{(i)}_{nn'l} \;=\; \sqrt{\frac{8\pi^2}{2l+1}} \sum_m c^{(i)}_{nlm}{}^{*}\, c^{(i)}_{n'lm}. $$
+      </div>
+
+      <p>The sum over $m$ kills the rotation degree of freedom, making $p^{(i)}_{nn'l}$ rotation-invariant. Permutation invariance is automatic from the sum in $\rho_i$. The SOAP descriptor is the vector of all $p^{(i)}_{nn'l}$ for an atom $i$. Where Behler–Parrinello functions are a hand-picked discretization, SOAP is a continuous, geometrically natural representation that approaches a complete basis as the truncation $(n_{\max}, l_{\max})$ grows.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Gaussian Approximation Potentials</h2>
+
+      <p>A descriptor turns each atom into a fixed-length feature vector. With a similarity (kernel) function $K(\mathbf{p}, \mathbf{p}')$ on feature vectors, we can do nonparametric regression via Gaussian processes. This is a <strong>Gaussian Approximation Potential</strong> (GAP; Bartók et al. 2010): predict each atom's energy as</p>
+
+      <div class="equation-block">
+        $$ E_i \;=\; \sum_{t=1}^{N_{\text{train}}} \alpha_t\, K(\mathbf{p}^{(i)}, \mathbf{p}^{(t)}), $$
+      </div>
+
+      <p>summing over training atoms $t$. The coefficients $\alpha_t$ are obtained by Gaussian process regression — fitting the total energies (and forces, and stresses) of training configurations under a Gaussian likelihood:</p>
+
+      <div class="equation-block">
+        $$ \boldsymbol{\alpha} \;=\; (\mathbf{K} + \sigma_n^2 \mathbf{I})^{-1}\, \mathbf{y}, $$
+      </div>
+
+      <p>where $\mathbf{K}$ is the kernel matrix on training points, $\mathbf{y}$ is the training-target vector, and $\sigma_n$ is the assumed noise level. For SOAP-based GAPs the standard kernel is $K(\mathbf{p}, \mathbf{p}') = (\mathbf{p}\cdot\mathbf{p}')^\zeta$ with $\zeta = 2$ or $4$.</p>
+
+      <p>The Gaussian process picture has a useful side effect: it returns not just a predicted energy but a <strong>predictive variance</strong>. Wherever the kernel matrix indicates the test point is far from training data, the variance grows.</p>
+
+      <div class="equation-block">
+        $$ \mathrm{var}[E_*] \;=\; K(\mathbf{p}_*, \mathbf{p}_*) - \mathbf{k}_*^\top (\mathbf{K} + \sigma_n^2 \mathbf{I})^{-1} \mathbf{k}_*. $$
+      </div>
+
+      <p>This is the signal for <dfn title="An iterative loop that uses model uncertainty to decide which new training data to acquire — usually by running an expensive electronic-structure calculation only where the model is uncertain.">active learning</dfn>: identify high-variance configurations during an MD trajectory, send them to a DFT (or CCSD(T)) calculation, retrain. Active learning converts the painful problem of "make a training set" into an automated loop that grows the set where it matters and stops where it doesn't.</p>
+
+      <section class="interactive" data-widget="gap-1d" aria-label="1D Gaussian process fit">
+        <header>
+          <h4>Interactive · Gaussian process on a Morse potential</h4>
+          <span class="hint">click to add training points</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">A Morse potential $V(r) = D[1 - e^{-\alpha(r - r_e)}]^2$ stands in for a 1D diatomic dissociation curve. The dashed line is truth; the solid line is the GP posterior mean; the band is the ±2 σ predictive uncertainty. Click anywhere to add a training point evaluated at the true PES. Notice: uncertainty collapses near data and balloons in extrapolation regions, exactly the signal active learning exploits.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Strengths, limits, and what comes next</h2>
+
+      <p>SOAP-GAP and Behler–Parrinello neural-network potentials (HDNNPs) defined the first generation of ML potentials, roughly 2007–2018. Their successes are substantial: SiO₂ glass models with quantum-chemistry forces but classical-MD speed, Fe-C steels at scale, water with experimental accuracy. Both deliver smooth forces and stable MD over nanoseconds, the basic prerequisite for any production use.</p>
+
+      <p>Their limits are also clear. Three-body symmetry functions are blind to interactions that require four or more bodies for a faithful representation; kernel methods scale unfavorably with training-set size ($O(N_{\text{train}}^2)$ at prediction, $O(N_{\text{train}}^3)$ at training, until sparse approximations are used). Both rely on hand-engineered descriptors whose parameters $\{\eta, R_s, \dots\}$ require trial and error.</p>
+
+      <p>The second generation, the subject of Chapter IX, replaces fixed descriptors with <em>learned</em> features that satisfy the symmetries by construction — and adds a network architecture that respects rotation not just by hiding it in invariants, but by tracking how features transform.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">J. Behler and M. Parrinello.</span> "Generalized neural-network representation of high-dimensional potential-energy surfaces." <em>Phys. Rev. Lett.</em> 98, 146401 (2007) — the HDNNP architecture.</li>
+          <li><span class="src-title">J. Behler.</span> "Atom-centered symmetry functions for constructing high-dimensional neural network potentials." <em>J. Chem. Phys.</em> 134, 074106 (2011) — definitions of the BP symmetry functions used above.</li>
+          <li><span class="src-title">A. P. Bartók, M. C. Payne, R. Kondor, G. Csányi.</span> "Gaussian Approximation Potentials: the accuracy of quantum mechanics, without the electrons." <em>Phys. Rev. Lett.</em> 104, 136403 (2010) — GAP.</li>
+          <li><span class="src-title">A. P. Bartók, R. Kondor, G. Csányi.</span> "On representing chemical environments." <em>Phys. Rev. B</em> 87, 184115 (2013) — SOAP.</li>
+          <li><span class="src-title">C. E. Rasmussen and C. K. I. Williams.</span> <em>Gaussian Processes for Machine Learning.</em> MIT Press 2006 — the standard reference for GP regression. Freely available at <code>gaussianprocess.org</code>.</li>
+          <li><span class="src-title">J. Vandermause et al.</span> "On-the-fly active learning of interpretable Bayesian force fields." <em>npj Comput. Mater.</em> 6, 20 (2020) — modern active-learning workflow with sparse GPs (FLARE).</li>
+          <li><span class="src-title">V. L. Deringer, A. P. Bartók, N. Bernstein, D. M. Wilkins, M. Ceriotti, G. Csányi.</span> "Gaussian process regression for materials and molecules." <em>Chem. Rev.</em> 121, 10073 (2021) — comprehensive recent review.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="07-excited-states.html"><span class="label">Previous chapter</span>← VII · Excited States and Photochemistry</a>
+      <a class="next" href="09-equivariant-nnps.html"><span class="label">Next chapter</span>IX · Equivariant Neural Potentials →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/gap-1d.js"></script>
+</body>
+</html>

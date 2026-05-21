@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter I · Geometry as the Language of Physics — String Theory: A Primer</title>
+  <meta name="description" content="Chapter 1 of String Theory: A Primer. The two geometric pillars of modern physics, where they clash, and the bold step from worldlines to worldsheets." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter I of XV</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter I</p>
+      <h1 class="chapter-title">Geometry as the Language of Physics</h1>
+      <p class="lede">Modern physics rests on two geometric pictures that almost — but not quite — fit together. String theory's opening move is to take geometry one step further: replace the moving point with a moving line.</p>
+
+      <h2><span class="sec-num">§1</span>Two geometric languages</h2>
+
+      <p>Twentieth-century physics produced two extraordinary theories, each unmistakably geometric in form.</p>
+
+      <p><strong>General relativity</strong> says that spacetime is a four-dimensional <dfn title="A topological space that looks locally like ℝⁿ and on which we can do calculus.">smooth manifold</dfn> <span>$M$</span> equipped with a <dfn title="A bilinear form with signature (−,+,+,+); it tells you the proper time/length along any curve.">Lorentzian metric</dfn> <span>$g_{\mu\nu}$</span>. Gravity <em>is</em> the curvature of that metric. A freely falling particle does the laziest possible thing in this geometry: it follows a <dfn title="A curve of locally extremal length — the analogue of a straight line on a curved manifold.">geodesic</dfn>. Matter and energy bend the manifold through Einstein's equation,</p>
+
+      <div class="equation-block">
+        $$ R_{\mu\nu} - \tfrac{1}{2} R\, g_{\mu\nu} + \Lambda\, g_{\mu\nu} \;=\; \frac{8\pi G}{c^4}\, T_{\mu\nu}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$R_{\mu\nu}$</dt><dd>Ricci curvature tensor — a trace of the full Riemann curvature; tells you how a small ball of test particles changes shape under tidal forces.</dd>
+          <dt>$R$</dt><dd>Ricci scalar, $R = g^{\mu\nu} R_{\mu\nu}$ — the trace of the Ricci tensor.</dd>
+          <dt>$g_{\mu\nu}$</dt><dd>Spacetime metric, signature $(-,+,+,+)$.</dd>
+          <dt>$\Lambda$</dt><dd>Cosmological constant.</dd>
+          <dt>$T_{\mu\nu}$</dt><dd>Stress–energy tensor — how matter and energy are distributed and flowing.</dd>
+          <dt>$G,\,c$</dt><dd>Newton's constant; speed of light.</dd>
+        </dl>
+      </aside>
+
+      <p>Geometry here is not a description added on top of gravity. Geometry <em>is</em> the gravitational field.</p>
+
+      <p><strong>Quantum field theory</strong> looks less geometric at first glance, but the structures underneath are also geometric. Matter fields are sections of <dfn title="A space that locally looks like (base space) × (vector space) — fields are smooth choices of vector at each point.">vector bundles</dfn> over spacetime. Gauge fields are <dfn title="A rule for parallel-transporting fibers as you move along a path. The connection's curvature is the field strength.">connections</dfn> on principal bundles. The Yang–Mills field strength</p>
+
+      <div class="equation-block">
+        $$ F_{\mu\nu}^a \;=\; \partial_\mu A_\nu^a - \partial_\nu A_\mu^a + g\, f^{abc}\, A_\mu^b A_\nu^c $$
+      </div>
+
+      <p>is the <dfn title="A differential form whose components measure the failure of two infinitesimal parallel transports to commute.">curvature 2-form</dfn> of the connection $A_\mu^a$. Anomalies — obstructions to quantizing classical symmetries — are <dfn title="Topological invariants of a bundle, built from polynomials in the curvature.">characteristic classes</dfn>. The Standard Model is, in effect, fiber-bundle geometry over flat Minkowski spacetime.</p>
+
+      <p>Two languages. Both are geometry. Both work spectacularly — general relativity has passed every test from gravitational waves to event-horizon imaging, and the Standard Model agrees with experiment to ten or more decimal places. Each works in a domain the other can ignore.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Where the geometries clash</h2>
+
+      <p>Trouble appears when both are needed at once: at very high energies, or equivalently at very short distances, gravity itself must be quantum.</p>
+
+      <p>The fundamental length scale of quantum gravity is the <strong>Planck length</strong>,</p>
+
+      <div class="equation-block">
+        $$ \ell_P \;=\; \sqrt{\frac{\hbar\, G}{c^3}} \;\approx\; 1.616 \times 10^{-35}\ \mathrm{m}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\hbar$</dt><dd>Reduced Planck constant $h/(2\pi)$.</dd>
+          <dt>$G$</dt><dd>Newton's gravitational constant.</dd>
+          <dt>$c$</dt><dd>Speed of light in vacuum.</dd>
+        </dl>
+      </aside>
+
+      <p>Three constants, one length. It's the unique scale you can build from $\hbar$ (quantum), $G$ (gravity), and $c$ (relativity), so it's a natural guess for where all three matter at once. At scales near $\ell_P$ the metric is no longer a fixed smooth field — its quantum fluctuations are themselves of order one.</p>
+
+      <p>Treating gravitons (the hypothetical quanta of $g_{\mu\nu}$) as point-particle excitations and computing their scattering the usual way produces divergences that no finite list of counterterms can absorb. We say gravity is <strong>perturbatively non-renormalizable</strong>. Geometrically, the Feynman-diagram vertex — a single spacetime point where lines meet — is too sharp: it concentrates an unbounded amount of curvature at one point.</p>
+
+      <aside class="jargon">
+        <h4>Renormalization, in one paragraph</h4>
+        <p>A quantum field theory is renormalizable if its short-distance infinities can be absorbed by adjusting a <em>finite</em> number of parameters in the Lagrangian. The Standard Model is renormalizable. Gravity, treated as a QFT of point gravitons, is not — at every order in perturbation theory new infinities appear, and absorbing them would require infinitely many parameters, which is no theory at all.</p>
+      </aside>
+
+      <p>This isn't a proof that gravity cannot be a quantum field theory. It's a strong hint that the point-particle picture must break down somewhere on the way to the Planck scale.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The bold geometric move</h2>
+
+      <p>String theory's foundational move is a single sentence:</p>
+
+      <blockquote>Replace point particles, which sweep out 1-dimensional <em>worldlines</em>, with strings, which sweep out 2-dimensional <em>worldsheets</em>.</blockquote>
+
+      <p>A point particle has no intrinsic length. A string has a length scale <span>$\ell_s = \sqrt{\alpha'}$</span> (the <strong>string length</strong>), and that length scale smears out the Feynman vertex: interactions happen along a smooth 2-surface, not at a point. Whatever was diverging at a point now has a finite size to spread over.</p>
+
+      <figure class="figure-wide">
+        <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Worldline of a point particle, worldsheet of an open string, worldsheet of a closed string.">
+          <defs>
+            <pattern id="hatch" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="6" stroke="#a83e2a" stroke-width="0.8" opacity="0.35"/>
+            </pattern>
+          </defs>
+
+          <!-- Panel 1: worldline -->
+          <g transform="translate(0,0)">
+            <text x="120" y="20" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#6f6a63" letter-spacing="1.5">POINT · WORLDLINE</text>
+            <line x1="20" y1="180" x2="220" y2="180" stroke="#d3cabd" stroke-width="1"/>
+            <text x="225" y="184" font-family="Inter, sans-serif" font-size="10" fill="#9a9389">time →</text>
+            <path d="M 40 140 C 80 60, 140 200, 200 90" fill="none" stroke="#1f1c1a" stroke-width="1.6"/>
+            <circle cx="40" cy="140" r="3.5" fill="#a83e2a"/>
+            <circle cx="200" cy="90" r="3.5" fill="#a83e2a"/>
+            <text x="120" y="210" text-anchor="middle" font-family="Source Serif 4, Georgia, serif" font-size="12" fill="#1f1c1a" font-style="italic">1-dim curve in spacetime</text>
+          </g>
+
+          <!-- Panel 2: open string worldsheet -->
+          <g transform="translate(240,0)">
+            <text x="120" y="20" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#6f6a63" letter-spacing="1.5">OPEN STRING · STRIP</text>
+            <line x1="20" y1="180" x2="220" y2="180" stroke="#d3cabd" stroke-width="1"/>
+            <text x="225" y="184" font-family="Inter, sans-serif" font-size="10" fill="#9a9389">τ →</text>
+            <path d="M 40 130 C 80 50, 140 190, 200 80 L 200 130 C 140 240, 80 100, 40 180 Z" fill="url(#hatch)" stroke="#1f1c1a" stroke-width="1.4"/>
+            <text x="120" y="210" text-anchor="middle" font-family="Source Serif 4, Georgia, serif" font-size="12" fill="#1f1c1a" font-style="italic">2-dim strip; ends free</text>
+          </g>
+
+          <!-- Panel 3: closed string worldsheet -->
+          <g transform="translate(480,0)">
+            <text x="120" y="20" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#6f6a63" letter-spacing="1.5">CLOSED STRING · TUBE</text>
+            <line x1="20" y1="180" x2="220" y2="180" stroke="#d3cabd" stroke-width="1"/>
+            <text x="225" y="184" font-family="Inter, sans-serif" font-size="10" fill="#9a9389">τ →</text>
+            <!-- Tube body -->
+            <path d="M 40 100 C 80 70, 140 110, 200 80 L 200 150 C 140 180, 80 140, 40 170 Z" fill="url(#hatch)" stroke="#1f1c1a" stroke-width="1.4"/>
+            <!-- Cross-section ellipses -->
+            <ellipse cx="40" cy="135" rx="6" ry="35" fill="none" stroke="#1f1c1a" stroke-width="1.4"/>
+            <ellipse cx="200" cy="115" rx="6" ry="35" fill="none" stroke="#1f1c1a" stroke-width="1.4"/>
+            <text x="120" y="210" text-anchor="middle" font-family="Source Serif 4, Georgia, serif" font-size="12" fill="#1f1c1a" font-style="italic">2-dim cylinder; closed loop</text>
+          </g>
+        </svg>
+        <figcaption>A point particle sweeps a 1-dimensional worldline; an open string sweeps a strip; a closed string sweeps a cylinder. The dimension bump is the entire mechanical idea of string theory.</figcaption>
+      </figure>
+
+      <p>Several remarkable consequences follow from this small change, none of which were anticipated when string theory was first written down as a model of hadrons in the late 1960s.</p>
+
+      <p><strong>A massless spin-2 mode appears.</strong> Among the quantized vibrations of a closed string sits a state of spin 2 and zero mass. Weinberg showed in 1965 that any consistent theory interacting via a massless spin-2 particle must reduce, at low energies, to general relativity. So the graviton is not put in by hand; it falls out, and with it, Einstein's equations as a low-energy approximation.</p>
+
+      <p><strong>The dimension of spacetime is fixed.</strong> Consistency of the quantum theory only works in particular target-space dimensions: 26 for bosonic strings, 10 for superstrings. We are not free to choose. The number comes out of demanding that a certain anomaly on the worldsheet cancels — a beautiful geometric story we will reach in Chapter VIII.</p>
+
+      <p><strong>Spacetime geometry itself loosens.</strong> A closed string wrapped around a circle of radius $R$ is physically indistinguishable from one wrapped around a circle of radius $\alpha'/R$ — this is <strong>T-duality</strong>. Large and small geometries are interchangeable. There is no "shortest" length you can probe with a string; below $\ell_s$, geometry stops being what we thought it was.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>What we'll mean by "geometric"</h2>
+
+      <p>Throughout this book we'll keep four geometric pictures in mind. Each is a different manifold (or family of manifolds), and almost everything we encounter will be a statement about one of them.</p>
+
+      <ol>
+        <li><strong>Target-space geometry</strong> — the spacetime $M$ in which the string moves. Initially flat Minkowski; later compactified, with six dimensions curled up into a small internal manifold.</li>
+        <li><strong>Worldsheet geometry</strong> — the 2-dimensional surface $\Sigma$ traced out by the string, together with its intrinsic metric $h_{ab}$ and its conformal structure.</li>
+        <li><strong>Moduli space geometry</strong> — the space of allowed shapes and sizes of compactification manifolds. Coupling constants are coordinates on this space.</li>
+        <li><strong>Bundle and brane geometry</strong> — gauge fields as connections on bundles over $M$, and the submanifolds (D-branes) on which open strings end.</li>
+      </ol>
+
+      <p>Wherever we meet an equation we will read it geometrically first: is this an area, a curvature, a Laplacian, a parallel-transport equation? Symbol-pushing comes second.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>A glimpse of the central equation</h2>
+
+      <p>So you can see where we are heading, here is the simplest form of the bosonic string action — the <strong>Polyakov action</strong> (in natural units $\hbar = c = 1$, which we will use throughout):</p>
+
+      <div class="equation-block">
+        $$ S_P[X,h] \;=\; -\frac{1}{4\pi\alpha'} \int_{\Sigma} \mathrm{d}^2\sigma\, \sqrt{-h}\, h^{ab}\, \partial_a X^\mu\, \partial_b X^\nu\, \eta_{\mu\nu}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Sigma$</dt><dd>The worldsheet — a 2-dim surface with local coordinates $\sigma^a = (\tau, \sigma)$, $a = 0, 1$.</dd>
+          <dt>$X^\mu(\sigma^a)$</dt><dd>The embedding map: it says where each point of $\Sigma$ sits in target spacetime. $\mu = 0,1,\dots,D-1$.</dd>
+          <dt>$h_{ab}(\sigma^a)$</dt><dd>Intrinsic Lorentzian metric on the worldsheet; $h = \det h_{ab}$.</dd>
+          <dt>$\eta_{\mu\nu}$</dt><dd>Flat Minkowski metric on target spacetime, signature $(-,+,+,\dots)$.</dd>
+          <dt>$\alpha'$</dt><dd>The <em>Regge slope</em> — sets the string length, $\ell_s = \sqrt{\alpha'}$. The string tension is $T = 1/(2\pi\alpha')$.</dd>
+        </dl>
+      </aside>
+
+      <p>Don't try to parse all of it now. Notice instead the <em>shape</em> of it. It is an integral over a 2-dimensional surface $\Sigma$ of a quantity built from a worldsheet metric $h_{ab}$ and the embedding maps $X^\mu$. It is to a string what the geodesic action</p>
+
+      <div class="equation-block">
+        $$ S_{\text{particle}} \;=\; -m \int \mathrm{d}s \;=\; -m \int \mathrm{d}\tau\, \sqrt{-\dot X^\mu \dot X^\nu \eta_{\mu\nu}} $$
+      </div>
+
+      <p>is to a particle: a geometric measure of the swept-out region, weighted by a tension or mass. Everything that follows — quantization, the critical dimension, the graviton, dualities, branes, black-hole entropy — is built on top of this single integral. By the end of Chapter IV every symbol above will be familiar.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Scales we cannot reach</h2>
+
+      <p>The Planck length is roughly seventeen orders of magnitude below what the LHC can directly resolve. Drag along the ruler below to see what physics governs at each scale and how far we are from the territory string theory was built to describe.</p>
+
+      <section class="interactive" data-widget="energy-scales" aria-label="Energy and length scale ruler">
+        <header>
+          <h4>Interactive · Scales of physics</h4>
+          <span class="hint">drag · click · ← → keys</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">A logarithmic ruler of length scales from the Planck length to the observable universe. The string scale lies near the left edge — far below anything experiment can probe directly. This is why progress in string theory has historically come from mathematical consistency rather than measurement.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>The road ahead</h2>
+
+      <p>Fifteen chapters in total. After this one we will:</p>
+
+      <ol>
+        <li>Set up the geometric toolkit — manifolds, metrics, geodesics, the action principle (Ch. II).</li>
+        <li>Solve the relativistic point particle as a warm-up (Ch. III).</li>
+        <li>Write down the string action and read it geometrically (Ch. IV).</li>
+        <li>Understand its symmetries — diffeomorphism and Weyl invariance — and gauge-fix them (Ch. V).</li>
+        <li>Solve the classical equations of motion and find that boundary conditions give us D-branes for free (Ch. VI).</li>
+        <li>Quantize, meet the Virasoro algebra, and see the conformal anomaly (Ch. VII).</li>
+        <li>Derive the critical dimension from the anomaly (Ch. VIII).</li>
+        <li>Put the string on a curved spacetime and watch Einstein's equations re-emerge as a consistency condition (Ch. IX).</li>
+        <li>Add fermions — superstrings, the GSO projection, $D=10$ (Ch. X).</li>
+        <li>Compactify, meeting Calabi–Yau manifolds (Ch. XI), dualities (Ch. XII), and D-branes (Ch. XIII).</li>
+        <li>Recover the Bekenstein–Hawking entropy from brane microstate counting (Ch. XIV).</li>
+        <li>End at the AdS/CFT correspondence — the deepest geometric statement string theory has so far produced (Ch. XV).</li>
+      </ol>
+
+      <p>None of this is a claim that string theory is empirically correct. It is a working theory, internally consistent over remarkable distances, and rich enough to have changed how we think about geometry itself. That is enough reason to take the climb seriously.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Joseph Polchinski.</span> <em>String Theory, Volume I: An Introduction to the Bosonic String.</em> Cambridge University Press, 1998 — §1.2 (the Polyakov action; eq. 1.2.13). Polchinski writes the worldsheet metric as $\gamma_{ab}$ where we write $h_{ab}$.</li>
+          <li><span class="src-title">Barton Zwiebach.</span> <em>A First Course in String Theory</em>, 2nd ed., Cambridge University Press, 2009 — Chapter 1 for an even gentler entry point.</li>
+          <li><span class="src-title">David Tong.</span> <em>Lectures on String Theory.</em> Cambridge DAMTP, 2009 — §0 for an opinionated introduction; available free at <code>damtp.cam.ac.uk/user/tong/string.html</code>.</li>
+          <li><span class="src-title">Steven Weinberg.</span> "Photons and gravitons in perturbation theory: derivation of Maxwell's and Einstein's equations." <em>Phys. Rev.</em> 138, B988 (1965) — the soft-graviton theorem that pins down GR as the low-energy theory of any massless spin-2 particle. The companion result on charge conservation appears in <em>Phys. Rev.</em> 135, B1049 (1964).</li>
+          <li><span class="src-title">Steven Weinberg.</span> <em>The Quantum Theory of Fields, Vol. I.</em> Cambridge University Press, 1995 — §13.1 for the modern textbook presentation.</li>
+          <li><span class="src-title">CODATA 2018.</span> Recommended values of physical constants — source for $\ell_P = 1.616\,255(18) \times 10^{-35}$ m.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="../index.html"><span class="label">←</span> Contents</a>
+      <a class="next" href="02-manifolds-metrics-action.html"><span class="label">Next chapter</span>II · Manifolds, Metrics, and the Action Principle →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/energy-scales.js"></script>
+</body>
+</html>

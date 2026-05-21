@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter IV · From Worldline to Worldsheet — String Theory: A Primer</title>
+  <meta name="description" content="Chapter 4 of String Theory: A Primer. The Nambu–Goto and Polyakov actions, the induced metric, and the geometric step from a moving point to a moving string." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter IV of XV</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter IV</p>
+      <h1 class="chapter-title">From Worldline to Worldsheet</h1>
+      <p class="lede">Promote the point particle's 1-dimensional worldline to a string's 2-dimensional worldsheet. The action becomes an area; the einbein becomes a worldsheet metric. The geometry is the only thing that changes.</p>
+
+      <h2><span class="sec-num">§1</span>A string sweeps out a surface</h2>
+
+      <p>A point particle is a 0-dimensional object; through time it traces a 1-dimensional worldline. A <strong>string</strong> is a 1-dimensional object — a small curve — that, through time, sweeps out a 2-dimensional surface called the <strong>worldsheet</strong>, denoted $\Sigma$.</p>
+
+      <p>We describe the worldsheet by an embedding map</p>
+
+      <div class="equation-block">
+        $$ X^\mu : \Sigma \to M, \qquad (\tau, \sigma) \mapsto X^\mu(\tau, \sigma), $$
+      </div>
+
+      <p>where $(\tau, \sigma)$ are coordinates on $\Sigma$ and $M$ is target spacetime. $\tau$ is the worldsheet "time" direction, $\sigma$ the "spatial" coordinate along the string. From $\Sigma$'s point of view, $X^\mu$ is a collection of $D$ scalar fields (one per target dimension) defined on a 2-manifold.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Open and closed strings</h2>
+
+      <p>The string itself can be one of two topologically distinct objects:</p>
+
+      <ul>
+        <li><strong>Closed</strong> — a loop. The worldsheet coordinate $\sigma$ runs over $[0, 2\pi)$ with the periodicity $X^\mu(\tau, \sigma + 2\pi) = X^\mu(\tau, \sigma)$. The worldsheet $\Sigma$ is a cylinder.</li>
+        <li><strong>Open</strong> — a segment with two free ends. $\sigma$ runs over $[0, \pi]$, and the boundary conditions at $\sigma = 0, \pi$ (Neumann or Dirichlet) will become important in Chapter VI. The worldsheet $\Sigma$ is a strip.</li>
+      </ul>
+
+      <p>The two topologies host genuinely different physics. Closed strings give the graviton; open strings give gauge fields. In the modern picture, open and closed strings coexist, with open-string endpoints anchored on D-branes (Chapter XIII).</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The induced metric</h2>
+
+      <p>Target spacetime $M$ carries a metric $\eta_{\mu\nu}$ (flat Minkowski for now; curved later). This metric <strong>pulls back</strong> to the worldsheet through the embedding $X^\mu$, producing the <strong>induced metric</strong></p>
+
+      <div class="equation-block">
+        $$ \gamma_{ab}(\tau, \sigma) \;=\; \partial_a X^\mu\, \partial_b X^\nu\, \eta_{\mu\nu}, \qquad a, b \in \{0, 1\} \equiv \{\tau, \sigma\}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\partial_a$</dt><dd>Derivative with respect to worldsheet coordinate $\sigma^a$; $\partial_0 = \partial/\partial\tau$, $\partial_1 = \partial/\partial\sigma$.</dd>
+          <dt>$\gamma_{ab}$</dt><dd>The induced metric — a 2$\times$2 symmetric matrix at each point of $\Sigma$, with Lorentzian signature $(-,+)$ if the worldsheet is timelike (which we will always assume).</dd>
+        </dl>
+      </aside>
+
+      <p>Geometrically, $\gamma_{ab}$ measures lengths and angles <em>on the worldsheet</em> as inherited from the way $\Sigma$ sits inside spacetime. A small displacement $(d\tau, d\sigma)$ on $\Sigma$ corresponds to a spacetime displacement $dX^\mu = \partial_a X^\mu\, d\sigma^a$, whose proper length squared is $\eta_{\mu\nu} dX^\mu dX^\nu = \gamma_{ab}\, d\sigma^a\, d\sigma^b$.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The Nambu–Goto action</h2>
+
+      <p>The natural geometric quantity attached to a 2-surface is its area. For a worldsheet with induced metric $\gamma_{ab}$, the proper area is</p>
+
+      <div class="equation-block">
+        $$ A[\Sigma] \;=\; \int_\Sigma \mathrm{d}^2\sigma\, \sqrt{-\det \gamma_{ab}}. $$
+      </div>
+
+      <p>The minus sign sits there for the same reason as in proper time: with Lorentzian signature, $\det \gamma < 0$ for a timelike worldsheet, so $-\det \gamma > 0$. This is the worldsheet generalization of the proper-time integral.</p>
+
+      <p>The <strong>Nambu–Goto action</strong> is $-T$ times this area:</p>
+
+      <div class="equation-block">
+        $$ \boxed{\; S_{\mathrm{NG}}[X] \;=\; -T \int_\Sigma \mathrm{d}^2\sigma\, \sqrt{-\det\!\left(\partial_a X^\mu\, \partial_b X^\nu\, \eta_{\mu\nu}\right)}. \;} $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$T$</dt><dd>String tension — energy per unit length. Conventionally $T = 1/(2\pi\alpha')$, with $\alpha'$ the Regge slope and $\ell_s = \sqrt{\alpha'}$ the string length.</dd>
+        </dl>
+      </aside>
+
+      <p>This is the exact analogue of $S_{\mathrm{pp}} = -m \int \mathrm{d}s$ for the particle, one dimension up. Mass becomes tension; proper length becomes proper area. The geometry is what counts.</p>
+
+      <p>Nambu wrote this action down in 1970; Goto fixed conventions and extended it shortly afterward. It is geometrically pristine, but it has the same drawback as the particle's square-root action: a square root is awkward to quantize.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The Polyakov form</h2>
+
+      <p>We apply the same trick as for the einbein. Introduce an independent dynamical field $h_{ab}(\tau, \sigma)$ on $\Sigma$ — a worldsheet metric, the 2-dim analogue of the einbein — and consider the alternative action</p>
+
+      <div class="equation-block">
+        $$ \boxed{\; S_P[X, h] \;=\; -\frac{T}{2} \int_\Sigma \mathrm{d}^2\sigma\, \sqrt{-h}\, h^{ab}\, \partial_a X^\mu\, \partial_b X^\nu\, \eta_{\mu\nu}. \;} $$
+      </div>
+
+      <p>This is the <strong>Polyakov action</strong>, written down in this form by Brink, Di Vecchia, Howe, and (independently) Deser & Zumino in 1976, and put to spectacular use by Polyakov in 1981 to compute the string path integral. With $T = 1/(2\pi\alpha')$, the prefactor is the $-1/(4\pi\alpha')$ that appears in every textbook.</p>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$h_{ab}$</dt><dd>An independent symmetric, Lorentzian-signature metric on the worldsheet. Three independent components: $h_{00}, h_{01}, h_{11}$.</dd>
+          <dt>$h$</dt><dd>Determinant of $h_{ab}$.</dd>
+          <dt>$h^{ab}$</dt><dd>Matrix inverse of $h_{ab}$.</dd>
+        </dl>
+      </aside>
+
+      <p>$S_P$ is the worldsheet version of the einbein action — quadratic in the embedding fields $X^\mu$, so well-suited to canonical quantization and path integrals. The worldsheet metric $h_{ab}$ is the worldsheet analogue of the einbein $e$.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Classical equivalence to Nambu–Goto</h2>
+
+      <p>Vary $S_P$ with respect to $h_{ab}$. The equation of motion reads</p>
+
+      <div class="equation-block">
+        $$ T_{ab} \;\equiv\; \partial_a X^\mu\, \partial_b X_\mu - \tfrac{1}{2}\, h_{ab}\, h^{cd}\, \partial_c X^\mu\, \partial_d X_\mu \;=\; 0, $$
+      </div>
+
+      <p>where $T_{ab}$ is the (worldsheet) stress-energy tensor. This says: the induced metric $\gamma_{ab} = \partial_a X^\mu \partial_b X_\mu$ is proportional to $h_{ab}$ via the equation</p>
+
+      <div class="equation-block">
+        $$ \gamma_{ab} \;=\; \tfrac{1}{2}\, h_{ab}\, h^{cd}\, \gamma_{cd}. $$
+      </div>
+
+      <p>Tracing both sides with $h^{ab}$ shows the proportionality factor is itself $h^{cd}\gamma_{cd}$. Substituting $h_{ab} = (\text{positive function}) \cdot \gamma_{ab}$ back into $S_P$ cancels the Weyl factor (because $\sqrt{-h}\, h^{ab}$ is Weyl-invariant in 2-d) and recovers $S_{\mathrm{NG}}$:</p>
+
+      <div class="equation-block">
+        $$ S_P\big[X, h_{\star}(X)\big] \;=\; S_{\mathrm{NG}}[X]. $$
+      </div>
+
+      <p>So Polyakov and Nambu–Goto are <strong>classically equivalent</strong>: every solution of one is a solution of the other. Quantum-mechanically the Polyakov form is the gateway: it linearizes in $X^\mu$ and makes the worldsheet symmetries manifest, both of which the square root hides.</p>
+
+      <aside class="note">
+        <h4>The 2-dimensional miracle</h4>
+        <p>That $\sqrt{-h}\, h^{ab}$ is Weyl-invariant — $h_{ab} \to e^{2\omega(\sigma)} h_{ab}$ leaves it unchanged — is a special feature of <em>two</em>-dimensional worldsheets. In any other dimension, $\sqrt{-h}\, h^{ab}$ picks up a Weyl-factor power, and the equivalence between the metric and induced-metric forms of the action fails. This is one of several reasons string theory (rather than membrane theory) is much more tractable.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Equation of motion for $X^\mu$</h2>
+
+      <p>Vary $S_P$ with respect to $X^\mu$. The result is a curved-2-d wave equation,</p>
+
+      <div class="equation-block">
+        $$ \frac{1}{\sqrt{-h}}\, \partial_a\!\left( \sqrt{-h}\, h^{ab}\, \partial_b X^\mu \right) \;=\; 0. $$
+      </div>
+
+      <p>This is the statement that $X^\mu$ is a harmonic function on the worldsheet — its Laplace–Beltrami operator vanishes. In the conformal gauge $h_{ab} = \eta_{ab}$ (Chapter V), it reduces to the ordinary 2-d wave equation</p>
+
+      <div class="equation-block">
+        $$ \big(\partial_\tau^2 - \partial_\sigma^2\big)\, X^\mu \;=\; 0, $$
+      </div>
+
+      <p>whose solutions are arbitrary functions of $\tau \pm \sigma$ — left- and right-moving waves on the string. Solving this is the work of Chapter VI.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§8</span>The picture so far</h2>
+
+      <p>Two boxed actions are the central output of this chapter. Both describe the same classical physics; the Polyakov form is the one we will quantize.</p>
+
+      <table style="margin: 1.5rem auto; border-collapse: collapse; font-family: var(--sans); font-size: 0.92rem; width: 100%; max-width: 38rem; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);">
+        <thead>
+          <tr style="background: var(--bg-soft);">
+            <th style="text-align: left; padding: 0.6rem 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.72rem;">Particle (Ch. III)</th>
+            <th style="text-align: left; padding: 0.6rem 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.72rem;">String (Ch. IV)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">$\lambda \in \mathbb{R}$ (1 worldline coord.)</td><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">$(\tau, \sigma)$ (2 worldsheet coords.)</td></tr>
+          <tr><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">$S = -m \int \mathrm{d}\lambda \sqrt{-\dot X^2}$</td><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">$S = -T \int \mathrm{d}^2\sigma \sqrt{-\det \gamma_{ab}}$</td></tr>
+          <tr><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">einbein $e(\lambda)$</td><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">worldsheet metric $h_{ab}(\tau, \sigma)$</td></tr>
+          <tr><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">$S = \tfrac{1}{2}\!\int (e^{-1} \dot X^2 - e m^2)$</td><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">$S = -\tfrac{T}{2}\!\int\!\sqrt{-h}\, h^{ab} \partial_a X \cdot \partial_b X$</td></tr>
+          <tr><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">Reparametrization invariance</td><td style="padding: 0.55rem 0.85rem; border-top: 1px dotted var(--rule);">Diff($\Sigma$) $\times$ Weyl invariance</td></tr>
+        </tbody>
+      </table>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§9</span>The worldsheet, visualized</h2>
+
+      <p>The widget below lets you watch a worldsheet emerge from a vibrating string. We embed the string in 2+1-dimensional Minkowski with one longitudinal coordinate $X^1 = \sigma$ and one transverse coordinate $X^2(\tau, \sigma)$ on which we put a classical standing-wave mode (open string) or traveling-wave mode (closed string):</p>
+
+      <div class="equation-block">
+        $$ X^2(\tau, \sigma) \;=\; A\, \cos(n\sigma)\, \cos(n\tau) \quad\text{(open)}, \qquad X^2(\tau, \sigma) \;=\; A\, \cos\!\big(n(\sigma - \tau)\big) \quad\text{(closed)}. $$
+      </div>
+
+      <p>The heatmap shows $X^2$ across the $(\sigma, \tau)$ rectangle — that rectangle <em>is</em> the worldsheet as an abstract manifold; the color is one of the embedding fields evaluated on it. Below, we compute the worldsheet's proper area $\int \sqrt{-\det \gamma}\, \mathrm{d}^2\sigma$ numerically and compare it to the "rest" area of an undeformed string ($A = 0$).</p>
+
+      <section class="interactive" data-widget="worldsheet" aria-label="Worldsheet visualizer">
+        <header>
+          <h4>Interactive · Worldsheet area</h4>
+          <span class="hint">amplitude · mode · open ↔ closed</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The colored rectangle <em>is</em> the worldsheet $\Sigma$. The horizontal axis is $\sigma$ (position along the string); the vertical axis is $\tau$ (worldsheet time). Color shows the transverse embedding $X^2$, blue $\to$ red corresponding to negative $\to$ positive displacement. Switching from open to closed changes the $\sigma$-period; raising $A$ wrinkles the worldsheet and increases its proper area.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§10</span>What we carry forward</h2>
+
+      <ol>
+        <li>A string sweeps out a 2-dimensional worldsheet $\Sigma$ in spacetime; closed strings give cylinders, open strings give strips.</li>
+        <li>The <strong>induced metric</strong> $\gamma_{ab} = \partial_a X^\mu \partial_b X^\nu \eta_{\mu\nu}$ is the pull-back of the spacetime metric to $\Sigma$.</li>
+        <li>The <strong>Nambu–Goto</strong> action $S = -T \int \mathrm{d}^2\sigma \sqrt{-\det \gamma}$ is the worldsheet area times the tension — the direct geometric analogue of $-m$ times proper time.</li>
+        <li>The <strong>Polyakov</strong> action introduces an independent worldsheet metric $h_{ab}$ and is quadratic in $X^\mu$; it is classically equivalent to NG but quantum-mechanically far more tractable.</li>
+        <li>The 2-dimensional Weyl invariance of $\sqrt{-h}\, h^{ab}$ is the special feature that makes this equivalence work — and the same feature that will, in Chapter V, give us a powerful gauge symmetry to fix.</li>
+      </ol>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Joseph Polchinski.</span> <em>String Theory, Vol. I.</em> Cambridge University Press, 1998 — §1.2 derives both actions; eqs. 1.2.9 (Nambu–Goto) and 1.2.13 (Polyakov).</li>
+          <li><span class="src-title">David Tong.</span> <em>Lectures on String Theory.</em> Cambridge DAMTP, 2009 — §1.2 ("The Nambu–Goto action") and §1.3 ("The Polyakov action") for very clean derivations.</li>
+          <li><span class="src-title">Y. Nambu.</span> "Duality and hadrodynamics," Notes for the Copenhagen High Energy Symposium, 1970 — the historical first appearance of the action that now bears his name.</li>
+          <li><span class="src-title">T. Goto.</span> "Relativistic quantum mechanics of one-dimensional mechanical continuum and subsidiary condition of dual resonance model." <em>Prog. Theor. Phys.</em> 46, 1560 (1971).</li>
+          <li><span class="src-title">A. M. Polyakov.</span> "Quantum geometry of bosonic strings." <em>Phys. Lett.</em> 103B, 207 (1981) — the path-integral treatment that made the metric form the standard one.</li>
+          <li><span class="src-title">L. Brink, P. Di Vecchia, P. Howe.</span> "A locally supersymmetric and reparametrization invariant action for the spinning string." <em>Phys. Lett.</em> 65B, 471 (1976) — early appearance of the form $S \sim \int \sqrt{-h}\, h^{ab}\, \partial X \cdot \partial X$.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="03-relativistic-point-particle.html"><span class="label">← Previous</span>III · The Relativistic Point Particle</a>
+      <a class="next" href="05-symmetries-worldsheet.html"><span class="label">Next chapter</span>V · Symmetries of the Worldsheet →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/worldsheet.js"></script>
+</body>
+</html>

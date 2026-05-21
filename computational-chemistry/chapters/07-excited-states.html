@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter VII · Excited States and Photochemistry — Computational Chemistry: A Primer</title>
+  <meta name="description" content="Chapter 7: TDDFT, CASSCF, conical intersections, and surface hopping — chemistry when the ground state isn't enough." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter VII of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter VII</p>
+      <h1 class="chapter-title">Excited States and Photochemistry</h1>
+      <p class="lede">A molecule absorbs a photon and gets promoted to an electronic state that has its own potential energy surface — and where those surfaces touch, Born–Oppenheimer breaks and chemistry happens in femtoseconds.</p>
+
+      <h2><span class="sec-num">§1</span>Why ground state isn't enough</h2>
+
+      <p>Spectroscopy, vision, photosynthesis, photovoltaic charge generation, photocatalysis, fluorescent labels, OLEDs — all of these involve electrons in states other than the ground state. The ground-state PES of Chapter I is one surface; for an $N$-electron system there is an infinite tower of excited-state surfaces above it. The chemistry that happens after a photon is absorbed is dynamics on, and between, those surfaces.</p>
+
+      <p>There are two qualitatively different regimes. Near a minimum, excited-state PESs look like ordinary surfaces and can be computed with response-theory methods (TDDFT, EOM-CCSD). Near a <em>conical intersection</em>, two surfaces touch at a point and the Born–Oppenheimer approximation collapses; nuclei can pass from one electronic state to another in a single vibrational period. The next sections handle these in turn.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Linear response and TDDFT</h2>
+
+      <p>The cheapest way to get excited states is to ask how the ground state <em>responds</em> to a small perturbation. If you turn on a time-dependent electric field at frequency $\omega$, the induced density oscillates with poles at the molecule's excitation energies. Computing the response and finding its poles gives excitation energies directly.</p>
+
+      <p>For time-dependent density functional theory (TDDFT) in the adiabatic-kernel approximation, the linear-response equations reduce to a generalized eigenvalue problem first written down by Mark Casida (1995):</p>
+
+      <div class="equation-block">
+        $$ \begin{pmatrix} \mathbf{A} & \mathbf{B} \\ \mathbf{B}^* & \mathbf{A}^* \end{pmatrix} \begin{pmatrix} \mathbf{X} \\ \mathbf{Y} \end{pmatrix} \;=\; \omega \begin{pmatrix} \mathbf{1} & \mathbf{0} \\ \mathbf{0} & -\mathbf{1} \end{pmatrix} \begin{pmatrix} \mathbf{X} \\ \mathbf{Y} \end{pmatrix}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$i, j$</dt><dd>Occupied Kohn–Sham orbitals.</dd>
+          <dt>$a, b$</dt><dd>Virtual Kohn–Sham orbitals.</dd>
+          <dt>$\mathbf{A}_{ia,jb}$</dt><dd>$(\varepsilon_a - \varepsilon_i)\delta_{ij}\delta_{ab} + (ia|jb) + (ia|f_{\text{xc}}|jb) - c_x (ij|ab)$. KS orbital-energy difference plus the response kernel; $c_x$ is the HF-exchange fraction (0 for pure DFT, $c_x > 0$ for hybrids).</dd>
+          <dt>$\mathbf{B}_{ia,jb}$</dt><dd>$(ia|jb) + (ia|f_{\text{xc}}|jb) - c_x (ib|ja)$. Couples particle–hole and hole–particle excitations.</dd>
+          <dt>$\mathbf{X}, \mathbf{Y}$</dt><dd>Excitation and de-excitation amplitudes; the $i \to a$ component is the amplitude for that single-orbital transition in the eigenmode at frequency $\omega$.</dd>
+        </dl>
+      </aside>
+
+      <p>The poles $\omega_n$ are the excitation energies. Truncating to $\mathbf{B} = 0$ — keep $\mathbf{A}\mathbf{X} = \omega \mathbf{X}$ — gives the <strong>Tamm–Dancoff approximation</strong> (TDA-TDDFT); for HF orbitals it reduces to <strong>CIS</strong>, configuration interaction with single excitations.</p>
+
+      <p>TDDFT scales as $O(N^4)$ for valence excitations, the same as ground-state DFT. For typical organic chromophores in a hybrid functional, it gives singlet excitation energies within ~0.2 eV of experiment. It fails predictably for <strong>charge-transfer excitations</strong> (the self-interaction error of the parent functional becomes catastrophic when the hole and particle are spatially separated) and for <strong>double excitations</strong> (a single-reference linear response can only describe single-orbital promotions). Range-separated hybrids like CAM-B3LYP or ωB97X-V mitigate the charge-transfer problem; double excitations require methods that go beyond linear response (EOM-CCSD, ADC(2), MR-CISD).</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Multi-reference methods and static correlation</h2>
+
+      <p>Some excited states — and some ground states near bond breaking — are intrinsically multi-determinant. The natural language is to choose an <em>active space</em> of orbitals that capture the chemistry of interest (the $\pi$ system of butadiene; the $d$ shell of a transition metal) and treat them with a full configuration-interaction expansion inside that space, while leaving everything else at the SCF level.</p>
+
+      <p>The standard method is <strong>CASSCF</strong> (Complete Active Space SCF; Roos, 1980): variationally optimize both the active-space CI coefficients and the molecular orbitals. Notated CAS($n$,$m$) for $n$ electrons in $m$ active orbitals. Dynamic correlation outside the active space is added on top as CASPT2 (Andersson et al. 1990) or NEVPT2 (Angeli et al. 2001), giving accurate excitation energies for systems where single-reference methods fail.</p>
+
+      <p>The cost of CASSCF grows factorially with active-space size. Modern <strong>DMRG</strong> (density matrix renormalization group) implementations push the limit to active spaces of $\sim 30$–$50$ orbitals, enough for many transition-metal complexes and conjugated organics that defeat conventional CASSCF.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Conical intersections</h2>
+
+      <p>When two electronic states of the same spin and spatial symmetry approach each other, the standard non-crossing rule says they should avoid: in one dimension, generically, $E_1(R) \neq E_2(R)$. In two or more dimensions the rule weakens. Two surfaces can meet at a <em>point</em> (in 2D) or along a <em>seam of codimension two</em> (in higher dimensions). This is a <strong>conical intersection</strong>.</p>
+
+      <p>The local model around a conical intersection is the linear vibronic coupling Hamiltonian. Pick two coordinates — the <em>tuning mode</em> $g$ that lifts the degeneracy diagonally, and the <em>coupling mode</em> $h$ that lifts it off-diagonally — and write the two-state diabatic Hamiltonian as</p>
+
+      <div class="equation-block">
+        $$ \hat H_{\text{LVC}}(g, h) \;=\; E_0\, \mathbb{1} \,+\, \begin{pmatrix} \kappa\, g & \lambda\, h \\ \lambda\, h & -\kappa\, g \end{pmatrix}. $$
+      </div>
+
+      <p>Diagonalizing gives the adiabatic energies</p>
+
+      <div class="equation-block">
+        $$ E_\pm(g, h) \;=\; E_0 \,\pm\, \sqrt{\kappa^2 g^2 + \lambda^2 h^2}. $$
+      </div>
+
+      <p>This is a <strong>double cone</strong>: the gap $E_+ - E_-$ vanishes at $(g, h) = (0, 0)$ and grows linearly in any direction away. Around the cone, the adiabatic states pick up a topological Berry phase of $\pi$: trace a loop around the CI, and the wavefunction picks up a sign change. Numerically, this is why dynamics through a CI cannot be done in the adiabatic basis — the wavefunction is multi-valued there.</p>
+
+      <p>Conical intersections are not exotic. They are the mechanism for: ultrafast radiationless decay in DNA bases (10 fs deexcitation, protecting the genome from UV damage), <em>cis-trans</em> isomerization of retinal (the first step of vision), photoisomerization of azobenzenes (photoswitches), internal conversion in essentially every fluorescent molecule. Any photochemistry that proceeds faster than ~1 ps is almost always passing through a CI.</p>
+
+      <section class="interactive" data-widget="conical-intersection" aria-label="Conical intersection and surface hopping">
+        <header>
+          <h4>Interactive · A conical intersection</h4>
+          <span class="hint">launch · drag · toggle</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The double-cone topology of a conical intersection in the linear-vibronic-coupling model, with $\kappa = \lambda = 1$ and a small harmonic confinement on both modes. Launch a classical trajectory on the upper surface and watch it accelerate toward the CI; when the gap drops below a threshold, a Landau–Zener-style hop transfers the system to the lower surface. The trajectory then follows the Mexican-hat lower PES around the CI.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Surface hopping</h2>
+
+      <p>To propagate a system across a CI we need <em>non-adiabatic</em> dynamics — the nuclei sometimes follow one PES, sometimes another. The most widely used scheme is Tully's <strong>fewest-switches surface hopping</strong> (Tully 1990):</p>
+
+      <ol>
+        <li>Run a classical trajectory on a single PES (the "current" state).</li>
+        <li>Alongside it, propagate the electronic Schrödinger equation in the basis of adiabatic states, with non-adiabatic couplings $\mathbf{d}_{nm} = \langle \psi_n | \nabla_R | \psi_m \rangle$ evaluated at the current geometry. This gives time-dependent amplitudes $c_n(t)$ and a population matrix $\rho_{nm} = c_n c_m^*$.</li>
+        <li>At each step, compute the hopping probability $P_{n\to m} = \max\{0,\, 2 \mathrm{Re}[\rho_{mn} \dot{R}\cdot \mathbf{d}_{nm}] / \rho_{nn}\}\, \Delta t$.</li>
+        <li>If a uniformly distributed random number is less than $P_{n\to m}$, hop to surface $m$; otherwise stay. After a hop, rescale nuclear velocity along $\mathbf{d}_{nm}$ to conserve total energy.</li>
+      </ol>
+
+      <p>Despite its semi-classical heuristics, surface hopping reproduces experimental quantum yields and lifetimes for many photochemical processes. More rigorous alternatives — Ehrenfest dynamics, ab-initio multiple spawning, exact factorization — exist but are more expensive and less mature.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>What you actually compute</h2>
+
+      <p>For absorption spectra of medium-sized organic molecules: TDDFT with a range-separated hybrid (ωB97X-D, CAM-B3LYP) and a triple-zeta basis. Fast, accurate to ~0.2 eV for valence states.</p>
+
+      <p>For systems with multireference character (transition metals, biradicals, bond-breaking PESs): CASSCF + NEVPT2/CASPT2 or DMRG-CASSCF.</p>
+
+      <p>For high-accuracy vertical excitations on small molecules: EOM-CCSD or EOM-CCSD(T).</p>
+
+      <p>For non-adiabatic dynamics through conical intersections: trajectory surface hopping with electronic-structure forces from TDDFT or CASSCF, depending on whether the relevant states are well-described by a single reference or not.</p>
+
+      <p>For periodic systems and band gaps: <strong>GW</strong> for quasiparticle energies (correcting the DFT gap problem), the <strong>Bethe–Salpeter equation</strong> for absorption spectra of solids — both built on the perturbative many-body framework of Hedin's equations rather than the DFT-response framework above.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">M. E. Casida.</span> "Time-dependent density functional response theory for molecules." In <em>Recent Advances in Density Functional Methods, Part I</em>, ed. D. P. Chong, World Scientific 1995 — the canonical reference for the Casida equations.</li>
+          <li><span class="src-title">A. Dreuw and M. Head-Gordon.</span> "Single-reference <em>ab initio</em> methods for the calculation of excited states of large molecules." <em>Chem. Rev.</em> 105, 4009 (2005) — exhaustive review of TDDFT/CIS/EOM methods.</li>
+          <li><span class="src-title">B. O. Roos.</span> "The complete active space self-consistent field method and its applications in electronic structure calculations." <em>Adv. Chem. Phys.</em> 69, 399 (1987) — CASSCF.</li>
+          <li><span class="src-title">D. R. Yarkony.</span> "Diabolical conical intersections." <em>Rev. Mod. Phys.</em> 68, 985 (1996) — the canonical review of conical intersection theory and topology.</li>
+          <li><span class="src-title">G. A. Worth and L. S. Cederbaum.</span> "Beyond Born–Oppenheimer: molecular dynamics through a conical intersection." <em>Annu. Rev. Phys. Chem.</em> 55, 127 (2004) — gentler entry point, with the LVC model used in the widget.</li>
+          <li><span class="src-title">J. C. Tully.</span> "Molecular dynamics with electronic transitions." <em>J. Chem. Phys.</em> 93, 1061 (1990) — fewest-switches surface hopping.</li>
+          <li><span class="src-title">F. Plasser, M. Ruckenbauer, S. Mai, M. Oppel, P. Marquetand, L. González.</span> "Efficient and flexible computation of many-electron wave function overlaps." <em>J. Chem. Theory Comput.</em> 12, 1207 (2016) — practical surface hopping with realistic electronic structure.</li>
+          <li><span class="src-title">L. Hedin.</span> "New method for calculating the one-particle Green's function with application to the electron-gas problem." <em>Phys. Rev.</em> 139, A796 (1965) — origin of the GW approximation for quasiparticle excitations.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="06-dynamics-on-the-surface.html"><span class="label">Previous chapter</span>← VI · Dynamics on the Surface</a>
+      <a class="next" href="08-descriptors-and-kernels.html"><span class="label">Next chapter</span>VIII · Descriptors and Kernels →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/conical-intersection.js"></script>
+</body>
+</html>

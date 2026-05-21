@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter VI · Solving the Classical String — String Theory: A Primer</title>
+  <meta name="description" content="Chapter 6 of String Theory: A Primer. Solving the 2-d wave equation, mode expansions for open and closed strings, and the geometric origin of D-branes from Dirichlet boundary conditions." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter VI of XV</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter VI</p>
+      <h1 class="chapter-title">Solving the Classical String</h1>
+      <p class="lede">The wave equation is the same one a guitar string obeys; the difference is what we hang off the boundary. Free endpoints give an open string of vibrational modes; fixed endpoints reveal D-branes.</p>
+
+      <h2><span class="sec-num">§1</span>The wave equation, recapped</h2>
+
+      <p>In conformal gauge $h_{ab} = \eta_{ab}$, the Polyakov equation of motion for the string's embedding reads</p>
+
+      <div class="equation-block">
+        $$ \big( \partial_\tau^2 - \partial_\sigma^2 \big)\, X^\mu(\tau, \sigma) \;=\; 0, $$
+      </div>
+
+      <p>or in light-cone form $\partial_+ \partial_- X^\mu = 0$ with $\sigma^\pm = \tau \pm \sigma$. The general solution is the sum of a left-moving and a right-moving wave,</p>
+
+      <div class="equation-block">
+        $$ X^\mu(\tau, \sigma) \;=\; X_L^\mu(\sigma^+) + X_R^\mu(\sigma^-), $$
+      </div>
+
+      <p>where $X_L^\mu, X_R^\mu$ are arbitrary smooth functions of one variable. The constraints come from two places: (i) the topology of the string sets a boundary or periodicity condition, and (ii) the Virasoro constraints from Chapter V §4 must be satisfied. We deal with topology first.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Closed string — periodic boundary conditions</h2>
+
+      <p>For a closed string, $\sigma \sim \sigma + 2\pi$, and $X^\mu$ must be periodic:</p>
+
+      <div class="equation-block">
+        $$ X^\mu(\tau, \sigma + 2\pi) \;=\; X^\mu(\tau, \sigma). $$
+      </div>
+
+      <p>Periodicity is compatible with independent left- and right-mover expansions. The Fourier expansion of each is</p>
+
+      <div class="equation-block">
+        $$ X_L^\mu(\sigma^+) \;=\; \tfrac{1}{2} x^\mu + \tfrac{\alpha'}{2}\, p^\mu\, \sigma^+ + i\sqrt{\tfrac{\alpha'}{2}}\, \sum_{n \neq 0} \frac{\tilde\alpha_n^\mu}{n}\, e^{-in\sigma^+}, $$
+      </div>
+
+      <div class="equation-block">
+        $$ X_R^\mu(\sigma^-) \;=\; \tfrac{1}{2} x^\mu + \tfrac{\alpha'}{2}\, p^\mu\, \sigma^- + i\sqrt{\tfrac{\alpha'}{2}}\, \sum_{n \neq 0} \frac{\alpha_n^\mu}{n}\, e^{-in\sigma^-}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$x^\mu$</dt><dd>Center-of-mass position of the string at $\tau = 0$.</dd>
+          <dt>$p^\mu$</dt><dd>Total spacetime momentum of the string (zero-mode of the velocity).</dd>
+          <dt>$\alpha_n^\mu$</dt><dd>Right-moving oscillator modes, labeled by $n \in \mathbb{Z}\setminus\{0\}$.</dd>
+          <dt>$\tilde\alpha_n^\mu$</dt><dd>Left-moving oscillator modes — <em>independent</em> of the right-movers.</dd>
+          <dt>$\alpha'$</dt><dd>Regge slope; sets the overall string-length scale.</dd>
+        </dl>
+      </aside>
+
+      <p>Reality of $X^\mu$ requires $\alpha_{-n}^\mu = (\alpha_n^\mu)^*$ and similarly for $\tilde\alpha_n^\mu$. The factor of $i\sqrt{\alpha'/2}$ in front is a convention chosen so the commutation relations come out clean after quantization (Chapter VII).</p>
+
+      <p>Geometric reading: the string has a position, a momentum, and an infinite tower of oscillation modes labeled by integer $n$. Left- and right-moving modes are independent — physically, two trains of waves traveling around the loop in opposite directions, never interacting except through the Virasoro constraints.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Open string — Neumann boundary conditions</h2>
+
+      <p>An open string has $\sigma \in [0, \pi]$ with boundaries at the two endpoints. Varying the Polyakov action with $\sigma$ ranging over an interval produces, in addition to the bulk equation of motion, a boundary term</p>
+
+      <div class="equation-block">
+        $$ \frac{1}{2\pi\alpha'} \int \mathrm{d}\tau\, \big[ \partial_\sigma X^\mu\, \delta X_\mu \big]_{\sigma = 0}^{\sigma = \pi} \;=\; 0. $$
+      </div>
+
+      <p>For each direction $\mu$, we must impose either $\partial_\sigma X^\mu = 0$ (Neumann — the endpoint is free) or $\delta X^\mu = 0$ (Dirichlet — the endpoint is fixed). We treat each case in turn.</p>
+
+      <p>With Neumann boundary conditions on all $\mu$, $\partial_\sigma X^\mu\big|_{\sigma = 0, \pi} = 0$, the boundary forces left- and right-movers to be reflections of each other,</p>
+
+      <div class="equation-block">
+        $$ \tilde\alpha_n^\mu \;=\; \alpha_n^\mu. $$
+      </div>
+
+      <p>Only one set of oscillators survives. The mode expansion combines them as cosines, which manifestly satisfy Neumann boundaries:</p>
+
+      <div class="equation-block">
+        $$ X^\mu(\tau, \sigma) \;=\; x^\mu + 2\alpha'\, p^\mu\, \tau + i\sqrt{2\alpha'}\, \sum_{n \neq 0} \frac{\alpha_n^\mu}{n}\, e^{-in\tau}\, \cos(n\sigma). $$
+      </div>
+
+      <p>Compared to the closed string, the open string has half as many oscillators and twice the prefactor on the momentum term — these conventions arise from carefully matching the worldsheet integration ranges.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Open string — Dirichlet boundary conditions and D-branes</h2>
+
+      <p>Suppose instead we impose Dirichlet conditions on some directions, say $X^I(\tau, 0) = X^I(\tau, \pi) = c^I$ (a constant) for $I = p+1, \dots, D-1$, while keeping Neumann conditions for the remaining $\mu = 0, 1, \dots, p$ directions.</p>
+
+      <p>Geometrically, this says: the two ends of the string are constrained to lie on a fixed $(p+1)$-dimensional submanifold of spacetime — the hyperplane $X^I = c^I$. That submanifold is what we call a <strong>D$p$-brane</strong>.</p>
+
+      <aside class="jargon">
+        <h4>D-brane</h4>
+        <p>A <strong>D$p$-brane</strong> is a $(p+1)$-dimensional submanifold of spacetime on which open strings end. The "D" stands for Dirichlet — the boundary condition that nails the string endpoint to the brane. D-branes are not auxiliary: in the modern picture they are dynamical objects in their own right (with their own action, the Dirac–Born–Infeld action; Chapter XIII), carrying tension and Ramond–Ramond charge.</p>
+      </aside>
+
+      <p>The mode expansion now mixes cosines (in Neumann directions) and sines (in Dirichlet directions):</p>
+
+      <div class="equation-block">
+        $$ X^\mu(\tau, \sigma) \;=\; x^\mu + 2\alpha'\, p^\mu\, \tau + i\sqrt{2\alpha'}\, \sum_{n \neq 0} \frac{\alpha_n^\mu}{n}\, e^{-in\tau}\, \cos(n\sigma) \quad (\mu = 0,\dots,p), $$
+      </div>
+
+      <div class="equation-block">
+        $$ X^I(\tau, \sigma) \;=\; c^I + \sqrt{2\alpha'}\, \sum_{n \neq 0} \frac{\alpha_n^I}{n}\, e^{-in\tau}\, \sin(n\sigma) \quad (I = p+1,\dots,D-1). $$
+      </div>
+
+      <p>Notice that in Dirichlet directions there is no $p^I$ — the brane has no momentum in the directions transverse to itself (it is pinned), and there is no $x^I$ either, only the constant $c^I$ giving the brane's position.</p>
+
+      <p>The geometric picture is striking. <em>Where open strings are allowed to end is itself a geometric object in spacetime.</em> Multiple branes mean multiple submanifolds; stacks of $N$ parallel branes give $N^2$ varieties of open strings (one for each pair of branes the endpoints attach to) — which, when quantized, are exactly the bosons of a $U(N)$ gauge theory living on the brane. This is the geometric origin of the gauge theories in string theory.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Virasoro constraints in mode form</h2>
+
+      <p>The Virasoro constraints $T_{\pm\pm} = 0$ from Chapter V §5 translate into conditions on the modes. Define the Fourier coefficients of the stress tensor as</p>
+
+      <div class="equation-block">
+        $$ L_n \;=\; \frac{1}{2} \sum_{m \in \mathbb{Z}} \alpha_{n-m}^\mu\, \alpha_m{}_\mu, \qquad \tilde L_n \;=\; \frac{1}{2} \sum_{m \in \mathbb{Z}} \tilde\alpha_{n-m}^\mu\, \tilde\alpha_m{}_\mu, $$
+      </div>
+
+      <p>where we have introduced the convention $\alpha_0^\mu \equiv \sqrt{\alpha'/2}\, p^\mu$ (closed) or $\alpha_0^\mu \equiv \sqrt{2\alpha'}\, p^\mu$ (open). The classical Virasoro constraints are simply $L_n = 0$ for all $n$ (and $\tilde L_n = 0$ in the closed case).</p>
+
+      <p>The $L_0$ constraint deserves special attention. Evaluating gives</p>
+
+      <div class="equation-block">
+        $$ L_0 \;=\; \tfrac{1}{2}\alpha_0^2 + \sum_{m \geq 1} \alpha_{-m}^\mu \alpha_m{}_\mu \;=\; \tfrac{\alpha'}{4}\, p^\mu p_\mu + N, $$
+      </div>
+
+      <p>(in the closed string normalization), where $N = \sum_{m \geq 1} \alpha_{-m} \cdot \alpha_m$ is the right-moving <strong>level number</strong>. Setting $L_0 = 0$ and using $p^\mu p_\mu = -M^2$ gives the classical mass formula</p>
+
+      <div class="equation-block">
+        $$ \alpha' M^2 \;=\; 4N \quad (\text{closed, classical}). $$
+      </div>
+
+      <p>The string's mass-squared is its internal oscillation energy, in units of $1/\alpha'$. Quantum corrections (normal-ordering) will shift this by a constant; that shift, plus the requirement that the Virasoro algebra close consistently, will fix the spacetime dimension in Chapter VIII.</p>
+
+      <p>For closed strings there is an additional condition: $L_0 = \tilde L_0$, i.e. $N = \tilde N$ — the <strong>level-matching condition</strong>. Left- and right-moving oscillator energies must be equal. Geometrically: the closed string is a loop and has no special point, so we cannot tell left from right without a reference — the symmetry between them is enforced by the constraint.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The string as a tower of oscillators</h2>
+
+      <p>Stripping the formalism away, the picture is this. A classical relativistic string is a set of harmonic oscillators — one $\alpha_n^\mu$ for each integer $n \neq 0$ and each spacetime direction $\mu$ — sharing a common center-of-mass position and momentum. The oscillators move as Fourier components of a vibrating string, exactly as on a guitar; spacetime tension is what couples them.</p>
+
+      <p>Different excitation patterns are different particles. Set every $\alpha_n^\mu = 0$ and you have a massless point — the lowest-mass state. Excite the $n=1$ mode and you get a heavier state; excite $n=2$ heavier still. The integer $n$ labels Fourier mode; $\mu$ labels spacetime direction; together they index the string's infinite-dimensional space of internal states.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>The vibrating string</h2>
+
+      <p>The widget below shows an open string with Neumann boundary conditions in its first few modes,</p>
+
+      <div class="equation-block">
+        $$ X^\perp(\tau, \sigma) \;=\; \sum_{n=1}^{N_{\max}} A_n\, \cos(n\sigma)\, \cos(n\tau), $$
+      </div>
+
+      <p>plotted as a curve in transverse space at the current worldsheet time $\tau$. Drag the amplitude sliders and watch the shape change; press play to animate $\tau$ and see each mode oscillate at its natural frequency. The lowest mode ($n=1$) is a single bend; higher modes are increasingly wiggly standing waves with $n+1$ nodes.</p>
+
+      <section class="interactive" data-widget="string-modes" aria-label="Vibrating open string">
+        <header>
+          <h4>Interactive · Vibrating open string</h4>
+          <span class="hint">amplitudes · play / pause</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The string at the current $\tau$ is shown as a curve in transverse space. Each mode $n$ is a standing wave $\cos(n\sigma)\cos(n\tau)$ with $n+1$ nodes (counting endpoints). The full classical motion of the string is the superposition of all these modes; quantization will turn each amplitude into a creation/annihilation operator.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§8</span>What we carry forward</h2>
+
+      <ol>
+        <li>The classical string solves $\partial_+\partial_- X^\mu = 0$, with left- and right-moving sectors mixed by boundary/periodicity conditions.</li>
+        <li>Closed strings have independent left and right oscillators $\tilde\alpha_n^\mu, \alpha_n^\mu$; open strings with Neumann boundaries identify them.</li>
+        <li>Dirichlet boundary conditions on a subset of directions force the open-string endpoints to lie on a submanifold — a <strong>D-brane</strong>. This is the geometric origin of D-branes from the worldsheet.</li>
+        <li>The Virasoro constraints become $L_n = 0$ on the modes; the $L_0$ component gives the classical mass formula $\alpha' M^2 = 4N$ (closed) or $\alpha' M^2 = N$ (open).</li>
+        <li>Level-matching $N = \tilde N$ holds for closed strings — a topological fact about the loop.</li>
+      </ol>
+
+      <p>Chapter VII promotes these classical oscillators to quantum operators, computes their commutation relations, and reads off the lowest few states of the string spectrum — including the massless spin-2 mode that becomes the graviton.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Joseph Polchinski.</span> <em>String Theory, Vol. I.</em> §1.3 — closed and open mode expansions, boundary conditions, classical Virasoro generators.</li>
+          <li><span class="src-title">David Tong.</span> <em>Lectures on String Theory.</em> §2.1–§2.2 — mode expansions and constraints in close-to-our notation.</li>
+          <li><span class="src-title">Barton Zwiebach.</span> <em>A First Course in String Theory</em>, 2nd ed., Cambridge University Press, 2009 — Chapters 6–7 for an extra-careful pedagogical treatment of open and closed strings.</li>
+          <li><span class="src-title">Joseph Polchinski.</span> "Dirichlet branes and Ramond–Ramond charges." <em>Phys. Rev. Lett.</em> 75, 4724 (1995), <code>hep-th/9510017</code> — the paper that identified Dirichlet boundary conditions with dynamical, charged objects (D-branes).</li>
+          <li><span class="src-title">J. Dai, R. G. Leigh, J. Polchinski.</span> "New connections between string theories." <em>Mod. Phys. Lett.</em> A4, 2073 (1989) — earlier paper introducing Dirichlet boundary conditions in string theory.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="05-symmetries-worldsheet.html"><span class="label">← Previous</span>V · Symmetries of the Worldsheet</a>
+      <a class="next" href="07-quantization-virasoro.html"><span class="label">Next chapter</span>VII · Quantization and the Conformal Algebra →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/string-modes.js"></script>
+</body>
+</html>

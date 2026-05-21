@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter VIII · The Critical Dimension — String Theory: A Primer</title>
+  <meta name="description" content="Chapter 8 of String Theory: A Primer. The conformal anomaly, zeta-function regularization, and the derivation that fixes spacetime to 26 dimensions for bosonic strings." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter VIII of XV</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter VIII</p>
+      <h1 class="chapter-title">The Critical Dimension</h1>
+      <p class="lede">Quantizing the string honestly demands an anomaly cancellation. There is only one spacetime dimension in which the cancellation works. The number isn't four. It's twenty-six.</p>
+
+      <h2><span class="sec-num">§1</span>The anomaly we cannot ignore</h2>
+
+      <p>In Chapter VII we found that the quantum Virasoro algebra acquires a central extension,</p>
+
+      <div class="equation-block">
+        $$ [L_m, L_n] \;=\; (m - n)\, L_{m+n} \;+\; \frac{c}{12}\, (m^3 - m)\, \delta_{m+n,0}. $$
+      </div>
+
+      <p>The coefficient $c$ measures the conformal anomaly: the failure of Weyl invariance to survive quantization. Classically, Weyl was a gauge symmetry of the Polyakov action; if it remains anomalous after quantization, the gauge symmetry is broken and the worldsheet metric — which we set to $\eta_{ab}$ — is no longer pure gauge. The theory becomes inconsistent.</p>
+
+      <p>For consistency we must arrange for the <em>total</em> central charge of the worldsheet theory to vanish:</p>
+
+      <div class="equation-block">
+        $$ c_{\text{total}} \;=\; 0. $$
+      </div>
+
+      <p>Each free boson contributes $c = 1$. With $D$ free bosons from $X^\mu$, the matter sector gives $c_X = D$. Something must cancel this off. That something is the <strong>reparametrization ghosts</strong>.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Ghosts from gauge-fixing</h2>
+
+      <p>To gauge-fix $h_{ab} = \eta_{ab}$ rigorously in the path integral, one introduces Faddeev–Popov ghost fields $b_{ab}$ and $c^a$. These are anticommuting fields with a specific kinetic action,</p>
+
+      <div class="equation-block">
+        $$ S_{\text{ghost}} \;=\; \frac{1}{2\pi} \int \mathrm{d}^2\sigma\, b_{ab}\, \partial^a c^b, $$
+      </div>
+
+      <p>and they carry a contribution to the central charge that comes out, after careful computation, to</p>
+
+      <div class="equation-block">
+        $$ c_{\text{ghost}} \;=\; -26. $$
+      </div>
+
+      <p>The negative sign is the algebraic content of being anticommuting; the magnitude $26$ comes from the $b, c$ system having conformal weights $(2, -1)$ — these particular weights, dictated by the structure of the gauge symmetry being fixed, deliver this specific number. Total anomaly cancellation requires</p>
+
+      <div class="equation-block">
+        $$ \boxed{\; c_X + c_{\text{ghost}} \;=\; D - 26 \;=\; 0 \quad\Longrightarrow\quad D \;=\; 26. \;} $$
+      </div>
+
+      <p>The spacetime dimension is fixed. Bosonic string theory lives in exactly twenty-six dimensions or it lives nowhere consistently.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The same answer from zero-point energies</h2>
+
+      <p>The same $D = 26$ can be read off without ever mentioning ghosts, by a route both elegant and (initially) alarming. Light-cone quantization fixes the gauge $X^+ = \tau / p^+$ explicitly. Only the $D - 2$ transverse oscillators remain physical, and there is no ghost sector. But now we have to evaluate the $L_0$ normal-ordering shift directly.</p>
+
+      <p>The Hamiltonian of a quantum harmonic oscillator with frequency $\omega$ has a zero-point energy $\omega / 2$. Each transverse oscillator of mode number $n$ contributes a zero-point energy $n/2$ to $L_0$, and we sum over all $n \geq 1$ and all $D - 2$ transverse directions:</p>
+
+      <div class="equation-block">
+        $$ a \;=\; \frac{D - 2}{2} \sum_{n = 1}^{\infty} n. $$
+      </div>
+
+      <p>The naive sum $\sum n$ diverges. But it is regularized by the <strong>Riemann zeta function</strong>: $\zeta(s) = \sum_{n=1}^\infty n^{-s}$ is convergent for $\mathrm{Re}(s) > 1$ and admits a unique analytic continuation to the whole complex plane. The continued value at $s = -1$ is</p>
+
+      <div class="equation-block">
+        $$ \zeta(-1) \;=\; -\frac{1}{12}, $$
+      </div>
+
+      <p>and accordingly</p>
+
+      <div class="equation-block">
+        $$ \sum_{n=1}^\infty n \;\;\longrightarrow\;\; -\frac{1}{12}. $$
+      </div>
+
+      <aside class="jargon">
+        <h4>What zeta regularization is doing</h4>
+        <p>Zeta-function regularization replaces a divergent sum by the analytic continuation of a nearby convergent one. It is not a swindle: the same finite answer drops out of every careful regulator (heat-kernel cutoff, point-splitting, dimensional regularization) for this particular sum. Physically, the regulator removes a divergent <em>self-energy</em> attributable to having infinitely many modes, leaving the finite Casimir-type shift that actually depends on the geometry of the worldsheet.</p>
+      </aside>
+
+      <p>Plugging in,</p>
+
+      <div class="equation-block">
+        $$ a \;=\; \frac{D - 2}{2} \cdot \left( -\frac{1}{12} \right) \;=\; -\frac{D - 2}{24}. $$
+      </div>
+
+      <p>Wait — but in Chapter VII we used $a = +1$ in the mass formula $\alpha' M^2 = N - a$. Why the sign disagreement?</p>
+
+      <p>The conventional sign is $a = (D-2)/24$, with the mass formula $\alpha' M^2 = N - a$. The light-cone derivation matches this once one is careful about signs in $L_0 = -p^- p^+ + $ (oscillator contributions). Setting $a = 1$ as the value that makes the level-$N=1$ state massless gives</p>
+
+      <div class="equation-block">
+        $$ 1 \;=\; \frac{D - 2}{24} \quad\Longrightarrow\quad D \;=\; 26. $$
+      </div>
+
+      <p>The same answer emerges. From the ghost picture: cancel the central charge. From the light-cone picture: the level-1 state had better be massless (otherwise we lose Lorentz invariance — see §4). Both routes converge on $D = 26$, no fudging.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The Lorentz-invariance route</h2>
+
+      <p>There is a third way to derive $D = 26$, complementary to the two above. In light-cone gauge we have explicitly broken manifest Lorentz invariance by singling out the directions $X^\pm$. For Lorentz invariance to be restored at the quantum level, the algebra of Lorentz generators $J^{\mu\nu}$ must close. The commutator $[J^{i-}, J^{j-}]$ should vanish — and a direct computation shows it does, provided</p>
+
+      <div class="equation-block">
+        $$ D = 26 \;\;\;\text{and}\;\;\; a = 1. $$
+      </div>
+
+      <p>The fact that three independent demands — anomaly cancellation, zero-point arithmetic, and Lorentz closure — all agree on the same $(D, a)$ is the strongest possible evidence that string theory wants twenty-six dimensions.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The tachyon problem</h2>
+
+      <p>With $a = 1$ confirmed, the bosonic string spectrum has a flaw: the open-string ground state $|0; p\rangle$ has</p>
+
+      <div class="equation-block">
+        $$ \alpha' M^2 \;=\; 0 - 1 \;=\; -1. $$
+      </div>
+
+      <p>It is a <strong>tachyon</strong> — a state of negative mass-squared. In quantum field theory, a tachyon is a sign that we are not at a stable vacuum; the potential $V(\phi) = \tfrac{1}{2} M^2 \phi^2 + \dots$ is upside down at our chosen point. For the closed string, the ground state is also tachyonic: $\alpha' M^2 / 4 = -1$.</p>
+
+      <p>The bosonic string is therefore unstable. Despite the elegance of $D = 26$ and the natural appearance of a massless graviton, the bosonic string cannot be a complete physical theory.</p>
+
+      <p>The cure is to add <strong>worldsheet supersymmetry</strong> (Chapter X). The resulting <em>superstring</em> has additional fermionic worldsheet fields whose ghost contributions shift the anomaly cancellation, leading to a different critical dimension — and a different tachyon situation. After a clever projection (the GSO projection), the superstring has no tachyon at all, and its critical dimension turns out to be</p>
+
+      <div class="equation-block">
+        $$ D_{\text{super}} \;=\; 10. $$
+      </div>
+
+      <p>The bosonic string of this chapter is therefore best thought of as a pedagogical warm-up; the physically interesting string lives in ten dimensions, not twenty-six. The geometric structure is the same.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Anomaly cancellation, visualized</h2>
+
+      <p>The widget below lets you watch the anomaly cancel as you vary $D$. The total central charge $c_{\text{total}}(D) = D - 26$ is plotted; it crosses zero at exactly $D = 26$. The bar below shows the level-1 mass-squared as a function of $D$, vanishing simultaneously.</p>
+
+      <section class="interactive" data-widget="anomaly" aria-label="Anomaly cancellation">
+        <header>
+          <h4>Interactive · Anomaly vs spacetime dimension</h4>
+          <span class="hint">drag D</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">Two consistency conditions for the bosonic string, plotted against $D$. <em>Top:</em> total central charge $c_{\text{total}} = D - 26$. <em>Bottom:</em> level-1 mass-squared $\alpha' M^2 = 1 - (D-2)/24$. Both vanish at $D = 26$. The string compels its own ambient dimension.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>What we carry forward</h2>
+
+      <ol>
+        <li>Anomaly cancellation in the bosonic string requires $c_{\text{total}} = c_X + c_{\text{ghost}} = D - 26 = 0$, fixing $D = 26$.</li>
+        <li>Zeta-function regularization of the zero-point sum $\sum n$ gives the finite value $-1/12$ and produces the same $D = 26$ from the requirement $(D-2)/24 = 1$.</li>
+        <li>Lorentz invariance in light-cone quantization independently demands $D = 26$ and $a = 1$.</li>
+        <li>The resulting spectrum contains a <strong>tachyon</strong> at level 0 — a sign of vacuum instability. The bosonic string is incomplete on its own.</li>
+        <li>Adding worldsheet supersymmetry (Chapter X) removes the tachyon (via the GSO projection) and reduces the critical dimension to $D = 10$.</li>
+      </ol>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Joseph Polchinski.</span> <em>String Theory, Vol. I.</em> §1.3 (light-cone quantization), §3.2 (BRST and the critical dimension), §2.5 (ghost central charge).</li>
+          <li><span class="src-title">David Tong.</span> <em>Lectures on String Theory.</em> §2.4 ("Light-Cone Quantization") and §4.2 ("Ghost Action") — derivations of $D=26$ via two routes.</li>
+          <li><span class="src-title">Peter Goddard, Jeffrey Goldstone, Charlton Rebbi, Charles Thorn.</span> "Quantum dynamics of a massless relativistic string." <em>Nucl. Phys.</em> B56, 109 (1973) — the original light-cone derivation of the critical dimension.</li>
+          <li><span class="src-title">M. Green, J. Schwarz, E. Witten.</span> <em>Superstring Theory, Vol. I.</em> §2.3 (covariant quantization), §2.6 (light-cone quantization) — definitive coverage.</li>
+          <li><span class="src-title">Bernhard Riemann.</span> "Über die Anzahl der Primzahlen unter einer gegebenen Größe," 1859 — for the functional equation that delivers $\zeta(-1) = -1/12$.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="07-quantization-virasoro.html"><span class="label">← Previous</span>VII · Quantization and the Conformal Algebra</a>
+      <a class="next" href="09-curved-backgrounds.html"><span class="label">Next chapter</span>IX · Strings on Curved Backgrounds →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/anomaly.js"></script>
+</body>
+</html>

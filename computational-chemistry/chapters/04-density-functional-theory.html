@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter IV · Density Functional Theory — Computational Chemistry: A Primer</title>
+  <meta name="description" content="Chapter 4: Hohenberg–Kohn theorems, the Kohn–Sham construction, Jacob's ladder of exchange–correlation functionals, and where DFT fails." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter IV of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter IV</p>
+      <h1 class="chapter-title">Density Functional Theory</h1>
+      <p class="lede">The wavefunction lives in $3N$ dimensions; the electron density lives in three. If everything we need to know is encoded in the density, we have escaped the curse of dimensionality — at the cost of a functional we will never know exactly.</p>
+
+      <h2><span class="sec-num">§1</span>The Hohenberg–Kohn theorems</h2>
+
+      <p>The electron density,</p>
+
+      <div class="equation-block">
+        $$ \rho(\mathbf{r}) \;=\; N \int |\Psi(\mathbf{r}, \mathbf{r}_2, \dots, \mathbf{r}_N)|^2 \, \dd\mathbf{r}_2 \cdots \dd\mathbf{r}_N, $$
+      </div>
+
+      <p>is a function of just three coordinates, integrating to the number of electrons $N$. Hohenberg and Kohn proved two results in 1964 that make density the natural variable of electronic structure.</p>
+
+      <p><strong>HK-1.</strong> For a system of electrons in an external potential $v_{\text{ext}}(\mathbf{r})$ (the electron–nucleus attraction), the ground-state density $\rho_0(\mathbf{r})$ uniquely determines $v_{\text{ext}}$, up to an irrelevant additive constant. Since $v_{\text{ext}}$ fixes the Hamiltonian and hence everything else, <em>all</em> ground-state properties are functionals of $\rho_0$.</p>
+
+      <p><strong>HK-2.</strong> There exists a universal functional $F[\rho]$, independent of $v_{\text{ext}}$, such that the total energy functional</p>
+
+      <div class="equation-block">
+        $$ E_v[\rho] \;=\; F[\rho] + \int v_{\text{ext}}(\mathbf{r})\, \rho(\mathbf{r}) \,\dd\mathbf{r} $$
+      </div>
+
+      <p>satisfies $E_v[\rho] \geq E_0$ for any trial density $\rho$, with equality only at the true ground-state density. The exact $\rho_0$ minimizes $E_v[\rho]$ subject to $\int \rho = N$.</p>
+
+      <aside class="jargon">
+        <h4>What HK promises, and what it doesn't</h4>
+        <p>The theorems prove that $F[\rho]$ exists and contains everything needed: kinetic energy, electron–electron interaction, exchange, correlation. They give no recipe for constructing it. Direct density-only theories (Thomas–Fermi, with its $T_{\text{TF}}[\rho] \propto \int \rho^{5/3}$) fail badly because the kinetic functional is impossible to approximate well from $\rho$ alone — and even tiny errors in $T[\rho]$ are catastrophic, because $T$ is a large positive number.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The Kohn–Sham trick</h2>
+
+      <p>Kohn and Sham (1965) found a way around the kinetic-energy disaster. Replace the interacting system with a fictitious system of $N$ <em>non-interacting</em> electrons in some effective potential $v_s(\mathbf{r})$, designed so that the non-interacting ground-state density is exactly equal to the true interacting ground-state density.</p>
+
+      <p>The non-interacting wavefunction is a single Slater determinant of <dfn title="Single-particle orbitals defined by the Kohn–Sham equations. They are not the true molecular orbitals — they are constructs whose density matches the real interacting density.">Kohn–Sham orbitals</dfn> $\varphi_i$, and the orbitals satisfy a single-particle Schrödinger equation:</p>
+
+      <div class="equation-block">
+        $$ \left[ -\frac{1}{2}\nabla^2 + v_s(\mathbf{r}) \right] \varphi_i(\mathbf{r}) \;=\; \varepsilon_i\, \varphi_i(\mathbf{r}), \qquad \rho(\mathbf{r}) = \sum_{i=1}^{N} |\varphi_i(\mathbf{r})|^2. $$
+      </div>
+
+      <p>The full energy is then partitioned</p>
+
+      <div class="equation-block">
+        $$ E[\rho] \;=\; T_s[\rho] + \int v_{\text{ext}}\,\rho \,\dd\mathbf{r} + J[\rho] + E_{\text{xc}}[\rho], $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$T_s[\rho]$</dt><dd>Kinetic energy of the non-interacting reference system. We have it exactly from the orbitals: $T_s = -\tfrac{1}{2}\sum_i \int \varphi_i^* \nabla^2 \varphi_i$.</dd>
+          <dt>$J[\rho]$</dt><dd>Classical (Hartree) Coulomb energy of the density: $\tfrac{1}{2}\iint \rho(\mathbf{r})\rho(\mathbf{r}')/|\mathbf{r}-\mathbf{r}'|\,\dd\mathbf{r}\,\dd\mathbf{r}'$. Includes the unphysical self-interaction of each electron with itself, to be partly canceled by $E_{\text{xc}}$.</dd>
+          <dt>$E_{\text{xc}}[\rho]$</dt><dd>The <em>exchange–correlation functional</em> — exchange (antisymmetry effects), correlation (electron avoidance), and the kinetic-energy difference $T_{\text{exact}} - T_s$. Everything we don't know explicitly is bundled here.</dd>
+        </dl>
+      </aside>
+
+      <p>Variational minimization with respect to the orbitals gives the effective Kohn–Sham potential</p>
+
+      <div class="equation-block">
+        $$ v_s(\mathbf{r}) \;=\; v_{\text{ext}}(\mathbf{r}) + \int \frac{\rho(\mathbf{r}')}{|\mathbf{r} - \mathbf{r}'|}\,\dd\mathbf{r}' + v_{\text{xc}}(\mathbf{r}), \qquad v_{\text{xc}}(\mathbf{r}) = \frac{\delta E_{\text{xc}}[\rho]}{\delta \rho(\mathbf{r})}. $$
+      </div>
+
+      <p>The Kohn–Sham equations look like Hartree–Fock equations with $\hat K$ (exchange) replaced by a <em>local</em> multiplicative potential $v_{\text{xc}}(\mathbf{r})$. They are solved by the same SCF loop as HF: build $\rho$ from orbitals, compute $v_s$, solve for new orbitals, repeat. Cost scales as $O(N^3)$ for orbital orthogonalization, dominated in practice by integral evaluation. For molecules of a few hundred atoms, KS-DFT is the only first-principles method that is routinely affordable.</p>
+
+      <p>If we knew the exact $E_{\text{xc}}[\rho]$, KS-DFT would be exact. We do not. The remaining art of DFT is constructing approximations.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Jacob's ladder</h2>
+
+      <p>Perdew's <em>Jacob's ladder</em> classifies XC functionals by what local information they sample from the density. Each rung adds another ingredient and, generally, another fraction of accuracy.</p>
+
+      <ol>
+        <li><strong>LDA</strong> — Local Density Approximation. $E_{\text{xc}}[\rho] = \int \rho(\mathbf{r})\,\varepsilon_{\text{xc}}^{\text{unif}}(\rho(\mathbf{r}))\,\dd\mathbf{r}$, with $\varepsilon_{\text{xc}}^{\text{unif}}$ taken from the uniform electron gas (Dirac exchange + a parametrization of QMC correlation, e.g. PW92). Overbinds molecules dramatically but is the right $\rho \to \infty$ limit.</li>
+        <li><strong>GGA</strong> — Generalized Gradient Approximation. Adds the local gradient: $E_{\text{xc}}[\rho, \nabla\rho]$. PBE, BLYP, PW91. Fixes most of LDA's overbinding; the workhorse for solids and large molecules.</li>
+        <li><strong>meta-GGA</strong> — adds the kinetic-energy density $\tau(\mathbf{r}) = \tfrac{1}{2}\sum_i |\nabla \varphi_i|^2$. TPSS, SCAN, r²SCAN. SCAN in particular satisfies all 17 known exact constraints on $E_{\text{xc}}$ and is currently the most reliable non-hybrid choice.</li>
+        <li><strong>Hybrid</strong> — replaces a fraction of DFT exchange with exact (Hartree–Fock) exchange computed from the KS orbitals: $E_{\text{x}}^{\text{hyb}} = a E_{\text{x}}^{\text{HF}} + (1-a) E_{\text{x}}^{\text{DFT}}$. B3LYP ($a \approx 0.20$), PBE0 ($a = 0.25$), and the range-separated hybrids ωB97X-V and ωB97X-D split exchange into short- and long-range pieces. Hybrids dominate molecular chemistry but cost an HF exchange evaluation per SCF iteration.</li>
+        <li><strong>Double hybrid</strong> — adds a fraction of MP2-style correlation on top: $E_{\text{c}}^{\text{DH}} = b E_{\text{c}}^{\text{MP2}} + (1-b) E_{\text{c}}^{\text{DFT}}$. DSD-PBEP86, B2PLYP. Best-in-class accuracy for thermochemistry; cost is dominated by the MP2 step, so they are no cheaper than MP2 itself.</li>
+      </ol>
+
+      <section class="interactive" data-widget="jacobs-ladder" aria-label="Jacob's ladder benchmarks">
+        <header>
+          <h4>Interactive · Jacob's ladder, on benchmarks</h4>
+          <span class="hint">click a functional to compare</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">Mean absolute errors (kcal/mol) on four standard test sets, for representative functionals from each rung. Atomization energies (W4-11), reaction barrier heights (BH76), non-covalent complexes (S66), and transition-metal organometallic reactions (MOR41). Numbers are illustrative literature values rounded to one decimal — exact values depend on basis set and software. Lower is better; the dashed line is 1 kcal/mol "chemical accuracy."</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Where DFT fails</h2>
+
+      <p>Three failure modes are worth knowing about because they affect what you should and shouldn't trust DFT to compute.</p>
+
+      <p><strong>Van der Waals attraction</strong> — long-range dispersion — arises from instantaneous correlated electron fluctuations across non-overlapping density distributions. Pure LDA/GGA/meta-GGA functionals don't see it: their integrand has no support where the densities don't overlap. The standard fix is an <em>a posteriori</em> dispersion correction (Grimme's D3 or D4), an empirical sum of $-C_6/r^6 - C_8/r^8 - \cdots$ terms over atom pairs with damping at short range. ωB97X-D and ωB97M-V have it built in. Without dispersion, π-stacking, layered solids, and even simple alkane dimer binding are completely missed.</p>
+
+      <p><strong>Self-interaction error</strong> (SIE). The Hartree term $J[\rho]$ has each electron repelling its own density, an unphysical contribution that the exact exchange would exactly cancel. Approximate $E_{\text{xc}}$ cancels it only partly. SIE makes electron density too delocalized: transition-state barriers come out too low, charge-transfer excitation energies are wrong, and the dissociation of $H_2^+$ — a one-electron system! — goes badly wrong at long range. Hybrids reduce SIE in proportion to their HF-exchange fraction.</p>
+
+      <p><strong>Strong (static) correlation</strong>. KS-DFT references a non-interacting determinant. When the true ground state is irreducibly multi-determinant — stretched bonds, biradicals, many transition-metal complexes — the assumption fails. Standard remedy: leave DFT for multireference methods (CASSCF, NEVPT2, DMRG), discussed briefly in Chapter VII. Active research on "ensemble DFT" and similar reformulations aims to fix this within DFT, but none are routine yet.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>What gets computed in practice</h2>
+
+      <p>For ordinary closed-shell organic molecules at equilibrium geometries, a hybrid GGA + dispersion correction (e.g. B3LYP-D3 or ωB97X-D) with a triple-zeta basis (def2-TZVP, cc-pVTZ) is the modern default. Energies and barriers come within 2–4 kcal/mol of CCSD(T)/CBS, geometries within ~0.01 Å of experiment, and vibrational frequencies within ~30 cm⁻¹ scaled appropriately.</p>
+
+      <p>For solids and surfaces, where hybrid HF exchange is expensive in plane-wave codes, PBE and SCAN dominate, sometimes with explicit $+U$ corrections for localized $d$-electrons (Chapter V). For metal complexes, ωB97X-V and r²SCAN have become the go-to choices in the last few years. For non-covalent interactions in large biomolecular systems, range-separated hybrids with dispersion or, increasingly, machine-learned potentials trained on DFT data (Chapters VIII–IX).</p>
+
+      <p>The pragmatic stance: DFT works astonishingly well across most of chemistry while being formally uncontrolled. Whenever a calculation looks marginal — close to a barrier crossing, an open-shell complex, a charge-transfer excited state — verify against a second functional from a different rung, or against CCSD(T) on a smaller cluster.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">P. Hohenberg and W. Kohn.</span> "Inhomogeneous electron gas." <em>Phys. Rev.</em> 136, B864 (1964) — the two theorems.</li>
+          <li><span class="src-title">W. Kohn and L. J. Sham.</span> "Self-consistent equations including exchange and correlation effects." <em>Phys. Rev.</em> 140, A1133 (1965) — the auxiliary non-interacting system.</li>
+          <li><span class="src-title">R. G. Parr and W. Yang.</span> <em>Density-Functional Theory of Atoms and Molecules.</em> Oxford 1989 — the textbook treatment.</li>
+          <li><span class="src-title">K. Burke.</span> "Perspective on density functional theory." <em>J. Chem. Phys.</em> 136, 150901 (2012); <em>The ABC of DFT</em>, freely available — readable, opinionated, recent.</li>
+          <li><span class="src-title">J. P. Perdew, K. Burke, M. Ernzerhof.</span> "Generalized gradient approximation made simple." <em>Phys. Rev. Lett.</em> 77, 3865 (1996) — PBE.</li>
+          <li><span class="src-title">J. Sun, A. Ruzsinszky, J. P. Perdew.</span> "Strongly constrained and appropriately normed semilocal density functional." <em>Phys. Rev. Lett.</em> 115, 036402 (2015) — SCAN.</li>
+          <li><span class="src-title">L. Goerigk et al.</span> "A look at the density functional theory zoo with the advanced GMTKN55 database." <em>Phys. Chem. Chem. Phys.</em> 19, 32184 (2017) — the most comprehensive recent benchmark study.</li>
+          <li><span class="src-title">S. Grimme, J. Antony, S. Ehrlich, H. Krieg.</span> "A consistent and accurate <em>ab initio</em> parametrization of density functional dispersion correction (DFT-D3)." <em>J. Chem. Phys.</em> 132, 154104 (2010) — D3 dispersion.</li>
+          <li><span class="src-title">N. Mardirossian and M. Head-Gordon.</span> "Thirty years of density functional theory in computational chemistry: an overview and extensive assessment of 200 density functionals." <em>Mol. Phys.</em> 115, 2315 (2017) — exhaustive review.</li>
+          <li><span class="src-title">A. J. Cohen, P. Mori-Sánchez, W. Yang.</span> "Challenges for density functional theory." <em>Chem. Rev.</em> 112, 289 (2012) — the canonical analysis of SIE and strong-correlation failures.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="03-basis-sets-and-correlation.html"><span class="label">Previous chapter</span>← III · Basis Sets and Correlation</a>
+      <a class="next" href="05-periodic-systems.html"><span class="label">Next chapter</span>V · Periodic Systems and Plane Waves →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/jacobs-ladder.js"></script>
+</body>
+</html>

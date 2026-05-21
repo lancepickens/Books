@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter VII · Quantization and the Conformal Algebra — String Theory: A Primer</title>
+  <meta name="description" content="Chapter 7 of String Theory: A Primer. Canonical quantization, the Virasoro algebra with central charge, and the string's lowest-mass states." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter VII of XV</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter VII</p>
+      <h1 class="chapter-title">Quantization and the Conformal Algebra</h1>
+      <p class="lede">Promote the oscillator coefficients to operators, work out their algebra, and the string spectrum tumbles out: a tachyon at the bottom, a massless gauge field for the open string, a graviton for the closed.</p>
+
+      <h2><span class="sec-num">§1</span>From oscillators to operators</h2>
+
+      <p>In conformal gauge the worldsheet action is $D$ free 2-d scalar fields. Promoting the classical mode coefficients $\alpha_n^\mu, \tilde\alpha_n^\mu$ to quantum operators, the canonical commutation relations $[X^\mu(\tau, \sigma), \Pi^\nu(\tau, \sigma')] = i \eta^{\mu\nu} \delta(\sigma - \sigma')$ translate to</p>
+
+      <div class="equation-block">
+        $$ [\alpha_m^\mu, \alpha_n^\nu] \;=\; m\, \delta_{m+n, 0}\, \eta^{\mu\nu}, \qquad [\tilde\alpha_m^\mu, \tilde\alpha_n^\nu] \;=\; m\, \delta_{m+n,0}\, \eta^{\mu\nu}, \qquad [\alpha_m^\mu, \tilde\alpha_n^\nu] \;=\; 0, $$
+      </div>
+
+      <p>together with $[x^\mu, p^\nu] = i \eta^{\mu\nu}$ for the zero modes. The reality conditions $\alpha_{-n}^\mu = (\alpha_n^\mu)^\dagger$ identify positive-$n$ modes with annihilation operators and negative-$n$ with creation. Up to a factor of $\sqrt{m}$, $\alpha_m$ and $\alpha_{-m}$ are the ladder operators of a harmonic oscillator — one for each spacetime direction and each integer mode number.</p>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$[A, B]$</dt><dd>Commutator $AB - BA$.</dd>
+          <dt>$\delta_{m+n,0}$</dt><dd>Kronecker delta — equals $1$ if $m = -n$, else $0$.</dd>
+          <dt>$\Pi^\nu$</dt><dd>Canonical momentum conjugate to $X^\nu$; equals $\dot X^\nu / (2\pi\alpha')$ in our normalization.</dd>
+        </dl>
+      </aside>
+
+      <p>One peculiarity: the timelike oscillators $\alpha_n^0$ commute to $-m$, not $+m$, because of $\eta^{00} = -1$. This means $\alpha_{-n}^0 |0\rangle$ has <em>negative</em> norm — a ghost. The Virasoro constraints will end up projecting these unphysical states out, but only when the spacetime dimension takes a very specific value. That story is Chapter VIII.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The Fock space</h2>
+
+      <p>The Hilbert space is built on a momentum eigenstate ground state $|0; p\rangle$ satisfying</p>
+
+      <div class="equation-block">
+        $$ \alpha_n^\mu\, |0; p\rangle \;=\; 0 \quad (n > 0), \qquad \hat p^\mu\, |0; p\rangle \;=\; p^\mu\, |0; p\rangle. $$
+      </div>
+
+      <p>General states are built by applying creation operators $\alpha_{-n}^\mu$ with $n > 0$:</p>
+
+      <div class="equation-block">
+        $$ |\psi\rangle \;=\; \prod_{n, \mu} \big(\alpha_{-n}^\mu\big)^{N_{n,\mu}}\, |0; p\rangle. $$
+      </div>
+
+      <p>The total <strong>level</strong> of a state is $N = \sum_n n\, N_{n,\mu}$ — the energy carried by oscillator excitations, in units of $1/\alpha'$. For closed strings we have two independent Fock spaces (left and right movers), and the total Hilbert space is a tensor product.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The Virasoro algebra and the central charge</h2>
+
+      <p>The classical Virasoro generators $L_n = \tfrac{1}{2}\sum_m \alpha_{n-m} \cdot \alpha_m$ become operators after quantization. The product $\alpha_{n-m} \cdot \alpha_m$ is ill-defined when the two factors don't commute (which happens for $L_0$, where $m = 0$ involves $\alpha_0$, and for negative $m$). Standard practice is <strong>normal ordering</strong>: put all creation operators to the left of all annihilation operators. The price of ordering is a constant shift in $L_0$ only:</p>
+
+      <div class="equation-block">
+        $$ L_0 \;=\; \frac{1}{2} \alpha_0^2 + \sum_{m \geq 1} \alpha_{-m} \cdot \alpha_m \;+\; \text{(c-number constant)}. $$
+      </div>
+
+      <p>The crucial fact is that the commutator of two normal-ordered $L_n$'s does <em>not</em> close on the classical Witt algebra. It picks up an extra term — the <strong>central extension</strong> — giving the <strong>Virasoro algebra</strong>:</p>
+
+      <div class="equation-block">
+        $$ \boxed{\; [L_m, L_n] \;=\; (m - n)\, L_{m+n} \;+\; \frac{c}{12}\, (m^3 - m)\, \delta_{m+n, 0}. \;} $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$c$</dt><dd><strong>Central charge</strong> — a c-number measuring the failure of the classical conformal symmetry to survive quantization. For $D$ free bosons, $c = D$.</dd>
+        </dl>
+      </aside>
+
+      <p>The extra $(c/12)(m^3 - m)$ piece is the <strong>conformal anomaly</strong>. It is the algebraic shadow of the fact that there is no way to quantize the worldsheet stress tensor while strictly preserving its tracelessness — at the quantum level, $\langle T^a{}_a \rangle = -c R / 12$, where $R$ is the worldsheet Ricci scalar. The trace doesn't vanish; it equals an anomaly proportional to the central charge.</p>
+
+      <aside class="jargon">
+        <h4>Anomaly</h4>
+        <p>An <strong>anomaly</strong> is a classical symmetry that fails to survive quantization. The Virasoro central extension is a conformal anomaly; chiral and gauge anomalies appear elsewhere in physics. Geometrically, anomalies are characteristic classes of certain bundles — the central charge $c$ is one such number. Anomalies are not bugs to be papered over but features that constrain which theories are consistent.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Physical states</h2>
+
+      <p>In the classical theory we required $L_n = 0$ for all $n$. We cannot impose this as an operator equation in the quantum theory (the algebra wouldn't close), so instead we demand it weakly:</p>
+
+      <div class="equation-block">
+        $$ L_n\, |\psi\rangle \;=\; 0 \quad (n > 0), \qquad (L_0 - a)\, |\psi\rangle \;=\; 0. $$
+      </div>
+
+      <p>The constant $a$ is the normal-ordering shift in $L_0$. For the bosonic string a careful computation (zeta-function regularization, Chapter VIII) gives $a = 1$ — the famous result $1 + 2 + 3 + \dots = -1/12$ is what makes this finite and well-defined.</p>
+
+      <p>For closed strings we impose $L_n |\psi\rangle = 0$ and $\tilde L_n |\psi\rangle = 0$ separately for $n > 0$, plus level-matching $L_0 = \tilde L_0$, $N = \tilde N$.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The mass formula</h2>
+
+      <p>The $L_0 = a$ condition becomes the quantum mass-shell relation. For the open string,</p>
+
+      <div class="equation-block">
+        $$ \alpha' M^2 \;=\; N - a. $$
+      </div>
+
+      <p>For the closed string, using $\alpha_0^\mu = \tilde\alpha_0^\mu = \sqrt{\alpha'/2}\, p^\mu$,</p>
+
+      <div class="equation-block">
+        $$ \frac{\alpha' M^2}{4} \;=\; N - a \;=\; \tilde N - a. $$
+      </div>
+
+      <p>The string is an infinite tower of states, one for each $N$, with mass-squared spaced by $1/\alpha'$. Different levels carry different spins and field content. At low energies the heavy modes decouple and only the massless and lightest massive ones matter — which is why string theory looks like ordinary field theory in any low-energy limit.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Reading off the lowest states</h2>
+
+      <p>Take $a = 1$ (anticipating Chapter VIII) and read off levels.</p>
+
+      <p><strong>Open string, $N = 0$:</strong> $\alpha' M^2 = -1$. A <em>tachyon</em> — a state of negative mass-squared, instability. This is a defect of the purely bosonic theory and is removed by adding worldsheet supersymmetry (Chapter X).</p>
+
+      <p><strong>Open string, $N = 1$:</strong> $\alpha' M^2 = 0$. The state $\alpha_{-1}^\mu |0; p\rangle$ is a <em>massless vector</em> — it transforms as a Lorentz vector and has $D - 2$ physical polarizations after constraints. This is the photon-like gauge mode of the open string. With $N$ coincident D-branes, the analogous construction gives a $U(N)$ gauge boson.</p>
+
+      <p><strong>Closed string, $N = \tilde N = 1$:</strong> $\alpha' M^2 = 0$ again, but now built from a left- and right-moving oscillator: $\alpha_{-1}^\mu \tilde\alpha_{-1}^\nu |0; p\rangle$. This is a rank-2 tensor representation, which decomposes into</p>
+
+      <ul>
+        <li>a symmetric traceless part — the <strong>graviton</strong> $h_{\mu\nu}$,</li>
+        <li>an antisymmetric part — the <strong>Kalb–Ramond 2-form</strong> $B_{\mu\nu}$, and</li>
+        <li>a trace part — the <strong>dilaton</strong> $\Phi$.</li>
+      </ul>
+
+      <p>This is the most consequential result so far in the book. <em>Quantizing the closed string automatically produces a massless spin-2 field with exactly the symmetries of a graviton.</em> Weinberg's theorem (Chapter I §3) then tells us that, at low energy, the dynamics of this field must reduce to general relativity. String theory contains gravity, not by construction, but by consistency.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>The Fock space, visualized</h2>
+
+      <p>Picturing the string Hilbert space helps. The widget below builds open-string states up by applying creation operators $\alpha_{-n}^i$ (transverse directions only, for clarity). Each node is a state; each arrow is the action of $\alpha_{-n}$. The horizontal axis is total level $N$; the mass-squared of each state (in units of $1/\alpha'$, with $a = 1$) is shown below.</p>
+
+      <section class="interactive" data-widget="fock-tower" aria-label="Fock space tower">
+        <header>
+          <h4>Interactive · Building the string spectrum</h4>
+          <span class="hint">click a creation operator</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The bosonic open-string spectrum, up to level $N = 4$. Each row is a level $N$; the columns within a row are the independent occupation patterns of the oscillators $\alpha_{-1}, \alpha_{-2}, \dots$ . With $a = 1$ the lowest state has $\alpha' M^2 = -1$ (tachyon); level $N=1$ is the massless gauge boson; higher levels are increasingly massive.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§8</span>What we carry forward</h2>
+
+      <ol>
+        <li>The classical oscillators $\alpha_n^\mu$ become quantum operators with $[\alpha_m, \alpha_n] = m \delta_{m+n} \eta^{\mu\nu}$ — ladder operators of independent harmonic oscillators.</li>
+        <li>The Virasoro generators $L_n$ obey an algebra with a <strong>central extension</strong> proportional to $c$, the central charge. For $D$ free bosons, $c = D$.</li>
+        <li>Physical states satisfy $L_{n>0}|\psi\rangle = 0$ and $(L_0 - a)|\psi\rangle = 0$ — a quantum version of the classical Virasoro constraints.</li>
+        <li>The resulting mass formula $\alpha' M^2 = N - a$ gives an infinite tower of states, $1/\alpha'$ apart.</li>
+        <li>At $N = 1$ the open string gives a <strong>massless vector</strong>; the closed string gives a <strong>massless symmetric tensor</strong> (the graviton), antisymmetric 2-form, and dilaton. String theory contains gravity for free.</li>
+      </ol>
+
+      <p>One question remains. We have used $a = 1$ and a particular spacetime dimension $D$ without justifying either. Chapter VIII shows that consistency — the absence of negative-norm states from the spectrum — forces $a = 1$ <em>and</em> $D = 26$ simultaneously.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Joseph Polchinski.</span> <em>String Theory, Vol. I.</em> §2.7 (Virasoro algebra), §4.1 (old covariant quantization).</li>
+          <li><span class="src-title">David Tong.</span> <em>Lectures on String Theory.</em> §2.3–§2.4 — Fock space, ghosts, and the BRST formulation; clean and pedagogical.</li>
+          <li><span class="src-title">M. Virasoro.</span> "Subsidiary conditions and ghosts in dual-resonance models." <em>Phys. Rev.</em> D1, 2933 (1970) — the original constraints in the dual-resonance framework that became string theory.</li>
+          <li><span class="src-title">M. Green, J. Schwarz, E. Witten.</span> <em>Superstring Theory, Vol. I.</em> Cambridge University Press, 1987 — Chapter 2 for the classic covariant quantization treatment.</li>
+          <li><span class="src-title">P. Di Francesco, P. Mathieu, D. Sénéchal.</span> <em>Conformal Field Theory.</em> Ch. 4–6 — the Virasoro algebra and central charge in CFT generality.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="06-classical-string.html"><span class="label">← Previous</span>VI · Solving the Classical String</a>
+      <a class="next" href="08-critical-dimension.html"><span class="label">Next chapter</span>VIII · The Critical Dimension →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/fock-tower.js"></script>
+</body>
+</html>

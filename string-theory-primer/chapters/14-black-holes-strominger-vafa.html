@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter XIV · Black Holes and Strominger–Vafa — String Theory: A Primer</title>
+  <meta name="description" content="Chapter 14 of String Theory: A Primer. Bekenstein–Hawking entropy and its first microscopic derivation: Strominger and Vafa's 1996 brane construction." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter XIV of XV</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter XIV</p>
+      <h1 class="chapter-title">Black Holes and Strominger–Vafa</h1>
+      <p class="lede">Black holes have entropy proportional to area. Strominger and Vafa, in 1996, built a specific black hole out of wrapped D-branes and counted its microscopic states. The numbers agreed exactly.</p>
+
+      <h2><span class="sec-num">§1</span>The puzzle of black-hole entropy</h2>
+
+      <p>Hawking and Bekenstein, between 1972 and 1975, established that a black hole has an entropy proportional to the area of its event horizon:</p>
+
+      <div class="equation-block">
+        $$ S_{\mathrm{BH}} \;=\; \frac{A}{4 G \hbar} \;=\; \frac{A}{4 \ell_P^2}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$A$</dt><dd>Surface area of the event horizon.</dd>
+          <dt>$\ell_P = \sqrt{\hbar G / c^3}$</dt><dd>Planck length, recovered (Chapter I) as the natural scale of quantum gravity. In units $\hbar = c = 1$, $\ell_P = \sqrt{G}$.</dd>
+        </dl>
+      </aside>
+
+      <p>This is a serious surprise. Entropy in statistical mechanics counts microstates: $S = \ln \Omega$, where $\Omega$ is the number of distinguishable microscopic configurations consistent with the macroscopic state. For a black hole described purely by general relativity, the only macroscopic data are its mass, charge, and angular momentum (the "no-hair" theorem). What are the $e^{S_{\mathrm{BH}}}$ microstates the entropy is counting?</p>
+
+      <p>Solving this puzzle is one of the historic motivations for quantum gravity. From the 1970s onward, microstate counting was the gold-standard benchmark: any candidate theory of quantum gravity should derive $S_{\mathrm{BH}}$ from first principles, by enumerating its microscopic degrees of freedom.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The Strominger–Vafa setup</h2>
+
+      <p>In January 1996, Andrew Strominger and Cumrun Vafa achieved this for the first time, for a particular five-dimensional black hole.</p>
+
+      <p>Take Type IIB string theory and compactify five dimensions: four into a $T^4$ and one into a small circle $S^1$ of radius $R$. The remaining non-compact spacetime is 5-dimensional. Inside this compactified theory, build a stack of branes:</p>
+
+      <ul>
+        <li>$Q_1$ D1-branes wrapping the $S^1$,</li>
+        <li>$Q_5$ D5-branes wrapping the full $T^4 \times S^1$,</li>
+        <li>and momentum $N/R$ flowing along the $S^1$ direction (effectively $N$ units of KK momentum).</li>
+      </ul>
+
+      <p>From the 5-d perspective this configuration looks like a single object — a point in 5-d spacetime carrying three conserved charges $(Q_1, Q_5, N)$. It is a <strong>BPS state</strong>: its mass saturates the bound set by its charges, so its properties are protected against the strong-to-weak-coupling extrapolation we are about to perform.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The macroscopic black hole</h2>
+
+      <p>At strong string coupling $g_s$, the brane stack back-reacts on spacetime: it sources gravity, and the gravitational solution describes a 5-dimensional extremal black hole with horizon area</p>
+
+      <div class="equation-block">
+        $$ A \;=\; 8 \pi^2 G_5 \sqrt{Q_1 Q_5 N}, $$
+      </div>
+
+      <p>(in suitable units), whose Bekenstein–Hawking entropy is</p>
+
+      <div class="equation-block">
+        $$ S_{\mathrm{BH}} \;=\; \frac{A}{4 G_5} \;=\; 2 \pi \sqrt{Q_1 Q_5 N}. $$
+      </div>
+
+      <p>This is the macroscopic side of the calculation: a smooth GR computation, no string-theory specifics beyond the consistent embedding into supergravity.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The microscopic count</h2>
+
+      <p>At weak string coupling $g_s$, the same configuration is not a black hole — the gravitational back-reaction is negligible and we can think of $Q_1$ D1-branes and $Q_5$ D5-branes sitting in flat space, with $N$ units of momentum running along them.</p>
+
+      <p>The bound state of $Q_1$ D1-branes inside $Q_5$ D5-branes, with momentum $N$, is the worldvolume theory of the D1-branes inside the D5-branes — a $(1+1)$-dim sigma model with target the symmetric product</p>
+
+      <div class="equation-block">
+        $$ \mathrm{Sym}^{Q_1 Q_5}(T^4) \;=\; (T^4)^{Q_1 Q_5} / S_{Q_1 Q_5}, $$
+      </div>
+
+      <p>at central charge $c = 6 Q_1 Q_5$. We need to count states of this 2-d CFT with momentum $N$.</p>
+
+      <p>The number of states at high momentum in a 2-d CFT is given by the <strong>Cardy formula</strong>,</p>
+
+      <div class="equation-block">
+        $$ \Omega(N) \;\sim\; \exp\!\left( 2\pi \sqrt{\frac{c\, N}{6}} \right). $$
+      </div>
+
+      <p>Substituting $c = 6 Q_1 Q_5$ gives</p>
+
+      <div class="equation-block">
+        $$ \Omega(Q_1, Q_5, N) \;\sim\; \exp\!\left( 2\pi \sqrt{Q_1 Q_5 N} \right), $$
+      </div>
+
+      <p>and the microscopic entropy is</p>
+
+      <div class="equation-block">
+        $$ \boxed{\; S_{\mathrm{micro}} \;=\; \ln \Omega \;=\; 2\pi \sqrt{Q_1 Q_5 N}. \;} $$
+      </div>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The match</h2>
+
+      <p>Compare:</p>
+
+      <div class="equation-block">
+        $$ S_{\mathrm{BH}} \;=\; 2\pi\sqrt{Q_1 Q_5 N} \;=\; S_{\mathrm{micro}}. $$
+      </div>
+
+      <p>Exact, at leading order in large charges, with no free parameters. The macroscopic Bekenstein–Hawking formula and the microscopic count of brane bound-state configurations agree to the digit.</p>
+
+      <p>This was the first time the entropy of any black hole had been derived from a controlled microscopic theory of quantum gravity. The microstates the Bekenstein–Hawking formula was counting all along turned out to be the internal states of bound branes wrapping cycles of the compactification manifold.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>What changed</h2>
+
+      <p>The Strominger–Vafa calculation transformed the status of string theory:</p>
+
+      <ol>
+        <li>It established that string theory contains a complete microscopic description of (a class of) black holes, with quantum states one could count.</li>
+        <li>It validated the BPS state-counting machinery: the count is protected by supersymmetry, so the same answer holds at any coupling — including the strong-coupling regime where the BH actually exists.</li>
+        <li>It opened the door to more sophisticated calculations: subleading corrections, near-extremal black holes, and rotating cases were all worked out in the following years, with similar agreement.</li>
+        <li>It motivated the more general holographic duality of Chapter XV: the same near-horizon physics that produces $S_{\mathrm{BH}}$ is the geometric reflection of a boundary CFT, and Maldacena's AdS/CFT proposal grew directly out of these brane-counting calculations.</li>
+      </ol>
+
+      <p>Two important caveats: (a) only certain BPS or near-BPS black holes are tractable. Garden-variety astrophysical black holes (Schwarzschild, Kerr) are not BPS and the microstate count for them is not directly accessible by these methods. (b) Even for the BPS cases, the explicit construction of individual microstates — the "fuzzball" program of Mathur and others — remains an active research area, and the picture of <em>which</em> microstates the count is enumerating is still being refined.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Entropy, both ways</h2>
+
+      <p>The widget below shows $S_{\mathrm{BH}} = 2\pi\sqrt{Q_1 Q_5 N}$ as a function of the three brane charges. The two routes — area-law and microstate count — give the same number; the agreement is automatic once you've set up the brane construction correctly.</p>
+
+      <section class="interactive" data-widget="strominger-vafa" aria-label="Strominger-Vafa entropy">
+        <header>
+          <h4>Interactive · Strominger–Vafa entropy</h4>
+          <span class="hint">drag charges</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">Tune the three brane charges and watch the entropy from both sides of the equation. $S_{\mathrm{BH}}$ comes from the horizon area of the 5-d black hole; $S_{\mathrm{micro}}$ comes from the Cardy formula on the D1–D5 worldvolume CFT. The square-root dependence on $Q_1 Q_5 N$ is the signature of the agreement.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§8</span>What we carry forward</h2>
+
+      <ol>
+        <li>Black holes have entropy $S_{\mathrm{BH}} = A/(4 G \hbar)$ from Bekenstein–Hawking, posing the question: what microstates is this counting?</li>
+        <li>Strominger and Vafa (1996) constructed a 5-d extremal BPS black hole out of $Q_1$ D1-branes, $Q_5$ D5-branes, and momentum $N$, all wrapping compactification cycles.</li>
+        <li>The microscopic count of bound states is given by the Cardy formula of a $(1+1)$-d CFT and equals $\exp(2\pi\sqrt{Q_1 Q_5 N})$.</li>
+        <li>This matches the Bekenstein–Hawking entropy $2\pi\sqrt{Q_1 Q_5 N}$ <em>exactly</em>, with no free parameters.</li>
+        <li>This was the first first-principles derivation of black-hole entropy from quantum gravity, and the technical foundation for the AdS/CFT correspondence (Chapter XV).</li>
+      </ol>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">A. Strominger, C. Vafa.</span> "Microscopic origin of the Bekenstein–Hawking entropy." <em>Phys. Lett.</em> B379, 99 (1996), <code>hep-th/9601029</code> — the original paper.</li>
+          <li><span class="src-title">J. M. Maldacena, A. Strominger, E. Witten.</span> "Black hole entropy in M-theory." <em>JHEP</em> 9712, 002 (1997), <code>hep-th/9711053</code> — extension to M-theory wrapped branes.</li>
+          <li><span class="src-title">Joseph Polchinski.</span> <em>String Theory, Vol. II.</em> §14.6 — pedagogical reconstruction of the calculation.</li>
+          <li><span class="src-title">Atish Dabholkar, Suresh Nampuri.</span> "Quantum black holes." <em>Lect. Notes Phys.</em> 851, 165 (2012), <code>arXiv:1208.4814</code> — broader picture of brane-counting black-hole entropy.</li>
+          <li><span class="src-title">J. D. Bekenstein.</span> "Black holes and entropy." <em>Phys. Rev.</em> D7, 2333 (1973); <span class="src-title">S. W. Hawking.</span> "Particle creation by black holes." <em>Commun. Math. Phys.</em> 43, 199 (1975) — the original entropy and Hawking-radiation papers.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="13-d-branes.html"><span class="label">← Previous</span>XIII · D-branes</a>
+      <a class="next" href="15-holography-ads-cft.html"><span class="label">Next chapter</span>XV · Holography: AdS/CFT →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/strominger-vafa.js"></script>
+</body>
+</html>

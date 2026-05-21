@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter II · Manifolds, Metrics, and the Action Principle — String Theory: A Primer</title>
+  <meta name="description" content="Chapter 2 of String Theory: A Primer. Smooth manifolds, tangent spaces, metric tensors, geodesics, and the action principle as a geometric statement." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter II of XV</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter II</p>
+      <h1 class="chapter-title">Manifolds, Metrics, and the Action Principle</h1>
+      <p class="lede">The geometric vocabulary we will use for the rest of the book. Manifolds let us do calculus on curved spaces, metrics let us measure, and the action principle selects the geometrically distinguished paths.</p>
+
+      <h2><span class="sec-num">§1</span>Spaces that look flat up close</h2>
+
+      <p>A <dfn title="A topological space that looks locally like ℝⁿ, with a globally consistent way to do calculus.">smooth manifold</dfn> is the geometric idea of a space that, while possibly curved or wrapped on the large scale, looks like ordinary flat $\mathbb{R}^n$ in any small enough patch. Formally: an $n$-dimensional smooth manifold $M$ is a topological space covered by open patches $U_\alpha$, each equipped with a homeomorphism (a "chart") $\varphi_\alpha : U_\alpha \to \mathbb{R}^n$, such that wherever two charts overlap, the change-of-coordinates map $\varphi_\beta \circ \varphi_\alpha^{-1}$ is smooth.</p>
+
+      <p>You should picture a manifold as a paper map of a curved object — a globe atlas. No single flat page covers the whole sphere, but a collection of overlapping pages does, and on each page we can do ordinary calculus. The smoothness condition says the overlaps must agree to all derivative orders, so vector calculus has unambiguous meaning across pages.</p>
+
+      <aside class="jargon">
+        <h4>Manifolds we'll meet</h4>
+        <p><strong>$\mathbb{R}^{1,3}$</strong> — flat Minkowski spacetime, the ambient setting of special relativity.</p>
+        <p><strong>$S^n$</strong> — the $n$-sphere; round, finite, no boundary.</p>
+        <p><strong>$T^n$</strong> — the $n$-torus, $\mathbb{R}^n$ modulo a lattice; the prototype of a compactified extra dimension.</p>
+        <p><strong>$\Sigma$</strong> — the 2-manifold a string sweeps out. A cylinder for a closed string; a strip with two free edges for an open string. Once we gauge-fix and pick a complex structure (Chapter V) it becomes a Riemann surface.</p>
+        <p><strong>Calabi–Yau 3-fold</strong> — a 6-real-dimensional complex manifold with very specific curvature properties; the geometric home of the six hidden dimensions in many superstring compactifications (Chapter XI).</p>
+      </aside>
+
+      <p>None of these are flat. All are smooth. What lets us do physics on them is that we can still take derivatives, integrate, and compare nearby points — by working chart by chart and demanding that statements be consistent on overlaps.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Tangent vectors as infinitesimal directions</h2>
+
+      <p>At every point $p \in M$ we attach a vector space called the <strong>tangent space</strong> $T_p M$. Geometrically, $T_p M$ is the space of all directions you can move infinitesimally out of $p$. For an embedded surface in $\mathbb{R}^3$, this is exactly the geometric tangent plane.</p>
+
+      <p>The clean intrinsic definition is that a tangent vector $v \in T_p M$ is a <em>derivation on smooth functions</em>: a linear map $v : C^\infty(M) \to \mathbb{R}$ obeying the Leibniz rule</p>
+
+      <div class="equation-block">
+        $$ v(fg) \;=\; v(f)\, g(p) + f(p)\, v(g). $$
+      </div>
+
+      <p>In a coordinate chart $x^\mu$, every tangent vector decomposes as</p>
+
+      <div class="equation-block">
+        $$ v \;=\; v^\mu\, \frac{\partial}{\partial x^\mu}\bigg|_p, $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$v^\mu$</dt><dd>Components of $v$ in the chart $x^\mu$; we are using the Einstein summation convention — repeated upper and lower indices are summed from $0$ to $n-1$.</dd>
+          <dt>$\partial/\partial x^\mu$</dt><dd>The coordinate basis of $T_pM$; geometrically, "move in the $\mu$-th coordinate direction holding the others fixed."</dd>
+        </dl>
+      </aside>
+
+      <p>A smooth assignment of a tangent vector at every point is a <strong>vector field</strong>. In a chart, $V = V^\mu(x)\, \partial_\mu$. Vector fields are what we differentiate functions <em>along</em> — they generate flows on the manifold.</p>
+
+      <aside class="note">
+        <h4>The dual side</h4>
+        <p>Dual to each $T_pM$ is the <strong>cotangent space</strong> $T_p^* M$ of <em>covectors</em>, with basis $\mathrm{d}x^\mu$. A general 1-form is $\omega = \omega_\mu \mathrm{d}x^\mu$, and contracts naturally with a vector: $\omega(v) = \omega_\mu v^\mu$. Upper indices live in $TM$, lower indices in $T^*M$. The metric, introduced next, gives a canonical way to swap.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The metric: how to measure</h2>
+
+      <p>A bare manifold is just a smooth space — it has no notion of length, angle, or orthogonality. To do physics we need a <strong>metric tensor</strong>: at every point $p$, a symmetric non-degenerate bilinear form $g_p : T_p M \times T_p M \to \mathbb{R}$. In coordinates,</p>
+
+      <div class="equation-block">
+        $$ g \;=\; g_{\mu\nu}(x)\, \mathrm{d}x^\mu \otimes \mathrm{d}x^\nu, $$
+      </div>
+
+      <p>with components $g_{\mu\nu}(x) = g_p\!\left(\partial_\mu, \partial_\nu\right)$ — a symmetric matrix at each point.</p>
+
+      <p>The metric lets us take inner products of tangent vectors,</p>
+
+      <div class="equation-block">
+        $$ \langle u, v \rangle \;=\; g_{\mu\nu}\, u^\mu v^\nu, $$
+      </div>
+
+      <p>and from there everything follows: lengths $|v|^2 = \langle v, v\rangle$, angles via the cosine formula, orthogonality. It also gives us a canonical way to raise and lower indices: $v_\mu = g_{\mu\nu} v^\nu$.</p>
+
+      <aside class="jargon">
+        <h4>Signature</h4>
+        <p>The <strong>signature</strong> of a metric is the pattern of $\pm$ signs of its eigenvalues at each point. A <em>Riemannian</em> metric has signature $(+,+,\dots,+)$ — lengths-squared are non-negative. A <em>Lorentzian</em> metric has signature $(-,+,\dots,+)$ — one timelike direction, the rest spacelike. We will use the Lorentzian "mostly-plus" convention throughout: $\eta_{\mu\nu} = \text{diag}(-1, +1, +1, \dots, +1)$.</p>
+      </aside>
+
+      <p>The metric is the geometric object that lets a manifold become spacetime. Without it, $M$ is just a topological scaffold; with it, every infinitesimal interval has a duration or a length, and "moving in the time direction" becomes meaningfully distinct from "moving in space."</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The line element and proper length</h2>
+
+      <p>The metric gives, at every point, the <strong>line element</strong> — the square of an infinitesimal displacement:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{d}s^2 \;=\; g_{\mu\nu}(x)\, \mathrm{d}x^\mu\, \mathrm{d}x^\nu. $$
+      </div>
+
+      <p>Pictorially: at every point of $M$, the metric supplies a little ellipsoid (Riemannian) or hyperboloid (Lorentzian) in $T_pM$ that says how to convert coordinate displacements into physical lengths.</p>
+
+      <p>A smooth curve $\gamma : [a, b] \to M$ has tangent vector $\dot\gamma^\mu = \mathrm{d}x^\mu/\mathrm{d}\lambda$ at parameter $\lambda$. Its <strong>length</strong> (Riemannian case) or <strong>proper time</strong> (timelike Lorentzian case) is</p>
+
+      <div class="equation-block">
+        $$ L[\gamma] \;=\; \int_a^b \sqrt{\left|g_{\mu\nu}\, \dot\gamma^\mu\, \dot\gamma^\nu\right|}\; \mathrm{d}\lambda. $$
+      </div>
+
+      <p>The absolute-value bars sit there to handle the Lorentzian sign: for a <dfn title="A curve whose tangent vector has negative norm under the Lorentzian metric — what a massive particle travels on.">timelike curve</dfn>, $g_{\mu\nu}\dot\gamma^\mu\dot\gamma^\nu < 0$, and proper time $\tau$ uses the minus sign inside the root.</p>
+
+      <p>Notice what $L[\gamma]$ is: a real-valued function on the (infinite-dimensional) space of curves between two fixed endpoints. Geometry produces a number from a curve. The next ingredient asks which curves make that number stationary.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Geodesics: the laziest paths</h2>
+
+      <p>A <strong>geodesic</strong> is a curve that is a critical point of $L[\gamma]$ among curves with fixed endpoints — geometrically, the closest thing to a straight line a curved manifold permits. Varying $L$ and setting $\delta L = 0$ gives the <strong>geodesic equation</strong>,</p>
+
+      <div class="equation-block">
+        $$ \ddot x^\mu + \Gamma^\mu{}_{\nu\rho}\, \dot x^\nu\, \dot x^\rho \;=\; 0, $$
+      </div>
+
+      <p>where the dot denotes $\mathrm{d}/\mathrm{d}\tau$ (the proper-time parameter, by convention an affine parameter) and the <strong>Christoffel symbols</strong></p>
+
+      <div class="equation-block">
+        $$ \Gamma^\mu{}_{\nu\rho} \;=\; \tfrac{1}{2}\, g^{\mu\sigma}\!\left( \partial_\nu g_{\sigma\rho} + \partial_\rho g_{\sigma\nu} - \partial_\sigma g_{\nu\rho} \right) $$
+      </div>
+
+      <p>are built entirely from the metric and its first derivatives. The dot here means differentiation with respect to $\tau$ (proper time for massive particles, or any affine parameter more generally — including the null case). Geometrically, $\Gamma^\mu{}_{\nu\rho}$ tells you how the coordinate basis $\partial_\mu$ twists from point to point — it is the <dfn title="The unique torsion-free, metric-compatible connection on a Riemannian or Lorentzian manifold; supplies parallel transport.">Levi-Civita connection</dfn> in coordinate form.</p>
+
+      <aside class="note">
+        <h4>Two ways of saying "straight"</h4>
+        <p>A geodesic can be defined either as a stationary point of length (variational definition), or as a curve whose tangent is <em>parallel-transported</em> along itself: $\dot x^\nu \nabla_\nu \dot x^\mu = 0$. On a Riemannian or Lorentzian manifold these agree, and the resulting equation is the one above. In flat space $\Gamma = 0$ and geodesics are literally straight lines $x^\mu(\tau) = x_0^\mu + v^\mu \tau$.</p>
+      </aside>
+
+      <p>For massive particles in Lorentzian spacetime, the proper time $\tau = \int \sqrt{-g_{\mu\nu}\dot x^\mu \dot x^\nu}\, \mathrm{d}\lambda$ is <em>maximized</em> by the geodesic among nearby timelike paths. This is the geometric content of the twin paradox: the freely-falling twin ages the most.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The action principle as geometry</h2>
+
+      <p>Now we can state the central organizing idea of all the physics in this book.</p>
+
+      <blockquote>The trajectory of a physical system is a critical point of a real-valued functional $S$ on the space of all possible trajectories.</blockquote>
+
+      <p>$S$ is the <strong>action</strong>, and the condition $\delta S = 0$ is <strong>Hamilton's principle</strong>. The action is always a geometric object: an integral over the worldline of a particle, the worldsheet of a string, or — more generally — over a manifold of fields.</p>
+
+      <p>For a free relativistic point particle of mass $m$ in spacetime with metric $g_{\mu\nu}$, the action is</p>
+
+      <div class="equation-block">
+        $$ S_{\text{particle}}[x] \;=\; -m \int \mathrm{d}\tau \;=\; -m \int \mathrm{d}\lambda\, \sqrt{-g_{\mu\nu}(x)\, \dot x^\mu\, \dot x^\nu}. $$
+      </div>
+
+      <p>It is literally $-m$ times the proper time along the path. Stationarity of $S$ is stationarity of length; the resulting equation of motion is precisely the geodesic equation. Particles fall along geodesics because <em>the action is geometry</em>.</p>
+
+      <p>For a string, the same logic will produce the Nambu–Goto action — proportional to the area of the worldsheet (Chapter IV). For a field, it produces the relevant Lagrangian density integrated over spacetime. The principle is universal; only the geometric measure changes.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>The Euler–Lagrange equations</h2>
+
+      <p>For an action of the form $S[x] = \int_{t_1}^{t_2} L(x, \dot x, t)\, \mathrm{d}t$, the stationarity condition $\delta S = 0$ — with endpoints fixed — produces the <strong>Euler–Lagrange equations</strong>:</p>
+
+      <div class="equation-block">
+        $$ \frac{\mathrm{d}}{\mathrm{d}t}\!\left( \frac{\partial L}{\partial \dot x^i} \right) - \frac{\partial L}{\partial x^i} \;=\; 0. $$
+      </div>
+
+      <p>For the non-relativistic Lagrangian $L = \tfrac{1}{2} m \dot x^2 - V(x)$, this gives Newton's law $m\ddot x = -V'(x)$. For the relativistic point-particle action above, it gives the geodesic equation. The Euler–Lagrange machinery is the technical bridge between "physical paths are stationary points of $S$" and concrete differential equations.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§8</span>Stationary action, made tangible</h2>
+
+      <p>The principle of stationary action is more abstract than Newton's $F = ma$, so it helps to see one in action. Below: a non-relativistic free particle moving from $(t,x) = (0,0)$ to $(t,x) = (1,1)$, with Lagrangian $L = \tfrac{1}{2}\dot x^2$ (so $V = 0$, $m = 1$). The classical equation of motion is $\ddot x = 0$, with solution $x(t) = t$ — a straight line.</p>
+
+      <p>Drag the three blue knobs to deform the trial trajectory. The displayed action $S = \int_0^1 \tfrac{1}{2}\dot x^2\, \mathrm{d}t$ updates live. The minimum value is $S_{\min} = \tfrac{1}{2}$, attained at the straight line.</p>
+
+      <section class="interactive" data-widget="action-sandbox" aria-label="Stationary action sandbox">
+        <header>
+          <h4>Interactive · Stationary action</h4>
+          <span class="hint">drag the knots · reset to reset</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The straight line $x(t)=t$ minimizes the action of a free particle among all paths with fixed endpoints. No matter which way you wiggle the curve, $S$ goes up; the straight line sits at the bottom of an infinite-dimensional valley. This is what "δS = 0" looks like geometrically.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§9</span>What we'll carry forward</h2>
+
+      <p>From this chapter we take a small but essential pile of objects:</p>
+
+      <ol>
+        <li>A <strong>manifold</strong> $M$ is a space that looks locally flat; physics needs them because spacetime curves and extra dimensions wrap.</li>
+        <li>A <strong>metric</strong> $g_{\mu\nu}$ gives every infinitesimal direction a length. Lorentzian metrics distinguish time from space.</li>
+        <li>The <strong>line element</strong> $\mathrm{d}s^2 = g_{\mu\nu} \mathrm{d}x^\mu \mathrm{d}x^\nu$ produces proper length / time when integrated along a curve.</li>
+        <li>A <strong>geodesic</strong> is a curve that is critical under length variation; for massive particles in Lorentzian spacetime it <em>maximizes</em> proper time.</li>
+        <li>The <strong>action principle</strong> $\delta S = 0$ selects physical trajectories. The action is always a geometric integral over the worldline / worldsheet / field manifold.</li>
+        <li>The <strong>Euler–Lagrange equations</strong> are the technical consequence, the way we extract equations of motion from $S$.</li>
+      </ol>
+
+      <p>With these in hand, Chapter III writes down the simplest non-trivial geometric action — that of a relativistic point particle — and works through it carefully. Chapter IV repeats the exercise for a string, where the worldline becomes a worldsheet and an integrated length becomes an integrated area.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Robert M. Wald.</span> <em>General Relativity.</em> University of Chicago Press, 1984 — Chapters 2–3 for manifolds, tensors, and the Levi-Civita connection in the form physicists use.</li>
+          <li><span class="src-title">Sean Carroll.</span> <em>Spacetime and Geometry: An Introduction to General Relativity.</em> Addison-Wesley, 2004 — Chapter 2 for an extremely readable presentation of differential geometry as needed for relativity.</li>
+          <li><span class="src-title">John M. Lee.</span> <em>Introduction to Smooth Manifolds</em>, 2nd ed., Springer, 2012 — for the careful mathematical foundations of charts, tangent bundles, and forms.</li>
+          <li><span class="src-title">Herbert Goldstein, Charles Poole, John Safko.</span> <em>Classical Mechanics</em>, 3rd ed., Pearson, 2002 — Chapter 2 for the action principle and Euler–Lagrange equations in classical mechanics.</li>
+          <li><span class="src-title">Richard P. Feynman.</span> "The Principle of Least Action," <em>Feynman Lectures on Physics</em>, Vol. II, Ch. 19 — the canonical pedagogical introduction; available free at <code>feynmanlectures.caltech.edu</code>.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="01-geometry-as-language.html"><span class="label">← Previous</span>I · Geometry as the Language of Physics</a>
+      <a class="next" href="03-relativistic-point-particle.html"><span class="label">Next chapter</span>III · The Relativistic Point Particle →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/action-sandbox.js"></script>
+</body>
+</html>

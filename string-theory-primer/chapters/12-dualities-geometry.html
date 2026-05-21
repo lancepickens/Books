@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter XII · Dualities as Geometry — String Theory: A Primer</title>
+  <meta name="description" content="Chapter 12 of String Theory: A Primer. T-duality, mirror symmetry, S-duality, and the web of equivalences that link the five superstring theories into one." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter XII of XV</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter XII</p>
+      <h1 class="chapter-title">Dualities as Geometry</h1>
+      <p class="lede">A string of radius $R$ is indistinguishable from a string of radius $\alpha'/R$. A Calabi–Yau is indistinguishable from another with swapped Hodge numbers. Strong coupling is indistinguishable from weak. The five superstrings — five vantage points on one theory.</p>
+
+      <h2><span class="sec-num">§1</span>T-duality on a circle</h2>
+
+      <p>Compactify one direction of a closed string on a circle of radius $R$: $X^{25} \sim X^{25} + 2\pi R$. Two new things happen to the spectrum.</p>
+
+      <p><strong>Kaluza–Klein quantization.</strong> The momentum in the compact direction is quantized: $p_{25} = n/R$ for $n \in \mathbb{Z}$.</p>
+
+      <p><strong>Winding.</strong> A closed string can wrap the circle $w$ times before closing, with $w \in \mathbb{Z}$. The winding contributes a length $2\pi R w$ to the string, giving a winding momentum $\propto wR/\alpha'$.</p>
+
+      <p>The mass formula combines both:</p>
+
+      <div class="equation-block">
+        $$ \alpha' M^2 \;=\; \alpha' \left( \frac{n}{R} \right)^2 + \left( \frac{w R}{\sqrt{\alpha'}} \right)^2 + 2(N + \tilde N - 2). $$
+      </div>
+
+      <p>This is invariant under the simultaneous swap</p>
+
+      <div class="equation-block">
+        $$ \boxed{\; R \;\longleftrightarrow\; \frac{\alpha'}{R}, \qquad n \;\longleftrightarrow\; w. \;} $$
+      </div>
+
+      <p>This is <strong>T-duality</strong>. A string on a circle of radius $R$ has exactly the same physics as a string on a circle of radius $\alpha'/R$, provided we exchange KK momentum modes with winding modes. There is no experiment (within the string theory) that can distinguish the two.</p>
+
+      <aside class="jargon">
+        <h4>The self-dual radius</h4>
+        <p>At $R = R_* = \sqrt{\alpha'} = \ell_s$, $R$ maps to itself under T-duality. This is the <strong>self-dual radius</strong>, and the smallest meaningful circle radius in string theory. Geometry below $\ell_s$ doesn't exist as a separate notion — it is identified with geometry above $\ell_s$. A particle theory probing arbitrarily short distances has no analogue of this.</p>
+      </aside>
+
+      <p>The geometric punchline is that string theory does not have a notion of "ever smaller distance." The smallest length is $\ell_s$. Below it, T-duality recycles small geometries as big geometries.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>T-duality and D-branes</h2>
+
+      <p>Where Type IIA has a D$p$-brane wrapping a direction $X^{25}$ that is compactified at radius $R$, the T-dual Type IIB theory at radius $\alpha'/R$ has a D$(p-1)$-brane <em>transverse</em> to $X^{25}$ at a specific location. The Neumann boundary condition along the wrapped direction becomes a Dirichlet condition in the T-dual frame, lowering the brane dimension by one.</p>
+
+      <p>This is how T-duality intertwines the two type-II superstring theories: it is not just a geometric symmetry, it exchanges the brane content. Type IIA on a small circle <em>is</em> Type IIB on a large circle, with each theory's branes mapped to the other's.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Mirror symmetry</h2>
+
+      <p>For a Calabi–Yau compactification, the analogue of T-duality is <strong>mirror symmetry</strong>. The claim is that every Calabi–Yau 3-fold $K$ has a "mirror partner" $\tilde K$ such that</p>
+
+      <div class="equation-block">
+        $$ h^{1,1}(K) \;=\; h^{2,1}(\tilde K), \qquad h^{2,1}(K) \;=\; h^{1,1}(\tilde K). $$
+      </div>
+
+      <p>Geometrically, mirror symmetry swaps the Kähler moduli with the complex-structure moduli — it exchanges "how big are the cycles" with "how is the shape of the manifold parameterized." Two manifolds that look topologically different are physically the same theory of strings.</p>
+
+      <p>Mirror symmetry has been spectacularly useful even outside string theory. It led to the resolution of long-standing problems in enumerative algebraic geometry: counting rational curves on the quintic, for instance, was solved by mapping it to the much simpler complex-structure computation on the mirror manifold (<strong>Candelas, de la Ossa, Green, Parkes</strong>, 1991).</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>S-duality</h2>
+
+      <p>Strings have a coupling constant $g_s = e^\Phi$, the exponential of the dilaton expectation value. Perturbative string theory works at small $g_s$. <strong>S-duality</strong> claims that some string theories are invariant under</p>
+
+      <div class="equation-block">
+        $$ g_s \;\longleftrightarrow\; \frac{1}{g_s}. $$
+      </div>
+
+      <p>The strong-coupling regime of one theory is the weak-coupling regime of another (or, in the self-dual case, of the same one). Specifically:</p>
+
+      <ul>
+        <li><strong>Type IIB</strong> is S-self-dual.</li>
+        <li><strong>Type I</strong> at coupling $g_s$ is the same as the <strong>heterotic SO(32)</strong> theory at coupling $1/g_s$.</li>
+        <li>The <strong>heterotic $E_8 \times E_8$</strong> theory at large coupling is described by <strong>M-theory on a line segment</strong> (Hořava–Witten).</li>
+        <li>Type IIA at large coupling grows an eleventh dimension and becomes <strong>11-dimensional M-theory</strong>.</li>
+      </ul>
+
+      <p>S-duality has no analogue in ordinary QFT outside special cases (4-d $\mathcal{N}=4$ super-Yang–Mills with Montonen–Olive). For string theory it is a generic feature, evidence that what perturbation theory sees is only a tiny slice of the full picture.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The web of dualities and M-theory</h2>
+
+      <p>The five 10-d superstring theories are connected by an intricate web:</p>
+
+      <table style="margin: 1.5rem auto; border-collapse: collapse; font-family: var(--sans); font-size: 0.86rem; width: 100%; max-width: 46rem; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);">
+        <thead>
+          <tr style="background: var(--bg-soft);">
+            <th style="text-align: left; padding: 0.5rem 0.7rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7rem;">Pair</th>
+            <th style="text-align: left; padding: 0.5rem 0.7rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7rem;">Duality</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding: 0.45rem 0.7rem; border-top: 1px dotted var(--rule);">Type IIA $\leftrightarrow$ Type IIB</td><td style="padding: 0.45rem 0.7rem; border-top: 1px dotted var(--rule);">T-duality on a circle</td></tr>
+          <tr><td style="padding: 0.45rem 0.7rem; border-top: 1px dotted var(--rule);">Type IIB $\leftrightarrow$ Type IIB</td><td style="padding: 0.45rem 0.7rem; border-top: 1px dotted var(--rule);">S-duality (self-dual)</td></tr>
+          <tr><td style="padding: 0.45rem 0.7rem; border-top: 1px dotted var(--rule);">Type I $\leftrightarrow$ Heterotic $SO(32)$</td><td style="padding: 0.45rem 0.7rem; border-top: 1px dotted var(--rule);">S-duality</td></tr>
+          <tr><td style="padding: 0.45rem 0.7rem; border-top: 1px dotted var(--rule);">Heterotic $SO(32)$ $\leftrightarrow$ Heterotic $E_8 \times E_8$</td><td style="padding: 0.45rem 0.7rem; border-top: 1px dotted var(--rule);">T-duality on a circle</td></tr>
+          <tr><td style="padding: 0.45rem 0.7rem; border-top: 1px dotted var(--rule);">Type IIA at strong coupling</td><td style="padding: 0.45rem 0.7rem; border-top: 1px dotted var(--rule);">11-d M-theory on $S^1$</td></tr>
+          <tr><td style="padding: 0.45rem 0.7rem; border-top: 1px dotted var(--rule);">Heterotic $E_8 \times E_8$ at strong coupling</td><td style="padding: 0.45rem 0.7rem; border-top: 1px dotted var(--rule);">M-theory on $S^1/\mathbb{Z}_2$ (Hořava–Witten)</td></tr>
+        </tbody>
+      </table>
+
+      <p>The duality web showed (1995, the "second superstring revolution") that the five theories are five corners of a single underlying structure. The 11-dimensional unifying theory is called <strong>M-theory</strong>. We know much of its physics — its low-energy limit is 11-d supergravity — but a full microscopic formulation remains the great unsolved problem of the field.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>What dualities tell us about geometry</h2>
+
+      <p>Dualities are not symmetries of a particular spacetime geometry. They are statements that <em>different geometries describe the same physics</em>. This is geometrically profound:</p>
+
+      <ul>
+        <li>T-duality says geometry below $\ell_s$ is not an independent notion. There is no shortest distance.</li>
+        <li>Mirror symmetry says manifolds with different topology can carry the same quantum theory. Topology is not absolute.</li>
+        <li>S-duality says spacetime configurations look completely different at different couplings — even the natural perturbative objects (strings vs branes) can interchange.</li>
+      </ul>
+
+      <p>String theory's geometry is therefore "quantum geometry": classical geometry is what you see in a particular regime, but the true theory has a richer, less rigid structure. Dualities are the most direct evidence that this is the case.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>T-duality, visualized</h2>
+
+      <p>The widget below shows the KK and winding spectra of a closed bosonic string as functions of the compactification radius $R$. The two spectra cross at the self-dual point $R = \sqrt{\alpha'}$. Dial the radius and watch the curves swap roles: what was a KK mode at large $R$ becomes a winding mode at small $R$, and vice versa.</p>
+
+      <section class="interactive" data-widget="t-duality" aria-label="T-duality spectrum">
+        <header>
+          <h4>Interactive · KK vs winding spectra</h4>
+          <span class="hint">drag R</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">KK modes have mass $|n|/R$; winding modes have mass $|w| R / \alpha'$. T-duality maps $R \to \alpha'/R$ and exchanges $n \leftrightarrow w$, leaving the union of the two spectra invariant. The self-dual point is the vertical line $R = \sqrt{\alpha'}$.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§8</span>What we carry forward</h2>
+
+      <ol>
+        <li><strong>T-duality</strong> identifies a circle of radius $R$ with one of radius $\alpha'/R$, and KK momentum with winding charge. It implies $\ell_s$ is the minimum meaningful length.</li>
+        <li><strong>Mirror symmetry</strong> identifies pairs of Calabi–Yau manifolds with exchanged Hodge numbers $(h^{1,1}, h^{2,1})$.</li>
+        <li><strong>S-duality</strong> identifies weak and strong coupling regimes — often of different theories.</li>
+        <li>The five 10-d superstring theories are connected by these dualities into a single picture, with an 11-d ancestor called <strong>M-theory</strong>.</li>
+        <li>Geometry in string theory is not the rigid classical object of GR. T-, S-, and mirror dualities all assert that different geometries can describe the same physics — geometry is something the theory does, not something it is.</li>
+      </ol>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Joseph Polchinski.</span> <em>String Theory, Vol. I &amp; II.</em> Ch. 8 (T-duality), Ch. 14 (string dualities).</li>
+          <li><span class="src-title">Edward Witten.</span> "String theory dynamics in various dimensions." <em>Nucl. Phys.</em> B443, 85 (1995), <code>hep-th/9503124</code> — the unification paper that launched the second superstring revolution.</li>
+          <li><span class="src-title">P. Candelas, X. de la Ossa, P. Green, L. Parkes.</span> "A pair of Calabi–Yau manifolds as an exactly soluble superconformal theory." <em>Nucl. Phys.</em> B359, 21 (1991) — the foundational mirror-symmetry calculation that counted rational curves on the quintic.</li>
+          <li><span class="src-title">Petr Hořava, Edward Witten.</span> "Heterotic and Type I string dynamics from eleven dimensions." <em>Nucl. Phys.</em> B460, 506 (1996), <code>hep-th/9510209</code> — the M-theory interval picture.</li>
+          <li><span class="src-title">A. Giveon, M. Porrati, E. Rabinovici.</span> "Target space duality in string theory." <em>Phys. Rept.</em> 244, 77 (1994), <code>hep-th/9401139</code> — exhaustive review of target-space dualities.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="11-compactification-calabi-yau.html"><span class="label">← Previous</span>XI · Compactification and Calabi–Yau Manifolds</a>
+      <a class="next" href="13-d-branes.html"><span class="label">Next chapter</span>XIII · D-branes →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/t-duality.js"></script>
+</body>
+</html>

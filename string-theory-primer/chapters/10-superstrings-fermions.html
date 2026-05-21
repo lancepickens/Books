@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter X · Superstrings and Fermions — String Theory: A Primer</title>
+  <meta name="description" content="Chapter 10 of String Theory: A Primer. Worldsheet supersymmetry, the RNS action, NS and R sectors, the GSO projection, and the drop to ten dimensions." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter X of XV</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter X</p>
+      <h1 class="chapter-title">Superstrings and Fermions</h1>
+      <p class="lede">Add a worldsheet fermion for each worldsheet boson and demand the two transform into each other. The tachyon dies; the critical dimension drops from twenty-six to ten; spacetime fermions emerge for free.</p>
+
+      <h2><span class="sec-num">§1</span>What needs fixing</h2>
+
+      <p>The bosonic string is geometrically clean but physically incomplete. Two problems weigh against it:</p>
+
+      <ul>
+        <li><strong>The tachyon.</strong> The lowest state has $\alpha' M^2 = -1$ (open) or $-4$ (closed). A negative mass-squared signals vacuum instability.</li>
+        <li><strong>No spacetime fermions.</strong> Every state in the bosonic spectrum is a tensor — never a spinor. The Standard Model needs quarks and leptons, which are fermions. The bosonic string has nowhere to put them.</li>
+      </ul>
+
+      <p>Both problems are cured by promoting the worldsheet theory from purely bosonic to <strong>supersymmetric</strong>. The trick is to add, for each worldsheet scalar $X^\mu(\tau, \sigma)$, a worldsheet fermion $\psi^\mu(\tau, \sigma)$ in the same spacetime representation.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The Ramond–Neveu–Schwarz action</h2>
+
+      <p>The simplest supersymmetric extension of the Polyakov action — the <strong>Ramond–Neveu–Schwarz</strong> (RNS) action in flat target spacetime and conformal worldsheet gauge — is</p>
+
+      <div class="equation-block">
+        $$ S_{\mathrm{RNS}} \;=\; -\frac{1}{4\pi\alpha'} \int \mathrm{d}^2\sigma\, \big( \partial_a X^\mu\, \partial^a X_\mu \;-\; i\, \bar\psi^\mu\, \rho^a\, \partial_a \psi_\mu \big). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\psi^\mu(\tau, \sigma)$</dt><dd>Worldsheet <em>Majorana</em> fermion — a 2-component spinor in worldsheet spinor indices, carrying one target-spacetime index $\mu$.</dd>
+          <dt>$\bar\psi^\mu$</dt><dd>Dirac conjugate, $\bar\psi = \psi^\dagger \rho^0$.</dd>
+          <dt>$\rho^a$</dt><dd>2-d gamma matrices satisfying $\{\rho^a, \rho^b\} = 2 \eta^{ab}$.</dd>
+        </dl>
+      </aside>
+
+      <p>This action is invariant under a global supersymmetry transformation that mixes $X^\mu$ and $\psi^\mu$:</p>
+
+      <div class="equation-block">
+        $$ \delta X^\mu \;=\; \bar\varepsilon\, \psi^\mu, \qquad \delta \psi^\mu \;=\; -i\, \rho^a\, \partial_a X^\mu\, \varepsilon, $$
+      </div>
+
+      <p>with $\varepsilon$ a constant 2-component Grassmann (anticommuting) parameter. Crucially, this is <em>worldsheet</em> supersymmetry — symmetry of the 2-d theory living on $\Sigma$. Spacetime supersymmetry is a derived consequence (after GSO; see §5).</p>
+
+      <p>The fermion equation of motion is the 2-d Dirac equation $\rho^a \partial_a \psi^\mu = 0$. Like the bosons, $\psi^\mu$ decomposes into left- and right-moving Weyl components $\psi^\mu_\pm$, each obeying $\partial_\mp \psi^\mu_\pm = 0$ — so the worldsheet fermions are massless and chiral on $\Sigma$.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Boundary conditions: NS and R sectors</h2>
+
+      <p>For a closed string, the boson $X^\mu(\tau, \sigma)$ is strictly periodic in $\sigma$. The fermion $\psi^\mu(\tau, \sigma)$, however, can be either periodic or antiperiodic without violating any physical principle (fermion bilinears, the physical observables, are periodic in both cases). This gives two independent sectors:</p>
+
+      <ul>
+        <li><strong>Neveu–Schwarz (NS) sector:</strong> $\psi^\mu(\tau, \sigma + 2\pi) = -\psi^\mu(\tau, \sigma)$. Antiperiodic. The mode expansion uses <em>half-integer</em> frequencies: $\psi^\mu \sim \sum_{r \in \mathbb{Z} + 1/2} b_r^\mu e^{-ir\sigma^\mp}$.</li>
+        <li><strong>Ramond (R) sector:</strong> $\psi^\mu(\tau, \sigma + 2\pi) = +\psi^\mu(\tau, \sigma)$. Periodic. The mode expansion uses <em>integer</em> frequencies: $\psi^\mu \sim \sum_{n \in \mathbb{Z}} d_n^\mu e^{-in\sigma^\mp}$.</li>
+      </ul>
+
+      <p>For closed strings there are independent NS / R choices on the left- and right-moving fermions, giving four sectors: NS-NS, NS-R, R-NS, R-R. For open strings the boundary couples left and right movers, leaving two sectors (NS and R).</p>
+
+      <p>The two sectors give physically distinct content. Geometrically:</p>
+
+      <ul>
+        <li><strong>NS</strong> states are <em>spacetime bosons</em> — built by acting with half-integer-moded $b_{-r}^\mu$ on an NS vacuum.</li>
+        <li><strong>R</strong> states are <em>spacetime fermions</em> — built on a Ramond vacuum that is itself a target-space spinor (the zero modes $d_0^\mu$ obey a Clifford algebra in target space).</li>
+      </ul>
+
+      <p>The boundary condition you put on a worldsheet fermion thus controls whether the resulting spacetime particle is a boson or a fermion. This is one of the most striking geometric facts in string theory.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The critical dimension drops to ten</h2>
+
+      <p>Repeating the central-charge accounting of Chapter VIII with the added fermions:</p>
+
+      <ul>
+        <li>$D$ free bosons contribute $c_X = D$.</li>
+        <li>$D$ free Majorana fermions contribute $c_\psi = D/2$.</li>
+        <li>The reparametrization ghosts $b, c$ contribute $c_{bc} = -26$.</li>
+        <li>The local-worldsheet-supersymmetry ghosts $\beta, \gamma$ contribute $c_{\beta\gamma} = +11$.</li>
+      </ul>
+
+      <p>Cancellation of the total central charge demands</p>
+
+      <div class="equation-block">
+        $$ D + \frac{D}{2} - 26 + 11 \;=\; 0 \quad\Longrightarrow\quad \frac{3D}{2} \;=\; 15 \quad\Longrightarrow\quad D \;=\; 10. $$
+      </div>
+
+      <p>The superstring lives in <strong>ten spacetime dimensions</strong>. The normal-ordering shifts likewise change: $a_{\mathrm{NS}} = 1/2$, $a_{\mathrm{R}} = 0$.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The GSO projection</h2>
+
+      <p>Even with $D = 10$, the NS sector starts off with a tachyon — the NS vacuum has $\alpha' M^2 = -1/2$. The cure is the <strong>Gliozzi–Scherk–Olive (GSO) projection</strong>: keep only states whose worldsheet-fermion-number parity satisfies a chosen sign condition.</p>
+
+      <p>In the NS sector, define $(-1)^F$ to act as $+1$ on states with an even number of $b_{-r}$ excitations and $-1$ on states with an odd number. The NS vacuum has $(-1)^F = -1$; the first excited state $b_{-1/2}^\mu |0\rangle_{\mathrm{NS}}$ has $(-1)^F = +1$. The GSO projection keeps states with $(-1)^F = +1$ — the tachyon is projected out, and the massless NS gauge boson survives.</p>
+
+      <p>In the R sector, the projection selects one chirality of the spacetime spinor, giving a chiral fermion. The choice of GSO sign in the R sector (and the relative sign between NS and R) distinguishes the various superstring theories.</p>
+
+      <p>After GSO the spectra of the bosonic and fermionic sectors agree level-by-level — this is exactly what <strong>spacetime supersymmetry</strong> would require. The worldsheet GSO projection has manufactured a target-spacetime SUSY for free.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The five superstring theories</h2>
+
+      <p>Five distinct consistent superstring theories exist in ten dimensions, distinguished by closed/open string content, choice of GSO sign, and gauge structure:</p>
+
+      <table style="margin: 1.5rem auto; border-collapse: collapse; font-family: var(--sans); font-size: 0.88rem; width: 100%; max-width: 46rem; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);">
+        <thead>
+          <tr style="background: var(--bg-soft);">
+            <th style="text-align: left; padding: 0.55rem 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7rem;">Theory</th>
+            <th style="text-align: left; padding: 0.55rem 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7rem;">Strings</th>
+            <th style="text-align: left; padding: 0.55rem 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7rem;">Susy</th>
+            <th style="text-align: left; padding: 0.55rem 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7rem;">Gauge</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">Type IIA</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">closed only</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">$\mathcal{N}=2$, non-chiral</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">none</td></tr>
+          <tr><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">Type IIB</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">closed only</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">$\mathcal{N}=2$, chiral</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">none</td></tr>
+          <tr><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">Type I</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">closed + open</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">$\mathcal{N}=1$</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">$SO(32)$</td></tr>
+          <tr><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">Heterotic $SO(32)$</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">closed only</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">$\mathcal{N}=1$</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">$SO(32)$</td></tr>
+          <tr><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">Heterotic $E_8 \times E_8$</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">closed only</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">$\mathcal{N}=1$</td><td style="padding: 0.5rem 0.75rem; border-top: 1px dotted var(--rule);">$E_8 \times E_8$</td></tr>
+        </tbody>
+      </table>
+
+      <p>What looked like five different theories is now understood to be one — the dualities of Chapter XII connect them all, and they all sit inside an eleven-dimensional umbrella called <strong>M-theory</strong>.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>NS vs R sectors</h2>
+
+      <p>The widget below contrasts the bosonic NS sector with the fermionic R sector at the lowest few mass levels, before and after the GSO projection.</p>
+
+      <section class="interactive" data-widget="ns-r-sectors" aria-label="NS and R sector spectrum">
+        <header>
+          <h4>Interactive · NS / R spectrum, with and without GSO</h4>
+          <span class="hint">toggle GSO</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">Open-superstring states organized by sector and level. The NS vacuum is a tachyon, killed by the GSO projection. The R sector starts at a massless spacetime spinor (the lowest spacetime fermion). After GSO, NS and R levels match — the signature of spacetime supersymmetry.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§8</span>What we carry forward</h2>
+
+      <ol>
+        <li>Adding worldsheet fermions $\psi^\mu$ — one for each boson $X^\mu$ — and demanding worldsheet supersymmetry gives the RNS action.</li>
+        <li>The two fermion boundary conditions split the spectrum: <strong>NS</strong> (antiperiodic) → spacetime bosons, <strong>R</strong> (periodic) → spacetime fermions.</li>
+        <li>Anomaly cancellation now demands $D = 10$ — the critical dimension of the superstring.</li>
+        <li>The <strong>GSO projection</strong> removes the NS tachyon and produces a spectrum with level-by-level matching between bosons and fermions: spacetime supersymmetry emerges as a derived consequence of the worldsheet construction.</li>
+        <li>Five distinct consistent superstring theories exist in 10D; they are all dual to each other and to 11-dim M-theory (Chapter XII).</li>
+      </ol>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Joseph Polchinski.</span> <em>String Theory, Vol. II.</em> Ch. 10–12 — superstring quantization, the GSO projection, and the five superstring theories.</li>
+          <li><span class="src-title">P. Ramond.</span> "Dual theory for free fermions." <em>Phys. Rev.</em> D3, 2415 (1971) — the original Ramond sector.</li>
+          <li><span class="src-title">A. Neveu, J. H. Schwarz.</span> "Factorizable dual model of pions." <em>Nucl. Phys.</em> B31, 86 (1971) — the NS sector.</li>
+          <li><span class="src-title">F. Gliozzi, J. Scherk, D. Olive.</span> "Supersymmetry, supergravity theories, and the dual spinor model." <em>Nucl. Phys.</em> B122, 253 (1977) — the GSO projection paper.</li>
+          <li><span class="src-title">David Tong.</span> <em>Lectures on String Theory.</em> §5 ("The Superstring") — superb pedagogical treatment.</li>
+          <li><span class="src-title">M. Green, J. Schwarz, E. Witten.</span> <em>Superstring Theory, Vol. I &amp; II.</em> 1987 — the classic textbook for everything in this chapter.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="09-curved-backgrounds.html"><span class="label">← Previous</span>IX · Strings on Curved Backgrounds</a>
+      <a class="next" href="11-compactification-calabi-yau.html"><span class="label">Next chapter</span>XI · Compactification and Calabi–Yau Manifolds →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/ns-r-sectors.js"></script>
+</body>
+</html>

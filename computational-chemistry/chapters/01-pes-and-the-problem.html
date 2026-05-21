@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter I · The Potential Energy Surface, and the Problem — Computational Chemistry: A Primer</title>
+  <meta name="description" content="Chapter 1: the molecular Hamiltonian, the Born–Oppenheimer split, the potential energy surface, and why the many-electron problem is exponentially hard." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter I of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter I</p>
+      <h1 class="chapter-title">The Potential Energy Surface, and the Problem</h1>
+      <p class="lede">A molecule, to a computer, is one number that depends on the positions of its nuclei. Producing that number is the entire technical problem of computational chemistry.</p>
+
+      <h2><span class="sec-num">§1</span>What we are actually computing</h2>
+
+      <p>Fix the nuclei of a molecule in space. Ask: what is its energy?</p>
+
+      <p>That single number, computed as the nuclei move, traces out a function</p>
+
+      <div class="equation-block">
+        $$ V : \mathbb{R}^{3N_{\text{nuc}}} \longrightarrow \mathbb{R}, \qquad \mathbf{R} \mapsto V(\mathbf{R}). $$
+      </div>
+
+      <p>This is the <dfn title="A scalar function over the configuration space of nuclei, whose value is the total energy of the molecule at that arrangement.">potential energy surface</dfn>, the PES. It is the central object of this book. Almost everything we will compute is either a value of $V$, a derivative of $V$, a stationary point of $V$, a sample drawn from a distribution shaped by $V$, or — in the later chapters — a learned approximation to $V$.</p>
+
+      <p>The reason for its centrality is that physics gives you a lot of chemistry for free once you know $V(\mathbf{R})$:</p>
+
+      <ul>
+        <li><strong>Equilibrium geometries</strong> are local minima: $\nabla V = 0$ with $\nabla^2 V$ positive-definite.</li>
+        <li><strong>Forces on nuclei</strong> are $\mathbf{F}_A = -\nabla_{\mathbf{R}_A} V$, so any molecular dynamics simulation is just integrating Newton's equations on this surface.</li>
+        <li><strong>Vibrational frequencies</strong> are eigenvalues of the mass-weighted Hessian $\nabla^2 V$ at a minimum.</li>
+        <li><strong>Reaction barriers</strong> are saddle points connecting two minima; reaction rates follow from transition state theory applied to the surface.</li>
+        <li><strong>Thermochemistry</strong> — enthalpies of formation, bond energies, equilibrium constants — comes from values of $V$ at different geometries, dressed with partition-function factors.</li>
+      </ul>
+
+      <p>If you have $V$, you have most of chemistry. The catch is that computing $V$ requires solving a quantum mechanical problem for the electrons, at every $\mathbf{R}$ you care about. The rest of the book is methods for doing that, ranked roughly by what they cost and what they can deliver.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Ninety seconds of quantum mechanics</h2>
+
+      <p>The state of a quantum system is a complex-valued function on its configuration space, the <dfn title="A complex-valued function whose squared magnitude is a probability density.">wavefunction</dfn> $\Psi$. Observable quantities are eigenvalues of self-adjoint operators acting on $\Psi$. The energy is the eigenvalue of the Hamiltonian operator $\hat H$,</p>
+
+      <div class="equation-block">
+        $$ \hat H \Psi = E \Psi. $$
+      </div>
+
+      <p>This is the time-independent Schrödinger equation. For an $N$-electron system $\Psi$ depends on $4N$ variables (three spatial coordinates and one spin label per electron), and $|\Psi|^2$ is the probability density of finding the electrons in a given arrangement.</p>
+
+      <aside class="note">
+        <h4>Atomic units, from here on</h4>
+        <p>We will work in atomic units throughout the book: $\hbar = m_e = e = 1/(4\pi\epsilon_0) = 1$. Energies come out in <em>Hartrees</em> (1 Ha $= 27.2114$ eV) and lengths in <em>Bohr radii</em> ($a_0 = 0.5292$ Å). The Hamiltonians below have no $\hbar^2/(2m_e)$ prefactors because both are equal to one.</p>
+      </aside>
+
+      <p>That is essentially all we will need. The challenge is not the equation itself — it is solving it for systems with more than one or two electrons.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The molecular Hamiltonian</h2>
+
+      <p>A molecule contains $N$ electrons and $M$ nuclei. Label the electrons by lowercase $i, j$ and their coordinates by $\mathbf{r}_i$; label nuclei by uppercase $A, B$, charges $Z_A$, masses $M_A$, coordinates $\mathbf{R}_A$. In atomic units the full <strong>molecular Hamiltonian</strong> has five terms:</p>
+
+      <div class="equation-block">
+        $$ \hat H_{\text{mol}} \;=\; -\sum_{A=1}^{M} \frac{1}{2 M_A}\nabla_A^2 \;-\; \sum_{i=1}^{N} \frac{1}{2}\nabla_i^2 \;-\; \sum_{i,A} \frac{Z_A}{|\mathbf{r}_i - \mathbf{R}_A|} \;+\; \sum_{i<j} \frac{1}{|\mathbf{r}_i - \mathbf{r}_j|} \;+\; \sum_{A<B} \frac{Z_A Z_B}{|\mathbf{R}_A - \mathbf{R}_B|}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\hat T_n = -\sum_A \tfrac{1}{2M_A}\nabla_A^2$</dt><dd>Kinetic energy of the nuclei. The masses $M_A$ are in units of the electron mass; protons are $\approx 1836$.</dd>
+          <dt>$\hat T_e = -\sum_i \tfrac{1}{2}\nabla_i^2$</dt><dd>Kinetic energy of the electrons.</dd>
+          <dt>$\hat V_{en}$</dt><dd>Electron–nucleus attraction. The sum runs over every electron–nucleus pair.</dd>
+          <dt>$\hat V_{ee}$</dt><dd>Electron–electron Coulomb repulsion. The $i &lt; j$ avoids double-counting.</dd>
+          <dt>$\hat V_{nn}$</dt><dd>Nucleus–nucleus repulsion. With $\mathbf{R}$ fixed, this is a number, not an operator.</dd>
+        </dl>
+      </aside>
+
+      <p>Every term here is geometric. $\hat T$ is a Laplacian on the configuration space, telling us how the wavefunction varies in space. The Coulomb potentials are $1/r$ — the only force in the problem — pulling electrons toward nuclei and pushing them away from each other. There are no other interactions to worry about for chemistry: relativistic corrections matter for heavy elements, but at this level they are post-processing.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The Born–Oppenheimer split</h2>
+
+      <p>Electrons are roughly two thousand times lighter than even the lightest nucleus, so they move much faster. Over the time it takes nuclei to rearrange noticeably, electrons have relaxed many times into their ground state for whatever nuclear configuration $\mathbf{R}$ they happen to find.</p>
+
+      <p>This separation of timescales motivates the <dfn title="Separation of electronic and nuclear motion: solve the electronic problem at fixed nuclei, then use the resulting energy as a potential for the nuclei.">Born–Oppenheimer approximation</dfn>. We split the Hamiltonian into a piece that depends on the electrons (at fixed $\mathbf{R}$) and the nuclear kinetic energy:</p>
+
+      <div class="equation-block">
+        $$ \hat H_{\text{el}}(\mathbf{R}) \;=\; -\sum_i \frac{1}{2}\nabla_i^2 \;-\; \sum_{i,A} \frac{Z_A}{|\mathbf{r}_i - \mathbf{R}_A|} \;+\; \sum_{i<j} \frac{1}{|\mathbf{r}_i - \mathbf{r}_j|}. $$
+      </div>
+
+      <p>The nuclear repulsion $\hat V_{nn}(\mathbf{R})$ is a constant at fixed $\mathbf{R}$ and we add it back at the end. We solve the <em>electronic</em> Schrödinger equation parametrically in $\mathbf{R}$:</p>
+
+      <div class="equation-block">
+        $$ \hat H_{\text{el}}(\mathbf{R})\, \Psi_{\text{el}}(\mathbf{r}; \mathbf{R}) \;=\; E_{\text{el}}(\mathbf{R})\, \Psi_{\text{el}}(\mathbf{r}; \mathbf{R}). $$
+      </div>
+
+      <p>The semicolon is a reminder that $\Psi_{\text{el}}$ is a function of electron coordinates $\mathbf{r}$ and depends parametrically on the nuclear positions $\mathbf{R}$. The PES is then</p>
+
+      <div class="equation-block">
+        $$ V(\mathbf{R}) \;=\; E_{\text{el}}(\mathbf{R}) \;+\; \sum_{A<B} \frac{Z_A Z_B}{|\mathbf{R}_A - \mathbf{R}_B|}. $$
+      </div>
+
+      <p>This is the operational definition of the PES. Every electronic-structure method in Chapters II–IV is a recipe for $E_{\text{el}}(\mathbf{R})$ at one nuclear geometry. The PES is what you get by doing that calculation many times, once per geometry of interest.</p>
+
+      <aside class="jargon">
+        <h4>When Born–Oppenheimer fails</h4>
+        <p>The approximation breaks down when two electronic states come close in energy — most importantly at <em>conical intersections</em>, where the gap closes to zero. Chapter VII spends time there because that is exactly where photochemistry, internal conversion, and many radiationless transitions live. For ground-state thermal chemistry, BO is essentially exact.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Why this is hard</h2>
+
+      <p>The electronic Schrödinger equation looks innocent. The wavefunction lives in a ridiculous amount of space.</p>
+
+      <p>For $N$ electrons in three dimensions, $\Psi$ is a function on $\mathbb{R}^{3N}$ (plus spin). If we naively discretize each coordinate axis with $K$ grid points, we need $K^{3N}$ numbers to represent $\Psi$ on a grid. For methanol — a small organic molecule with 18 electrons — and a coarse 10-point grid per axis, that is $10^{54}$ numbers. The observable universe contains around $10^{80}$ atoms; we exhaust them long before reaching molecules of even modest size.</p>
+
+      <p>The wavefunction is also more constrained than a generic function: electrons are <dfn title="Identical particles whose total wavefunction picks up a minus sign under any pairwise swap.">fermions</dfn>, so $\Psi$ must change sign whenever we exchange the labels of any two electrons. Collecting each electron's spatial and spin coordinates into a single label $\mathbf{x}_i \equiv (\mathbf{r}_i, \sigma_i)$, antisymmetry reads</p>
+
+      <div class="equation-block">
+        $$ \Psi(\dots, \mathbf{x}_i, \dots, \mathbf{x}_j, \dots) \;=\; -\Psi(\dots, \mathbf{x}_j, \dots, \mathbf{x}_i, \dots). $$
+      </div>
+
+      <p>Antisymmetry is the deep origin of the Pauli exclusion principle and, ultimately, of all of chemistry: it is the reason atoms have shell structure, the reason two helium atoms repel each other at short range, the reason the periodic table is shaped like it is. Every method we discuss has to respect it.</p>
+
+      <p>If we expand $\Psi$ as a sum of antisymmetrized products of one-electron functions, drawing from a basis of $K$ spatial orbitals (and therefore $2K$ <em>spin</em> orbitals, counting α and β spin), the number of such products — called <dfn title="A normalized antisymmetrized product of N one-electron functions, written as the determinant of an N×N matrix of orbital values.">Slater determinants</dfn> — is</p>
+
+      <div class="equation-block">
+        $$ \binom{2K}{N} \;\sim\; \frac{(2K)^N}{N!}, $$
+      </div>
+
+      <p>which grows factorially. The exact treatment, <dfn title="Diagonalize the electronic Hamiltonian in the basis of all Slater determinants buildable from a given orbital set.">full configuration interaction</dfn>, becomes intractable beyond about 18 electrons in any reasonable basis. This is the wall the field has been climbing around since the 1950s.</p>
+
+      <p>The history of computational chemistry is essentially a history of clever approximations that scale polynomially in $N$ instead of factorially, paying for that scaling with controlled errors. Each chapter introduces another rung on this ladder.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The hydrogen atom — and what stays useful</h2>
+
+      <p>The one piece of the puzzle we <em>can</em> solve in closed form is the hydrogen atom: one electron, one proton, no electron–electron repulsion. The eigenstates of</p>
+
+      <div class="equation-block">
+        $$ \hat H_{\text{H}} \;=\; -\frac{1}{2}\nabla^2 - \frac{1}{r} $$
+      </div>
+
+      <p>are labelled by three quantum numbers $(n, l, m)$, with energies (in Hartrees)</p>
+
+      <div class="equation-block">
+        $$ E_n \;=\; -\frac{1}{2 n^2}, \qquad n = 1, 2, 3, \dots $$
+      </div>
+
+      <p>and wavefunctions $\psi_{nlm}(r,\theta,\varphi) = R_{nl}(r)\, Y_l^m(\theta,\varphi)$. The radial factor $R_{nl}$ is built from associated Laguerre polynomials; the angular factor $Y_l^m$ is a spherical harmonic.</p>
+
+      <p>What chemists actually use are <em>real</em> linear combinations of the $Y_l^m$: the familiar $p_x, p_y, p_z$ dumbbells, the $d_{z^2}$ donut-with-a-collar, the $d_{xz}, d_{yz}, d_{xy}, d_{x^2-y^2}$ clovers. Real combinations are eigenfunctions of $\hat L^2$ but not of $\hat L_z$. They are the orbitals every textbook draws because they are the ones that point along chemical bonds. The interactive below lets you flip through them on an $xz$ cross-section.</p>
+
+      <section class="interactive" data-widget="h-orbital-viewer" aria-label="Hydrogen atom orbital viewer">
+        <header>
+          <h4>Interactive · Hydrogen orbitals</h4>
+          <span class="hint">click an orbital · drag the slider</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">Density plots of the real hydrogen-atom orbitals on the $xz$-plane. Color encodes the sign of the wavefunction (teal positive, sand negative); intensity is $|\psi|^2$. Notice the radial node in $2s$ and the angular nodes in $p$ and $d$ — these are the geometric features inherited by every molecular orbital we will construct later.</p>
+      </section>
+
+      <p>Two things to take away from this widget for the rest of the book.</p>
+
+      <p>First, atomic orbitals are localized, oriented, and finite-ranged: they decay exponentially. This is why basis sets in computational chemistry (Chapter III) are built from atom-centered functions. The wavefunction of a molecule looks, near each nucleus, very much like an atom.</p>
+
+      <p>Second, every quantum number $(n,l,m)$ corresponds to a geometric feature you can see: $n - l - 1$ radial nodes, $l$ angular nodes, total $n - 1$ nodes. Counting nodes is how you read a wavefunction at a glance. We will rely on this kind of visual reading throughout the book.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>A preview of the ladder</h2>
+
+      <p>The remaining nine chapters are organized by how we attack the electronic Schrödinger equation, in roughly ascending cost and varying purpose.</p>
+
+      <ol>
+        <li><strong>Hartree–Fock</strong> (Ch. II) replaces the interacting problem with a self-consistent one-electron problem: each electron sees only the <em>average</em> field of the others. The result is the orbital picture chemists already know.</li>
+        <li><strong>Correlated wavefunctions</strong> (Ch. III) — MP2, CCSD, CCSD(T) — add the correlation that mean-field misses. CCSD(T) is the <em>gold standard</em> of quantum chemistry, accurate to ~1 kcal/mol when it converges, but scaling as $N^7$.</li>
+        <li><strong>Density functional theory</strong> (Ch. IV) recasts everything in terms of the electron density $\rho(\mathbf{r})$, a function of just three coordinates rather than $3N$. With an approximate exchange–correlation functional it is the workhorse of computational chemistry and materials science.</li>
+        <li><strong>Periodic plane-wave DFT</strong> (Ch. V) handles crystals and surfaces, where the Born–Oppenheimer surface lives on a unit cell with Bloch boundary conditions.</li>
+        <li><strong>Molecular dynamics</strong> (Ch. VI) treats nuclei as classical particles moving on the PES, with free-energy methods like umbrella sampling and metadynamics added to bias the walk.</li>
+        <li><strong>Excited states</strong> (Ch. VII) — TDDFT, CASSCF, conical intersections, surface hopping — extends everything to electronic states above the ground state.</li>
+        <li><strong>Machine-learned potentials</strong> (Ch. VIII, IX) <em>learn</em> $V(\mathbf{R})$ from data instead of computing it from the Schrödinger equation. Kernels and equivariant neural networks now reach DFT accuracy at a small fraction of the cost.</li>
+        <li><strong>Quantum computers</strong> (Ch. X) attack the exponential scaling directly, encoding the electronic state in qubits and (the hope is) recovering polynomial cost for problems where every classical method fails.</li>
+      </ol>
+
+      <p>The PES, in different chapters, is computed, sampled, traversed, learned, or simulated on quantum hardware. The frame holds throughout.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Attila Szabo and Neil S. Ostlund.</span> <em>Modern Quantum Chemistry: Introduction to Advanced Electronic Structure Theory.</em> Dover, 1996 reprint — §2.1 sets up the molecular Hamiltonian, atomic units, and the Born–Oppenheimer approximation in the same notation used throughout this book. Equations referenced below as "SO eq. X.Y" follow this edition.</li>
+          <li><span class="src-title">Ira N. Levine.</span> <em>Quantum Chemistry</em>, 7th ed., Pearson, 2014 — Chapters 1–6 for a gentler refresher of one-electron quantum mechanics and the hydrogen atom in real and complex spherical-harmonic bases.</li>
+          <li><span class="src-title">Trygve Helgaker, Poul Jørgensen, Jeppe Olsen.</span> <em>Molecular Electronic-Structure Theory.</em> Wiley, 2000 — the encyclopedic reference for wavefunction methods. Chapter 1 sets up the molecular Hamiltonian and the Born–Oppenheimer approximation with great care.</li>
+          <li><span class="src-title">David Tannor.</span> <em>Introduction to Quantum Mechanics: A Time-Dependent Perspective.</em> University Science Books, 2007 — for readers who want to take the timescale-separation argument behind Born–Oppenheimer seriously, with a careful treatment of nonadiabatic couplings.</li>
+          <li><span class="src-title">Max Born and J. Robert Oppenheimer.</span> "Zur Quantentheorie der Molekeln." <em>Annalen der Physik</em> 389(20), 457–484 (1927) — the original derivation, in German, of the adiabatic separation.</li>
+          <li><span class="src-title">CODATA 2018.</span> Recommended values of physical constants — source for $1\,\mathrm{Ha} = 27.211\,386\,245\,988$ eV and $a_0 = 5.291\,772\,109\,03 \times 10^{-11}$ m.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="../index.html"><span class="label">←</span> Contents</a>
+      <a class="next" href="02-hartree-fock.html"><span class="label">Next chapter</span>II · Hartree–Fock: Mean-Field Electrons →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/h-orbital-viewer.js"></script>
+</body>
+</html>

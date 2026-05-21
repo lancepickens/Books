@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter IX · Equivariant Neural Potentials and Foundation Models — Computational Chemistry: A Primer</title>
+  <meta name="description" content="Chapter 9: message passing, equivariant neural networks, MACE/NequIP/Allegro, and the foundation models for chemistry." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter IX of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter IX</p>
+      <h1 class="chapter-title">Equivariant Neural Potentials and Foundation Models</h1>
+      <p class="lede">Replacing hand-crafted invariants with learned features that <em>transform</em> the right way under rotation turned out to be the unlock. The 2020s ML potentials are not better fitters of bigger descriptor stacks; they are architecturally different, and they generalize.</p>
+
+      <h2><span class="sec-num">§1</span>Graphs and message passing</h2>
+
+      <p>A molecule is naturally a graph: atoms are nodes, bonds (or all pairs within a cutoff) are edges, edge attributes carry interatomic distances and vectors. The natural ML operation on this object is <strong>message passing</strong>: each node aggregates information from its neighbors over a small number of rounds, then a readout layer extracts predictions.</p>
+
+      <p>The general form of a message-passing step on a graph $(\mathcal{V}, \mathcal{E})$ is</p>
+
+      <div class="equation-block">
+        $$ \mathbf{h}_i^{(t+1)} \;=\; \phi\Bigl( \mathbf{h}_i^{(t)},\; \bigoplus_{j \in \mathcal{N}_i} \psi(\mathbf{h}_i^{(t)}, \mathbf{h}_j^{(t)}, \mathbf{e}_{ij}) \Bigr), $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathbf{h}_i^{(t)}$</dt><dd>Feature vector of atom $i$ at layer $t$; initialized from atom type, refined by message passing.</dd>
+          <dt>$\mathcal{N}_i$</dt><dd>Set of neighbors of $i$ within cutoff $r_c$.</dd>
+          <dt>$\psi$</dt><dd>Message function: how an edge $(i, j)$ contributes to the message arriving at $i$.</dd>
+          <dt>$\bigoplus$</dt><dd>Permutation-invariant aggregation (sum or mean) over neighbors.</dd>
+          <dt>$\phi$</dt><dd>Update function: combines the existing node feature with the aggregated message.</dd>
+        </dl>
+      </aside>
+
+      <p>Stack $T$ such layers and the receptive field around each atom grows to $T$ hops on the graph. Read out the total energy as a sum of per-atom contributions $E_i = \mathrm{MLP}(\mathbf{h}_i^{(T)})$. The architecture is permutation-invariant by construction (sums over neighbors) and translation-invariant (edges depend on $\mathbf{r}_{ij}$, not $\mathbf{r}_i$).</p>
+
+      <h3>Invariant message passing: SchNet</h3>
+
+      <p>The first widely adopted graph neural network for molecules, <strong>SchNet</strong> (Schütt et al. 2017), used messages that depend only on the <em>scalar</em> distance $r_{ij}$:</p>
+
+      <div class="equation-block">
+        $$ \mathbf{m}_{ij} \;=\; W(r_{ij}) \odot \mathbf{h}_j, $$
+      </div>
+
+      <p>with a learned radial filter $W(r_{ij})$ expanded in a Gaussian radial basis. The whole network is rotation-invariant — every message and every feature is a scalar. SchNet was the model that demonstrated chemistry-grade accuracy on QM9-style benchmarks with no hand-crafted descriptors.</p>
+
+      <h3>Beyond distances: DimeNet</h3>
+
+      <p>Pure distances throw away the directional information in $\mathbf{r}_{ij}$. <strong>DimeNet</strong> (Klicpera et al. 2020) added explicit angles $\theta_{ijk}$ to messages by passing messages along <em>directed edges</em> and updating them with neighbor information. Geometrically, this restores the three-body resolution that pure distance graphs miss without breaking the scalar-feature simplicity.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Equivariance: features that rotate with the world</h2>
+
+      <p>Restricting features to scalars throws away information. A bond points in a direction; a torque on a bond has a sign that depends on whether you observe it from above or below; an electron density is anisotropic. If we want to learn richer geometric quantities while still respecting symmetry, we need feature spaces that are <strong>equivariant</strong>:</p>
+
+      <div class="equation-block">
+        $$ \mathbf{h}_i'(R\mathbf{R}_1, \dots, R\mathbf{R}_N) \;=\; D(R)\, \mathbf{h}_i(\mathbf{R}_1, \dots, \mathbf{R}_N), $$
+      </div>
+
+      <p>for some representation $D(R)$ of the rotation group $\mathrm{SO}(3)$ acting on the feature. Scalars transform with $D = 1$ (invariance). Vectors transform with $D = R$. Higher-rank tensors transform under higher-dimensional irreducible representations indexed by an angular-momentum label $\ell = 0, 1, 2, \dots$ — just as in atomic physics.</p>
+
+      <p>Equivariance is strictly more informative than invariance: it preserves the geometric structure of features through every layer. At the end, taking the $\ell = 0$ component yields a scalar prediction (the energy); taking the $\ell = 1$ component yields a vector that transforms as a force; taking $\ell = 2$ yields a polarizability-tensor-like quantity. One network, many properties.</p>
+
+      <h3>Tensor products and Clebsch–Gordan</h3>
+
+      <p>To combine equivariant features, we need an operation that maps two irreps to another. The right one is the <strong>tensor product</strong>, decomposed by Clebsch–Gordan coefficients:</p>
+
+      <div class="equation-block">
+        $$ (\mathbf{u}^{\ell_1} \otimes \mathbf{v}^{\ell_2})^{L}_M \;=\; \sum_{m_1, m_2} C^{L M}_{\ell_1 m_1\, \ell_2 m_2}\, u^{\ell_1}_{m_1}\, v^{\ell_2}_{m_2}, \qquad |\ell_1 - \ell_2| \leq L \leq \ell_1 + \ell_2. $$
+      </div>
+
+      <p>Geometrically: take two spherical tensors, multiply them, project onto each rotational irrep $L$. This is exactly what coupling of angular momenta does in atomic physics — the equivariant ML literature borrowed the machinery wholesale.</p>
+
+      <h3>NequIP, Allegro, MACE</h3>
+
+      <p>The first widely used equivariant interatomic potential was <strong>NequIP</strong> (Batzner et al. 2022), built on the e3nn library. NequIP messages are tensor products of radial functions of $r_{ij}$ with spherical harmonics $Y_\ell^m(\hat{\mathbf{r}}_{ij})$, combined with neighbor features via Clebsch–Gordan. It demonstrated chemical accuracy with an order of magnitude less training data than invariant baselines.</p>
+
+      <p><strong>Allegro</strong> (Musaelian et al. 2023) is strictly local: information is exchanged between neighbors but never propagated to neighbors-of-neighbors, sidestepping the message-passing bottleneck. This gives near-linear scaling with system size and the easiest path to GPU parallelism.</p>
+
+      <p><strong>MACE</strong> (Batatia et al. 2022) — Many-body Atomic Cluster Expansion — generalizes the cluster expansion of Drautz (2019) by using equivariant features as the building blocks. A small number of message-passing layers (typically two) reach four-body and higher correlation, achieving state-of-the-art accuracy with a remarkably compact architecture. MACE is the basis of most foundation-model NNPs as of 2025.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Foundation models</h2>
+
+      <p>Before 2023, ML potentials were trained from scratch for each system: water, silicon, hexagonal ice, an enzyme active site. The volume of high-quality reference data made available by large materials databases — particularly the Materials Project and the OMat24 dataset — flipped that picture.</p>
+
+      <p>A <dfn title="A pretrained ML potential, trained once on a huge dataset spanning much of the periodic table, used as a starting point (zero-shot or with fine-tuning) for any chemistry or materials problem.">foundation model</dfn> for chemistry is an interatomic potential trained on a sample drawn from across chemistry — millions of atomic configurations spanning most of the periodic table — that can be used directly, with little or no fine-tuning, on a new system.</p>
+
+      <p>The first influential example, <strong>MACE-MP-0</strong> (Batatia et al. 2024), trained on 1.5 million Materials Project configurations, gave non-trivial transferability across solid-state inorganic chemistry. <strong>ORB</strong> (Neumann et al. 2024) traded strict equivariance for speed and showed competitive accuracy on materials benchmarks. <strong>fairchem UMA</strong> (Meta FAIR 2025) trained on OMat24 + Open Catalyst datasets to scale further. By late 2025, foundation NNPs were standard tools for materials screening, with documented accuracies of ~10–30 meV/atom on lattice energies of polymorphs they had never seen.</p>
+
+      <p>Where they fall short — and the field is honest about this — is on systems chemically distant from their training distribution: high-energy transition states, charged defects, molecules involving rare elements, magnetic systems with strong static correlation. Fine-tuning on a few hundred system-specific calculations typically closes the gap.</p>
+
+      <section class="interactive" data-widget="equivariance" aria-label="Equivariant vs invariant comparison">
+        <header>
+          <h4>Interactive · Why equivariance matters</h4>
+          <span class="hint">rotate the molecule</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">A three-atom angle, $A$–$B$–$C$. A naive model fed raw Cartesian coordinates (and trained on configurations at one orientation) gives energies that <em>change</em> as we rotate the molecule rigidly — even though the chemistry is identical. An invariant or equivariant model gives a flat horizontal line because it consumes only quantities that don't depend on orientation. The dashed line is the true bend potential.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Where this is going</h2>
+
+      <p>Three trends are reshaping the field circa 2026. <strong>Larger training distributions</strong> — terabytes of DFT data, automated curation, and active-learning loops at the dataset level — keep extending the chemistry covered by foundation NNPs. <strong>Better architectures</strong> — strictly local equivariant designs (eSEN, SevenNet), graph transformers — keep pushing accuracy per FLOP. And <strong>differentiable simulation</strong> — propagating gradients through the entire MD trajectory — opens up training objectives based on bulk observables (radial distribution functions, free energies, transport coefficients) rather than just per-configuration energies and forces.</p>
+
+      <p>A natural question is whether ML potentials will displace classical force fields and DFT entirely. The honest answer in 2026 is "partly." For routine MD on systems chemically close to the training distribution, ML potentials are already the right default. For new chemistry — rare elements, exotic bonding, high pressure, strong correlation — DFT and CCSD(T) remain the source of ground truth. The field's most active research is on the boundary between the two.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">J. Gilmer, S. S. Schoenholz, P. F. Riley, O. Vinyals, G. E. Dahl.</span> "Neural message passing for quantum chemistry." <em>ICML</em> 2017 — the message-passing framework.</li>
+          <li><span class="src-title">K. T. Schütt, P.-J. Kindermans, H. E. Sauceda, S. Chmiela, A. Tkatchenko, K.-R. Müller.</span> "SchNet: a continuous-filter convolutional neural network for modeling quantum interactions." <em>NeurIPS</em> 2017 — SchNet.</li>
+          <li><span class="src-title">J. Klicpera, J. Groß, S. Günnemann.</span> "Directional message passing for molecular graphs." <em>ICLR</em> 2020 — DimeNet.</li>
+          <li><span class="src-title">N. Thomas, T. Smidt, S. Kearnes, L. Yang, L. Li, K. Kohlhoff, P. Riley.</span> "Tensor field networks: rotation- and translation-equivariant neural networks for 3D point clouds." <em>arXiv:1802.08219</em> (2018) — the foundational equivariant architecture.</li>
+          <li><span class="src-title">S. Batzner, A. Musaelian, L. Sun, M. Geiger, J. P. Mailoa, M. Kornbluth, N. Molinari, T. E. Smidt, B. Kozinsky.</span> "E(3)-equivariant graph neural networks for data-efficient and accurate interatomic potentials." <em>Nat. Commun.</em> 13, 2453 (2022) — NequIP.</li>
+          <li><span class="src-title">A. Musaelian et al.</span> "Learning local equivariant representations for large-scale atomistic dynamics." <em>Nat. Commun.</em> 14, 579 (2023) — Allegro.</li>
+          <li><span class="src-title">I. Batatia, D. P. Kovács, G. N. C. Simm, C. Ortner, G. Csányi.</span> "MACE: higher-order equivariant message passing neural networks for fast and accurate force fields." <em>NeurIPS</em> 2022 — MACE.</li>
+          <li><span class="src-title">R. Drautz.</span> "Atomic cluster expansion for accurate and transferable interatomic potentials." <em>Phys. Rev. B</em> 99, 014104 (2019) — the cluster-expansion formalism MACE builds on.</li>
+          <li><span class="src-title">I. Batatia et al.</span> "A foundation model for atomistic materials chemistry." <em>arXiv:2401.00096</em> (2024) — MACE-MP-0.</li>
+          <li><span class="src-title">M. Neumann et al.</span> "Orb: a fast, scalable neural network potential." <em>arXiv:2410.22570</em> (2024) — ORB.</li>
+          <li><span class="src-title">C. L. Zitnick et al. (Meta FAIR Chemistry team).</span> "The Open Catalyst 2024 (OC24) dataset and Universal Materials Atomistic model (UMA)." 2024/2025 technical reports — fairchem UMA training data and methodology.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="08-descriptors-and-kernels.html"><span class="label">Previous chapter</span>← VIII · Descriptors and Kernels</a>
+      <a class="next" href="10-quantum-computing.html"><span class="label">Next chapter</span>X · Quantum Computing for Chemistry →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/equivariance.js"></script>
+</body>
+</html>

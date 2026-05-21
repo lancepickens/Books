@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Computational Chemistry: A Primer</title>
+  <meta name="description" content="A modern, ML-forward primer on computational chemistry — from the Schrödinger equation to foundation models and quantum computing." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../">← Books</a>
+      <span class="crumb-section">A Primer</span>
+    </header>
+
+    <article>
+      <p class="cover-eyebrow">A Primer</p>
+      <h1 class="cover-title">Computational Chemistry</h1>
+      <p class="cover-subtitle">From the Schrödinger equation to foundation models — a tour of how we compute, sample, and learn the potential energy surface, in ten chapters with something to play with in each.</p>
+      <p class="cover-meta"><strong>10 chapters</strong> · in browser · self-contained</p>
+
+      <hr class="section-rule" />
+
+      <div class="toc-wrap">
+        <ol class="toc">
+          <li>
+            <a href="chapters/01-pes-and-the-problem.html">
+              <span class="toc-num">I</span>
+              <span>
+                <span class="toc-title">The Potential Energy Surface, and the Problem</span>
+                <span class="toc-desc">Schrödinger refresher, the Born–Oppenheimer split, and why the many-electron problem is exponentially hard.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/02-hartree-fock.html">
+              <span class="toc-num">II</span>
+              <span>
+                <span class="toc-title">Hartree–Fock: Mean-Field Electrons</span>
+                <span class="toc-desc">Slater determinants, the variational principle, the Fock operator, and the self-consistent field.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/03-basis-sets-and-correlation.html">
+              <span class="toc-num">III</span>
+              <span>
+                <span class="toc-title">Basis Sets and Correlation</span>
+                <span class="toc-desc">Gaussian basis sets, what mean-field misses, and the ladder MP2 → CCSD → CCSD(T).</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/04-density-functional-theory.html">
+              <span class="toc-num">IV</span>
+              <span>
+                <span class="toc-title">Density Functional Theory</span>
+                <span class="toc-desc">Hohenberg–Kohn, the Kohn–Sham construction, and Jacob's ladder of functionals.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/05-periodic-systems.html">
+              <span class="toc-num">V</span>
+              <span>
+                <span class="toc-title">Periodic Systems and Plane Waves</span>
+                <span class="toc-desc">Bloch's theorem, k-point sampling, pseudopotentials — how materials science actually computes things.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/06-dynamics-on-the-surface.html">
+              <span class="toc-num">VI</span>
+              <span>
+                <span class="toc-title">Dynamics on the Surface</span>
+                <span class="toc-desc">Symplectic integrators, thermostats, ab initio MD, and free-energy methods that bias the walk.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/07-excited-states.html">
+              <span class="toc-num">VII</span>
+              <span>
+                <span class="toc-title">Excited States and Photochemistry</span>
+                <span class="toc-desc">TDDFT, CASSCF, conical intersections, and surface hopping — where the ground state isn't enough.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/08-descriptors-and-kernels.html">
+              <span class="toc-num">VIII</span>
+              <span>
+                <span class="toc-title">Learning the Surface I: Descriptors and Kernels</span>
+                <span class="toc-desc">Behler–Parrinello, SOAP, GAP, and why permutation and rotation invariance are the right priors.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/09-equivariant-nnps.html">
+              <span class="toc-num">IX</span>
+              <span>
+                <span class="toc-title">Equivariant Neural Potentials and Foundation Models</span>
+                <span class="toc-desc">Message passing, SchNet → NequIP → MACE, and the first generation of universal NNPs.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/10-quantum-computing.html">
+              <span class="toc-num">X</span>
+              <span>
+                <span class="toc-title">Quantum Computing for Chemistry</span>
+                <span class="toc-desc">VQE, qubit encodings, the unitary coupled-cluster ansatz, and the route to fault tolerance.</span>
+              </span>
+            </a>
+          </li>
+        </ol>
+      </div>
+
+      <hr class="ornament" />
+
+      <p style="font-family: var(--sans); font-size: 0.85rem; color: var(--text-muted); text-align: center; max-width: 38rem;">
+        Conventions used throughout: atomic units ($\hbar = m_e = e = 1/(4\pi\epsilon_0) = 1$), so energy is in Hartrees ($1\,\mathrm{Ha} = 27.2114\,\mathrm{eV}$) and length in Bohr radii ($1\,a_0 \approx 0.5292\,\text{Å}$). Electron coordinates use lowercase $\mathbf{r}$; nuclear coordinates use uppercase $\mathbf{R}$. Operators wear hats ($\hat H$); one-body integrals are written in chemists' notation $(ij|kl)$. Citations follow Szabo–Ostlund for wavefunction methods, Parr–Yang for DFT, and Frenkel–Smit for molecular dynamics unless noted.
+      </p>
+    </article>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="book.js"></script>
+</body>
+</html>
