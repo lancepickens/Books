@@ -1,7 +1,7 @@
 # Computational Chemistry: A Primer — Project Status
 
-**Last updated:** 2026-05-21
-**Phase:** First-pass drafts complete for all 10 chapters; user review pending.
+**Last updated:** 2026-05-26
+**Phase:** First-pass drafts complete; Passes C (citation verification) and D (notation audit) complete. Passes A (browser-verify) and B (advisor on Ch 2–10) still open.
 
 ## What exists
 
@@ -41,28 +41,52 @@ These are written into the index footer; every chapter must honor them.
 | # | Title | Widget file | Draft | Eqn audit | Advisor | Browser-verified |
 |---|---|---|---|---|---|---|
 | 1 | The PES and the Problem | `h-orbital-viewer.js` | ✓ | ✓ | ✓ (Ch 1 only) | — |
-| 2 | Hartree–Fock | `scf-iteration.js` | ✓ | self-check | — | — |
-| 3 | Basis Sets and Correlation | `basis-convergence.js` | ✓ | self-check | — | — |
-| 4 | Density Functional Theory | `jacobs-ladder.js` | ✓ | self-check | — | — |
-| 5 | Periodic Systems and Plane Waves | `band-structure.js` | ✓ | self-check | — | — |
-| 6 | Dynamics on the Surface | `muller-brown.js` | ✓ | self-check | — | — |
-| 7 | Excited States and Photochemistry | `conical-intersection.js` | ✓ | self-check | — | — |
-| 8 | Descriptors and Kernel Potentials | `gap-1d.js` | ✓ | self-check | — | — |
-| 9 | Equivariant Neural Potentials | `equivariance.js` | ✓ | self-check | — | — |
-| 10 | Quantum Computing for Chemistry | `vqe-h2.js` | ✓ | self-check | — | — |
+| 2 | Hartree–Fock | `scf-iteration.js` | ✓ | self+C+D | — | — |
+| 3 | Basis Sets and Correlation | `basis-convergence.js` | ✓ | self+C+D | — | — |
+| 4 | Density Functional Theory | `jacobs-ladder.js` | ✓ | self+C+D | — | — |
+| 5 | Periodic Systems and Plane Waves | `band-structure.js` | ✓ | self+C+D | — | — |
+| 6 | Dynamics on the Surface | `muller-brown.js` | ✓ | self+C+D | — | — |
+| 7 | Excited States and Photochemistry | `conical-intersection.js` | ✓ | self+C+D | — | — |
+| 8 | Descriptors and Kernel Potentials | `gap-1d.js` | ✓ | self+C+D | — | — |
+| 9 | Equivariant Neural Potentials | `equivariance.js` | ✓ | self+C+D | — | — |
+| 10 | Quantum Computing for Chemistry | `vqe-h2.js` | ✓ | self+C+D | — | — |
 
 **Outstanding validation work** (per CLAUDE.md gate). Tracked in the project TaskList (tasks 12–16):
 
 - **Pass A — Browser-verify all 10 widgets** (task 13). JS passes `node --check` but no widget has been opened in a real browser. The Müller–Brown (Ch 6) and conical-intersection (Ch 7) widgets do the heaviest work and warrant the most scrutiny; the orbital viewer (Ch 1) and SCF iteration (Ch 2) are the most user-facing.
 - **Pass B — Advisor equation-accuracy on Ch 2–10** (task 14). Ch 1 already had a full advisor pass. The remaining nine chapters have author self-checks only.
-- **Pass C — Citation verification** (task 15). Confirm every "Further reading" entry: titles, journals, volume/page, year; verify arXiv IDs where listed; spot-check primary papers in each chapter.
-- **Pass D — Notation audit** (task 16). Confirm conventions hold chapter-to-chapter (see "Conventions in force"). Specifically check the $\phi$ overload between AO basis (Ch 2–3) and KS orbitals (Ch 4) — currently distinguished as $\phi$ vs $\varphi$, but worth verifying every instance.
+- ~~Pass C — Citation verification~~ **DONE 2026-05-26.** Targeted verification of 13 priority refs + 3 spot-checks. Three corrections applied (see "Pass C findings" below); the canonical refs (Hohenberg–Kohn, Kohn–Sham, Born–Oppenheimer, Møller–Plesset, Roothaan, Monkhorst–Pack, Tully, Verlet, Car–Parrinello, PBE, SCAN, D3, Bravyi–Kitaev, Peruzzo, Kandala, McArdle RMP, Bartók GAP/SOAP, Behler–Parrinello) were not re-checked individually.
+- ~~Pass D — Notation audit~~ **DONE 2026-05-26.** Three inline disambiguations added (see "Pass D findings" below). The $\phi$ AO vs $\varphi$ KS distinction holds throughout — index style (Greek $\mu$ vs Latin $i$) makes it robust independent of glyph rendering.
+
+## Pass C findings (citation verification, 2026-05-26)
+
+Corrections applied to chapter files:
+
+- **Ch 9 / `09-equivariant-nnps.html`**: the original entry "C. L. Zitnick et al. (Meta FAIR Chemistry team). 'The Open Catalyst 2024 (OC24) dataset and Universal Materials Atomistic model (UMA).' 2024/2025 technical reports" conflated three artifacts and misattributed authorship. Split into two correct refs: OMat24 dataset (Barroso-Luque, Shuaibi, Fu, Wood, Dzamba, et al., arXiv:2410.12771, 2024) and the UMA model (Wood, Dzamba, Fu, Gao, Shuaibi, et al., arXiv:2506.23971, 2025). The "OC24" name does not exist — the FAIR 2024 catalyst dataset is "OCx24" (arXiv:2411.11783), which the chapter no longer needs to cite by name.
+- **Ch 8 / `08-descriptors-and-kernels.html`**: Vandermause et al. title was truncated. Added the trailing "for atomistic rare events." Volume/article number (6, 20, 2020) were correct.
+- **Ch 10 / `10-quantum-computing.html`**: §5 prose cites "Goings et al. (PNAS 2022) for cytochrome P450" but the ref was missing from Further reading. Added: Goings, White, Lee, Tautermann, Degroote, Gidney, Shiozaki, Babbush, Rubin, PNAS 119(38), e2203533119 (2022).
+
+Verified-as-written (no change): MACE-MP-0 arXiv:2401.00096; ORB arXiv:2410.22570; TFN arXiv:1802.08219; NequIP Nat. Commun. 13, 2453 (2022); Allegro Nat. Commun. 14, 579 (2023); Lee PRX Quantum 2, 030305 (2021); von Burg Phys. Rev. Research 3, 033055 (2021); Mardirossian–Head-Gordon Mol. Phys. 115, 2315 (2017); Plasser et al. JCTC 12, 1207 (2016); Deringer Chem. Rev. 121, 10073 (2021); Müller–Brown TCA 53, 75 (1979); Helgaker–Klopper–Koch–Noga JCP 106, 9639 (1997); Giannozzi QE J. Phys. Condens. Matter 21, 395502 (2009).
+
+## Pass D findings (notation audit, 2026-05-26)
+
+Three inline disambiguation notes added to the chapter HTML:
+
+- **Ch 5 §1 (`05-periodic-systems.html`)**: $\mathbf{R}$ is introduced as a Bravais lattice vector but the same glyph was used for nuclear coordinates in Chs 1–4. Added a one-line reminder that within this chapter $\mathbf{R}$ means a lattice translation; nuclei don't appear so context disambiguates.
+- **Ch 3 §1 (`03-basis-sets-and-correlation.html`)**: $\mathbf{P} = (\alpha\mathbf{A} + \beta\mathbf{B})/(\alpha+\beta)$ is the Gaussian product center, but Ch 2 uses the same bold $\mathbf{P}$ for the density matrix. Added an inline parenthetical to that effect.
+- **Ch 8 §3 (`08-descriptors-and-kernels.html`)**: $\rho_i(\mathbf{r})$ is the SOAP "local atomic density" — a Gaussian smear of neighbor positions, not the electronic density $\rho(\mathbf{r})$ of Ch 4. Added a clarifier paragraph after the defining equation.
+
+Other collisions surveyed and judged not to need an inline note (different chapters, glyph-weight or hat-vs-no-hat distinguishes them, or context is unmistakable): $\hat T$ kinetic vs cluster operator; $\rho_{nm}$ population matrix (Ch 7) vs $\rho$ electron density; $\mathbf{G}$ reciprocal lattice (Ch 5) vs $G_i$ symmetry function (Ch 8); $h$ core integral (Ch 2) vs $h$ coupling mode (Ch 7) vs $\mathbf{h}_i$ feature vector (Ch 9); $\phi$ AO basis vs $\phi$ message-passing update function (Ch 9); $\sigma$ spin label vs Gaussian width; $\hat X, \hat Y, \hat Z$ Pauli (Ch 10) vs $Y_l^m$ spherical harmonics; $K$ basis size vs $\mathbf{K}$ kernel matrix vs $\hat K_j$ exchange operator.
+
+Cosmetic inconsistency not changed: cutoff radius is written $R_c$ in Ch 8 (faithful to Behler–Parrinello 2007 notation) and $r_c$ in Chs 5 and 9. Standardizing would diverge from the literature notation that Ch 8 is teaching, so left as-is. Note for any future reader.
+
+Convention confirmed to hold: $\phi_\mu$ (Greek subscript) for atomic-orbital basis, $\varphi_i$ (Latin subscript) for Kohn–Sham orbitals. The subscript discipline is more robust than the $\phi$/$\varphi$ glyph distinction (which depends on font rendering).
 
 ---
 
-## Where we left off (2026-05-21)
+## Where we left off (2026-05-26)
 
-The user's instruction was "write the first pass drafts of the whole thing, then we'll start reviewing." That first pass is complete. **All ten chapters and ten widgets are drafted; nothing has been browser-tested or advisor-passed beyond Ch 1.**
+Drafts complete; Passes C (citations) and D (notation) done in this session. Remaining: Pass A (browser-verify widgets) and Pass B (advisor equation pass on Ch 2–10). Pass A is still the recommended next step — cheapest and surfaces the most issues the other passes can't see.
 
 ## Resume entry point
 

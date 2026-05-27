@@ -78,6 +78,8 @@
         $$ \rho_i(\mathbf{r}) \;=\; \sum_{j \in \mathcal{N}_i} e^{-(\mathbf{r} - \mathbf{r}_{ij})^2 / (2\sigma^2)}, $$
       </div>
 
+      <p>Note: this $\rho_i$ is a Gaussian smear of the neighbor <em>positions</em> around atom $i$ — a similarity feature, not the electronic density $\rho(\mathbf{r})$ of Chapter IV. The shared glyph is unavoidable but the two objects never appear together.</p>
+
       <p>and expands it in a basis of radial functions $g_n(r)$ times spherical harmonics:</p>
 
       <div class="equation-block">
@@ -145,7 +147,7 @@
           <li><span class="src-title">A. P. Bartók, M. C. Payne, R. Kondor, G. Csányi.</span> "Gaussian Approximation Potentials: the accuracy of quantum mechanics, without the electrons." <em>Phys. Rev. Lett.</em> 104, 136403 (2010) — GAP.</li>
           <li><span class="src-title">A. P. Bartók, R. Kondor, G. Csányi.</span> "On representing chemical environments." <em>Phys. Rev. B</em> 87, 184115 (2013) — SOAP.</li>
           <li><span class="src-title">C. E. Rasmussen and C. K. I. Williams.</span> <em>Gaussian Processes for Machine Learning.</em> MIT Press 2006 — the standard reference for GP regression. Freely available at <code>gaussianprocess.org</code>.</li>
-          <li><span class="src-title">J. Vandermause et al.</span> "On-the-fly active learning of interpretable Bayesian force fields." <em>npj Comput. Mater.</em> 6, 20 (2020) — modern active-learning workflow with sparse GPs (FLARE).</li>
+          <li><span class="src-title">J. Vandermause et al.</span> "On-the-fly active learning of interpretable Bayesian force fields for atomistic rare events." <em>npj Comput. Mater.</em> 6, 20 (2020) — modern active-learning workflow with sparse GPs (FLARE).</li>
           <li><span class="src-title">V. L. Deringer, A. P. Bartók, N. Bernstein, D. M. Wilkins, M. Ceriotti, G. Csányi.</span> "Gaussian process regression for materials and molecules." <em>Chem. Rev.</em> 121, 10073 (2021) — comprehensive recent review.</li>
         </ul>
       </section>
