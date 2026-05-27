@@ -49,16 +49,20 @@ All chapter HTML files serve; all widget JS files pass `node --check`.
 
 ## Citation status (2026-05-26 / 2026-05-27)
 
-Two rounds of focused citation verification have run, covering 44 references across the most-risky (2022–2025 frontier) subset:
+Three rounds of citation verification have run, covering effectively every Further-reading entry in the book (108 verifications across ~95 unique refs after dedup):
 
 **Round 1 (2026-05-26)** — verified at scaffold-decision time: 26 modern refs spanning DeepSeek-V3 / R1, Llama 3, Snell test-time, Lightman PRM, Wei CoT, Yao ReAct, Lewis RAG, Schick Toolformer, DINOv2, CLIP, Flow Matching, Latent Diffusion, V-JEPA, Elhage superposition, Olsson induction heads, Rafailov DPO, Ouyang InstructGPT, Bai Constitutional AI, LoRA, QLoRA, Gu/Dao Mamba. Found 4 minor corrections (DeepSeek-V3 title precision, DeepSeek-R1 date precision, DINOv2 date, V-JEPA Feb-not-Apr). Got canonical refs for the 4 ambiguous-by-name items: OpenAI o1 system card (arXiv:2412.16720); MCP (anthropic.com/news/model-context-protocol, Nov 2024); Sora (openai.com/index/video-generation-models-as-world-simulators, Feb 2024); Scaling Monosemanticity (transformer-circuits.pub/2024/scaling-monosemanticity, May 2024). Noted Llama 4 release (April 2025) — incorporated into Ch VI alongside Llama 3.
 
-**Round 2 (2026-05-27)** — focused on the 17 refs introduced in chapters 1, 2, 3, 8, 9, 10 that round 1 did not cover (Belkin/Nakkiran double descent, NTK, Baydin autodiff, self-consistency, GSM8K, ToT, Qwen2.5-Math, AutoGen, Voyager, SWE-bench, DiT, Cunningham SAE, FineWeb, emergence-mirage, RLAIF, Llama 3 lead author).
+**Round 2 (2026-05-27)** — focused on the 17 refs introduced in chapters 1, 2, 3, 8, 9, 10 that round 1 did not cover (Belkin/Nakkiran double descent, NTK, Baydin autodiff, self-consistency, GSM8K, ToT, Qwen2.5-Math, AutoGen, Voyager, SWE-bench, DiT, Cunningham SAE, FineWeb, emergence-mirage, RLAIF, Llama 3 lead author). Found 1 correction: Baydin autodiff survey is JMLR 18(153) **2018**, not 2017.
 
-**Pre-2022 canonical references not individually verified** (textbook-fixed, would be obvious from any standard source):
-- Foundational papers (Rumelhart backprop 1986; LeCun LeNet 1998; Krizhevsky AlexNet 2012; VGG; ResNet; Vaswani transformer; BERT; GPT-3; Adam; AdamW; Kaiming init; BatchNorm; LayerNorm; RMSNorm; ReLU; GELU; LSTM; GANs; VAE; DDPM; score matching; SDE diffusion; classifier-free guidance)
-- Foundational statistics (Hastie/Tibshirani/Friedman ESL; Bishop PRML; Murphy; Shalev-Shwartz/Ben-David)
-- Foundational kernel theory (Hoerl/Kennard ridge 1970; Tibshirani lasso 1996; Cortes/Vapnik SVM 1995; Schölkopf/Smola; Bradley/Terry 1952)
+**Round 3 (2026-05-27)** — comprehensive verification of all remaining ~64 refs across both chapter halves (textbooks, foundational papers, every Further-reading entry not yet checked). Found 4 corrections applied and one title swap:
+- Ch 6 SentencePiece: full title is "…tokenizer and detokenizer **for Neural Text Processing**" (trailing phrase was missing).
+- Ch 6 Switch: title is "Switch **Transformers**" (plural), not singular.
+- Ch 6 Llama 4 blog: cited title was a paraphrase; replaced with the actual headline "The Llama 4 herd: The beginning of a new era of natively multimodal AI innovation" while keeping "Scout/Maverick/Behemoth" as a descriptive trail.
+- Ch 7 Stiennon: title is "Learning to summarize **from** human feedback" (not "with").
+- Ch 9 Reflexion: author list was missing **E. Berman** between Cassano and Gopinath.
+
+All other ~89 refs verified as-cited. arXiv IDs, years, venues, page numbers, edition information all checked.
 
 ## Outstanding validation work
 
@@ -66,7 +70,7 @@ Tracked in the project TaskList. Four passes mirror the comp-chem workflow:
 
 - **Pass A — Browser-verify all 10 widgets.** JS passes `node --check` but none has been opened in a real browser yet. Most-risky widgets: `attention-viewer.js` (drag interactions on SVG), `mlp-decision.js` (live training loop on canvas), `diffusion-2d.js` (timer-driven SDE), `scaling-laws.js` (Newton solver for optimal allocation). Most-user-facing: `bias-variance.js`, `attention-viewer.js`.
 - **Pass B — Advisor equation-accuracy on all 10 chapters.** No chapter has had an advisor pass yet. Ch V (attention math), Ch VI (Chinchilla loss model), Ch VII (DPO derivation, KL-RL closed-form), Ch X (DDPM forward/reverse formulas) deserve the most scrutiny.
-- **Pass C — Citation verification.** Two focused rounds done (see above). A final sweep over every Further-reading block would be the completionist version.
+- ~~Pass C — Citation verification.~~ **DONE 2026-05-27** (rounds 1, 2, 3). Every Further-reading entry verified or corrected.
 - **Pass D — Notation audit.** Confirm conventions hold chapter-to-chapter. The macros are clean (no built-in shadows), but watch:
   - $\rho$ is not used in this book (no comp-chem-style collision).
   - $\eps$ is used both for noise (Ch X diffusion) and for epsilon balls / numerical stability (Ch III Adam). Context disambiguates.
