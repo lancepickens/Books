@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A Modern Introduction to Machine Learning</title>
+  <meta name="description" content="A 10-chapter introduction to machine learning, weighted toward the 2024–2026 frontier — from the learning problem through transformers, alignment, reasoning models, agents, and generative modeling." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../">← Books</a>
+      <span class="crumb-section">A Modern Introduction</span>
+    </header>
+
+    <article>
+      <p class="cover-eyebrow">A Modern Introduction</p>
+      <h1 class="cover-title">Machine Learning</h1>
+      <p class="cover-subtitle">Ten chapters from the learning problem to the 2026 frontier — transformers, alignment, reasoning models, agents, diffusion. With something to play with in every chapter.</p>
+      <p class="cover-meta"><strong>10 chapters</strong> · in browser · self-contained</p>
+
+      <hr class="section-rule" />
+
+      <div class="toc-wrap">
+        <ol class="toc">
+          <li>
+            <a href="chapters/01-foundations.html">
+              <span class="toc-num">I</span>
+              <span>
+                <span class="toc-title">Foundations: Data, Loss, and the Learning Problem</span>
+                <span class="toc-desc">Empirical risk minimization, generalization, and the bias–variance picture that underlies every method to follow.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/02-linear-and-kernels.html">
+              <span class="toc-num">II</span>
+              <span>
+                <span class="toc-title">Linear Models, Regularization, and the Kernel Bridge</span>
+                <span class="toc-desc">Linear and logistic regression as geometry, the ridge/lasso path, and how kernels reach nonlinearity without leaving the linear toolbox.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/03-neural-nets-and-backprop.html">
+              <span class="toc-num">III</span>
+              <span>
+                <span class="toc-title">Neural Networks and Backpropagation</span>
+                <span class="toc-desc">MLPs as compositions of differentiable maps, reverse-mode autodiff, and the optimizers (SGD, Adam, AdamW) that make modern training work.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/04-vision-cnns-and-vits.html">
+              <span class="toc-num">IV</span>
+              <span>
+                <span class="toc-title">Vision: Convolutions, ResNets, and Vision Transformers</span>
+                <span class="toc-desc">Translation equivariance, why residual connections changed everything, and the move from CNNs to ViTs and image foundation models.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/05-sequences-and-transformers.html">
+              <span class="toc-num">V</span>
+              <span>
+                <span class="toc-title">Sequences, Attention, and the Transformer</span>
+                <span class="toc-desc">Self-attention as a soft lookup, the decoder-only block, RoPE positions, and the residual-stream view that the rest of the book runs on.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/06-pretraining-and-scaling.html">
+              <span class="toc-num">VI</span>
+              <span>
+                <span class="toc-title">Pretraining and Scaling Laws</span>
+                <span class="toc-desc">Self-supervised next-token prediction, tokenization, Chinchilla-style compute-optimal scaling, MoE, and the alternatives challenging dense transformers.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/07-alignment.html">
+              <span class="toc-num">VII</span>
+              <span>
+                <span class="toc-title">From Base Model to Assistant: SFT, RLHF, DPO</span>
+                <span class="toc-desc">Supervised fine-tuning, reward modeling, PPO, the closed-form DPO objective, constitutional methods, and parameter-efficient adaptation.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/08-reasoning-and-test-time.html">
+              <span class="toc-num">VIII</span>
+              <span>
+                <span class="toc-title">Reasoning and Test-Time Compute</span>
+                <span class="toc-desc">Chain-of-thought, the o-series shift, RL with verifiable rewards, best-of-N, and how spending more compute at inference changes what models can do.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/09-agents-and-rag.html">
+              <span class="toc-num">IX</span>
+              <span>
+                <span class="toc-title">Agents, Tool Use, and Retrieval</span>
+                <span class="toc-desc">Function calling, MCP, ReAct loops, planning, code agents, and the embedding/retrieval stack that grounds them in real data.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/10-generative-and-frontier.html">
+              <span class="toc-num">X</span>
+              <span>
+                <span class="toc-title">Generative Beyond Text, and the Frontier</span>
+                <span class="toc-desc">Diffusion and flow matching, multimodal models, video and world models, mechanistic interpretability, and the open questions of 2026.</span>
+              </span>
+            </a>
+          </li>
+        </ol>
+      </div>
+
+      <hr class="ornament" />
+
+      <p style="font-family: var(--sans); font-size: 0.85rem; color: var(--text-muted); text-align: center; max-width: 38rem;">
+        Conventions used throughout: vectors in bold lowercase ($\mathbf{x}, \mathbf{w}$); matrices in bold uppercase ($\mathbf{W}, \mathbf{X}$); parameters $\boldsymbol{\theta}$; loss $\mathcal{L}$; expectation $\mathbb{E}$; data distribution $\mathcal{D}$; KL divergence $\mathrm{KL}$. Logs are natural unless noted. Datasets, papers and library names cited inline are real and verifiable; arXiv IDs and venue/year given where appropriate. The audience is assumed comfortable with multivariable calculus, linear algebra, and basic probability.
+      </p>
+    </article>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="book.js"></script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter X · Generative Beyond Text, and the Frontier — A Modern Introduction to Machine Learning</title>
+  <meta name="description" content="Chapter 10: VAEs, GANs, diffusion, flow matching, multimodal models, world models, mechanistic interpretability, and the open frontiers of 2026." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter X of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter X</p>
+      <h1 class="chapter-title">Generative Beyond Text, and the Frontier</h1>
+      <p class="lede">Language was the first modality to fall to transformers. Images, audio, and video took a different path — through diffusion — and the question of what to do once you can generate anything is now most of what serious research is about.</p>
+
+      <h2><span class="sec-num">§1</span>Three generative paradigms, briefly</h2>
+
+      <p>Before diffusion ate the field there were two main lines of generative modeling for continuous data.</p>
+
+      <p><strong>Variational autoencoders</strong> (VAE; Kingma &amp; Welling 2013) learn an encoder $q_\phi(\mathbf{z} \mid \mathbf{x})$ and decoder $p_\theta(\mathbf{x} \mid \mathbf{z})$ jointly by maximizing the evidence lower bound. Clean theory, tractable likelihoods, decent representations — but blurry samples.</p>
+
+      <p><strong>Generative adversarial networks</strong> (GAN; Goodfellow et al. 2014) train a generator and a discriminator in a min-max game. Sharper samples than VAEs, no likelihood, training is famously unstable. Dominant for image synthesis 2015–2020.</p>
+
+      <p><strong>Diffusion</strong> models (Sohl-Dickstein et al. 2015; Ho, Jain &amp; Abbeel 2020 — DDPM) overtook GANs around 2021 for unconditional and text-to-image generation, and have been the dominant paradigm for continuous data since. They are stable to train, scalable, and produce samples that have repeatedly exceeded what GANs could.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Diffusion: forward and reverse</h2>
+
+      <p>A diffusion model defines two processes.</p>
+
+      <p><strong>Forward</strong>: gradually add Gaussian noise to a data sample $\mathbf{x}_0$ over $T$ steps, producing $\mathbf{x}_1, \mathbf{x}_2, \dots, \mathbf{x}_T$ such that $\mathbf{x}_T$ is approximately pure noise:</p>
+
+      <div class="equation-block">
+        $$ q(\mathbf{x}_t \mid \mathbf{x}_{t-1}) \;=\; \mathcal{N}\bigl(\mathbf{x}_t;\, \sqrt{1 - \beta_t}\, \mathbf{x}_{t-1},\, \beta_t \mathbf{I}\bigr). $$
+      </div>
+
+      <p>The $\beta_t$ are a fixed noise schedule (typically cosine; Nichol &amp; Dhariwal 2021). A useful closed form follows from composing $T$ Gaussian steps: letting $\bar\alpha_t = \prod_{s=1}^{t}(1 - \beta_s)$,</p>
+
+      <div class="equation-block">
+        $$ q(\mathbf{x}_t \mid \mathbf{x}_0) \;=\; \mathcal{N}\bigl(\mathbf{x}_t;\, \sqrt{\bar\alpha_t}\, \mathbf{x}_0,\, (1 - \bar\alpha_t) \mathbf{I}\bigr). $$
+      </div>
+
+      <p>So we can sample $\mathbf{x}_t$ at any timestep directly from $\mathbf{x}_0$ — useful for training.</p>
+
+      <p><strong>Reverse</strong>: learn to invert the forward process. A neural network $\eps_\theta(\mathbf{x}_t, t)$ predicts the noise added to $\mathbf{x}_0$ at step $t$. The training objective collapses to a simple regression:</p>
+
+      <div class="equation-block">
+        $$ \mathcal{L}(\boldsymbol\theta) \;=\; \mathbb{E}_{t,\, \mathbf{x}_0,\, \eps}\bigl[\,\norm{\eps - \eps_\theta(\sqrt{\bar\alpha_t} \mathbf{x}_0 + \sqrt{1 - \bar\alpha_t}\, \eps,\, t)}^2 \,\bigr]. $$
+      </div>
+
+      <p>Sample $\mathbf{x}_0$ from data, sample $t$ uniformly from $\{1, \dots, T\}$, sample $\eps$ from a unit Gaussian, regress. To generate, start from $\mathbf{x}_T \sim \mathcal{N}(0, \mathbf{I})$ and iteratively denoise using $\eps_\theta$ for $T$ steps, ending at $\mathbf{x}_0$. The denoising network is typically a U-Net (Ronneberger et al. 2015) for images, or a transformer (DiT; Peebles &amp; Xie 2023) for larger models.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The score-matching and SDE view</h2>
+
+      <p>Song &amp; Ermon (2019) and Song et al. (2021) gave the cleanest formulation: the model learns the <strong>score</strong> $\nabla_{\mathbf{x}} \log p_t(\mathbf{x})$ — the gradient of log-density at noise level $t$. The reverse process is then a stochastic differential equation</p>
+
+      <div class="equation-block">
+        $$ \dd \mathbf{x} \;=\; \bigl[\mathbf{f}(\mathbf{x}, t) - g(t)^2 \nabla_{\mathbf{x}} \log p_t(\mathbf{x})\bigr] \dd t + g(t)\, \dd \bar{\mathbf{w}}, $$
+      </div>
+
+      <p>which moves $\mathbf{x}_T$ noise back to $\mathbf{x}_0$ data along the score field. The DDPM loss above is one specific discretization. The SDE view also exposes a deterministic <em>probability-flow ODE</em> with the same marginals, giving samplers (DDIM, DPM-Solver, EDM) that produce samples in 20–50 steps rather than 1000.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Conditional generation and classifier-free guidance</h2>
+
+      <p>For text-to-image generation, the model is conditioned on a text embedding $\mathbf{c}$ (typically from a frozen CLIP or T5 encoder). The training objective becomes</p>
+
+      <div class="equation-block">
+        $$ \mathcal{L}(\boldsymbol\theta) \;=\; \mathbb{E}_{t,\, \mathbf{x}_0,\, \mathbf{c},\, \eps}\bigl[\,\norm{\eps - \eps_\theta(\mathbf{x}_t,\, t,\, \mathbf{c})}^2 \,\bigr]. $$
+      </div>
+
+      <p><strong>Classifier-free guidance</strong> (Ho &amp; Salimans 2022) is the trick that made text-to-image models actually follow prompts. Train with a fraction of conditioning dropped to $\emptyset$; at sample time, take a weighted combination of conditional and unconditional predictions:</p>
+
+      <div class="equation-block">
+        $$ \tilde\eps_\theta(\mathbf{x}_t, t, \mathbf{c}) \;=\; (1 + w)\, \eps_\theta(\mathbf{x}_t, t, \mathbf{c}) - w\, \eps_\theta(\mathbf{x}_t, t, \emptyset). $$
+      </div>
+
+      <p>With $w > 0$ the sampler is pushed in the direction the conditioning shifts, amplifying prompt adherence at the cost of some sample diversity. $w$ around 5–8 is standard for Stable Diffusion-class models.</p>
+
+      <p><strong>Latent diffusion</strong> (Rombach et al. 2022, the architecture under Stable Diffusion) runs the diffusion process not on raw pixels but on the latent of a pretrained VAE — about 8× smaller per side, $64\times$ less compute. Every modern text-to-image and text-to-video system uses a latent space of some kind.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Flow matching: the simpler successor</h2>
+
+      <p>Diffusion's noise schedule is fiddly and its training objective is one specific discretization of a more general principle. <strong>Flow matching</strong> (Lipman et al. 2023) reframes the problem: instead of learning to denoise, learn the <em>velocity field</em> $\mathbf{v}_\theta(\mathbf{x}, t)$ of a continuous-time ODE that transports the noise distribution to the data distribution. Training is a regression to a target velocity (e.g. straight-line interpolation between paired noise and data):</p>
+
+      <div class="equation-block">
+        $$ \mathcal{L}(\boldsymbol\theta) \;=\; \mathbb{E}_{t,\, \mathbf{x}_0,\, \mathbf{x}_1}\bigl[\,\norm{(\mathbf{x}_1 - \mathbf{x}_0) - \mathbf{v}_\theta(t \mathbf{x}_1 + (1-t)\mathbf{x}_0,\, t)}^2 \,\bigr]. $$
+      </div>
+
+      <p>Simpler than DDPM (no noise schedule, no $\bar\alpha_t$ algebra), trains stably, often gives straighter sampling paths so you need fewer integration steps. Flow matching and its variants (Rectified Flow, Optimal Transport flow) are the technique behind several 2024–25 frontier image and video models (Stable Diffusion 3, Flux, and Sora-class systems by inference).</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Multimodal models</h2>
+
+      <p>The 2024–26 frontier is dominated by models that handle multiple modalities natively. The basic recipe:</p>
+
+      <ul>
+        <li>A modality-specific tokenizer turns each input (text, image patches, audio frames, video patches) into a sequence of tokens or token-like embeddings.</li>
+        <li>A shared transformer backbone processes the unified sequence with self-attention across all modalities.</li>
+        <li>Modality-specific decoders generate output text, images (via diffusion or autoregressive token prediction), or audio.</li>
+      </ul>
+
+      <p>GPT-4o, Claude 3.5+, Gemini 2.0+, Llama 4 (April 2025) are all native multimodal in this sense — the vision encoder feeds into the same transformer that handles text. Image generation increasingly happens inside the model rather than via a separate diffusion call; the line between "LLM" and "image model" has gotten blurry.</p>
+
+      <p><strong>Sora</strong> (OpenAI, Brooks &amp; Peebles et al. 2024) was the headline video model: a Diffusion Transformer trained on a very large video corpus, producing minute-long high-resolution video from text prompts. Subsequent systems (Veo 2/3 from Google, Kling, Runway Gen-3, Pika 2, Hailuo) made video generation a competitive product space by 2025.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>World models</h2>
+
+      <p>A <dfn title="A learned model that predicts how a state will evolve under actions or naturally over time. Implicit in any video generator; explicit in some architectures.">world model</dfn> is a learned simulator: given a current state (an image, a video clip, a game frame), predict what comes next, possibly under a control input. Video generation models are world models in disguise — to predict the next video frame they must learn the physics, persistence, and interactions of the depicted scene.</p>
+
+      <p>Two more pointed research lines. Yann LeCun's <strong>JEPA</strong> architecture predicts <em>latent</em> features of future frames rather than pixels — the bet being that pixel-perfect prediction wastes capacity on irrelevant detail. <strong>V-JEPA</strong> (Bardes et al. 2024) demonstrated this empirically on video. Separately, OpenAI's Sora paper frames video generation explicitly as "world simulation" and ties it to potential downstream use in robotics and planning. The empirical question — can video generators learn enough of physics to be useful for non-video downstream tasks — is unsettled but increasingly serious.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§8</span>Mechanistic interpretability</h2>
+
+      <p>If models are increasingly the systems we deploy, understanding what they actually do inside is a research goal in its own right. <strong>Mechanistic interpretability</strong> (a term the Anthropic interpretability group has done the most to define) studies neural networks as artifacts to be reverse-engineered.</p>
+
+      <p>The field has produced a few generalizable concepts.</p>
+
+      <ul>
+        <li><strong>Features and circuits.</strong> The unit of analysis is not a neuron but a <em>feature</em> — a direction in activation space corresponding to some concept — and a <em>circuit</em>, a connected subgraph of features and weights implementing some behavior. Olah et al.'s pre-transformer Circuits work and the Anthropic transformer-circuits agenda (Elhage et al. 2021 onward) made this concrete.</li>
+        <li><strong>Superposition.</strong> Networks pack many more features than they have dimensions (Elhage et al. 2022, "Toy Models of Superposition"); a feature direction can be cleanly recovered with a sparse decomposition.</li>
+        <li><strong>Sparse autoencoders</strong> (SAEs; Cunningham et al. 2023; Bricken et al. 2023) train an autoencoder with a sparse hidden layer on a network's activations; the learned dictionary atoms are interpretable feature directions. Anthropic's "Scaling Monosemanticity" (Templeton et al. 2024) applied this to Claude 3 Sonnet, finding millions of human-meaningful features ranging from "the Golden Gate Bridge" to "deception."</li>
+        <li><strong>Induction heads</strong> (Olsson et al. 2022) and similar discovered circuits gave the first detailed account of how a specific transformer behavior — in-context learning — is implemented mechanically.</li>
+      </ul>
+
+      <p>This is the closest thing to a science of what's inside a model. It is still small relative to the scale of the systems being studied; SAEs on a frontier model produce millions of features without exhausting them. Whether this scales to "we can verify what a model will do before deploying it" is the bet that funds the field.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§9</span>The open frontier, in one paragraph each</h2>
+
+      <p><strong>Where does scaling end?</strong> Pretraining loss continues to drop with compute; pretraining-quality data is approaching exhaustion (high-quality text in the trillions of tokens); reasoning-style post-training has opened a new axis. Whether the next 10× of compute brings the next qualitative jump or returns diminishing returns is the most-watched question in the field. Current public bets are split.</p>
+
+      <p><strong>Alignment at the frontier.</strong> RLHF and DPO handle current models. The harder problem is alignment of more capable systems that can plan over long horizons, deceive evaluators if it serves their objective, or exploit reward misspecification creatively. Scalable oversight, debate, weak-to-strong generalization, and the Anthropic/OpenAI/DeepMind alignment teams' programs all attack this.</p>
+
+      <p><strong>Robustness and safety.</strong> Jailbreaks, prompt injection, model evaluations that don't measure what they claim, capability elicitation that misses what a model can do — the gap between "the model has not exhibited capability X in evaluation" and "the model cannot do X" remains uncomfortably wide.</p>
+
+      <p><strong>Energy and infrastructure.</strong> The leading systems consume gigawatts; the constraints on further scaling are increasingly physical (power, fab capacity, datacenter siting) rather than algorithmic.</p>
+
+      <p><strong>The unsupervised problem.</strong> Most of the value the field has produced has come from supervised or self-supervised pretraining + RL on verifiable rewards. Whether models can <em>self-improve</em> on hard problems without external scaffolding — and what theory could underwrite such self-improvement — remains the deepest open question.</p>
+
+      <p>The book ends here. Across ten chapters we built one frame — data + function class + loss, optimized by gradient descent — and watched it absorb every modality and method the modern field has produced. The frame survives. What's inside is changing faster than any book about it can; the goal was to leave you ready to read what comes next.</p>
+
+      <section class="interactive" data-widget="diffusion-2d" aria-label="2D diffusion forward and reverse">
+        <header>
+          <h4>Interactive · Diffusion on a 2D mixture</h4>
+          <span class="hint">play forward / reverse</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">A four-mode 2D Gaussian mixture stands in for "data." Press <em>noise</em> to run the forward process: samples diffuse outward via $\mathbf{x}_{t+1} = \sqrt{1 - \beta}\, \mathbf{x}_t + \sqrt{\beta}\, \eps$ until they're indistinguishable from $\mathcal{N}(0, \mathbf{I})$. Press <em>denoise</em> to run the reverse process, using the <em>true</em> score $\nabla \log p_t(\mathbf{x})$ analytically derivable from the noised mixture density. The clouds collapse back into the four modes — what a trained $\eps_\theta$ approximates with a neural net.</p>
+      </section>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">D. P. Kingma and M. Welling.</span> "Auto-Encoding Variational Bayes." <em>ICLR</em> 2014 / arXiv:1312.6114 — VAE.</li>
+          <li><span class="src-title">I. Goodfellow et al.</span> "Generative Adversarial Nets." <em>NeurIPS</em> 2014 / arXiv:1406.2661 — GAN.</li>
+          <li><span class="src-title">J. Sohl-Dickstein, E. Weiss, N. Maheswaranathan, S. Ganguli.</span> "Deep Unsupervised Learning using Nonequilibrium Thermodynamics." <em>ICML</em> 2015 / arXiv:1503.03585 — the foundational diffusion paper that DDPM revisited.</li>
+          <li><span class="src-title">J. Ho, A. Jain, P. Abbeel.</span> "Denoising Diffusion Probabilistic Models." <em>NeurIPS</em> 2020 / arXiv:2006.11239 — DDPM.</li>
+          <li><span class="src-title">A. Q. Nichol and P. Dhariwal.</span> "Improved Denoising Diffusion Probabilistic Models." <em>ICML</em> 2021 / arXiv:2102.09672 — the cosine noise schedule used here.</li>
+          <li><span class="src-title">O. Ronneberger, P. Fischer, T. Brox.</span> "U-Net: Convolutional Networks for Biomedical Image Segmentation." <em>MICCAI</em> 2015 / arXiv:1505.04597 — the U-Net backbone used by most early diffusion models.</li>
+          <li><span class="src-title">Y. Song and S. Ermon.</span> "Generative Modeling by Estimating Gradients of the Data Distribution." <em>NeurIPS</em> 2019 / arXiv:1907.05600 — score matching.</li>
+          <li><span class="src-title">Y. Song, J. Sohl-Dickstein, D. P. Kingma, A. Kumar, S. Ermon, B. Poole.</span> "Score-Based Generative Modeling through Stochastic Differential Equations." <em>ICLR</em> 2021 / arXiv:2011.13456 — the SDE formulation.</li>
+          <li><span class="src-title">J. Ho and T. Salimans.</span> "Classifier-Free Diffusion Guidance." <em>arXiv:2207.12598</em> (2022) — the trick that makes text-to-image follow prompts.</li>
+          <li><span class="src-title">R. Rombach, A. Blattmann, D. Lorenz, P. Esser, B. Ommer.</span> "High-Resolution Image Synthesis with Latent Diffusion Models." <em>CVPR</em> 2022 / arXiv:2112.10752 — Latent Diffusion / Stable Diffusion.</li>
+          <li><span class="src-title">Y. Lipman, R. T. Q. Chen, H. Ben-Hamu, M. Nickel, M. Le.</span> "Flow Matching for Generative Modeling." <em>ICLR</em> 2023 / arXiv:2210.02747 — Flow Matching.</li>
+          <li><span class="src-title">W. Peebles and S. Xie.</span> "Scalable Diffusion Models with Transformers." <em>ICCV</em> 2023 / arXiv:2212.09748 — DiT, the transformer backbone for diffusion.</li>
+          <li><span class="src-title">T. Brooks, B. Peebles, et al. (OpenAI).</span> "Video generation models as world simulators." <em>openai.com/index/video-generation-models-as-world-simulators</em> (February 2024) — the Sora technical report.</li>
+          <li><span class="src-title">A. Bardes et al. (Meta AI).</span> "Revisiting Feature Prediction for Learning Visual Representations from Video." <em>arXiv:2404.08471</em> (Feb 2024) — V-JEPA.</li>
+          <li><span class="src-title">N. Elhage et al. (Anthropic).</span> "Toy Models of Superposition." <em>arXiv:2209.10652</em> (2022) — the superposition phenomenon underlying SAE-based interpretability.</li>
+          <li><span class="src-title">C. Olsson et al. (Anthropic).</span> "In-context Learning and Induction Heads." <em>arXiv:2209.11895</em> (2022) — the canonical "specific circuit, specific behavior" result.</li>
+          <li><span class="src-title">A. Templeton, T. Conerly, J. Marcus, et al. (Anthropic).</span> "Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet." <em>transformer-circuits.pub/2024/scaling-monosemanticity</em> (May 2024) — SAEs applied to a production model.</li>
+          <li><span class="src-title">H. Cunningham, A. Ewart, L. Riggs, R. Huben, L. Sharkey.</span> "Sparse Autoencoders Find Highly Interpretable Features in Language Models." <em>ICLR</em> 2024 / arXiv:2309.08600 — the open-source SAE-for-interpretability paper.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="09-agents-and-rag.html"><span class="label">Previous chapter</span>← IX · Agents, Tools, and Retrieval</a>
+      <a class="next" href="../index.html"><span class="label">End of book</span>Contents →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/diffusion-2d.js"></script>
+</body>
+</html>

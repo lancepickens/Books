@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter VI · Pretraining and Scaling Laws — A Modern Introduction to Machine Learning</title>
+  <meta name="description" content="Chapter 6: self-supervised pretraining, tokenization, scaling laws (Kaplan and Chinchilla), Mixture of Experts, state-space alternatives, and data curation." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter VI of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter VI</p>
+      <h1 class="chapter-title">Pretraining and Scaling Laws</h1>
+      <p class="lede">The Cambrian explosion of capability since 2018 came from one observation, repeated: predict the next token on a lot of text with a transformer, and the model gets reliably better at almost everything. Quantifying "reliably" is what scaling laws do.</p>
+
+      <h2><span class="sec-num">§1</span>Self-supervised learning, briefly</h2>
+
+      <p>Supervised learning needs labels — expensive, slow, often biased. Unsupervised learning of generic structure rarely produced features competitive with supervised baselines. The 2018 unlock was <strong>self-supervised learning</strong>: invent a supervised task <em>from the data itself</em>. Common pretext tasks:</p>
+
+      <ul>
+        <li><strong>Next-token prediction.</strong> Given tokens $1, \dots, t-1$, predict token $t$. Used by GPT-family models — and, by 2024, by almost every leading LLM.</li>
+        <li><strong>Masked-token prediction.</strong> Hide 15% of tokens, predict them from the surrounding context. Used by BERT-family encoders.</li>
+        <li><strong>Contrastive objectives.</strong> Learn an embedding where matched pairs (image–caption, two views of an image) are close and mismatched pairs are far. CLIP, DINO, Sentence-BERT.</li>
+      </ul>
+
+      <p>The win is twofold. There is unlimited data (the web is 60+ trillion tokens of text). And the learned representations transfer to downstream tasks far better than features learned with explicit supervision, especially at scale. Why is unclear — there is no clean theory — but the experimental evidence is overwhelming.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Tokenization</h2>
+
+      <p>Neural networks process vectors, not strings. A <dfn title="A reversible mapping from text strings to sequences of integers (token IDs) and back. Modern tokenizers are subword: words become a handful of tokens, rare words decompose, common words map 1-to-1.">tokenizer</dfn> converts raw text to a sequence of integer IDs from a fixed vocabulary (typically 32k–256k entries). The dominant subword schemes:</p>
+
+      <ul>
+        <li><strong>Byte-Pair Encoding</strong> (BPE; Sennrich, Haddow &amp; Birch 2016). Start with characters; repeatedly merge the most frequent adjacent pair to grow the vocabulary. Used by GPT-2 onward.</li>
+        <li><strong>WordPiece</strong> (Devlin et al. 2019). BPE-like but uses likelihood under a language model rather than raw frequency. Used by BERT.</li>
+        <li><strong>SentencePiece + Unigram</strong> (Kudo 2018; Kudo &amp; Richardson 2018). Treats the input as a raw byte stream (no pre-tokenization on spaces) and selects a vocabulary by EM under a unigram language model. Used by T5 and many multilingual models.</li>
+      </ul>
+
+      <p>Modern tokenizers operate on bytes (so any Unicode string round-trips); use 100k–200k subwords; reserve a handful of special tokens (start of sequence, end of turn, tool-call markers). Tokenization is where the quirks live: numbers split unpredictably, code indentation eats tokens, languages other than English get 2–4× more tokens per word (a real cost when context windows are billed by the token).</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Next-token prediction as a universal objective</h2>
+
+      <p>Given a tokenized sequence $\mathbf{x} = (x_1, \dots, x_T)$, a decoder-only transformer parameterizes the autoregressive likelihood</p>
+
+      <div class="equation-block">
+        $$ p_\theta(\mathbf{x}) \;=\; \prod_{t=1}^{T} p_\theta(x_t \mid x_{<t}), $$
+      </div>
+
+      <p>and is trained to minimize the per-token cross-entropy</p>
+
+      <div class="equation-block">
+        $$ \mathcal{L}(\boldsymbol{\theta}) \;=\; -\frac{1}{T}\sum_{t=1}^{T} \log p_\theta(x_t \mid x_{<t}). $$
+      </div>
+
+      <p>Cheap to compute (one forward pass yields $T$ targets in parallel because of the causal mask), trivial to differentiate, and — astonishingly — sufficient. The objective has no notion of facts, reasoning, code, language understanding, or any other capability. Yet a sufficiently large network trained on a sufficiently broad corpus learns all of them as side effects of predicting the next token well.</p>
+
+      <p>The shape of the bet is unusual. Almost no other field believes its core problem can be solved by getting better at a proxy task. ML's relationship with next-token prediction is mostly empirical — it kept working, so people kept doing more of it.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The scaling laws</h2>
+
+      <p>The 2020 OpenAI scaling-laws paper (Kaplan et al.) showed that pretraining loss follows clean power laws in three quantities: the number of <em>parameters</em> $N$, the number of <em>training tokens</em> $D$, and the total <em>compute</em> $C$. To good approximation, loss as a function of compute follows</p>
+
+      <div class="equation-block">
+        $$ \mathcal{L}(C) \;\approx\; \mathcal{L}_\infty + \Bigl(\frac{C_0}{C}\Bigr)^{\alpha_C}, $$
+      </div>
+
+      <p>with $\alpha_C \approx 0.05$, so loss drops slowly but reliably as you spend more compute. The implication: bigger model + more data + more compute = lower loss, with predictable returns.</p>
+
+      <p>The Kaplan paper recommended spending most additional compute on bigger models. <strong>Chinchilla</strong> (Hoffmann et al. 2022, DeepMind) revisited the analysis with a more careful experimental design and reached the opposite conclusion: for fixed compute, optimal allocation grows $N$ and $D$ <em>at roughly equal rates</em>. Their rule of thumb, "Chinchilla-optimal," is roughly 20 training tokens per parameter. Compute-optimal scaling looks like</p>
+
+      <div class="equation-block">
+        $$ N_{\text{opt}}(C) \;\propto\; C^{0.5}, \qquad D_{\text{opt}}(C) \;\propto\; C^{0.5}. $$
+      </div>
+
+      <p>Most models trained between 2020 and early 2022 were undertrained — too big for the amount of data they saw. Chinchilla, with $N = 70$B parameters and $D = 1.4$T tokens, matched the much larger Gopher's performance at a fraction of the inference cost. The follow-on lesson — well understood by 2023 — is that for <em>inference-cost-aware</em> deployment, you want to train smaller models on <em>more</em> than the Chinchilla-optimal data ratio (LLaMA 1 trained 7B params on 1T tokens, ~140× the parameter count; LLaMA 3 trained on 15T tokens). Training compute pays off slowly; inference compute pays every time someone uses the model.</p>
+
+      <aside class="jargon">
+        <h4>Emergent abilities, or apparent emergence?</h4>
+        <p>Some downstream capabilities (multi-step arithmetic, instruction following) appear suddenly at a particular scale rather than scaling smoothly — Wei et al. 2022 called these <em>emergent abilities</em>. Schaeffer et al. 2023 argued much of the apparent emergence is an artifact of discontinuous metrics (exact-match accuracy on multi-step tasks): swap for a continuous metric and the curves smooth out. The honest synthesis: log-perplexity scales smoothly; downstream task scores measured by sharp thresholds <em>look</em> emergent because of the thresholds.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Mixture of Experts</h2>
+
+      <p>A dense transformer activates all of its parameters for every token. A <strong>Mixture-of-Experts</strong> (MoE) transformer replaces each MLP block with $E$ parallel experts and a small router that, for each token, chooses the top-$k$ experts (typically $k = 1$ or $2$) and combines their outputs:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{MoE}(\mathbf{x}) \;=\; \sum_{e \in \text{Top-}k(\mathbf{R}(\mathbf{x}))} g_e(\mathbf{x})\, \mathrm{Expert}_e(\mathbf{x}). $$
+      </div>
+
+      <p>Total parameter count goes up by a factor of $E$; active parameters per token stay roughly constant. The result: a 600B-parameter model can run at the FLOP cost of a 60B dense model, with quality closer to the dense 600B. The router is learned end-to-end with auxiliary losses that encourage balanced expert use.</p>
+
+      <p>The Switch Transformer (Fedus et al. 2021) popularized this for language; modern open MoE models (DeepSeek-V3 in 2024 with 671B total / 37B active per token; Mixtral; Llama 4) make the architecture the default for large open-source releases. MoE is the answer to "make models bigger without making inference quadratically more expensive."</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The alternatives challenging dense transformers</h2>
+
+      <p>Three threads of work on the basic architecture deserve naming.</p>
+
+      <ul>
+        <li><strong>State-space models</strong> (Mamba; Gu &amp; Dao 2023). A modernized RNN with selective state updates and a parallel-scan training algorithm. Linear in sequence length where attention is quadratic. As of 2025, competitive with dense transformers at small to medium scales; the verdict at frontier scale is still open. Often appears in hybrid architectures (attention + Mamba blocks).</li>
+        <li><strong>Hybrid attention/recurrent</strong> models (Jamba, RWKV variants, Striped Hyena). Interleave attention and recurrent blocks to get long-context efficiency without giving up the inductive biases of attention entirely.</li>
+        <li><strong>Diffusion language models.</strong> Treat next-token prediction as iterative denoising rather than autoregressive sampling. A 2025 line of work — early but rapidly improving — that may eventually loosen the "left-to-right" bottleneck of generation.</li>
+      </ul>
+
+      <p>None of these have displaced dense or MoE transformers at the frontier as of 2026, but the architectural monoculture is less complete than it was in 2023.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Data is the hidden variable</h2>
+
+      <p>The architecture has stabilized; data is where most of the alpha now lives. A frontier pretraining corpus is around 15 trillion tokens (Llama 3) to substantially more for closed models, and the composition matters enormously:</p>
+
+      <ul>
+        <li><strong>Filtering.</strong> Crawl scale (Common Crawl is petabytes) requires aggressive deduplication, low-quality removal, language identification, and toxicity / PII filtering. FineWeb (Penedo et al. 2024) documents the modern open recipe.</li>
+        <li><strong>Mixing.</strong> Code, math, books, scientific papers, conversations, and multilingual data are weighted to maximize downstream capability per token. The mix is one of the most heavily-tuned hyperparameters at the frontier — and the least published.</li>
+        <li><strong>Synthetic data.</strong> Increasingly, modern training mixes include synthetic data generated by other models (often a stronger model distilling into a weaker one, or self-play / step-by-step expansions for reasoning training; see Chapter VIII).</li>
+      </ul>
+
+      <p>Open frontier model releases in 2024–25 (Llama 3 then Llama 4, DeepSeek-V3, Qwen2.5, Mistral) have made the recipe partly legible, but the highest-quality data work — and the question of what to do as we exhaust high-quality public text — remains the active research frontier of pretraining.</p>
+
+      <section class="interactive" data-widget="scaling-laws" aria-label="Chinchilla scaling law visualizer">
+        <header>
+          <h4>Interactive · Compute-optimal scaling</h4>
+          <span class="hint">drag log N · log D · log C</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">A Chinchilla-style loss surface $L(N, D) = E + A / N^{0.34} + B / D^{0.28}$ with the parameters fit in Hoffmann et al. 2022 ($A \approx 406$, $B \approx 411$, $E \approx 1.69$). The compute constraint $C \approx 6 N D$ is shown as a dashed contour for the chosen total compute. The compute-optimal $(N^*, D^*)$ marker sits where the constraint line is tangent to the loss surface; the Chinchilla recipe is roughly $D \approx 20 N$. Slide each axis to see how loss responds; cross-check against the printed values.</p>
+      </section>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">J. Kaplan et al.</span> "Scaling Laws for Neural Language Models." <em>arXiv:2001.08361</em> (2020) — the original scaling laws.</li>
+          <li><span class="src-title">J. Hoffmann et al.</span> "Training Compute-Optimal Large Language Models." <em>arXiv:2203.15556</em> (2022) — Chinchilla.</li>
+          <li><span class="src-title">R. Sennrich, B. Haddow, A. Birch.</span> "Neural Machine Translation of Rare Words with Subword Units." <em>ACL</em> 2016 / arXiv:1508.07909 — BPE for NMT.</li>
+          <li><span class="src-title">T. Kudo.</span> "Subword Regularization: Improving Neural Network Translation Models with Multiple Subword Candidates." <em>ACL</em> 2018 / arXiv:1804.10959 — the Unigram tokenizer.</li>
+          <li><span class="src-title">T. Kudo and J. Richardson.</span> "SentencePiece: A simple and language independent subword tokenizer and detokenizer." <em>EMNLP</em> 2018 / arXiv:1808.06226 — SentencePiece.</li>
+          <li><span class="src-title">N. Shazeer et al.</span> "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer." <em>ICLR</em> 2017 / arXiv:1701.06538 — MoE for sequence models.</li>
+          <li><span class="src-title">W. Fedus, B. Zoph, N. Shazeer.</span> "Switch Transformer: Scaling to Trillion Parameter Models with Simple and Efficient Sparsity." <em>JMLR</em> 23 (2022) / arXiv:2101.03961 — Switch Transformer.</li>
+          <li><span class="src-title">DeepSeek-AI.</span> "DeepSeek-V3 Technical Report." <em>arXiv:2412.19437</em> (2024) — modern MoE open release; documents the recipe in unusual detail.</li>
+          <li><span class="src-title">A. Grattafiori et al. (Meta).</span> "The Llama 3 Herd of Models." <em>arXiv:2407.21783</em> (2024) — the most detailed published account of a frontier open-weights pretraining run.</li>
+          <li><span class="src-title">Meta AI.</span> "The Llama 4 herd: Scout, Maverick, and Behemoth." <em>ai.meta.com/blog/llama-4-multimodal-intelligence/</em> (April 2025) — the multimodal follow-on; no full tech report yet at time of writing.</li>
+          <li><span class="src-title">A. Gu and T. Dao.</span> "Mamba: Linear-Time Sequence Modeling with Selective State Spaces." <em>arXiv:2312.00752</em> (2023) — state-space alternative.</li>
+          <li><span class="src-title">G. Penedo et al.</span> "The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale." <em>arXiv:2406.17557</em> (2024) — open pretraining-data recipe.</li>
+          <li><span class="src-title">J. Wei et al.</span> "Emergent Abilities of Large Language Models." <em>TMLR</em> 2022 / arXiv:2206.07682 — the original emergence paper.</li>
+          <li><span class="src-title">R. Schaeffer, B. Miranda, S. Koyejo.</span> "Are Emergent Abilities of Large Language Models a Mirage?" <em>NeurIPS</em> 2023 / arXiv:2304.15004 — the metric-artifact counterargument.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="05-sequences-and-transformers.html"><span class="label">Previous chapter</span>← V · Sequences and the Transformer</a>
+      <a class="next" href="07-alignment.html"><span class="label">Next chapter</span>VII · From Base Model to Assistant →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/scaling-laws.js"></script>
+</body>
+</html>

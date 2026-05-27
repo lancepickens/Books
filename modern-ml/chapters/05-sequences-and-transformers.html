@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter V · Sequences, Attention, and the Transformer — A Modern Introduction to Machine Learning</title>
+  <meta name="description" content="Chapter 5: from RNNs to attention, the transformer block, multi-head self-attention, position encodings (sinusoidal and RoPE), and the residual-stream view." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter V of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter V</p>
+      <h1 class="chapter-title">Sequences, Attention, and the Transformer</h1>
+      <p class="lede">A single architecture, conceptually six lines of code, currently powers every modern language model, most modern image and audio models, and the entire research agenda of the field. It is worth understanding the transformer from the inside.</p>
+
+      <h2><span class="sec-num">§1</span>Sequences, and why RNNs lost</h2>
+
+      <p>Many problems take a sequence as input — language, audio, time series, video. The natural early approach was the <strong>recurrent neural network</strong>: maintain a hidden state $\mathbf{h}_t$ that updates as you walk through the sequence,</p>
+
+      <div class="equation-block">
+        $$ \mathbf{h}_t \;=\; \sigma\bigl(\mathbf{W}_h \mathbf{h}_{t-1} + \mathbf{W}_x \mathbf{x}_t + \mathbf{b}\bigr). $$
+      </div>
+
+      <p>This is a beautiful idea — a model with state that can in principle remember arbitrarily long histories. The execution had two flaws.</p>
+
+      <p>First, training: gradients through $T$ time steps multiply $T$ factors of $\mathbf{W}_h$, which either vanish (most directions in $\mathbf{W}_h$) or explode (a few directions). The LSTM (Hochreiter &amp; Schmidhuber 1997) and GRU (Cho et al. 2014) routed information through gates designed to keep gradients alive, and ran the field for two decades.</p>
+
+      <p>Second, parallelism: even with gates, recurrence is sequential. You cannot compute $\mathbf{h}_{100}$ until you've computed $\mathbf{h}_{99}$. On modern hardware, where throughput comes from massive parallel matrix multiplies, this is a structural disaster.</p>
+
+      <p>The transformer (Vaswani et al. 2017) discarded recurrence and gates entirely. Replace the sequential dependence with <em>attention</em>, a parallelizable mechanism that lets any position look directly at any other in one layer. The result trained dramatically faster and learned better. Within five years, attention-based models had displaced RNNs essentially everywhere.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Attention as a soft lookup</h2>
+
+      <p>Think of a dictionary. Given a <em>query</em> string, you return the value paired with the most similar <em>key</em>. <strong>Attention</strong> is the differentiable version: queries and keys are vectors; the answer is a weighted average of values, weighted by softmax-normalized similarity between query and each key.</p>
+
+      <p>Formally, given queries $\mathbf{Q} \in \mathbb{R}^{n \times d_k}$, keys $\mathbf{K} \in \mathbb{R}^{m \times d_k}$, and values $\mathbf{V} \in \mathbb{R}^{m \times d_v}$:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) \;=\; \mathrm{softmax}\!\Bigl(\tfrac{\mathbf{Q}\mathbf{K}^\top}{\sqrt{d_k}}\Bigr)\, \mathbf{V}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathbf{Q}\mathbf{K}^\top \in \mathbb{R}^{n \times m}$</dt><dd>Pairwise similarity scores: entry $(i, j)$ measures how much query $i$ looks like key $j$.</dd>
+          <dt>$1/\sqrt{d_k}$</dt><dd>Scaling: without it, dot products grow as $\sqrt{d_k}$ in magnitude, pushing softmax into saturated regions where gradients vanish.</dd>
+          <dt>softmax (row-wise)</dt><dd>Converts each row to a probability distribution over keys. Each query winds up with a soft selection over values.</dd>
+          <dt>output</dt><dd>$n \times d_v$. Row $i$ is the value retrieved by query $i$.</dd>
+        </dl>
+      </aside>
+
+      <p>The naming comes from the dictionary metaphor — query, key, value — and it is more than metaphor: any soft retrieval problem (look up by image content, search by sentence) has this shape.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Self-attention</h2>
+
+      <p>In <strong>self-attention</strong>, all of $\mathbf{Q}, \mathbf{K}, \mathbf{V}$ come from the same input sequence. Given token embeddings $\mathbf{X} \in \mathbb{R}^{n \times d}$, learned projection matrices $\mathbf{W}_Q, \mathbf{W}_K, \mathbf{W}_V \in \mathbb{R}^{d \times d_k}$ produce</p>
+
+      <div class="equation-block">
+        $$ \mathbf{Q} = \mathbf{X}\mathbf{W}_Q, \qquad \mathbf{K} = \mathbf{X}\mathbf{W}_K, \qquad \mathbf{V} = \mathbf{X}\mathbf{W}_V, $$
+      </div>
+
+      <p>and the attention layer's output is $\mathrm{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V})$. Each token's new representation is a weighted average of every other token's value, weighted by content similarity. Information flows from anywhere to anywhere in a single layer.</p>
+
+      <p>For language modeling (predict next token), we must prevent each position from peeking at future tokens. The fix is a <strong>causal mask</strong> that sets $\mathbf{Q}\mathbf{K}^\top_{ij} = -\infty$ for $j > i$ before the softmax, making the corresponding attention weight zero. This is the only difference between encoder self-attention (BERT-style; bidirectional) and decoder self-attention (GPT-style; causal).</p>
+
+      <p><strong>Multi-head</strong> attention runs $H$ independent attention operations in parallel with different projection matrices, then concatenates the outputs. Each head can specialize on a different relational pattern (Olsson et al. 2022 — induction heads, the simplest example). Typical modern models have $H = 8$ to $H = 64$ heads.</p>
+
+      <p>The cost of self-attention is $O(n^2 d)$ in compute and $O(n^2)$ in memory: the full attention matrix has size $n \times n$. For $n = 4096$ this is fine; for $n = 1{,}000{,}000$ tokens it is the dominant bottleneck of long-context inference. FlashAttention (Dao et al. 2022) reordered the computation to be memory-efficient without changing the math; long-context techniques (sliding window, sparse, KV cache compression) and alternative architectures (state-space models like Mamba; Gu &amp; Dao 2023) attack the same wall.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The transformer block</h2>
+
+      <p>A single <strong>transformer block</strong> is two sublayers, each wrapped in a residual connection with a layer norm:</p>
+
+      <div class="equation-block">
+        $$ \mathbf{x}' \;=\; \mathbf{x} + \mathrm{Attn}\bigl(\mathrm{LN}(\mathbf{x})\bigr), \qquad \mathbf{x}'' \;=\; \mathbf{x}' + \mathrm{MLP}\bigl(\mathrm{LN}(\mathbf{x}')\bigr). $$
+      </div>
+
+      <p>The MLP is a position-wise two-layer feed-forward network — typically 4× the embedding dimension wide — applied independently to every token. The modern feed-forward block is <strong>SwiGLU</strong> (Shazeer 2020):</p>
+
+      <div class="equation-block">
+        $$ \mathrm{SwiGLU}(\mathbf{x}) \;=\; \bigl(\mathrm{Swish}(\mathbf{x}\mathbf{W}_1) \odot \mathbf{x}\mathbf{W}_2\bigr)\, \mathbf{W}_3, $$
+      </div>
+
+      <p>which gates the activation by another linear projection — empirically a meaningful boost over a plain GELU MLP. Normalization is almost always <em>pre-norm</em> (apply LN inside the residual) for training stability; <em>post-norm</em> (LN after the residual addition) is the original Vaswani recipe and is harder to train past 12 layers without warmup tricks.</p>
+
+      <p>The full decoder-only transformer is just $L$ of these blocks stacked, with a token embedding at the start and an output projection ("unembedding") at the end:</p>
+
+      <div class="equation-block">
+        $$ \mathbf{x}_0 = \mathrm{Embed}(\text{tokens}) + \mathrm{Pos}, \quad \mathbf{x}_\ell = \mathrm{Block}_\ell(\mathbf{x}_{\ell-1}), \quad \text{logits} = \mathbf{x}_L \mathbf{W}_U. $$
+      </div>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Positional encoding: from sinusoids to RoPE</h2>
+
+      <p>Self-attention is permutation-equivariant: shuffle the input tokens, the output shuffles correspondingly. For sequences, that is the wrong inductive bias — order matters. We inject positional information explicitly.</p>
+
+      <p>The original transformer used fixed <strong>sinusoidal embeddings</strong> at every position, added to the token embedding:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{PE}(p, 2k) = \sin(p / 10000^{2k/d}), \qquad \mathrm{PE}(p, 2k+1) = \cos(p / 10000^{2k/d}). $$
+      </div>
+
+      <p>Later models used learned absolute position embeddings, then relative position bias (T5; ALiBi). The modern dominant choice in LLaMA-family models is <strong>RoPE</strong> (Rotary Position Embedding; Su et al. 2021): rotate the query and key vectors by an angle proportional to position, encoding position into the <em>angle</em> of $\mathbf{Q}$ and $\mathbf{K}$ rather than adding to the embedding. The attention score between positions $i$ and $j$ then depends only on $i - j$, the relative offset — an elegant geometric property that extrapolates better to longer sequences than absolute encoding.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The residual stream view</h2>
+
+      <p>The Anthropic interpretability program (Elhage et al. 2021) reframed the transformer in a way that has become standard among mechanistic-interpretability researchers and is the cleanest mental model for what transformers actually do.</p>
+
+      <p>The hidden state $\mathbf{x}_\ell$ is a high-dimensional <em>residual stream</em>: a wide vector at each position that every layer reads from and writes to. Attention heads <em>move information between positions</em> by reading at one position and writing at another. MLPs <em>process information at a single position</em>, transforming whatever was written into the stream. The residual stream itself is just the running sum of all the writes.</p>
+
+      <p>This is more than a metaphor. It explains why dropping in a "skip connection" identity matters so much (information persists), why early-layer interventions can have global effects (every later layer reads them), and why so-called <em>circuits</em> — small subnetworks implementing identifiable behaviors like indirect-object identification or pattern-matching induction — are findable. We will return to circuits and mechanistic interpretability in Chapter X.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Three flavors, one architecture</h2>
+
+      <ul>
+        <li><strong>Encoder-only</strong> (BERT-family). Bidirectional self-attention; trained to fill in masked tokens. Used for classification, embeddings, retrieval (Chapter IX).</li>
+        <li><strong>Decoder-only</strong> (GPT-family, the modern default). Causal self-attention; trained to predict the next token. All modern LLMs — GPT-4 / Claude / Llama / DeepSeek / Gemini — fit here.</li>
+        <li><strong>Encoder–decoder</strong> (T5, original "Attention Is All You Need" architecture). Encoder reads the input bidirectionally, decoder generates output with cross-attention to the encoder. Currently dominant for translation and structured generation; less popular for general-purpose chatbots, though still used in some image–text models.</li>
+      </ul>
+
+      <p>The pattern of "one architecture, three configurations" is unusual in machine learning. Most prior eras had different architectures for different problems. The transformer's success across modalities is part of why people use the word <em>foundation model</em>: one trainable thing that, given the right data, becomes a vision system, a code model, a translator, a chat assistant. Chapter VI is about what training one looks like.</p>
+
+      <section class="interactive" data-widget="attention-viewer" aria-label="Self-attention pattern viewer">
+        <header>
+          <h4>Interactive · A self-attention head, by hand</h4>
+          <span class="hint">edit Q / K · toggle scale · toggle mask</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">Eight tokens with hand-set query and key vectors in 2D (so we can plot them). The pairwise scores $\mathbf{Q}\mathbf{K}^\top / \sqrt{d_k}$ become attention weights after row-softmax. Toggle the $1/\sqrt{d_k}$ scaling off to see softmax saturate into one-hot lookups; toggle the causal mask to see the upper-triangle weights disappear. The bottom heatmap is the row-stochastic attention matrix; row $i$ shows what query $i$ attends to.</p>
+      </section>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">A. Vaswani et al.</span> "Attention Is All You Need." <em>NeurIPS</em> 2017 / arXiv:1706.03762 — the transformer.</li>
+          <li><span class="src-title">D. Bahdanau, K. Cho, Y. Bengio.</span> "Neural Machine Translation by Jointly Learning to Align and Translate." <em>ICLR</em> 2015 / arXiv:1409.0473 — the first widely-influential attention paper (in an RNN encoder–decoder).</li>
+          <li><span class="src-title">S. Hochreiter and J. Schmidhuber.</span> "Long short-term memory." <em>Neural Computation</em> 9, 1735–1780 (1997) — LSTM.</li>
+          <li><span class="src-title">J. Devlin, M.-W. Chang, K. Lee, K. Toutanova.</span> "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding." <em>NAACL</em> 2019 / arXiv:1810.04805 — encoder-only pretraining.</li>
+          <li><span class="src-title">T. B. Brown et al.</span> "Language Models are Few-Shot Learners." <em>NeurIPS</em> 2020 / arXiv:2005.14165 — GPT-3.</li>
+          <li><span class="src-title">J. Su, Y. Lu, S. Pan, A. Murtadha, B. Wen, Y. Liu.</span> "RoFormer: Enhanced Transformer with Rotary Position Embedding." <em>arXiv:2104.09864</em> (2021) — RoPE.</li>
+          <li><span class="src-title">N. Shazeer.</span> "GLU Variants Improve Transformer." <em>arXiv:2002.05202</em> (2020) — SwiGLU.</li>
+          <li><span class="src-title">T. Dao, D. Y. Fu, S. Ermon, A. Rudra, C. Ré.</span> "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness." <em>NeurIPS</em> 2022 / arXiv:2205.14135 — the standard exact-attention kernel.</li>
+          <li><span class="src-title">A. Gu and T. Dao.</span> "Mamba: Linear-Time Sequence Modeling with Selective State Spaces." <em>arXiv:2312.00752</em> (2023) — the leading recurrent alternative to attention.</li>
+          <li><span class="src-title">N. Elhage et al. (Anthropic).</span> "A Mathematical Framework for Transformer Circuits." <em>transformer-circuits.pub</em> (2021) — the residual-stream view.</li>
+          <li><span class="src-title">C. Olsson et al. (Anthropic).</span> "In-context Learning and Induction Heads." <em>arXiv:2209.11895</em> (2022) — what individual attention heads learn to do.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="04-vision-cnns-and-vits.html"><span class="label">Previous chapter</span>← IV · Vision: CNNs and ViTs</a>
+      <a class="next" href="06-pretraining-and-scaling.html"><span class="label">Next chapter</span>VI · Pretraining and Scaling Laws →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/attention-viewer.js"></script>
+</body>
+</html>

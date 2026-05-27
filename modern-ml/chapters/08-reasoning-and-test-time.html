@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter VIII · Reasoning and Test-Time Compute — A Modern Introduction to Machine Learning</title>
+  <meta name="description" content="Chapter 8: chain-of-thought, the o-series shift, RL with verifiable rewards, process reward models, self-consistency, and best-of-N." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter VIII of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter VIII</p>
+      <h1 class="chapter-title">Reasoning and Test-Time Compute</h1>
+      <p class="lede">The 2024 shift: instead of making models bigger, give them more time. A model that thinks before it answers can outperform a model many times its size — and the way to train that ability turns out to be reinforcement learning on problems with checkable answers.</p>
+
+      <h2><span class="sec-num">§1</span>Chain-of-thought, the original observation</h2>
+
+      <p>Take a large language model. Give it an arithmetic word problem. Direct it to "give the final answer" and accuracy is bad. Prepend "Let's think step by step" or include a few worked examples, and accuracy rises dramatically. This is <strong>chain-of-thought</strong> (CoT) prompting, characterized by Wei et al. (2022).</p>
+
+      <p>The intuition is that complex problems decompose into intermediate steps, and a model has more capacity to compute a correct step-by-step trace than a single-shot answer. Each generated token is an additional forward pass through the model — that is the computational lever. Spend more tokens, do more computation, get a better answer.</p>
+
+      <p>For a 2022-era model, CoT was a prompting trick. It made some problems solvable that weren't before; on others it didn't help. The shift in 2024 was to train models that produce a CoT <em>by default</em>, are rewarded for arriving at correct final answers via long traces, and explicitly extend the trace until they're confident.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>RL with verifiable rewards (RLVR)</h2>
+
+      <p>RLHF (Chapter VII) trains policies against a <em>learned</em> reward model fit to human preferences. Reasoning models lean on a different signal: <strong>verifiable rewards</strong>. For some problem classes — math problems with known answers, code that must pass test cases, logic puzzles, formal proofs — correctness is a deterministic function we can write down. There is no need to model human preferences; we can score every rollout exactly.</p>
+
+      <p>The training loop, schematically:</p>
+
+      <ol>
+        <li>Sample a problem $\mathbf{x}$ and generate $K$ candidate solution traces $\mathbf{y}^{(1)}, \dots, \mathbf{y}^{(K)}$ from the current policy.</li>
+        <li>Score each by a verifier: $r^{(k)} = \mathbb{1}[\text{trace } k \text{ produces a correct answer}]$.</li>
+        <li>Apply a policy-gradient update toward correct traces, away from incorrect ones.</li>
+      </ol>
+
+      <p>The catch is the third step. PPO works but is heavy and unstable for very long sequences with sparse rewards. The DeepSeek-R1 paper (DeepSeek-AI 2025) made <strong>GRPO</strong> — Group Relative Policy Optimization — the de-facto algorithm: drop the value head, compute advantages by normalizing rewards <em>within the group of K samples for the same prompt</em>, apply a standard clipped surrogate. Simpler than PPO, dramatically more memory-efficient at long context, and competitive in quality.</p>
+
+      <p>The most striking result of the R1 line of work is that RLVR on a base model — with no human preference data and minimal SFT — produces emergent multi-step reasoning behavior: the model spontaneously learns to backtrack, double-check, try alternative approaches, and reach the right answer. Training is the answer; no prompting trick is needed once the model has internalized the format.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The o-series and the inference-time scaling law</h2>
+
+      <p>OpenAI's <strong>o1</strong> (2024) was the first widely-released model trained explicitly to spend long chains of thought before answering, hidden from the user and counted as billable output tokens. Its successors (o3 family) and competitors (DeepSeek R1, Anthropic Claude reasoning modes, Gemini Thinking) all share the same shape: an LLM trained with RLVR (or a related variant) that produces extensive internal reasoning before a final response.</p>
+
+      <p>The empirical lesson is captured by a second scaling law, parallel to the pretraining one:</p>
+
+      <div class="equation-block">
+        $$ \text{accuracy}(\text{problem}) \;\approx\; f(\text{model size},\; \text{training compute},\; \underbrace{\text{inference compute}}_{\text{new axis}}). $$
+      </div>
+
+      <p>Snell et al. (2024) showed empirically that, on hard problems, spending compute at inference time — through long CoT, repeated sampling, or tree search — can substitute for spending compute at training time. A smaller model that thinks for a minute often beats a larger model that answers in a second. The implication for the field is large: pretraining is no longer the only place to scale.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Process vs. outcome reward models</h2>
+
+      <p>Verifiable rewards are great when they exist. For most things they don't. The intermediate question is how to grade <em>steps</em> of a reasoning trace, not just the final answer.</p>
+
+      <p>An <strong>outcome reward model</strong> (ORM) labels whole traces correct/incorrect. Cheap to train (just need ground-truth answers), but rewards the right answer for the wrong reasons, and gives no signal for partially-correct work.</p>
+
+      <p>A <strong>process reward model</strong> (PRM) labels each step of a trace as "looks right" or "looks wrong," typically trained on human-labeled step-by-step traces. Lightman et al. (2023) — "Let's Verify Step by Step" — showed that PRMs substantially outperform ORMs for math reasoning, by giving credit at every step rather than only at the end. The cost is the step-level annotation, an expensive labeling regime.</p>
+
+      <p>Modern reasoning training mixes both — outcome reward where verifiable, process reward where available, and self-generated step labels (a stronger model annotating a weaker one's traces) to fill the gap.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Inference-time scaling, in detail</h2>
+
+      <p>Three families of techniques exchange more inference compute for better answers.</p>
+
+      <p><strong>Long chain-of-thought.</strong> Sample one very long trace. Train (with RLVR) to use the length productively. This is the o-series strategy. Scales smoothly: doubling output budget yields measurable accuracy gains.</p>
+
+      <p><strong>Best-of-N / self-consistency.</strong> Sample $N$ independent traces; either majority-vote the final answer (self-consistency; Wang et al. 2022) or pick the highest-scoring one under a reward model (best-of-N). On problems with verifiable rewards, you can sample and verify, only taking samples that pass. For $N$ samples each of length $L$, total cost is $NL$ — linear in $N$, embarrassingly parallel.</p>
+
+      <p><strong>Tree search.</strong> Explore branching reasoning paths; expand promising prefixes; prune dead ends. Tree of Thoughts (Yao et al. 2023) framed this for language models; MCTS-style search appears in code generation and theorem proving. Heavier per-token but can solve problems that pure best-of-N cannot, by allowing backtracking.</p>
+
+      <p>Accuracy as a function of inference compute is generally a power law: smooth, sublinear, no obvious knee. Doubling compute typically buys a few percent of additional accuracy on hard benchmarks — small per dollar but reliable, and the gains compound across many problems.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>What reasoning models do well — and don't</h2>
+
+      <p>By mid-2025, reasoning models are clearly best on:</p>
+
+      <ul>
+        <li><strong>Math.</strong> Competition problems (AIME, USAMO) once considered well past LLM capability are now near-saturated for the top reasoning models.</li>
+        <li><strong>Code.</strong> Both single-function generation (HumanEval, MBPP) and longer-form coding agent tasks (SWE-bench).</li>
+        <li><strong>Multi-step logic and planning</strong> in well-defined domains.</li>
+      </ul>
+
+      <p>They are not yet a free lunch:</p>
+
+      <ul>
+        <li>Latency: a reasoning model can take 30 seconds to 5 minutes per query. For interactive use this matters.</li>
+        <li>Cost: 10–100× the tokens of a non-reasoning answer.</li>
+        <li>Hallucinations in the reasoning trace itself: a confident wrong intermediate step can derail the rest of the trace before the model corrects.</li>
+        <li>Generalization out of the training distribution: reasoning models are strongest on the problem families they were RL'd on (math, code, structured puzzles), and only weakly better than base models on free-form questions where there is no checkable answer.</li>
+      </ul>
+
+      <p>The synthesis from the field as of 2026 is that reasoning + RLVR has unlocked a new axis of capability that pretraining alone wasn't reaching. It is the most important architectural-class shift since RLHF in 2022. The next chapter takes a related step: hook these models up to tools and an environment, and call them <em>agents</em>.</p>
+
+      <section class="interactive" data-widget="best-of-n" aria-label="Best-of-N accuracy vs N">
+        <header>
+          <h4>Interactive · Inference-time scaling, by sampling</h4>
+          <span class="hint">drag per-sample accuracy · drag log N</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">For a problem where a verifier can mark each sample correct or incorrect, the chance of getting at least one correct answer in $N$ independent attempts is $1 - (1 - p)^N$ where $p$ is the single-attempt accuracy. For self-consistency (majority vote over $N$ samples), the curve follows the cumulative binomial. Both are smooth power-law-like climbs in $N$ — small per-sample accuracy gets you most of the way there for a few hundred samples. This is the empirical underpinning of inference-time scaling.</p>
+      </section>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">J. Wei et al.</span> "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models." <em>NeurIPS</em> 2022 / arXiv:2201.11903 — the original CoT paper.</li>
+          <li><span class="src-title">X. Wang et al.</span> "Self-Consistency Improves Chain of Thought Reasoning in Language Models." <em>ICLR</em> 2023 / arXiv:2203.11171 — majority-voting CoT samples.</li>
+          <li><span class="src-title">H. Lightman et al. (OpenAI).</span> "Let's Verify Step by Step." <em>ICLR</em> 2024 / arXiv:2305.20050 — process reward models for math.</li>
+          <li><span class="src-title">C. Snell, J. Lee, K. Xu, A. Kumar.</span> "Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters." <em>arXiv:2408.03314</em> (2024) — the inference-time scaling-law paper.</li>
+          <li><span class="src-title">OpenAI.</span> "OpenAI o1 System Card." <em>arXiv:2412.16720</em> (December 2024) — the canonical o1 reference.</li>
+          <li><span class="src-title">DeepSeek-AI.</span> "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning." <em>arXiv:2501.12948</em> (January 2025) — the GRPO + RLVR recipe in detail; the most-influential open reasoning model release.</li>
+          <li><span class="src-title">S. Yao et al.</span> "Tree of Thoughts: Deliberate Problem Solving with Large Language Models." <em>NeurIPS</em> 2023 / arXiv:2305.10601 — tree search over reasoning steps.</li>
+          <li><span class="src-title">K. Cobbe et al.</span> "Training Verifiers to Solve Math Word Problems." <em>arXiv:2110.14168</em> (2021) — GSM8K; the canonical math-reasoning benchmark and the early verifier paper.</li>
+          <li><span class="src-title">A. Yang et al. (Alibaba).</span> "Qwen2.5-Math Technical Report: Toward Mathematical Expert Model via Self-Improvement." <em>arXiv:2409.12122</em> (2024) — math-RL recipe parallel to R1.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="07-alignment.html"><span class="label">Previous chapter</span>← VII · From Base Model to Assistant</a>
+      <a class="next" href="09-agents-and-rag.html"><span class="label">Next chapter</span>IX · Agents, Tool Use, and Retrieval →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/best-of-n.js"></script>
+</body>
+</html>

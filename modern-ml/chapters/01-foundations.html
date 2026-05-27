@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter I · Foundations — A Modern Introduction to Machine Learning</title>
+  <meta name="description" content="Chapter 1: the learning problem as data + function class + loss, empirical risk minimization, generalization, and the bias–variance picture." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter I of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter I</p>
+      <h1 class="chapter-title">Foundations: Data, Loss, and the Learning Problem</h1>
+      <p class="lede">Every machine learning system is the same three pieces — a dataset, a family of functions, a loss to minimize. Everything else is the artistry of choosing them well.</p>
+
+      <h2><span class="sec-num">§1</span>What "learning" means</h2>
+
+      <p>A useful operating definition: a model <strong>learns</strong> if, after exposure to examples, it makes better predictions on examples it has not seen. The phrase <em>has not seen</em> is the entire game. Memorization is easy; generalization is the science.</p>
+
+      <p>Formalize this. There is a fixed but unknown distribution $\mathcal{D}$ over input–output pairs $(\mathbf{x}, y) \in \mathcal{X} \times \mathcal{Y}$. We draw a training set</p>
+
+      <div class="equation-block">
+        $$ \mathcal{S} \;=\; \{(\mathbf{x}_i, y_i)\}_{i=1}^{N} \stackrel{\text{i.i.d.}}{\sim} \mathcal{D}. $$
+      </div>
+
+      <p>We pick a function $f_\theta: \mathcal{X} \to \mathcal{Y}$ from some family parameterized by $\boldsymbol{\theta}$, and a loss $\ell(\hat y, y)$ that says how bad it is to predict $\hat y$ when the truth is $y$. The thing we actually care about — what the model would lose on a fresh draw from the distribution — is the <dfn title="The expected loss over the data distribution; the quantity we want small.">population risk</dfn> or true risk:</p>
+
+      <div class="equation-block">
+        $$ R(\boldsymbol{\theta}) \;=\; \mathbb{E}_{(\mathbf{x}, y) \sim \mathcal{D}} \bigl[\, \ell(f_\theta(\mathbf{x}), y) \,\bigr]. $$
+      </div>
+
+      <p>We cannot evaluate this; we don't know $\mathcal{D}$. What we can compute is the average loss on the training sample:</p>
+
+      <div class="equation-block">
+        $$ \hat R(\boldsymbol{\theta}) \;=\; \frac{1}{N} \sum_{i=1}^{N} \ell(f_\theta(\mathbf{x}_i), y_i). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathcal{X}, \mathcal{Y}$</dt><dd>Input and output spaces. For pixels, $\mathcal{X} = \mathbb{R}^{H\times W\times 3}$; for text, $\mathcal{X}$ is a sequence of tokens; for a classifier, $\mathcal{Y} = \{1, \dots, K\}$.</dd>
+          <dt>$\boldsymbol{\theta}$</dt><dd>Parameters of the model. Could be ten coefficients (linear regression) or a trillion weights (a frontier LLM).</dd>
+          <dt>$\ell$</dt><dd>Per-example loss. Squared error $(\hat y - y)^2$ for regression; cross-entropy $-\log p_\theta(y \mid \mathbf{x})$ for classification.</dd>
+          <dt>$R$ vs $\hat R$</dt><dd>$R$ is what we want; $\hat R$ is what we have. The gap between them is the central object of learning theory.</dd>
+        </dl>
+      </aside>
+
+      <p>The recipe called <strong>empirical risk minimization</strong> (ERM) is exactly what it sounds like: pick $\boldsymbol{\theta}$ that minimizes $\hat R$. Then hope $R(\boldsymbol{\theta})$ is also small. The book is mostly about why the gap between $R$ and $\hat R$ stays manageable — and the few cases where it doesn't.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The triple: data, function class, loss</h2>
+
+      <p>Every supervised method we will discuss is some choice of three things.</p>
+
+      <ul>
+        <li><strong>Data</strong> — the pairs $(\mathbf{x}_i, y_i)$. For deep learning, more is almost always better. The 2010s lesson is that the data distribution shapes everything; the 2020s lesson is that data <em>quality</em>, mixed correctly, can matter more than raw volume (Chapter VI).</li>
+        <li><strong>Function class</strong> $\mathcal{H} = \{f_\theta : \boldsymbol{\theta} \in \Theta\}$ — the set of candidate hypotheses. Linear functions; trees; neural networks of a fixed architecture. Choosing $\mathcal{H}$ is choosing a set of <em>inductive biases</em>: assumptions about what kind of functions are likely correct. The transformer's success is largely a story about its inductive biases turning out to be the right ones for language and beyond.</li>
+        <li><strong>Loss</strong> $\ell$ — what counts as a good prediction. The choice is partly engineering convenience (we like smooth, convex losses we can differentiate) and partly Bayesian: most losses are negative log-likelihoods under some probabilistic model, so picking a loss is picking a noise model.</li>
+      </ul>
+
+      <p>An optimization algorithm — Chapter III — searches $\mathcal{H}$ for the $\boldsymbol{\theta}$ that minimizes $\hat R$. For most modern models, that algorithm is some flavor of stochastic gradient descent.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Losses are probability models in disguise</h2>
+
+      <p>Worth a moment because it explains why two losses — squared error and cross-entropy — show up over and over.</p>
+
+      <p>For <strong>regression</strong>: suppose $y = f^*(\mathbf{x}) + \eps$ with $\eps \sim \mathcal{N}(0, \sigma^2)$. The negative log-likelihood of an observation is</p>
+
+      <div class="equation-block">
+        $$ -\log p(y \mid \mathbf{x}, \boldsymbol{\theta}) \;=\; \frac{1}{2\sigma^2}\bigl(y - f_\theta(\mathbf{x})\bigr)^2 + \text{const}. $$
+      </div>
+
+      <p>Minimizing squared error is maximum-likelihood under Gaussian noise. The variance $\sigma^2$ drops out of the optimization — it sets the units of the loss, not its shape.</p>
+
+      <p>For <strong>classification</strong>: a model that emits a probability $p_\theta(y \mid \mathbf{x})$ over $K$ classes has per-example negative log-likelihood</p>
+
+      <div class="equation-block">
+        $$ \ell(\mathbf{x}, y) \;=\; -\log p_\theta(y \mid \mathbf{x}). $$
+      </div>
+
+      <p>This is <em>the</em> <dfn title="The negative log-likelihood of the true class under the model's predictive distribution. Equivalent to the KL divergence from the empirical distribution up to a constant.">cross-entropy</dfn> loss. Aggregated over $N$ examples, it is the loss every modern language model is trained on, and the loss inside every classification head you will write.</p>
+
+      <p>The probabilistic view is more than a curiosity: it tells you what your model is implicitly assuming about the world's noise, and what to do when the assumption fails (Tukey-style robust losses for heavy-tailed regression; class-balanced cross-entropy for imbalanced classification).</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Generalization and the bias–variance picture</h2>
+
+      <p>Why doesn't training error tell you everything you want to know? Because a sufficiently flexible model can drive $\hat R$ to zero by memorizing the sample, while $R$ stays high. The classical story explains why with a decomposition.</p>
+
+      <p>For squared error and a regression target $y = f^*(\mathbf{x}) + \eps$ with noise variance $\sigma^2$, the expected loss at a fixed test point $\mathbf{x}_0$ — averaged over training sets — decomposes exactly:</p>
+
+      <div class="equation-block">
+        $$ \mathbb{E}_{\mathcal{S}}\bigl[\, (f_{\hat\theta}(\mathbf{x}_0) - y_0)^2 \,\bigr] \;=\; \underbrace{\bigl(\mathbb{E}_{\mathcal{S}}[f_{\hat\theta}(\mathbf{x}_0)] - f^*(\mathbf{x}_0)\bigr)^2}_{\text{bias}^2} \;+\; \underbrace{\mathrm{Var}_{\mathcal{S}}\bigl[f_{\hat\theta}(\mathbf{x}_0)\bigr]}_{\text{variance}} \;+\; \underbrace{\sigma^2}_{\text{irreducible}}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>bias</dt><dd>How wrong the <em>average</em> trained model is. Models too simple to express $f^*$ have high bias regardless of how much data they see.</dd>
+          <dt>variance</dt><dd>How much the trained model wobbles as you reshuffle the training set. Models with many parameters and little data have high variance.</dd>
+          <dt>$\sigma^2$</dt><dd>Noise in the data itself. The best possible model still has expected loss $\sigma^2$ at every point. Achievable error has a floor.</dd>
+        </dl>
+      </aside>
+
+      <p>The classical regime says: small, flexible models have high bias and low variance; large, flexible models have low bias and high variance; the test-error curve is U-shaped in model size. The sweet spot lives near the bottom of the U.</p>
+
+      <aside class="jargon">
+        <h4>Double descent — the modern wrinkle</h4>
+        <p>For deep networks, test error sometimes <em>decreases again</em> past the point where the model fits training data perfectly. The single U becomes a U followed by a long descent (Belkin et al. 2019; Nakkiran et al. 2021). The reason — heavily simplified — is that among the infinitely many parameter settings that fit training perfectly, the optimizer's implicit bias selects ones with small norm, which generalize. This effect underlies why over-parameterized networks work at all; classical bias–variance is the right intuition for small models, double descent for big ones.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Train, validation, test, and the dangers of leakage</h2>
+
+      <p>You cannot estimate generalization from data the model has trained on. The standard partition:</p>
+
+      <ul>
+        <li><strong>Training set.</strong> What the optimizer sees. Used to compute gradients of $\hat R$.</li>
+        <li><strong>Validation set.</strong> What you tune hyperparameters and architecture on. You evaluate many candidates against it; if you tune too aggressively, the validation set leaks information into your model and stops being an honest estimate of $R$.</li>
+        <li><strong>Test set.</strong> Touched once, at the end. Your reported error.</li>
+      </ul>
+
+      <p>For small datasets, $k$-fold cross-validation rotates the validation split to give a tighter error estimate. For modern foundation-model work, the test set is increasingly an evaluation suite (Chapter VIII): a battery of held-out benchmarks the model is judged on rather than a clean held-out split, because frontier models are trained on essentially everything publicly readable.</p>
+
+      <p><strong>Leakage</strong> is the silent killer. Examples:</p>
+
+      <ul>
+        <li>Features computed using future information your deployed model would not have.</li>
+        <li>Duplicates between train and test (a chronic problem in web-scraped data; see the C4-near-duplicates literature for how bad it gets).</li>
+        <li>The train/test split made <em>after</em> some preprocessing was fit on all data — scalers, vocabularies, even feature selection.</li>
+        <li>For time series: random splits where the model effectively sees the future during training.</li>
+      </ul>
+
+      <p>The discipline is: every transformation downstream of the split must be fit on training data only.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>What problem are you actually solving?</h2>
+
+      <p>Three classical regimes:</p>
+
+      <ul>
+        <li><strong>Supervised learning</strong> — labeled pairs $(\mathbf{x}_i, y_i)$. Most of this book.</li>
+        <li><strong>Unsupervised learning</strong> — unlabeled $\mathbf{x}_i$. Clustering, density estimation, dimensionality reduction. Important historically, smaller share of modern work.</li>
+        <li><strong>Reinforcement learning</strong> — an agent acts in an environment and learns from a scalar reward. Chapters VII and VIII pull RL into the LLM stack via RLHF and reasoning models.</li>
+      </ul>
+
+      <p>The 2020s frame puts <strong>self-supervised learning</strong> at the center: invent a supervised problem from unlabeled data (the next token; the masked patch; whether two augmented views came from the same image) and use the resulting representations for whatever you actually wanted to do. Every modern foundation model is pretrained this way. Chapter VI takes this seriously.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>A preview of the ladder</h2>
+
+      <p>The next nine chapters climb from the simplest case to the contemporary stack.</p>
+
+      <ol>
+        <li><strong>Linear models</strong> (Ch. II): when $f_\theta$ is linear in $\boldsymbol{\theta}$, everything has a closed form and the geometry is clean. Kernels stretch this far further than it has any right to go.</li>
+        <li><strong>Neural networks</strong> (Ch. III): compose differentiable maps and fit by gradient descent. Backprop makes it tractable; the optimizer is what makes it train.</li>
+        <li><strong>Vision</strong> (Ch. IV): convolutions for translation-equivariant pixels, then ViTs that treat images as sequences of patches.</li>
+        <li><strong>Transformers</strong> (Ch. V): self-attention as a soft lookup, residual streams, decoder-only blocks — the single architecture behind almost everything in the modern stack.</li>
+        <li><strong>Pretraining at scale</strong> (Ch. VI): self-supervised objectives, tokenizers, scaling laws, the alternatives.</li>
+        <li><strong>Alignment</strong> (Ch. VII): turn a next-token predictor into a useful assistant via SFT, RLHF, DPO.</li>
+        <li><strong>Reasoning</strong> (Ch. VIII): the 2024 shift to training models that spend test-time compute thinking before answering.</li>
+        <li><strong>Agents and retrieval</strong> (Ch. IX): tool use, planning loops, RAG — the stack that turns chat models into systems.</li>
+        <li><strong>Generative and the frontier</strong> (Ch. X): diffusion, multimodal, video, mechanistic interpretability, what nobody has figured out yet.</li>
+      </ol>
+
+      <p>The frame survives the entire climb. Every method below chooses some data, some function class, some loss, and minimizes the loss on the data. What changes is what we are willing to call data, how rich a function class we can afford to fit, and how cleverly we have defined "loss" to encode what we actually want.</p>
+
+      <section class="interactive" data-widget="bias-variance" aria-label="Polynomial fitting and the bias–variance tradeoff">
+        <header>
+          <h4>Interactive · The bias–variance tradeoff</h4>
+          <span class="hint">drag degree · resample noise</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">Fit polynomials of varying degree to a noisy sample drawn from a fixed true function $f^*(x) = \sin(2\pi x)$ with Gaussian noise. Low degree: underfit, high training and test error (high bias). High degree: overfits the specific noise sample, low training error, high test error (high variance). Resample several times to watch the high-degree fit thrash while the low-degree fit stays stable — that is variance, visualized.</p>
+      </section>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">T. Hastie, R. Tibshirani, J. Friedman.</span> <em>The Elements of Statistical Learning</em>, 2nd ed., Springer 2009 — the bias–variance decomposition (§7.3), ERM, cross-validation, and the classical statistical view of every loss in this chapter.</li>
+          <li><span class="src-title">C. M. Bishop.</span> <em>Pattern Recognition and Machine Learning</em>, Springer 2006 — Chapter 1 sets up the probabilistic view of loss functions used throughout this book.</li>
+          <li><span class="src-title">K. P. Murphy.</span> <em>Probabilistic Machine Learning: An Introduction</em>, MIT Press 2022 — the modern textbook treatment; Chapter 4 on classical statistical learning, Chapter 5 on decision theory.</li>
+          <li><span class="src-title">S. Shalev-Shwartz and S. Ben-David.</span> <em>Understanding Machine Learning: From Theory to Algorithms.</em> Cambridge 2014 — the cleanest derivation of PAC bounds and the formal ERM machinery the chapter abstracts away.</li>
+          <li><span class="src-title">M. Belkin, D. Hsu, S. Ma, S. Mandal.</span> "Reconciling modern machine-learning practice and the classical bias–variance trade-off." <em>PNAS</em> 116(32), 15849–15854 (2019) — the original double-descent paper.</li>
+          <li><span class="src-title">P. Nakkiran, G. Kaplun, Y. Bansal, T. Yang, B. Barak, I. Sutskever.</span> "Deep Double Descent: Where Bigger Models and More Data Hurt." <em>ICLR</em> 2020 / arXiv:1912.02292 (2019) — the empirical study showing double descent in deep networks.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="../index.html"><span class="label">←</span> Contents</a>
+      <a class="next" href="02-linear-and-kernels.html"><span class="label">Next chapter</span>II · Linear Models and the Kernel Bridge →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/bias-variance.js"></script>
+</body>
+</html>

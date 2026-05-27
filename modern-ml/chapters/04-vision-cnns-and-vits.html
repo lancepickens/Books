@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter IV · Vision: CNNs and Vision Transformers — A Modern Introduction to Machine Learning</title>
+  <meta name="description" content="Chapter 4: convolutional networks, equivariance, pooling and receptive fields, ResNets, vision transformers, and image foundation models." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter IV of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter IV</p>
+      <h1 class="chapter-title">Vision: Convolutions, ResNets, and Vision Transformers</h1>
+      <p class="lede">An image is a long list of numbers — but with a structure (translation equivariance, locality, hierarchy) that almost begs for a particular architectural prior. Two decades of vision research is the story of building it in, and then a third decade of partially abandoning it.</p>
+
+      <h2><span class="sec-num">§1</span>The problem with applying an MLP to a picture</h2>
+
+      <p>A $224 \times 224 \times 3$ RGB image is 150,528 numbers. A fully-connected first layer with 1024 hidden units already costs $\sim$150 million weights — most of them learning the same simple feature ten thousand times over at different spatial positions. Worse, the model has no built-in notion that a cat at the top-left of the frame is the same cat as the same image shifted by ten pixels.</p>
+
+      <p>The right inductive bias for natural images is <strong>translation equivariance</strong>: shift the input, get the same output, shifted. Convolution gives this for free, with parameter sharing as a bonus.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Convolution as equivariant linear map</h2>
+
+      <p>A 2D convolution layer applies the same small filter $\mathbf{K} \in \mathbb{R}^{k \times k}$ at every spatial position of the input feature map $\mathbf{x} \in \mathbb{R}^{H \times W \times C_{\text{in}}}$:</p>
+
+      <div class="equation-block">
+        $$ (\mathbf{K} * \mathbf{x})_{h, w, c'} \;=\; \sum_{c=1}^{C_{\text{in}}} \sum_{i, j} K_{i, j, c, c'}\, x_{h + i,\, w + j,\, c}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathbf{K} \in \mathbb{R}^{k \times k \times C_{\text{in}} \times C_{\text{out}}}$</dt><dd>The kernel — $C_{\text{out}}$ independent filters, each of which scans the input.</dd>
+          <dt>$h, w$</dt><dd>Output spatial coordinates. The same filter weights are applied at every $(h, w)$ — this is the parameter sharing.</dd>
+          <dt>$c, c'$</dt><dd>Input and output channels. RGB inputs have $C_{\text{in}} = 3$.</dd>
+          <dt>$i, j$</dt><dd>Indices into the local window. For a typical $3 \times 3$ kernel, $i, j \in \{-1, 0, 1\}$.</dd>
+        </dl>
+      </aside>
+
+      <p>Convolution is translation-equivariant: $\mathbf{K} * (T_\delta \mathbf{x}) = T_\delta(\mathbf{K} * \mathbf{x})$, where $T_\delta$ is shift by $\delta$. The same filter that fires on a vertical edge in the top-left fires on a vertical edge anywhere. A $3 \times 3$ filter has $3 \times 3 \times C_{\text{in}} \times C_{\text{out}}$ parameters — independent of image size. That is the parameter-sharing dividend.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Pooling, strides, and the receptive field</h2>
+
+      <p>Two further building blocks shape what a CNN can see.</p>
+
+      <p><strong>Stride.</strong> Convolutions with stride $s > 1$ output every $s$-th position, halving spatial resolution per stride-2 layer. The feature map shrinks geometrically with depth while the number of channels typically grows.</p>
+
+      <p><strong>Pooling.</strong> Max-pooling or average-pooling over local windows downsamples non-parametrically. Modern designs often replace pooling with strided convolution.</p>
+
+      <p>The <dfn title="The set of input pixels that influence one output unit. Grows with depth.">receptive field</dfn> of a unit deep in the network is the patch of the input image that can possibly affect its value. A stack of $L$ layers of $3 \times 3$ convs (no stride) gives a receptive field of $2L + 1$ pixels per side. Stride-2 layers expand it much faster. By the time you're a dozen layers in, every unit sees the whole image — and the features it computes have become abstract enough to talk about objects rather than edges.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The arc of CNN architectures, briefly</h2>
+
+      <p>The history of vision architectures is mostly a story of fighting depth.</p>
+
+      <ul>
+        <li><strong>LeNet</strong> (LeCun et al. 1998) — 7 layers, MNIST. Showed end-to-end gradient-based training of a convolutional network worked.</li>
+        <li><strong>AlexNet</strong> (Krizhevsky, Sutskever, Hinton 2012) — 8 layers, won ImageNet by a 10-point margin, used ReLU + GPU training + dropout. The result that started modern deep learning.</li>
+        <li><strong>VGG</strong> (Simonyan &amp; Zisserman 2014) — homogeneous stacks of $3 \times 3$ convs, 16–19 layers. The first widely used "deeper is better" architecture.</li>
+        <li><strong>GoogLeNet / Inception</strong> (Szegedy et al. 2014) — parallel branches with different kernel sizes (the "Inception module"); 22 layers but parameter-efficient.</li>
+        <li><strong>ResNet</strong> (He et al. 2016) — the breakthrough that unblocked depth. We will dwell on it briefly.</li>
+      </ul>
+
+      <p>The pre-2016 problem: stacking more layers made performance <em>worse</em>, even on training data. The signal degraded through depth. The fix was the <strong>residual connection</strong>: add the input of each block back to its output,</p>
+
+      <div class="equation-block">
+        $$ \mathbf{h}_{\ell+1} \;=\; \mathbf{h}_\ell + F(\mathbf{h}_\ell; \mathbf{W}_\ell). $$
+      </div>
+
+      <p>The block now learns a <em>residual</em> $F$ — the correction to apply to $\mathbf{h}_\ell$ — rather than a full transformation. Gradients flow through the identity branch unobstructed, so deep nets train. ResNet trained 152-layer networks; descendants train arbitrarily deep. The residual stream is the single most important architectural pattern of the last decade; it returns in every chapter that follows, including in the transformer (Chapter V).</p>
+
+      <p>Subsequent CNN refinements (ResNeXt, EfficientNet, ConvNeXt; Liu et al. 2022) tuned width vs. depth vs. resolution and absorbed tricks from transformers. They remain competitive on ImageNet-class benchmarks. They are no longer the default for new vision systems.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The vision transformer</h2>
+
+      <p>The <strong>Vision Transformer</strong> (Dosovitskiy et al. 2021) discards convolutions almost entirely. The image is cut into a grid of non-overlapping patches (typically $16 \times 16$ pixels), each patch is flattened, projected linearly to a token embedding, and a learned positional embedding is added. The resulting sequence of $\sim 200$ tokens is fed to a standard transformer encoder (Chapter V).</p>
+
+      <p>ViT throws away translation equivariance. It does not bake in the convolutional prior. It just has many more parameters and learns the prior — or something better than the prior — from very large datasets. The original paper's headline result: pretrained on the JFT-300M dataset, ViT beat the best CNNs on ImageNet at large scale. <em>The right inductive bias for vision, given enough data, can be learned.</em></p>
+
+      <p>The implication generalized: across modalities, the transformer is the architecture that absorbs scale best. Vision is no exception. Modern image models — from CLIP to DINOv2 to MLLMs — are almost all ViT-based.</p>
+
+      <aside class="jargon">
+        <h4>The convolution-vs-attention truce</h4>
+        <p>The 2020s consensus is not "transformers won, CNNs lost." It's: transformers scale better with data and compute; convolutions are still excellent for small data and edge inference. Hybrids (early conv stages + attention, or attention-augmented convs) are common. The benchmark gap closed at scale; CNNs remain the right default for small mobile networks.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Foundation models for vision</h2>
+
+      <p>Three influential pretraining strategies define the modern image-model landscape.</p>
+
+      <p><strong>CLIP</strong> (Radford et al. 2021) trains a paired image and text encoder so that matching image–caption pairs have similar embeddings via a contrastive InfoNCE loss on 400M web-scraped image–text pairs. The result is an image encoder whose features generalize across thousands of downstream tasks and whose embedding space is aligned with natural language — you can classify images by writing the class names as English prompts.</p>
+
+      <p><strong>MAE</strong> (Masked Autoencoder; He et al. 2022) is the vision analogue of BERT: mask out most patches of an image (typically 75%), train an encoder–decoder to reconstruct them. The encoder learns surprisingly strong features without any labels.</p>
+
+      <p><strong>DINOv2</strong> (Oquab et al. 2023) combines self-distillation and patch-level objectives on a curated 142M-image dataset; produces feature vectors that work zero-shot on segmentation, depth estimation, retrieval, and classification — currently the best general-purpose pretrained vision backbone.</p>
+
+      <p>The 2024–25 frontier is <strong>multimodal foundation models</strong> that share a transformer backbone across vision, language, audio, and video (Chapters IX, X). The vision encoder becomes one of several input modalities feeding a shared latent space.</p>
+
+      <section class="interactive" data-widget="conv-demo" aria-label="Interactive 2D convolution">
+        <header>
+          <h4>Interactive · A convolution, by hand</h4>
+          <span class="hint">pick image · pick kernel</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">A small input image is convolved with one of several hand-set kernels. The "Sobel-x" filter computes a horizontal-edge response; "Sobel-y" the vertical; "blur" averages a $3 \times 3$ neighborhood; "sharpen" subtracts the local average from the center. Convolutional layers in a CNN start with random kernels and learn variants of these (and then far more abstract patterns at deeper layers). The same filter slides across the whole image — that is parameter sharing made visible.</p>
+      </section>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Y. LeCun, L. Bottou, Y. Bengio, P. Haffner.</span> "Gradient-based learning applied to document recognition." <em>Proc. IEEE</em> 86, 2278–2324 (1998) — LeNet, the foundational CNN paper.</li>
+          <li><span class="src-title">A. Krizhevsky, I. Sutskever, G. Hinton.</span> "ImageNet classification with deep convolutional neural networks." <em>NeurIPS</em> 2012 — AlexNet.</li>
+          <li><span class="src-title">K. Simonyan and A. Zisserman.</span> "Very deep convolutional networks for large-scale image recognition." <em>ICLR</em> 2015 / arXiv:1409.1556 — VGG.</li>
+          <li><span class="src-title">C. Szegedy et al.</span> "Going Deeper with Convolutions." <em>CVPR</em> 2015 / arXiv:1409.4842 — GoogLeNet / Inception.</li>
+          <li><span class="src-title">K. He, X. Zhang, S. Ren, J. Sun.</span> "Deep residual learning for image recognition." <em>CVPR</em> 2016 / arXiv:1512.03385 — ResNet.</li>
+          <li><span class="src-title">A. Dosovitskiy et al.</span> "An image is worth 16×16 words: transformers for image recognition at scale." <em>ICLR</em> 2021 / arXiv:2010.11929 — ViT.</li>
+          <li><span class="src-title">Z. Liu, H. Mao, C.-Y. Wu, C. Feichtenhofer, T. Darrell, S. Xie.</span> "A ConvNet for the 2020s." <em>CVPR</em> 2022 / arXiv:2201.03545 — ConvNeXt; the modern-CNN response to ViT.</li>
+          <li><span class="src-title">A. Radford et al.</span> "Learning transferable visual models from natural language supervision." <em>ICML</em> 2021 / arXiv:2103.00020 — CLIP.</li>
+          <li><span class="src-title">K. He, X. Chen, S. Xie, Y. Li, P. Dollár, R. Girshick.</span> "Masked autoencoders are scalable vision learners." <em>CVPR</em> 2022 / arXiv:2111.06377 — MAE.</li>
+          <li><span class="src-title">M. Oquab et al.</span> "DINOv2: learning robust visual features without supervision." <em>arXiv:2304.07193</em> (2023) — DINOv2.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="03-neural-nets-and-backprop.html"><span class="label">Previous chapter</span>← III · Neural Networks and Backprop</a>
+      <a class="next" href="05-sequences-and-transformers.html"><span class="label">Next chapter</span>V · Sequences and the Transformer →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/conv-demo.js"></script>
+</body>
+</html>

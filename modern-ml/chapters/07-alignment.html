@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter VII · From Base Model to Assistant — A Modern Introduction to Machine Learning</title>
+  <meta name="description" content="Chapter 7: supervised fine-tuning, reward modeling, RLHF with PPO, DPO, constitutional AI, RLAIF, and parameter-efficient fine-tuning (LoRA, QLoRA)." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter VII of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter VII</p>
+      <h1 class="chapter-title">From Base Model to Assistant: SFT, RLHF, DPO</h1>
+      <p class="lede">A pretrained model knows how to continue text. It does not know how to be helpful, follow instructions, or refuse harmful requests. The post-training stack is what turns a next-token predictor into something a person would want to talk to.</p>
+
+      <h2><span class="sec-num">§1</span>The gap a base model leaves</h2>
+
+      <p>A model that has only seen pretraining minimizes next-token cross-entropy on web text. Ask such a model "What is the capital of France?" and the most likely continuation is not "Paris" — it is a Q&amp;A list, or a quiz preamble, or another question. The model's distribution is the internet's distribution, not a useful-assistant's distribution.</p>
+
+      <p>Three post-training techniques bridge that gap. Together they are usually called <strong>alignment</strong>, though the term is contested:</p>
+
+      <ol>
+        <li><strong>Supervised fine-tuning</strong> (SFT) on curated instruction-following demonstrations.</li>
+        <li><strong>Reinforcement learning from human feedback</strong> (RLHF) using preference data.</li>
+        <li><strong>Direct preference optimization</strong> (DPO) and successors: SFT-shaped variants that replace RL with a closed-form objective.</li>
+      </ol>
+
+      <p>The modern open-weights recipe (Llama 3, DeepSeek-V3) is roughly SFT followed by DPO or one of its descendants, optionally followed by online RL. Closed-model recipes are similar in shape with substantially more engineering around the reward model and the data.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Supervised fine-tuning</h2>
+
+      <p>SFT is the same next-token objective as pretraining, run on a much smaller dataset of instruction–response demonstrations. The dataset might be 10k to several million pairs of the form</p>
+
+      <div class="equation-block">
+        $$ (\text{prompt}, \text{good response}) \quad\to\quad \text{minimize}\;-\log p_\theta(\text{response} \mid \text{prompt}). $$
+      </div>
+
+      <p>That's it. A handful of epochs at a small learning rate ($\sim 10^{-5}$ to $10^{-6}$) suffice. The model learns the format of an assistant turn — chat templates, system prompts, refusal language, code blocks — without forgetting the pretraining knowledge it sits on top of. SFT is fast (hours, not weeks) and gives the bulk of the apparent capability lift visible to a user. It does not do the harder work of capturing nuanced preferences over similar-looking responses; that is what RLHF and DPO are for.</p>
+
+      <p>Modern SFT data is heavily synthetic. A common recipe: prompt a stronger model with diverse instructions, filter the responses, and finetune a smaller model on the survivors. The Alpaca and Self-Instruct lines of work (2023) demonstrated this in the open; every frontier lab is doing some version of it now.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Reward modeling</h2>
+
+      <p>The next step is to capture <em>preferences</em>: which of two responses is better. Human labelers compare pairs of completions for the same prompt and pick a winner. The model fits a scalar <strong>reward function</strong> $r_\phi(\mathbf{x}, \mathbf{y})$ — typically a small head on top of the SFT model — under the <dfn title="P(y_w preferred over y_l) = σ(r(x, y_w) - r(x, y_l)). The standard latent-utility model for paired comparisons.">Bradley–Terry</dfn> likelihood:</p>
+
+      <div class="equation-block">
+        $$ \mathcal{L}_R(\phi) \;=\; -\mathbb{E}_{(\mathbf{x}, \mathbf{y}_w, \mathbf{y}_l)} \,\log \sigma\bigl(r_\phi(\mathbf{x}, \mathbf{y}_w) - r_\phi(\mathbf{x}, \mathbf{y}_l)\bigr). $$
+      </div>
+
+      <p>Where $\mathbf{y}_w$ is the preferred ("winning") response, $\mathbf{y}_l$ the rejected ("losing") one. The model learns to assign higher reward to responses humans prefer, calibrated by how confident the preferences are.</p>
+
+      <p>Reward models are notoriously fragile. They <em>overfit to the labeler distribution</em> and <em>extrapolate badly</em> once the policy starts producing responses unlike the training pairs — a phenomenon called <em>reward hacking</em>. Constraining how far the optimized policy can drift from the SFT model is half the engineering of RLHF.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>RLHF with PPO</h2>
+
+      <p>Given a reward model, treat response generation as a sequential decision problem: prompts are states, tokens are actions, the reward fires at the end of a response. The policy $\pi_\theta$ is the language model itself. Optimize</p>
+
+      <div class="equation-block">
+        $$ \max_{\boldsymbol\theta} \;\;\mathbb{E}_{\mathbf{x} \sim \mathcal{D},\, \mathbf{y} \sim \pi_\theta(\cdot \mid \mathbf{x})}\bigl[\, r_\phi(\mathbf{x}, \mathbf{y}) \,\bigr] \;-\; \beta\, \mathrm{KL}\bigl[\pi_\theta(\cdot \mid \mathbf{x}) \,\|\, \pi_{\text{ref}}(\cdot \mid \mathbf{x})\bigr]. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\pi_\theta$</dt><dd>Trainable policy. Initialized from the SFT checkpoint.</dd>
+          <dt>$\pi_{\text{ref}}$</dt><dd>Frozen reference policy (the SFT model itself).</dd>
+          <dt>$r_\phi$</dt><dd>The reward model from §3, also frozen during PPO.</dd>
+          <dt>$\beta > 0$</dt><dd>KL penalty strength. Small $\beta$: policy can run after reward (risk: hacking). Large $\beta$: policy stays close to SFT (risk: no improvement). Typical values $0.01 \le \beta \le 0.2$.</dd>
+        </dl>
+      </aside>
+
+      <p>The KL term is the regularization that keeps the policy honest — it cannot wander into linguistic regions the reward model has never seen, because doing so spends KL budget. <strong>PPO</strong> (Schulman et al. 2017) is the policy-gradient algorithm typically used to optimize this objective. It samples responses from the current policy, scores them with the reward model, computes a clipped surrogate objective that limits per-step policy change, and takes a gradient step. A value head, trained alongside, reduces variance via advantage estimation.</p>
+
+      <p>RLHF works. InstructGPT (Ouyang et al. 2022) was the first prominent demonstration that a 1.3B-parameter RLHF'd model could be preferred to a 175B base GPT-3 — a striking result that made RLHF the de-facto post-training method for two years. The cost: complex infrastructure (four models in memory simultaneously, sampling and scoring loops, hyperparameter sensitivity), and a reward model that is easy to hack.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>DPO: dispense with the reward model</h2>
+
+      <p>A 2023 derivation (Rafailov et al.) noticed that the KL-regularized RL objective above has a closed-form optimal policy:</p>
+
+      <div class="equation-block">
+        $$ \pi^*(\mathbf{y} \mid \mathbf{x}) \;\propto\; \pi_{\text{ref}}(\mathbf{y} \mid \mathbf{x})\, \exp\!\Bigl(\tfrac{1}{\beta}\, r(\mathbf{x}, \mathbf{y})\Bigr). $$
+      </div>
+
+      <p>Invert this: the implicit reward of any policy is $r(\mathbf{x}, \mathbf{y}) = \beta \log(\pi(\mathbf{y} \mid \mathbf{x}) / \pi_{\text{ref}}(\mathbf{y} \mid \mathbf{x}))$ plus a prompt-only term. Plug into the Bradley–Terry loss for preferences and you get an objective in the policy <em>directly</em>:</p>
+
+      <div class="equation-block">
+        $$ \mathcal{L}_{\text{DPO}}(\boldsymbol\theta) \;=\; -\mathbb{E}_{(\mathbf{x}, \mathbf{y}_w, \mathbf{y}_l)}\,\log \sigma\!\Bigl(\beta \log \tfrac{\pi_\theta(\mathbf{y}_w \mid \mathbf{x})}{\pi_{\text{ref}}(\mathbf{y}_w \mid \mathbf{x})} - \beta \log \tfrac{\pi_\theta(\mathbf{y}_l \mid \mathbf{x})}{\pi_{\text{ref}}(\mathbf{y}_l \mid \mathbf{x})}\Bigr). $$
+      </div>
+
+      <p>This is a supervised loss in the standard sense. No reward model, no sampling loop, no value head, no PPO. Just a contrastive objective on preference pairs. It runs at the cost of two forward passes per example (the trainable policy and the frozen reference) and is dramatically simpler to implement than RLHF. Quality is comparable or better on standard benchmarks for most settings; the cases where PPO-RLHF wins are typically ones with very large or curated preference datasets.</p>
+
+      <p>The DPO recipe became the default post-training method in the open community within a year of publication, and its variants (IPO, KTO, ORPO, SimPO) explore different ways of relaxing the Bradley–Terry assumption or the implicit-reward parameterization. The Llama 3 paper and DeepSeek-V3 report use DPO-family methods in production.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Constitutional AI and RLAIF</h2>
+
+      <p>Human labels are expensive, slow, inconsistent, and don't scale to every possible behavior. <strong>RLAIF</strong> (RL from AI Feedback; Lee et al. 2023) replaces human pairwise judgments with judgments from another model — usually a stronger model evaluating responses. The reward model trains on AI preferences, and the rest of the RLHF pipeline runs unchanged.</p>
+
+      <p>The most elaborated version is <strong>Constitutional AI</strong> (Bai et al. 2022, Anthropic). The model is given a <em>constitution</em> — a short list of principles ("be helpful, be harmless, refuse requests for instructions on synthesizing nerve agents"). It generates responses, critiques its own responses against each principle, revises, and uses the resulting (original, revised) pairs to train a preference model. Then RLHF (or DPO) as usual. The handwritten input is the constitution, not the labels; the model's judgment is the labeler.</p>
+
+      <p>Constitutional / RLAIF methods scale to specifications human labelers couldn't cover and produce models with more consistent behavior, at the cost of inheriting any biases of the judge model. They are increasingly mixed with smaller amounts of human preference data rather than replacing it entirely.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Parameter-efficient fine-tuning: LoRA and friends</h2>
+
+      <p>Updating every parameter of a 70B model — memory for parameters, gradients, optimizer state — eats 1 TB+ of GPU memory before you have even seen a training example. <strong>LoRA</strong> (Low-Rank Adaptation; Hu et al. 2022) freezes the base model and inserts a low-rank update to selected weight matrices:</p>
+
+      <div class="equation-block">
+        $$ \mathbf{W} \;\to\; \mathbf{W} + \mathbf{B}\mathbf{A}, \qquad \mathbf{A} \in \mathbb{R}^{r \times d_{\text{in}}},\; \mathbf{B} \in \mathbb{R}^{d_{\text{out}} \times r},\; r \ll \min(d_{\text{in}}, d_{\text{out}}). $$
+      </div>
+
+      <p>Train only $\mathbf{A}$ and $\mathbf{B}$, typically with $r = 8$–$64$. The total trainable parameter count drops by 100–1000×, gradients and optimizer state shrink correspondingly, and the resulting adapter is a small file (megabytes) you can swap in and out per task.</p>
+
+      <p><strong>QLoRA</strong> (Dettmers et al. 2023) goes further: quantize the frozen base model to 4-bit, double-quantize the quantization constants, attach LoRA adapters. The result fits a 65B-parameter fine-tune on a single 48GB GPU. QLoRA-trained models are within a fraction of a percent of full fine-tuning quality on most tasks and have made small-lab fine-tuning of frontier-sized open models tractable.</p>
+
+      <p>The broader family of <em>parameter-efficient finetuning</em> (PEFT) includes prefix tuning, prompt tuning, IA³, and adapters of various shapes. LoRA dominates production use; the others remain useful for specific cases.</p>
+
+      <section class="interactive" data-widget="rlhf-kl" aria-label="KL-regularized RLHF policy">
+        <header>
+          <h4>Interactive · The RLHF / DPO optimal policy</h4>
+          <span class="hint">drag β · drag reward shape</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">A 1D toy: the reference policy $\pi_{\text{ref}}(y)$ (gray Gaussian, what your SFT model assigns) and a reward $r(y)$ (orange, set by the slider) combine into the KL-regularized optimal policy $\pi^*(y) \propto \pi_{\text{ref}}(y)\, e^{r(y)/\beta}$ (green). Small $\beta$: policy collapses on the reward maximum (risk of reward hacking). Large $\beta$: policy stays close to the reference. This is the formula DPO inverts to dispense with explicit RL.</p>
+      </section>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">P. F. Christiano, J. Leike, T. B. Brown, M. Martic, S. Legg, D. Amodei.</span> "Deep reinforcement learning from human preferences." <em>NeurIPS</em> 2017 / arXiv:1706.03741 — the foundational RLHF paper.</li>
+          <li><span class="src-title">N. Stiennon et al.</span> "Learning to summarize with human feedback." <em>NeurIPS</em> 2020 / arXiv:2009.01325 — RLHF applied to summarization at OpenAI; the immediate precursor to InstructGPT.</li>
+          <li><span class="src-title">L. Ouyang et al.</span> "Training language models to follow instructions with human feedback." <em>NeurIPS</em> 2022 / arXiv:2203.02155 — InstructGPT, the canonical RLHF-for-LLMs paper.</li>
+          <li><span class="src-title">J. Schulman, F. Wolski, P. Dhariwal, A. Radford, O. Klimov.</span> "Proximal Policy Optimization Algorithms." <em>arXiv:1707.06347</em> (2017) — PPO.</li>
+          <li><span class="src-title">R. Rafailov, A. Sharma, E. Mitchell, S. Ermon, C. D. Manning, C. Finn.</span> "Direct Preference Optimization: Your Language Model is Secretly a Reward Model." <em>NeurIPS</em> 2023 / arXiv:2305.18290 — DPO.</li>
+          <li><span class="src-title">Y. Bai et al. (Anthropic).</span> "Constitutional AI: Harmlessness from AI Feedback." <em>arXiv:2212.08073</em> (2022) — Constitutional AI.</li>
+          <li><span class="src-title">H. Lee et al.</span> "RLAIF vs. RLHF: Scaling Reinforcement Learning from Human Feedback with AI Feedback." <em>arXiv:2309.00267</em> (2023) — RLAIF comparison.</li>
+          <li><span class="src-title">E. J. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang, W. Chen.</span> "LoRA: Low-Rank Adaptation of Large Language Models." <em>ICLR</em> 2022 / arXiv:2106.09685 — LoRA.</li>
+          <li><span class="src-title">T. Dettmers, A. Pagnoni, A. Holtzman, L. Zettlemoyer.</span> "QLoRA: Efficient Finetuning of Quantized LLMs." <em>NeurIPS</em> 2023 / arXiv:2305.14314 — QLoRA.</li>
+          <li><span class="src-title">R. A. Bradley and M. E. Terry.</span> "Rank analysis of incomplete block designs: I. The method of paired comparisons." <em>Biometrika</em> 39, 324–345 (1952) — the paired-comparisons model underlying every preference-based method here.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="06-pretraining-and-scaling.html"><span class="label">Previous chapter</span>← VI · Pretraining and Scaling Laws</a>
+      <a class="next" href="08-reasoning-and-test-time.html"><span class="label">Next chapter</span>VIII · Reasoning and Test-Time Compute →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/rlhf-kl.js"></script>
+</body>
+</html>

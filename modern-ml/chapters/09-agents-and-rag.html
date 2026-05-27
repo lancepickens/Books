@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter IX · Agents, Tool Use, and Retrieval — A Modern Introduction to Machine Learning</title>
+  <meta name="description" content="Chapter 9: function calling, MCP, the ReAct loop, retrieval-augmented generation, code agents, and computer-use models." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter IX of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter IX</p>
+      <h1 class="chapter-title">Agents, Tool Use, and Retrieval</h1>
+      <p class="lede">A model that can call tools, read documents it doesn't already know, and take actions in an environment is not just a language model — it is the kernel of an operating system. The stack around it is what makes it useful.</p>
+
+      <h2><span class="sec-num">§1</span>What "agentic" means, operationally</h2>
+
+      <p>The word is overloaded. A useful narrow definition: an <strong>agent</strong> is a system in which a language model decides which actions to take, executes them via tools, observes the results, and decides what to do next — in a loop, with state carried across turns. The model is the planner and decider; tools are the way it touches the outside world.</p>
+
+      <p>The minimal contract:</p>
+
+      <ol>
+        <li>The model is told which tools are available (names, parameter schemas, what they return).</li>
+        <li>At each step the model either produces a final answer or a tool call: a structured JSON-ish thing naming a tool and its arguments.</li>
+        <li>The harness executes the tool, returns the result, and feeds it back into the model's context.</li>
+        <li>Loop until the model emits a final answer or some budget runs out.</li>
+      </ol>
+
+      <p>This is just an outer loop wrapped around a language model. The novelty is that frontier models from 2024 onward are <em>trained</em> to participate in it — fine-tuned with thousands of tool-use traces so they reliably emit well-formed tool calls, recover from tool errors, and chain tools sensibly. Without that training, an LLM in a tool-use loop falls over fast.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Tool use, function calling, and MCP</h2>
+
+      <p>Earlier work (Toolformer; Schick et al. 2023) showed models could be self-taught to insert tool calls inline in their output text. Production today is more structured. Every frontier API has some flavor of <strong>function calling</strong>: the developer declares a list of tools with JSON-schema parameter specs; the model produces tool calls as structured outputs (not free text); the harness runs them.</p>
+
+      <p>Until late 2024, every developer wired up their own tool integrations against each model's bespoke API. The <strong>Model Context Protocol</strong> (MCP; Anthropic 2024) standardized this. MCP is an open protocol that defines how tools, resources, and prompts are served to a language model. Tool servers (anything from a filesystem to a Slack instance to a SQL database) expose a uniform interface; LLM clients consume them generically. As of mid-2025 the major model providers all support MCP, and the ecosystem of MCP servers — community and commercial — covers most common integrations.</p>
+
+      <p>The practical upshot: a 2026 agent harness composes a model + a set of MCP servers + a conversation loop. No glue code per model, no glue code per tool.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>ReAct: reason, then act, observe, repeat</h2>
+
+      <p>The most influential agent paradigm is <strong>ReAct</strong> (Yao et al. 2023): interleave <em>reasoning</em> tokens with <em>tool actions</em>. A trace looks like</p>
+
+      <pre><code>Thought: I need to find the population of Toulouse in 2025.
+Action: web_search("Toulouse population 2025")
+Observation: [search results …]
+Thought: The top result says 511,684. Let me cross-check.
+Action: web_search("Toulouse INSEE population 2025")
+Observation: [search results …]
+Thought: Both agree. Answer: 511,684.
+Final answer: 511,684.</code></pre>
+
+      <p>ReAct in this exact textual form is mostly historical now — modern models use structured tool calls rather than parsing free text — but the pattern is universal. Almost every production agent is a ReAct loop wearing different clothes: think, act, observe, think, act, observe, until done.</p>
+
+      <p>Variants of the pattern address specific failure modes. <strong>Reflexion</strong> (Shinn et al. 2023) adds a verbal critique step after each trajectory and stores it as memory for the next attempt. Plan-and-execute architectures split planning from execution. Multi-agent systems use one model as a planner and others as workers — useful when subtasks parallelize naturally.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Retrieval-Augmented Generation</h2>
+
+      <p>Most knowledge an agent needs is not in the model's parameters. <strong>Retrieval-Augmented Generation</strong> (RAG; Lewis et al. 2020) is the standard technique for grounding model outputs in a corpus the model has never seen:</p>
+
+      <ol>
+        <li><strong>Embed</strong> a corpus of documents into vectors with an embedding model.</li>
+        <li>Given a query, embed it the same way.</li>
+        <li>Retrieve the top-$k$ corpus documents by similarity (typically cosine, sometimes a learned reranker on top).</li>
+        <li>Stuff the retrieved chunks into the model's context window along with the query, and ask the model to answer.</li>
+      </ol>
+
+      <p>The embedding model is the heart of it. Modern embedding models are transformers (often BERT-family encoders or contrastively-trained decoders) fine-tuned to put related text near each other in the embedding space — Sentence-BERT (Reimers &amp; Gurevych 2019) launched the modern recipe; DPR (Karpukhin et al. 2020) extended it to passage retrieval; subsequent work (Contriever, E5, BGE, OpenAI's text-embedding-3, Voyage AI's voyage-3) keeps incrementally improving quality. Production stacks often combine dense retrieval (vectors) with sparse retrieval (BM25) via hybrid scores, and rerank the top 100 with a more expensive cross-encoder.</p>
+
+      <p>RAG is the dominant pattern for grounding LLMs in any kind of proprietary or current data — internal documents, recent web pages, codebases. It works well when the corpus has a clean retrieval structure and the relevant chunks are small enough to fit in the context. It works less well when answers require synthesizing many documents or when the relevant chunk is hard to retrieve by surface similarity (the classic "vibe vs. content" failure mode).</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Code agents</h2>
+
+      <p>Coding is the agent application that has progressed fastest. The setup is well-defined: the tool is a shell or an IDE, the environment is a code repo, the reward (when training) is whether tests pass. SWE-bench (Jimenez et al. 2023), launched at &lt;5% solve rate by the best 2023 systems, was at 60–70% by mid-2025 for the strongest reasoning-model-driven agents (Claude Sonnet-class with extensive tool use, OpenAI o-series with their coding harness, open-source SWE-agents).</p>
+
+      <p>The current generation of production code agents (Claude Code, Cursor, Aider, Codex CLI, OpenHands and similar) gives a model:</p>
+
+      <ul>
+        <li>A working filesystem with read/write/run access.</li>
+        <li>Shell execution.</li>
+        <li>Search across the codebase, semantic and syntactic.</li>
+        <li>An LSP or AST tool for editing.</li>
+        <li>Sometimes: web search, debugger control, version control.</li>
+      </ul>
+
+      <p>A user task ("refactor this module to use the new API") becomes a multi-step agent trajectory: read the relevant files, draft the change, run the test suite, observe failures, repeat. The model's job is dramatically simpler than "write a correct change from scratch" because it can iterate against feedback.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Computer use and the open frontier</h2>
+
+      <p><strong>Computer use</strong> models, debuted by Anthropic in October 2024 and adopted across labs since, can be given a screen and a mouse and asked to operate any GUI: book a flight, fill out a form, navigate a SaaS dashboard. The model takes screenshots, plans mouse/keyboard actions, and observes the result. As of early 2026 these models work reliably on simple tasks, sporadically on complex ones, and reveal the limits of current agent stacks under real-world UI churn.</p>
+
+      <p>Three open problems shape the frontier:</p>
+
+      <ul>
+        <li><strong>Long-horizon memory.</strong> Context windows of $10^6$ tokens help but are not infinite, and most agents lose track over multi-day tasks. Persistent memory architectures (compress, summarize, retrieve from past sessions) are an active research area.</li>
+        <li><strong>Robustness to adversarial inputs.</strong> A web page can include text that a model interprets as instructions ("prompt injection"). Defenses are immature; the security model of agents in 2026 is roughly "assume any tool result might be hostile."</li>
+        <li><strong>Evaluation.</strong> Static benchmarks saturate fast. Live evaluation against real, evolving environments — SWE-bench-live, WebArena, OSWorld — is the credible signal, but expensive to run at scale.</li>
+      </ul>
+
+      <p>The trajectory of agent capability tracks the trajectory of reasoning-model capability from Chapter VIII closely. Most of what has improved between mid-2024 and 2026 is the underlying model; the harness has matured (MCP, better tool design) but has not changed conceptually.</p>
+
+      <section class="interactive" data-widget="rag-retrieval" aria-label="RAG retrieval in 2D embedding space">
+        <header>
+          <h4>Interactive · RAG retrieval, in 2D</h4>
+          <span class="hint">drag the query · choose k</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">A small corpus of "documents" lives in a 2D embedding space. Drag the green query point; the top-$k$ documents by cosine similarity are highlighted, with similarity scores shown. The dashed circle marks the similarity-1 contour around the query direction — points along the same ray have similarity 1, points orthogonal have similarity 0. Real RAG runs this in a 768- to 4096-dimensional space and over millions of vectors, but the geometry is the same.</p>
+      </section>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">S. Yao, J. Zhao, D. Yu, N. Du, I. Shafran, K. Narasimhan, Y. Cao.</span> "ReAct: Synergizing Reasoning and Acting in Language Models." <em>ICLR</em> 2023 / arXiv:2210.03629 — ReAct.</li>
+          <li><span class="src-title">T. Schick et al.</span> "Toolformer: Language Models Can Teach Themselves to Use Tools." <em>arXiv:2302.04761</em> (2023) — the self-supervised tool-use precursor.</li>
+          <li><span class="src-title">Anthropic.</span> "Introducing the Model Context Protocol." <em>anthropic.com/news/model-context-protocol</em> (November 2024) — MCP announcement; the spec lives at modelcontextprotocol.io.</li>
+          <li><span class="src-title">P. Lewis et al.</span> "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks." <em>NeurIPS</em> 2020 / arXiv:2005.11401 — RAG.</li>
+          <li><span class="src-title">V. Karpukhin et al.</span> "Dense Passage Retrieval for Open-Domain Question Answering." <em>EMNLP</em> 2020 / arXiv:2004.04906 — DPR; dense retrievers for QA.</li>
+          <li><span class="src-title">N. Reimers and I. Gurevych.</span> "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks." <em>EMNLP</em> 2019 / arXiv:1908.10084 — modern dense embeddings.</li>
+          <li><span class="src-title">N. Shinn, F. Cassano, A. Gopinath, K. Narasimhan, S. Yao.</span> "Reflexion: Language Agents with Verbal Reinforcement Learning." <em>NeurIPS</em> 2023 / arXiv:2303.11366 — Reflexion.</li>
+          <li><span class="src-title">C. E. Jimenez, J. Yang, A. Wettig, S. Yao, K. Pei, O. Press, K. Narasimhan.</span> "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?" <em>ICLR</em> 2024 / arXiv:2310.06770 — the standard code-agent benchmark.</li>
+          <li><span class="src-title">Q. Wu, G. Bansal, J. Zhang, et al.</span> "AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation." <em>arXiv:2308.08155</em> (2023) — multi-agent orchestration.</li>
+          <li><span class="src-title">G. Wang, Y. Xie, Y. Jiang, A. Mandlekar, C. Xiao, Y. Zhu, L. Fan, A. Anandkumar.</span> "Voyager: An Open-Ended Embodied Agent with Large Language Models." <em>arXiv:2305.16291</em> (2023) — long-horizon agent in Minecraft.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="08-reasoning-and-test-time.html"><span class="label">Previous chapter</span>← VIII · Reasoning and Test-Time Compute</a>
+      <a class="next" href="10-generative-and-frontier.html"><span class="label">Next chapter</span>X · Generative Beyond Text, and the Frontier →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/rag-retrieval.js"></script>
+</body>
+</html>

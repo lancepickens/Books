@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter III · Neural Networks and Backpropagation — A Modern Introduction to Machine Learning</title>
+  <meta name="description" content="Chapter 3: multilayer perceptrons, activation functions, reverse-mode autodiff (backprop), SGD, Adam/AdamW, initialization, and normalization." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter III of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter III</p>
+      <h1 class="chapter-title">Neural Networks and Backpropagation</h1>
+      <p class="lede">A neural network is just function composition. Pile up alternating linear maps and nonlinearities; differentiate the whole thing by the chain rule; minimize the loss by gradient descent. The depth of the consequences is not obvious from the simplicity of the recipe.</p>
+
+      <h2><span class="sec-num">§1</span>The multilayer perceptron</h2>
+
+      <p>An <dfn title="A neural network of fully-connected layers: linear map, nonlinearity, linear map, nonlinearity, … last layer is task-specific.">MLP</dfn> with $L$ layers is a sequence of affine maps interleaved with elementwise nonlinearities:</p>
+
+      <div class="equation-block">
+        $$ \mathbf{h}_0 = \mathbf{x}, \qquad \mathbf{h}_\ell = \sigma\bigl( \mathbf{W}_\ell\, \mathbf{h}_{\ell - 1} + \mathbf{b}_\ell \bigr), \qquad f_\theta(\mathbf{x}) = \mathbf{W}_L\, \mathbf{h}_{L-1} + \mathbf{b}_L. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathbf{W}_\ell \in \mathbb{R}^{d_\ell \times d_{\ell-1}}$</dt><dd>Layer $\ell$ weight matrix; one row per output unit, one column per input.</dd>
+          <dt>$\mathbf{b}_\ell \in \mathbb{R}^{d_\ell}$</dt><dd>Bias vector.</dd>
+          <dt>$\sigma$</dt><dd>Elementwise nonlinearity (ReLU, GELU, …). Without it, the whole stack collapses to a single linear map.</dd>
+          <dt>$\mathbf{h}_\ell$</dt><dd>Hidden activations at layer $\ell$. The last layer skips $\sigma$ for regression, or pushes through softmax for classification.</dd>
+          <dt>$\boldsymbol{\theta} = \{\mathbf{W}_\ell, \mathbf{b}_\ell\}_\ell$</dt><dd>All parameters, lumped.</dd>
+        </dl>
+      </aside>
+
+      <p>The <dfn title="Hornik 1989; Cybenko 1989; Leshno et al. 1993 — a sufficiently wide MLP with a non-polynomial activation can approximate any continuous function on a compact set to arbitrary accuracy.">universal approximation theorems</dfn> say a wide enough MLP can approximate any continuous function. They do not say <em>how wide</em>, or that training will find such an approximator, or that the result will generalize. Approximation is necessary but not sufficient. Everything interesting in deep learning lies in the gaps between "exists" and "trainable" and "generalizes."</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Activation functions</h2>
+
+      <p>The 1990s ran on $\tanh$ and the logistic sigmoid. Both saturate for large inputs, so gradients shrink to zero through deep stacks — the <em>vanishing gradient problem</em>. The 2010s fix was the rectified linear unit,</p>
+
+      <div class="equation-block">
+        $$ \mathrm{ReLU}(z) \;=\; \max(0, z), $$
+      </div>
+
+      <p>which has gradient 1 on its positive half and 0 on its negative half. Cheap, non-saturating in the active region, and surprisingly hard to improve on (Nair &amp; Hinton 2010). Its dead-neuron failure mode — a unit stuck at zero stays there because gradient is zero — motivated <em>Leaky ReLU</em>, <em>ELU</em>, and the variants below.</p>
+
+      <p>The modern default in transformers is <strong>GELU</strong> (Gaussian Error Linear Unit; Hendrycks &amp; Gimpel 2016),</p>
+
+      <div class="equation-block">
+        $$ \mathrm{GELU}(z) \;=\; z \cdot \Phi(z) \;\approx\; \half z\Bigl(1 + \tanh\bigl(\sqrt{2/\pi}\,(z + 0.044715\, z^3)\bigr)\Bigr), $$
+      </div>
+
+      <p>where $\Phi$ is the standard normal CDF. GELU smoothly gates by the input's percentile rather than a hard cut at zero. <strong>SwiGLU</strong> (Shazeer 2020) is the gated-linear variant that dominates current LLM feedforward layers; we will meet it in Chapter V.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Backpropagation is reverse-mode autodiff</h2>
+
+      <p>Training requires the gradient $\nabla_{\boldsymbol{\theta}} \mathcal{L}$. Computing it by symbolic differentiation is intractable for large networks; computing it by finite differences is hopelessly noisy and slow. The right answer is to apply the chain rule mechanically in a particular order.</p>
+
+      <p>A neural network is a directed acyclic computation graph. <strong>Forward mode</strong> walks the graph from inputs to outputs computing values <em>and</em> propagating directional derivatives — efficient when there are few inputs and many outputs. <strong>Reverse mode</strong> walks forward to record activations, then walks backward propagating gradients with respect to <em>each output</em> against every intermediate. Reverse mode is efficient when there are few outputs (a scalar loss) and many parameters — exactly our situation.</p>
+
+      <p>For a single layer $\mathbf{h}_\ell = \sigma(\mathbf{z}_\ell)$ with $\mathbf{z}_\ell = \mathbf{W}_\ell \mathbf{h}_{\ell-1} + \mathbf{b}_\ell$, the local backward rules are</p>
+
+      <div class="equation-block">
+        $$ \frac{\partial \mathcal{L}}{\partial \mathbf{z}_\ell} \;=\; \frac{\partial \mathcal{L}}{\partial \mathbf{h}_\ell} \odot \sigma'(\mathbf{z}_\ell), \qquad \frac{\partial \mathcal{L}}{\partial \mathbf{W}_\ell} \;=\; \frac{\partial \mathcal{L}}{\partial \mathbf{z}_\ell}\, \mathbf{h}_{\ell-1}^\top, \qquad \frac{\partial \mathcal{L}}{\partial \mathbf{h}_{\ell-1}} \;=\; \mathbf{W}_\ell^\top\, \frac{\partial \mathcal{L}}{\partial \mathbf{z}_\ell}. $$
+      </div>
+
+      <p>That's it. The whole of backpropagation is the chain rule applied to each operation in the graph, plus the bookkeeping to traverse the graph in topological-reverse order. Total cost is the same as a forward pass within a constant factor (Baur &amp; Strassen 1983 — the <em>cheap gradient principle</em>).</p>
+
+      <aside class="jargon">
+        <h4>What "PyTorch" actually does for you</h4>
+        <p>You don't write backward passes anymore. Modern frameworks (PyTorch, JAX, MLX) build the computation graph at runtime or trace it once, then call a generic reverse-mode autodiff engine. Every operator ships with a hand-coded backward. Your job is to write the forward pass; the framework gives you the gradient. The first time you understand this, deep learning starts to feel like an extremely permissive form of programming.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>SGD, momentum, Adam, AdamW</h2>
+
+      <p>Given the gradient, the simplest update is <strong>stochastic gradient descent</strong>: shuffle the data, draw a minibatch, compute the gradient on that batch, take a step:</p>
+
+      <div class="equation-block">
+        $$ \boldsymbol{\theta}_{t+1} \;=\; \boldsymbol{\theta}_t - \eta\, \nabla_{\boldsymbol{\theta}} \mathcal{L}_{\text{batch}}(\boldsymbol{\theta}_t). $$
+      </div>
+
+      <p>Stochastic because we use a noisy gradient estimate; the noise is a feature (helps escape narrow minima), not a bug. The learning rate $\eta$ is the single most important hyperparameter. The minibatch size trades off gradient quality for parallelism — modern training uses very large batches (thousands of examples) to saturate GPU throughput.</p>
+
+      <p><strong>Momentum</strong> (Polyak 1964) maintains a velocity that averages past gradients:</p>
+
+      <div class="equation-block">
+        $$ \mathbf{v}_{t+1} = \mu\, \mathbf{v}_t + \nabla \mathcal{L}, \qquad \boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t - \eta\, \mathbf{v}_{t+1}, $$
+      </div>
+
+      <p>which accelerates progress along directions of consistent gradient sign. Nesterov's variant offers a sharper convergence bound on convex problems.</p>
+
+      <p><strong>Adam</strong> (Kingma &amp; Ba 2014) tracks running estimates of the first and second moments of the gradient and uses them to give each parameter its own adaptive learning rate:</p>
+
+      <div class="equation-block">
+        $$ \mathbf{m}_{t+1} = \beta_1 \mathbf{m}_t + (1 - \beta_1) \mathbf{g}_t, \qquad \mathbf{v}_{t+1} = \beta_2 \mathbf{v}_t + (1 - \beta_2)\, \mathbf{g}_t^2, $$
+      </div>
+
+      <div class="equation-block">
+        $$ \hat{\mathbf{m}} = \mathbf{m}_{t+1} / (1 - \beta_1^{t+1}), \quad \hat{\mathbf{v}} = \mathbf{v}_{t+1} / (1 - \beta_2^{t+1}), \quad \boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t - \eta \frac{\hat{\mathbf{m}}}{\sqrt{\hat{\mathbf{v}}} + \eps}. $$
+      </div>
+
+      <p>Default $(\beta_1, \beta_2, \eps) = (0.9, 0.999, 10^{-8})$ works for almost everything. <strong>AdamW</strong> (Loshchilov &amp; Hutter 2019) is Adam with weight decay applied directly to the parameters rather than folded into the gradient — a small but consistent improvement, and the default for transformer training today.</p>
+
+      <p>Learning-rate <strong>schedules</strong> matter as much as the optimizer choice. The 2024 standard for large-model training is a brief linear <em>warmup</em> (a few hundred to a few thousand steps) followed by <em>cosine decay</em> to some small fraction of the peak LR over the rest of training. Some recent work uses warmup-stable-decay (WSD) schedules to allow checkpoint reuse.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Initialization and normalization</h2>
+
+      <p>Two operational details that look like minor engineering but determine whether a deep network trains at all.</p>
+
+      <p><strong>Initialization.</strong> Weights drawn from too small a distribution make activations vanish through depth; too large, and they explode. The 2010 fix (Glorot &amp; Bengio) chooses the initial weight variance so that the variance of activations and gradients is approximately preserved layer-to-layer. For ReLU networks the corrected variance is $\mathrm{Var}(W_{ij}) = 2/d_{\text{in}}$ (He et al. 2015; <em>Kaiming init</em>). For modern transformers initial weight std is typically $\sim 0.02$, often scaled down further at the residual branches.</p>
+
+      <p><strong>Normalization layers</strong> rescale activations so the network's internal distributions stay well-conditioned during training.</p>
+
+      <ul>
+        <li><strong>BatchNorm</strong> (Ioffe &amp; Szegedy 2015) normalizes each feature across the batch dimension. Dominant in CNNs; awkward for sequence models because the batch statistics couple examples.</li>
+        <li><strong>LayerNorm</strong> (Ba et al. 2016) normalizes each example across the feature dimension. Dominant in transformers because it's per-example and works at batch size 1.</li>
+        <li><strong>RMSNorm</strong> (Zhang &amp; Sennrich 2019) is LayerNorm without the mean-subtraction step. Slightly cheaper and the modern default in LLaMA-style transformers.</li>
+      </ul>
+
+      <p>Normalization stabilizes training, allows higher learning rates, and acts as a mild regularizer. It also subtly changes what the optimizer is optimizing — there is a small literature on the interaction between normalization and weight decay that explains why the same recipe needs different hyperparameters with and without it.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Why depth, and why this works</h2>
+
+      <p>The empirical lesson of the last decade: depth buys composition. A shallow network with one wide hidden layer can in principle represent any function (universal approximation) but in practice cannot <em>learn</em> the functions that interesting data actually exhibits. Deeper networks learn <em>hierarchical features</em> — low-level edges combine into shapes, shapes into objects, objects into scenes — and they do so without anyone telling them to.</p>
+
+      <p>The other reason deep learning works is more mysterious. Modern networks are typically <em>over-parameterized</em> — they have far more parameters than training examples — and so the loss surface has uncountably many global minima. Gradient descent finds particular ones, biased by initialization and the trajectory of the optimizer, that happen to generalize. The <em>implicit regularization</em> of the optimizer is the part nobody fully understands, and the part that double descent (Chapter I) gestures at. There is still no clean theory.</p>
+
+      <p>What we do know is what works engineering-wise. Pick a sensible architecture for the modality; use Kaiming or scaled init; pre-norm residual blocks; AdamW; warmup + cosine; clip the gradient norm at $\sim 1$; train as long as your compute budget allows. The hyperparameters that matter — learning rate, batch size, weight decay — are surprisingly stable across model sizes once you've gotten in the right neighborhood. Most production training recipes you read about have converged on a small set of choices the field discovered between 2015 and 2022.</p>
+
+      <section class="interactive" data-widget="mlp-decision" aria-label="MLP training on a 2D classification problem">
+        <header>
+          <h4>Interactive · A small MLP learning a 2D decision boundary</h4>
+          <span class="hint">train / step / reset</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">A two-hidden-layer MLP with 16 hidden units per layer and tanh activations, trained on a two-class spiral. The background heatmap is the network's predicted probability for class 1; the dots are training examples. Step gradient descent and watch the boundary refine from random initialization. With this small a model and short training, the result is sensitive to seed — exactly the variance the bias–variance picture from Chapter I describes.</p>
+      </section>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">I. Goodfellow, Y. Bengio, A. Courville.</span> <em>Deep Learning.</em> MIT Press 2016 — the standard reference for MLPs, backprop, optimizers, and initialization. Freely readable at deeplearningbook.org.</li>
+          <li><span class="src-title">D. E. Rumelhart, G. E. Hinton, R. J. Williams.</span> "Learning representations by back-propagating errors." <em>Nature</em> 323, 533–536 (1986) — backprop, applied to neural networks.</li>
+          <li><span class="src-title">Y. LeCun, Y. Bengio, G. Hinton.</span> "Deep learning." <em>Nature</em> 521, 436–444 (2015) — the landmark review.</li>
+          <li><span class="src-title">A. G. Baydin, B. A. Pearlmutter, A. A. Radul, J. M. Siskind.</span> "Automatic differentiation in machine learning: a survey." <em>JMLR</em> 18(153), 1–43 (2018) / arXiv:1502.05767 — the autodiff perspective on backprop.</li>
+          <li><span class="src-title">V. Nair and G. E. Hinton.</span> "Rectified linear units improve restricted Boltzmann machines." <em>ICML</em> 2010 — the ReLU paper.</li>
+          <li><span class="src-title">D. Hendrycks and K. Gimpel.</span> "Gaussian Error Linear Units (GELUs)." <em>arXiv:1606.08415</em> (2016) — GELU.</li>
+          <li><span class="src-title">D. P. Kingma and J. Ba.</span> "Adam: A method for stochastic optimization." <em>ICLR</em> 2015 / arXiv:1412.6980 (2014) — Adam.</li>
+          <li><span class="src-title">I. Loshchilov and F. Hutter.</span> "Decoupled weight decay regularization." <em>ICLR</em> 2019 / arXiv:1711.05101 — AdamW.</li>
+          <li><span class="src-title">K. He, X. Zhang, S. Ren, J. Sun.</span> "Delving deep into rectifiers: Surpassing human-level performance on ImageNet classification." <em>ICCV</em> 2015 / arXiv:1502.01852 — Kaiming initialization.</li>
+          <li><span class="src-title">S. Ioffe and C. Szegedy.</span> "Batch normalization: accelerating deep network training by reducing internal covariate shift." <em>ICML</em> 2015 / arXiv:1502.03167 — BatchNorm.</li>
+          <li><span class="src-title">J. L. Ba, J. R. Kiros, G. E. Hinton.</span> "Layer normalization." <em>arXiv:1607.06450</em> (2016) — LayerNorm.</li>
+          <li><span class="src-title">B. Zhang and R. Sennrich.</span> "Root Mean Square Layer Normalization." <em>NeurIPS</em> 2019 / arXiv:1910.07467 — RMSNorm.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="02-linear-and-kernels.html"><span class="label">Previous chapter</span>← II · Linear Models and Kernels</a>
+      <a class="next" href="04-vision-cnns-and-vits.html"><span class="label">Next chapter</span>IV · Vision: CNNs and ViTs →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/mlp-decision.js"></script>
+</body>
+</html>

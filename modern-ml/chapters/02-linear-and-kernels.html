@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter II · Linear Models and the Kernel Bridge — A Modern Introduction to Machine Learning</title>
+  <meta name="description" content="Chapter 2: linear and logistic regression, ridge/lasso regularization, kernels and the implicit feature map." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter II of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter II</p>
+      <h1 class="chapter-title">Linear Models, Regularization, and the Kernel Bridge</h1>
+      <p class="lede">The first nontrivial class of models — and the last one we can solve in closed form. Everything past this chapter will be solved by gradient descent. Most of what makes that work was visible already here.</p>
+
+      <h2><span class="sec-num">§1</span>Linear regression as projection</h2>
+
+      <p>The setup. Stack training inputs into a matrix $\mathbf{X} \in \mathbb{R}^{N \times d}$, targets into a vector $\mathbf{y} \in \mathbb{R}^N$. The linear model predicts $\hat{\mathbf{y}} = \mathbf{X}\mathbf{w}$ for some weight vector $\mathbf{w} \in \mathbb{R}^d$. The squared-error loss is</p>
+
+      <div class="equation-block">
+        $$ \mathcal{L}(\mathbf{w}) \;=\; \tfrac{1}{2}\, \norm{\mathbf{y} - \mathbf{X}\mathbf{w}}^2. $$
+      </div>
+
+      <p>Setting the gradient $\nabla_{\mathbf{w}} \mathcal{L} = -\mathbf{X}^\top(\mathbf{y} - \mathbf{X}\mathbf{w})$ to zero gives the <strong>normal equations</strong>:</p>
+
+      <div class="equation-block">
+        $$ \mathbf{X}^\top \mathbf{X}\, \mathbf{w} \;=\; \mathbf{X}^\top \mathbf{y}, \qquad \hat{\mathbf{w}} \;=\; (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{y}. $$
+      </div>
+
+      <p>Geometrically: the fitted prediction $\hat{\mathbf{y}} = \mathbf{X}\hat{\mathbf{w}}$ is the orthogonal projection of $\mathbf{y}$ onto the column space of $\mathbf{X}$. The residual $\mathbf{y} - \hat{\mathbf{y}}$ is orthogonal to every column of $\mathbf{X}$ — that is exactly the normal equation. The matrix $\mathbf{H} = \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top$ is the <em>hat matrix</em>, the projector onto column space. Linear regression is one matrix solve. There are no hyperparameters in the unregularized case.</p>
+
+      <aside class="jargon">
+        <h4>When $\mathbf{X}^\top\mathbf{X}$ is singular</h4>
+        <p>If $d > N$ (more features than examples), or if columns of $\mathbf{X}$ are linearly dependent, $\mathbf{X}^\top\mathbf{X}$ is rank-deficient and the closed form fails. Either drop redundant columns, or — almost always cleaner — regularize. The Moore–Penrose pseudoinverse $\mathbf{X}^+$ gives the minimum-norm solution; ridge regression below gives the small-norm preferred-direction solution.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Logistic regression for classification</h2>
+
+      <p>For binary classification with labels $y \in \{0, 1\}$, the linear model produces a real number $\mathbf{w}^\top\mathbf{x}$ that we squash through the <dfn title="The map σ(z) = 1/(1+e^{-z}); a smooth, monotone S-shape from 0 to 1.">sigmoid</dfn> to get a probability:</p>
+
+      <div class="equation-block">
+        $$ p_\mathbf{w}(y = 1 \mid \mathbf{x}) \;=\; \sigma(\mathbf{w}^\top \mathbf{x}) \;=\; \frac{1}{1 + e^{-\mathbf{w}^\top \mathbf{x}}}. $$
+      </div>
+
+      <p>The negative log-likelihood is the <strong>binary cross-entropy</strong>:</p>
+
+      <div class="equation-block">
+        $$ \mathcal{L}(\mathbf{w}) \;=\; -\sum_{i=1}^{N} \bigl[\, y_i \log \sigma(\mathbf{w}^\top \mathbf{x}_i) + (1 - y_i) \log(1 - \sigma(\mathbf{w}^\top \mathbf{x}_i)) \,\bigr]. $$
+      </div>
+
+      <p>The loss is convex in $\mathbf{w}$, with gradient</p>
+
+      <div class="equation-block">
+        $$ \nabla_{\mathbf{w}} \mathcal{L} \;=\; \mathbf{X}^\top (\boldsymbol{\sigma} - \mathbf{y}), $$
+      </div>
+
+      <p>where $\boldsymbol{\sigma}$ is the vector of $\sigma(\mathbf{w}^\top \mathbf{x}_i)$. No closed form, but Newton's method converges in a handful of steps (each step is a weighted least-squares problem — <em>iteratively reweighted least squares</em>). For $K$ classes the natural generalization is the <strong>softmax</strong>:</p>
+
+      <div class="equation-block">
+        $$ p_\mathbf{W}(y = k \mid \mathbf{x}) \;=\; \frac{e^{\mathbf{w}_k^\top \mathbf{x}}}{\sum_{j=1}^{K} e^{\mathbf{w}_j^\top \mathbf{x}}}, $$
+      </div>
+
+      <p>with a categorical cross-entropy loss. Logistic-softmax classification is the head sitting on top of almost every modern classifier; everything between input and the final linear layer is feature extraction.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Regularization is geometry</h2>
+
+      <p>Adding a penalty on $\norm{\mathbf{w}}$ to the loss changes the geometry of the optimum. Two penalties dominate.</p>
+
+      <p><strong>Ridge regression</strong> (Tikhonov, $\ell_2$):</p>
+
+      <div class="equation-block">
+        $$ \hat{\mathbf{w}}_{\text{ridge}} \;=\; \argmin_{\mathbf{w}} \;\tfrac{1}{2}\,\norm{\mathbf{y} - \mathbf{X}\mathbf{w}}^2 + \lambda\, \norm{\mathbf{w}}_2^2 \;=\; (\mathbf{X}^\top \mathbf{X} + 2\lambda \mathbf{I})^{-1} \mathbf{X}^\top \mathbf{y}. $$
+      </div>
+
+      <p><strong>Lasso</strong> (Tibshirani 1996, $\ell_1$):</p>
+
+      <div class="equation-block">
+        $$ \hat{\mathbf{w}}_{\text{lasso}} \;=\; \argmin_{\mathbf{w}} \;\tfrac{1}{2}\,\norm{\mathbf{y} - \mathbf{X}\mathbf{w}}^2 + \lambda\, \norm{\mathbf{w}}_1. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\lambda \geq 0$</dt><dd>Regularization strength. $\lambda = 0$ recovers ordinary least squares; $\lambda \to \infty$ shrinks $\mathbf{w}$ to zero.</dd>
+          <dt>$\norm{\mathbf{w}}_2^2$</dt><dd>Sum of squared weights. Penalty is smooth — adds $2\lambda \mathbf{I}$ to the normal equations.</dd>
+          <dt>$\norm{\mathbf{w}}_1$</dt><dd>Sum of absolute values. Non-smooth at zero — exactly the property that drives weights to be <em>exactly</em> zero. Lasso fits are sparse.</dd>
+        </dl>
+      </aside>
+
+      <p>The geometric picture is the standard one. The unregularized loss has elliptical level sets centered on the OLS optimum. The ridge constraint $\norm{\mathbf{w}}_2 \leq C$ is a ball; the constrained optimum is where the smallest level set touches the ball, generically on its interior — no zero weights. The lasso constraint $\norm{\mathbf{w}}_1 \leq C$ is a diamond with corners on the axes; the touching point sits on a corner whenever the loss ellipsoid is oriented at all toward the axis, killing that coordinate. Sparsity from $\ell_1$ is a corner phenomenon.</p>
+
+      <p>Both penalties shrink coefficients toward zero; ridge does so smoothly, lasso aggressively and selectively. Elastic net (Zou &amp; Hastie 2005) combines both — useful when features are correlated. Regularization more generally is the lever that controls bias and variance: more regularization → more bias, less variance.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Beyond linear: the kernel trick</h2>
+
+      <p>Linear models are weak; their power explodes the moment you allow nonlinear features. The naïve route is to engineer features $\phi(\mathbf{x}) \in \mathbb{R}^D$ — polynomial terms, indicator buckets, interaction products — and fit a linear model in $\phi$. For high-order polynomials in many input dimensions, $D$ grows combinatorially and the approach becomes infeasible.</p>
+
+      <p>The <strong>kernel trick</strong> is the observation that for many problems, predictions and the loss depend on the feature vectors only through inner products $\phi(\mathbf{x})^\top \phi(\mathbf{x}')$ — never through the feature vectors themselves. If we can evaluate that inner product directly, without ever materializing $\phi$, we are free to use feature spaces of enormous (even infinite) dimension.</p>
+
+      <p>A <dfn title="A symmetric positive-definite function k(x, x') that equals an inner product in some Hilbert space H: k(x, x') = ⟨φ(x), φ(x')⟩_H.">kernel</dfn> $k(\mathbf{x}, \mathbf{x}')$ is exactly such a function: symmetric, positive-semidefinite (so the Gram matrix $\mathbf{K}_{ij} = k(\mathbf{x}_i, \mathbf{x}_j)$ is PSD), and corresponding to some feature map $\phi$ in a Hilbert space. The <strong>representer theorem</strong> (Kimeldorf &amp; Wahba 1971) says the optimal weight vector for any regularized empirical-risk problem with a kernel lives in the span of the training data:</p>
+
+      <div class="equation-block">
+        $$ \mathbf{w}^* \;=\; \sum_{i=1}^{N} \alpha_i\, \phi(\mathbf{x}_i), \qquad f^*(\mathbf{x}) \;=\; \sum_{i=1}^{N} \alpha_i\, k(\mathbf{x}_i, \mathbf{x}). $$
+      </div>
+
+      <p>So we never need $\phi$ explicitly — we just need the kernel function and the dual coefficients $\boldsymbol\alpha \in \mathbb{R}^N$. For kernel ridge regression, $\boldsymbol\alpha = (\mathbf{K} + \lambda \mathbf{I})^{-1} \mathbf{y}$. For SVMs (Cortes &amp; Vapnik 1995) you solve a quadratic program in $\boldsymbol\alpha$ with hinge loss and only the <em>support vectors</em> end up nonzero.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Common kernels, and what they encode</h2>
+
+      <ul>
+        <li><strong>Linear:</strong> $k(\mathbf{x}, \mathbf{x}') = \mathbf{x}^\top \mathbf{x}'$. No nonlinearity; useful as a baseline.</li>
+        <li><strong>Polynomial:</strong> $k(\mathbf{x}, \mathbf{x}') = (\mathbf{x}^\top \mathbf{x}' + c)^p$. Implicit feature space is the space of monomials up to degree $p$.</li>
+        <li><strong>RBF / Gaussian:</strong> $k(\mathbf{x}, \mathbf{x}') = \exp(-\norm{\mathbf{x} - \mathbf{x}'}^2 / (2\ell^2))$. Smooth bumps at every training point; the implicit feature space is infinite-dimensional. The length scale $\ell$ is the dominant hyperparameter — small $\ell$ overfits, large $\ell$ underfits.</li>
+        <li><strong>Matérn:</strong> like RBF but tunably less smooth. Used in geostatistics and Gaussian processes (Chapter VIII of the comp-chem primer, if you have it nearby).</li>
+      </ul>
+
+      <p>Kernels are also a clean way to build models for non-vector data. A kernel on graphs, on protein sequences, on text strings — anything where you can define a sensible inner-product-like similarity — gives you a linear model in that domain for free.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>What killed kernels (and what didn't)</h2>
+
+      <p>Kernel methods dominated 1995–2010. By 2015 deep nets had eaten their lunch on most tasks. Three reasons:</p>
+
+      <ol>
+        <li><strong>Memory and compute scale poorly.</strong> Kernel methods need the $N \times N$ Gram matrix; training is $O(N^3)$ for a solve, prediction is $O(N)$ per query (you must touch every training point). Approximations exist — Nyström, random Fourier features (Rahimi &amp; Recht 2007) — but they are workarounds, not solutions.</li>
+        <li><strong>Fixed feature maps don't learn.</strong> The kernel is chosen, not trained. For images, sequences, or any modality where the right features are not obvious, this becomes the bottleneck.</li>
+        <li><strong>Deep nets <em>do</em> learn features — and they kept getting better with scale.</strong> The 2012 ImageNet result (Chapter IV) was the moment the field's attention shifted permanently.</li>
+      </ol>
+
+      <p>What did <em>not</em> die: the conceptual frame. Modern neural networks have a kernel interpretation in the infinite-width limit (Jacot et al. 2018, the Neural Tangent Kernel); Gaussian processes remain the right tool for small-data regression with calibrated uncertainty; the geometry of inner products and projections recurs in every chapter that follows. Kernels were the bridge between linear theory and the nonlinear practice — and they are still the right place to start when $N$ is small.</p>
+
+      <section class="interactive" data-widget="ridge-path" aria-label="Ridge regression coefficient path">
+        <header>
+          <h4>Interactive · The ridge regression path</h4>
+          <span class="hint">drag λ · regenerate data</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">Polynomial ridge regression on a small noisy sample of $f^*(x) = \sin(2\pi x)$ using degree-9 polynomial features. As $\lambda$ grows from $10^{-6}$ to $10^{2}$ the fit moves from wildly overfit (large oscillating coefficients) to constant-ish (all coefficients shrunk toward zero). The bar chart below the fit shows the coefficient magnitudes — watch them collapse uniformly as $\lambda$ rises. This is regularization as geometry: the ball $\norm{\mathbf{w}}_2 \leq C$ tightens.</p>
+      </section>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">T. Hastie, R. Tibshirani, J. Friedman.</span> <em>The Elements of Statistical Learning</em>, 2nd ed., Springer 2009 — Chapters 3 (linear regression and shrinkage), 4 (linear classification), and 12 (kernels and SVMs).</li>
+          <li><span class="src-title">A. E. Hoerl and R. W. Kennard.</span> "Ridge Regression: Biased Estimation for Nonorthogonal Problems." <em>Technometrics</em> 12, 55–67 (1970) — the original ridge paper.</li>
+          <li><span class="src-title">R. Tibshirani.</span> "Regression shrinkage and selection via the lasso." <em>J. Roy. Stat. Soc. B</em> 58, 267–288 (1996) — the lasso.</li>
+          <li><span class="src-title">H. Zou and T. Hastie.</span> "Regularization and variable selection via the elastic net." <em>J. Roy. Stat. Soc. B</em> 67, 301–320 (2005) — elastic net.</li>
+          <li><span class="src-title">B. Schölkopf and A. J. Smola.</span> <em>Learning with Kernels.</em> MIT Press 2002 — the standard kernel-methods reference; covers RKHS, the representer theorem, SVMs.</li>
+          <li><span class="src-title">C. Cortes and V. Vapnik.</span> "Support-vector networks." <em>Machine Learning</em> 20, 273–297 (1995) — the original SVM.</li>
+          <li><span class="src-title">G. S. Kimeldorf and G. Wahba.</span> "Some results on Tchebycheffian spline functions." <em>J. Math. Anal. Appl.</em> 33, 82–95 (1971) — the representer theorem.</li>
+          <li><span class="src-title">A. Rahimi and B. Recht.</span> "Random features for large-scale kernel machines." <em>NeurIPS</em> 2007 — the random-Fourier-features trick.</li>
+          <li><span class="src-title">A. Jacot, F. Gabriel, C. Hongler.</span> "Neural Tangent Kernel: Convergence and Generalization in Neural Networks." <em>NeurIPS</em> 2018 / arXiv:1806.07572 — the kernel view of infinite-width neural networks.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="01-foundations.html"><span class="label">Previous chapter</span>← I · Foundations</a>
+      <a class="next" href="03-neural-nets-and-backprop.html"><span class="label">Next chapter</span>III · Neural Networks and Backpropagation →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/ridge-path.js"></script>
+</body>
+</html>
