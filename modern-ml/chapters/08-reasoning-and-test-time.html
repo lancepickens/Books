@@ -25,6 +25,39 @@
       <h1 class="chapter-title">Reasoning and Test-Time Compute</h1>
       <p class="lede">The 2024 shift: instead of making models bigger, give them more time. A model that thinks before it answers can outperform a model many times its size — and the way to train that ability turns out to be reinforcement learning on problems with checkable answers.</p>
 
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>For a long time, the way to make a language model smarter was to make it bigger. The 2024 shift, kicked off by OpenAI's <em>o1</em> and quickly matched by DeepSeek-R1 and others, is to instead give the model more <em>time</em>: train it to think through problems step by step — generating long internal "reasoning traces" — before answering. A smaller model that thinks for a minute often beats a much larger model that answers in a second.</p>
+          <p>The training recipe is reinforcement learning, but with a twist: the reward signal isn't human preference judgments (as in RLHF, Chapter VII) — it's whether a verifier program says the model got the final answer right. This is called <em>RLVR</em> (RL with verifiable rewards). The chapter covers the recipe (RLVR, GRPO, process vs. outcome reward models), the new <em>inference-time scaling law</em> that parallels pretraining's, and the techniques (long chain-of-thought, best-of-N sampling, tree search) for trading more inference compute for better answers.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Chain-of-thought (CoT)</dt><dd>Having a model write out its reasoning step by step before producing a final answer. Originally a prompting trick ("Let's think step by step"); now trained in by default.</dd>
+          <dt>Reasoning model</dt><dd>An LLM specifically post-trained to produce long chains of thought before answering. o1, o3, DeepSeek-R1, Claude reasoning modes, Gemini Thinking.</dd>
+          <dt>Test-time / inference-time compute</dt><dd>The compute spent <em>when answering</em> a query, as opposed to training compute spent once during model building.</dd>
+          <dt>Inference-time scaling law</dt><dd>The empirical observation that spending more compute at inference time (longer thoughts, more samples) keeps improving accuracy along a smooth curve, parallel to the pretraining scaling laws.</dd>
+          <dt>RLVR (RL with verifiable rewards)</dt><dd>Reinforcement learning where the reward is computed by a deterministic verifier (math grader, code test suite, formal proof checker), not a learned reward model.</dd>
+          <dt>Verifier</dt><dd>A piece of code that checks whether a candidate answer is correct. For math, an answer matcher; for code, a test suite.</dd>
+          <dt>Rollout / trace</dt><dd>One full sampled response from the model — the chain of thought plus the final answer. The unit of training data for RL.</dd>
+          <dt>Policy-gradient update</dt><dd>The RL update rule: take a step that increases the probability of high-reward rollouts and decreases the probability of low-reward ones.</dd>
+          <dt>PPO</dt><dd>The standard RL algorithm (also used in RLHF, Chapter VII). Heavy and unstable for long-sequence sparse-reward problems.</dd>
+          <dt>GRPO (Group Relative Policy Optimization)</dt><dd>The 2025 DeepSeek-R1 algorithm. Skips the value head; computes "advantage" by normalizing rewards within the group of $K$ samples drawn from the same prompt. Simpler than PPO, memory-efficient at long context, now the default for open reasoning training.</dd>
+          <dt>Advantage</dt><dd>Roughly, "how much better this rollout did than the average rollout from the same prompt." Used to weight the policy-gradient update.</dd>
+          <dt>Outcome reward model (ORM)</dt><dd>Scores whole traces as right/wrong based on the final answer only.</dd>
+          <dt>Process reward model (PRM)</dt><dd>Scores each intermediate step of a trace. More expensive to label, but much better training signal for math reasoning.</dd>
+          <dt>Self-consistency</dt><dd>Sample $N$ chains of thought, take the majority-vote answer. A cheap way to boost accuracy at inference time.</dd>
+          <dt>Majority vote</dt><dd>Of the $N$ sampled answers, pick whichever appeared most often.</dd>
+          <dt>Best-of-N</dt><dd>Sample $N$ candidate answers, pick the one a reward model (or verifier) scores highest.</dd>
+          <dt>Tree of Thoughts (ToT)</dt><dd>An inference-time strategy that branches the reasoning into multiple paths, expands the promising ones, and prunes dead ends. More expensive than best-of-N but allows backtracking.</dd>
+          <dt>MCTS (Monte-Carlo Tree Search)</dt><dd>A classical search algorithm that builds a tree of partial solutions, biased by random rollouts. Used in AlphaGo and some modern theorem-proving / code-generation systems.</dd>
+          <dt>AIME, GSM8K, HumanEval, SWE-bench</dt><dd>Standard benchmarks. AIME = competition math; GSM8K = grade-school word problems; HumanEval = single-function code; SWE-bench = real-world GitHub issues. Used to measure reasoning-model progress.</dd>
+          <dt>o-series</dt><dd>OpenAI's reasoning-model line: o1 (2024), o3 (2025). The first widely-released models trained explicitly to think before answering.</dd>
+          <dt>DeepSeek-R1</dt><dd>The January 2025 open-weights reasoning model whose tech report popularized GRPO and showed that pure RLVR on a base model can elicit complex reasoning behavior.</dd>
+          <dt>Emergence (revisited)</dt><dd>The phenomenon, from Chapter VI, where capabilities appear at scale rather than scaling smoothly. Reasoning behavior emerging from RL training is one of the cleaner examples.</dd>
+        </dl>
+      </section>
+
       <h2><span class="sec-num">§1</span>Chain-of-thought, the original observation</h2>
 
       <p>Take a large language model. Give it an arithmetic word problem. Direct it to "give the final answer" and accuracy is bad. Prepend "Let's think step by step" or include a few worked examples, and accuracy rises dramatically. This is <strong>chain-of-thought</strong> (CoT) prompting, characterized by Wei et al. (2022).</p>

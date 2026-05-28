@@ -25,6 +25,41 @@
       <h1 class="chapter-title">Vision: Convolutions, ResNets, and Vision Transformers</h1>
       <p class="lede">An image is a long list of numbers — but with a structure (translation equivariance, locality, hierarchy) that almost begs for a particular architectural prior. Two decades of vision research is the story of building it in, and then a third decade of partially abandoning it.</p>
 
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>An image is a grid of numbers (pixels) with two structural properties: <em>locality</em> (nearby pixels are related) and <em>translation equivariance</em> (the same object looks the same wherever it appears in the frame). The <em>convolutional neural network</em> (CNN) bakes these properties in by sliding a small filter over the image, reusing the same weights at every position. That's most of what made deep learning practical for vision in the 2010s.</p>
+          <p>The 2020s twist: the <em>vision transformer</em> (ViT) throws that structure away. It chops the image into patches, treats each patch as a token, and feeds the whole sequence to a standard transformer (Chapter V). Given enough data, this generic architecture beats hand-crafted CNNs — the "right" inductive bias can be learned. The chapter walks the historical arc (LeNet → AlexNet → ResNet → ViT) and lands on the modern image-foundation-model landscape (CLIP, MAE, DINOv2).</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Pixel</dt><dd>A single dot in an image. For a color image, three numbers (red, green, blue intensity).</dd>
+          <dt>Channel</dt><dd>One slice of the image at a given color (RGB → 3 channels) or, inside a CNN, one of the learned feature maps a layer produces.</dd>
+          <dt>Feature map</dt><dd>The output of one convolution layer — a stack of channels, each one a learned "where does this pattern appear" image.</dd>
+          <dt>Convolution</dt><dd>The operation of sliding a small filter across an image and computing a weighted sum at every position.</dd>
+          <dt>Kernel / filter</dt><dd>The small grid of weights (typically $3 \times 3$) that the convolution slides. Same weights reused at every spatial position.</dd>
+          <dt>Parameter sharing</dt><dd>Using the same weights at many spatial positions instead of learning separate weights everywhere. Cuts parameter count dramatically and bakes in translation symmetry.</dd>
+          <dt>Translation equivariance</dt><dd>Shift the input, the output shifts by the same amount. The mathematical property convolutions automatically have.</dd>
+          <dt>Stride</dt><dd>The step size of the sliding filter. Stride 2 halves the spatial resolution each layer.</dd>
+          <dt>Padding</dt><dd>Adding extra pixels (usually zeros) at the edges so the convolution can be applied near borders.</dd>
+          <dt>Pooling</dt><dd>A non-learnable downsampling step. Max-pooling keeps the largest value in each local window; average-pooling averages them.</dd>
+          <dt>Receptive field</dt><dd>The patch of the original image that influences a given unit deep in the network. Grows with depth.</dd>
+          <dt>Inductive bias</dt><dd>The built-in assumptions of an architecture about what kinds of functions are likely. CNNs assume locality and translation symmetry; ViTs assume almost nothing.</dd>
+          <dt>LeNet, AlexNet, VGG, GoogLeNet, ResNet</dt><dd>The historical lineage of CNN architectures, in order: 1998, 2012, 2014, 2014, 2016. Each was a step up in depth or efficiency.</dd>
+          <dt>Residual / skip connection</dt><dd>An "identity shortcut" that adds a layer's input back to its output: $\mathbf{h}_{\ell+1} = \mathbf{h}_\ell + F(\mathbf{h}_\ell)$. The trick that let networks train past a dozen layers.</dd>
+          <dt>ImageNet</dt><dd>A 1.2M-image labeled dataset of 1000 object categories. The benchmark whose 2012 leaderboard tipped over started the modern deep-learning era.</dd>
+          <dt>Vision Transformer (ViT)</dt><dd>An image model built from transformer blocks instead of convolutions. Cuts the image into patches and treats them as a sequence of tokens.</dd>
+          <dt>Patch</dt><dd>A small square of pixels (e.g. $16 \times 16$) that a ViT treats as one token.</dd>
+          <dt>Foundation model</dt><dd>A large model pretrained on broad data, designed to be reused for many downstream tasks. CLIP, DINOv2, and Llama are foundation models.</dd>
+          <dt>CLIP</dt><dd>A 2021 OpenAI model that learns an image and a text encoder jointly so matching image–caption pairs end up nearby in a shared embedding space.</dd>
+          <dt>Contrastive learning / InfoNCE</dt><dd>Training a model to pull "matching" pairs together in embedding space and push "non-matching" pairs apart. The loss CLIP uses.</dd>
+          <dt>MAE (Masked Autoencoder)</dt><dd>Hide most patches of an image, train a network to reconstruct them. The vision analogue of BERT's masked-word task.</dd>
+          <dt>DINOv2</dt><dd>A self-supervised image model (2023) whose features work zero-shot on classification, segmentation, depth, and retrieval. Currently the best general-purpose pretrained vision backbone.</dd>
+          <dt>Multimodal model</dt><dd>A model that handles more than one modality (image + text, video + audio, …) in a shared backbone.</dd>
+          <dt>ConvNeXt</dt><dd>A 2022 CNN architecture that absorbed tricks from transformers; the strongest pure-CNN response to ViT.</dd>
+        </dl>
+      </section>
+
       <h2><span class="sec-num">§1</span>The problem with applying an MLP to a picture</h2>
 
       <p>A $224 \times 224 \times 3$ RGB image is 150,528 numbers. A fully-connected first layer with 1024 hidden units already costs $\sim$150 million weights — most of them learning the same simple feature ten thousand times over at different spatial positions. Worse, the model has no built-in notion that a cat at the top-left of the frame is the same cat as the same image shifted by ten pixels.</p>

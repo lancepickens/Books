@@ -25,6 +25,55 @@
       <h1 class="chapter-title">Generative Beyond Text, and the Frontier</h1>
       <p class="lede">Language was the first modality to fall to transformers. Images, audio, and video took a different path — through diffusion — and the question of what to do once you can generate anything is now most of what serious research is about.</p>
 
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>How do you generate a realistic image, audio clip, or video? Two early answers — <em>VAEs</em> and <em>GANs</em> — were each clever and limited. The dominant idea since 2021 is <em>diffusion</em>: train a network to gradually remove noise from a noisy image, then run that in reverse from pure noise to get a fresh sample. The math is more elegant than it sounds, and the chapter builds it up step by step.</p>
+          <p>Then a tour of the frontier as of 2026. <em>Multimodal foundation models</em> (GPT-4o, Claude, Gemini, Llama 4) handle text, images, audio, and video in a shared backbone. <em>World models</em> learn to predict how scenes evolve. <em>Mechanistic interpretability</em> tries to reverse-engineer what models actually do inside, using tools like sparse autoencoders to find human-meaningful "features" in their activations. The chapter closes with the open questions nobody has answered — where scaling ends, how to align increasingly capable systems, and whether models can ever self-improve.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Generative model</dt><dd>A model that learns the distribution of the training data and can sample from it (generate new examples), as opposed to a discriminative model that just classifies.</dd>
+          <dt>VAE (Variational Autoencoder)</dt><dd>A 2013 generative model: an encoder maps inputs to a probability distribution over a latent space, a decoder maps latents back to inputs. Clean theory, tractable training, samples tend to be blurry.</dd>
+          <dt>ELBO (Evidence Lower Bound)</dt><dd>The trainable proxy for log-likelihood that VAEs maximize. Reconstruction quality minus a KL term that keeps latents well-behaved.</dd>
+          <dt>Encoder / decoder / latent</dt><dd>Encoder maps input → latent; decoder maps latent → reconstruction; the latent is a low-dimensional compressed representation in between.</dd>
+          <dt>GAN (Generative Adversarial Network)</dt><dd>A 2014 generative model: a generator and a discriminator play a minimax game until the generator's samples are indistinguishable from real. Sharp samples, unstable training, dominant 2015–2020.</dd>
+          <dt>Discriminator</dt><dd>The "judge" network in a GAN: tries to tell real samples from generated ones.</dd>
+          <dt>Diffusion model</dt><dd>The dominant generative paradigm since 2021. Train a network to denoise; sample by starting from pure noise and iteratively denoising.</dd>
+          <dt>DDPM</dt><dd>Denoising Diffusion Probabilistic Models — Ho, Jain & Abbeel 2020, the paper that made diffusion practical at scale. The canonical formulation.</dd>
+          <dt>Forward process</dt><dd>The fixed (not learned) procedure that gradually adds Gaussian noise to a clean sample over many steps until it's indistinguishable from random noise.</dd>
+          <dt>Reverse process</dt><dd>The learned procedure that gradually removes noise — the actual generative model.</dd>
+          <dt>Noise schedule ($\beta_t$, $\bar\alpha_t$)</dt><dd>The fixed sequence of noise levels used by the forward process. $\beta_t$ = noise added at step $t$; $\bar\alpha_t$ = total signal remaining at step $t$.</dd>
+          <dt>Denoising network ($\eps_\theta$)</dt><dd>The neural network at the heart of a diffusion model. Given a noisy sample and a timestep, predicts the noise that was added.</dd>
+          <dt>U-Net</dt><dd>An encoder–decoder CNN with skip connections from each encoder layer to the matching decoder layer. The standard backbone for image-diffusion models.</dd>
+          <dt>Score</dt><dd>The gradient of log-density: $\nabla_{\mathbf{x}} \log p(\mathbf{x})$. Points "uphill" toward higher data probability. The denoising network is equivalent to a score estimator.</dd>
+          <dt>Score matching</dt><dd>An alternative formulation: learn the score directly instead of learning to predict noise. Mathematically equivalent to DDPM up to scaling.</dd>
+          <dt>SDE / ODE</dt><dd>Stochastic / ordinary differential equation. The reverse-time SDE makes the diffusion process continuous; the related "probability-flow ODE" gives faster (deterministic) samplers.</dd>
+          <dt>DDIM, DPM-Solver, EDM</dt><dd>Fast diffusion samplers that produce a high-quality sample in 20–50 steps instead of the original 1000.</dd>
+          <dt>Classifier-free guidance</dt><dd>The trick that makes text-to-image models actually follow prompts: blend the conditional and unconditional noise predictions at sample time, amplifying the conditional signal.</dd>
+          <dt>Latent diffusion</dt><dd>Run the diffusion process not on raw pixels but on the latent of a pretrained VAE. ~64× cheaper. The architecture behind Stable Diffusion.</dd>
+          <dt>Stable Diffusion</dt><dd>The open-source latent-diffusion text-to-image model that launched in 2022 and brought generative imagery to the masses.</dd>
+          <dt>Flow matching</dt><dd>A 2023 alternative to diffusion: learn the velocity field of an ODE that transports noise to data. Simpler training, straighter sampling paths, increasingly the choice for new generative models.</dd>
+          <dt>Rectified flow</dt><dd>A specific flow-matching variant that re-straightens the learned trajectory. Used in Stable Diffusion 3 and similar.</dd>
+          <dt>DiT (Diffusion Transformer)</dt><dd>A diffusion model that uses a transformer as its denoising backbone instead of a U-Net. The architecture under Sora and modern large image/video generators.</dd>
+          <dt>Conditional generation</dt><dd>Generation given a control input (text prompt, class label, edge map). The opposite of unconditional sampling from "the data distribution."</dd>
+          <dt>Text encoder (CLIP, T5)</dt><dd>A frozen language model that turns the prompt into a vector for a text-to-image model to condition on.</dd>
+          <dt>Multimodal foundation model</dt><dd>A model that handles multiple modalities (text + images + audio + video) in a single shared backbone. GPT-4o, Claude 3.5+, Gemini 2.0+, Llama 4.</dd>
+          <dt>World model</dt><dd>A model that predicts how a scene (or game state) will evolve in time, optionally under actions. Video generators are world models by accident.</dd>
+          <dt>JEPA, V-JEPA</dt><dd>Yann LeCun's Joint-Embedding Predictive Architecture. Predicts <em>latent features</em> of future frames rather than pixels, on the bet that pixel-perfect prediction wastes capacity.</dd>
+          <dt>Mechanistic interpretability</dt><dd>The research program of reverse-engineering neural networks to understand what they compute inside.</dd>
+          <dt>Feature (in interpretability)</dt><dd>A direction in activation space that corresponds to a human-meaningful concept ("Golden Gate Bridge," "first person," "is this code").</dd>
+          <dt>Circuit</dt><dd>A small connected subgraph of features and weights that implements an identifiable behavior. "How the model does X."</dd>
+          <dt>Superposition</dt><dd>The phenomenon where a neural network packs many more features than it has dimensions by storing them in overlapping directions. Why neurons are usually "polysemantic" (mean several things).</dd>
+          <dt>Sparse autoencoder (SAE)</dt><dd>An autoencoder trained on a model's activations with a sparsity penalty on the hidden layer. The hidden units learn to be interpretable features. The main interpretability tool of 2023–26.</dd>
+          <dt>Monosemanticity</dt><dd>The property of corresponding to one clean concept rather than several mixed together. The goal of SAE-based interpretability.</dd>
+          <dt>Induction head</dt><dd>The earliest fully-understood attention-head circuit: implements pattern continuation. Discussed briefly in Chapter V; the cleanest worked example of a circuit.</dd>
+          <dt>Sora</dt><dd>OpenAI's headline video-generation model (February 2024). A Diffusion Transformer trained on a large video corpus; minute-long high-resolution text-to-video.</dd>
+          <dt>Jailbreak</dt><dd>A prompt that makes a model do something its post-training is supposed to refuse.</dd>
+          <dt>Scalable oversight</dt><dd>The research problem of how humans can usefully supervise model behavior on tasks the humans themselves can't fully evaluate. A central alignment-research thread.</dd>
+        </dl>
+      </section>
+
       <h2><span class="sec-num">§1</span>Three generative paradigms, briefly</h2>
 
       <p>Before diffusion ate the field there were two main lines of generative modeling for continuous data.</p>

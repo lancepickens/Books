@@ -25,6 +25,39 @@
       <h1 class="chapter-title">Foundations: Data, Loss, and the Learning Problem</h1>
       <p class="lede">Every machine learning system is the same three pieces — a dataset, a family of functions, a loss to minimize. Everything else is the artistry of choosing them well.</p>
 
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>"Machine learning" means building a model that gets reliably better at predictions on examples it has <em>not seen</em>. Memorizing the training examples is easy; the science is the part where the model also does well on new ones. This chapter introduces the frame the whole book uses — every method we'll meet is some choice of <em>data</em>, a <em>family of candidate functions</em>, and a <em>loss</em> that measures how wrong each prediction is. An algorithm searches the family for the function that makes the loss small.</p>
+          <p>The rest of the chapter explains the central worry — why a model that fits the training data perfectly can still fail on new data — and the discipline (separating training, validation, and test sets) that keeps us honest about it.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Model</dt><dd>A function that takes an input and produces a prediction. Has tunable knobs (parameters).</dd>
+          <dt>Feature / input</dt><dd>The information the model gets. For an image, the pixel values; for text, the tokens; for a customer record, the columns.</dd>
+          <dt>Label / target</dt><dd>The answer we want the model to produce: the class, the price, the next word.</dd>
+          <dt>Training / validation / test set</dt><dd>Three disjoint slices of the data. The model trains on the first; we tune choices using the second; we report performance on the third (touched once).</dd>
+          <dt>Loss function</dt><dd>A number that says how wrong a single prediction is. Smaller is better. Squared error and cross-entropy are the two you'll see most.</dd>
+          <dt>Risk / population risk</dt><dd>The average loss the model would have on fresh data from the same source. What we actually care about — but cannot compute, since we never see all possible data.</dd>
+          <dt>Empirical risk</dt><dd>The average loss on the training examples we <em>do</em> have. What we can compute and minimize.</dd>
+          <dt>ERM (Empirical Risk Minimization)</dt><dd>The recipe: pick the parameters that make the empirical risk smallest, and hope the population risk follows.</dd>
+          <dt>Generalization</dt><dd>The model's tendency to do well on data it hasn't seen — the gap between empirical risk and population risk.</dd>
+          <dt>Overfitting</dt><dd>The model learns the training set's quirks instead of the underlying pattern. Training error small, test error large.</dd>
+          <dt>Underfitting</dt><dd>The model is too simple to capture the pattern. Training and test error both large.</dd>
+          <dt>Bias (of a model)</dt><dd>How wrong the model is on average across many training sets. High bias = too rigid.</dd>
+          <dt>Variance (of a model)</dt><dd>How much the trained model wobbles when you reshuffle the training data. High variance = too sensitive.</dd>
+          <dt>Double descent</dt><dd>A 2019 observation: for very large neural nets, test error can drop <em>again</em> past the point where the model fits training perfectly — breaking the textbook U-shaped curve.</dd>
+          <dt>Cross-validation</dt><dd>Rotate which slice of data acts as validation, average the result. Useful when data is scarce.</dd>
+          <dt>Leakage</dt><dd>When information from validation or test data sneaks into training, inflating apparent performance. The silent killer.</dd>
+          <dt>Supervised learning</dt><dd>Labeled examples: you have inputs <em>and</em> the right answers.</dd>
+          <dt>Unsupervised learning</dt><dd>Inputs only, no labels. The job is to find structure (clusters, low-dimensional summaries).</dd>
+          <dt>Self-supervised learning</dt><dd>Invent a "label" from the input itself (predict the next word, fill in a missing patch). The trick behind every modern foundation model.</dd>
+          <dt>Reinforcement learning</dt><dd>An agent takes actions in an environment and gets a numerical reward. Learn a policy that picks rewarding actions.</dd>
+          <dt>Foundation model</dt><dd>A large model pretrained on broad data that can be reused (with light fine-tuning or prompting) for many downstream tasks.</dd>
+          <dt>Token</dt><dd>The atomic unit a language model reads or writes — usually a sub-word chunk, not a whole word. Chapter VI covers tokenization properly.</dd>
+        </dl>
+      </section>
+
       <h2><span class="sec-num">§1</span>What "learning" means</h2>
 
       <p>A useful operating definition: a model <strong>learns</strong> if, after exposure to examples, it makes better predictions on examples it has not seen. The phrase <em>has not seen</em> is the entire game. Memorization is easy; generalization is the science.</p>

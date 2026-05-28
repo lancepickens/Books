@@ -81,6 +81,8 @@ Tracked in the project TaskList. Four passes mirror the comp-chem workflow:
 
 The user's instruction was "finish the draft of all chapters, check references and fix any errors you find" via /goal. That first pass is complete: 10 chapters + 10 widgets drafted, JS clean, 44 references actively verified across two rounds, the worst-case macro collisions in `book.js` fixed pre-emptively.
 
+**Pedagogical preambles added 2026-05-27.** Each chapter now opens (between the lede and §1) with a `<section class="preamble">` block containing: a plain-English "Before we start" explainer (2 paragraphs, no math) and a chapter-scoped glossary (`<dl class="glossary">`) of every term that chapter uses that a non-ML reader might not know. Glossaries are tailored per chapter — ~20–35 entries each — so a reader can decode any term without leaving the page. CSS for the preamble block lives at `style.css` under "Chapter preamble". Math inside glossary `<dd>` entries renders via the same KaTeX bootstrap.
+
 ## Resume entry point
 
 When picking this back up:

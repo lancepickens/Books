@@ -25,6 +25,44 @@
       <h1 class="chapter-title">Agents, Tool Use, and Retrieval</h1>
       <p class="lede">A model that can call tools, read documents it doesn't already know, and take actions in an environment is not just a language model — it is the kernel of an operating system. The stack around it is what makes it useful.</p>
 
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>A language model on its own is a one-shot text predictor. Wrap it in a loop where it can <em>call tools</em> (search the web, read a file, run code, query a database), <em>observe the results</em>, and decide what to do next — and you've built an <em>agent</em>. The pattern is universal: think, act, observe, repeat. The chapter unpacks the modern agent stack.</p>
+          <p>Two specific components recur. <em>RAG</em> (retrieval-augmented generation) is how an agent reads a corpus it wasn't trained on: turn each document into a vector, find the ones most similar to the user's query, stuff them into the model's context, and ask. <em>MCP</em> (Model Context Protocol) is the open standard introduced in late 2024 for how tools get plugged into models — the "USB for AI tools," more or less. The chapter also covers code agents (the most successful application so far), computer-use models, and the open problems holding the field back.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Agent</dt><dd>A system where a language model decides which actions to take, executes them via tools, observes results, and decides what to do next — in a loop.</dd>
+          <dt>Agent harness</dt><dd>The runtime around the model: the loop that runs tools, manages context, applies budgets. Examples: Claude Code, Cursor, OpenHands.</dd>
+          <dt>Tool</dt><dd>A function the model can call. Anything from "search the web" to "run this Python" to "send a Slack message."</dd>
+          <dt>Tool call</dt><dd>A structured request from the model to invoke a tool with specific arguments — typically a small JSON object.</dd>
+          <dt>Function calling</dt><dd>The general API pattern: developers declare tool schemas; the model emits tool calls instead of free text when it wants to use a tool.</dd>
+          <dt>Structured output</dt><dd>Model output forced to follow a specific format (JSON schema, regex). The reliability that makes tool calling work.</dd>
+          <dt>MCP (Model Context Protocol)</dt><dd>An open standard (Anthropic, November 2024) for how tool servers expose tools, resources, and prompts to language models. By 2026 supported by all major model providers.</dd>
+          <dt>ReAct</dt><dd>The "Reason + Act" loop. Interleave reasoning tokens with tool actions until the model emits a final answer. The pattern under almost every production agent.</dd>
+          <dt>Reflexion</dt><dd>An agent technique that critiques each finished trajectory in natural language and stores the critique as memory for the next attempt.</dd>
+          <dt>Multi-agent</dt><dd>An architecture with multiple LLM instances playing different roles (planner, worker, critic). Useful when subtasks parallelize cleanly.</dd>
+          <dt>Toolformer</dt><dd>A 2023 paper that taught a model to insert tool calls inline in its text. The conceptual precursor to function calling.</dd>
+          <dt>Retrieval</dt><dd>Finding the most relevant documents (or chunks) from a corpus given a query.</dd>
+          <dt>RAG (Retrieval-Augmented Generation)</dt><dd>The standard pattern for grounding a model in a corpus it wasn't trained on: retrieve relevant chunks, stuff them into the prompt, ask the model to answer.</dd>
+          <dt>Embedding</dt><dd>A learned vector representation of a piece of text such that semantically similar texts have nearby vectors.</dd>
+          <dt>Embedding model</dt><dd>The network that produces embeddings — usually a small transformer fine-tuned with a contrastive loss. Sentence-BERT, OpenAI text-embedding-3, Voyage AI voyage-3.</dd>
+          <dt>Cosine similarity</dt><dd>The standard similarity score between two embeddings: their dot product divided by the product of their norms. Ranges from $-1$ to $1$; higher = more similar.</dd>
+          <dt>Vector database</dt><dd>A specialized data store for fast approximate-nearest-neighbor search over embeddings. Pinecone, Weaviate, Chroma, Qdrant.</dd>
+          <dt>Top-$k$ retrieval</dt><dd>Retrieve the $k$ documents whose embeddings are closest to the query embedding (typically $k = 5$ to $50$).</dd>
+          <dt>Dense vs. sparse retrieval</dt><dd>"Dense" = retrieval by embedding similarity. "Sparse" = retrieval by keyword overlap (BM25). Production stacks usually combine both.</dd>
+          <dt>BM25</dt><dd>A classic IR scoring function based on weighted keyword overlap. Older than embeddings, still strong for retrieval and used in hybrid stacks.</dd>
+          <dt>Reranker / cross-encoder</dt><dd>A second-stage model that scores (query, document) pairs jointly — more accurate than embedding similarity but too expensive for the first pass. Used to re-order the top-$k$ retrieved chunks.</dd>
+          <dt>Chunking</dt><dd>Splitting documents into small enough pieces (paragraphs, sections) to fit several into the model's context. The hidden parameter of every RAG system.</dd>
+          <dt>Context window</dt><dd>The maximum number of tokens the model can read at once. Modern models reach $10^5$–$10^6$; still a bottleneck for very long documents.</dd>
+          <dt>Prompt injection</dt><dd>A security attack: text inside retrieved content or tool output that the model interprets as instructions. The biggest unsolved security problem of 2026 agents.</dd>
+          <dt>Computer use</dt><dd>A model class (Anthropic, October 2024 onward) that operates a GUI directly — takes screenshots, plans mouse and keyboard actions, observes the result.</dd>
+          <dt>SWE-bench</dt><dd>The dominant benchmark for code agents: real GitHub issues with attached test suites. From &lt;5% solve rate in 2023 to 60–70% by mid-2025.</dd>
+          <dt>Code agent</dt><dd>An agent specialized for software tasks. Has a shell, filesystem read/write, test running, and code search. The most successful agent application so far.</dd>
+        </dl>
+      </section>
+
       <h2><span class="sec-num">§1</span>What "agentic" means, operationally</h2>
 
       <p>The word is overloaded. A useful narrow definition: an <strong>agent</strong> is a system in which a language model decides which actions to take, executes them via tools, observes the results, and decides what to do next — in a loop, with state carried across turns. The model is the planner and decider; tools are the way it touches the outside world.</p>

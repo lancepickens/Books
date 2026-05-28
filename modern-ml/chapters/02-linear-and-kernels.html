@@ -25,6 +25,41 @@
       <h1 class="chapter-title">Linear Models, Regularization, and the Kernel Bridge</h1>
       <p class="lede">The first nontrivial class of models — and the last one we can solve in closed form. Everything past this chapter will be solved by gradient descent. Most of what makes that work was visible already here.</p>
 
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>This chapter is about the simplest workable machine-learning models. <em>Linear regression</em> predicts a number as a weighted sum of inputs; <em>logistic regression</em> does the same for two-class classification, with a squashing function so the output is a probability. Both have closed-form (or near-closed-form) solutions — no iterative training needed. Adding a <em>regularization</em> term that penalizes large weights stops them overfitting.</p>
+          <p>The second half introduces the <em>kernel trick</em>: a way to make linear models behave nonlinearly, by computing similarities between examples instead of building explicit nonlinear features. Kernels ran the field from 1995 to about 2010 before deep nets took over; their geometric ideas (inner products, projections, balls and corners) come back in every later chapter.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Linear regression</dt><dd>Predict a continuous number as a weighted sum of input features.</dd>
+          <dt>Logistic regression</dt><dd>Same weighted sum, but pushed through a sigmoid to give a probability between 0 and 1. Used for binary classification.</dd>
+          <dt>Weight / coefficient</dt><dd>The number the model multiplies each input by. Collectively, the parameters.</dd>
+          <dt>Sigmoid</dt><dd>The S-shaped function $\sigma(z) = 1/(1+e^{-z})$ that smoothly maps any real number to the interval (0, 1).</dd>
+          <dt>Softmax</dt><dd>The multi-class generalization of sigmoid: turn $K$ real numbers into $K$ probabilities that sum to 1.</dd>
+          <dt>Cross-entropy</dt><dd>The standard loss for classification: the negative log of the probability the model assigned to the true class. Used in essentially every classifier you'll see.</dd>
+          <dt>Normal equations</dt><dd>The linear system $\mathbf{X}^\top\mathbf{X}\,\mathbf{w} = \mathbf{X}^\top\mathbf{y}$ whose solution gives the best linear-regression weights. One matrix solve, no iteration.</dd>
+          <dt>OLS (ordinary least squares)</dt><dd>Plain linear regression with squared-error loss and no regularizer.</dd>
+          <dt>Pseudoinverse</dt><dd>A generalized inverse $\mathbf{X}^+$ that works even when $\mathbf{X}$ isn't square or invertible. Lets the normal equations give a unique "minimum-norm" answer.</dd>
+          <dt>Regularization</dt><dd>Adding a penalty on the size of the weights to the loss. Keeps the model from overfitting and tames the geometry of the optimum.</dd>
+          <dt>Ridge / L2 / Tikhonov</dt><dd>Penalize the sum of <em>squared</em> weights. Shrinks all weights smoothly toward zero.</dd>
+          <dt>Lasso / L1</dt><dd>Penalize the sum of <em>absolute</em> weights. Drives some weights to <em>exactly</em> zero — useful when you want a sparse model that picks a few features.</dd>
+          <dt>Elastic net</dt><dd>A weighted mix of ridge and lasso. Useful when features are correlated.</dd>
+          <dt>Shrinkage / sparsity</dt><dd>Shrinkage: pulling weights toward zero. Sparsity: many weights are exactly zero.</dd>
+          <dt>Feature map $\phi$</dt><dd>A transformation that turns raw inputs into a (possibly much higher-dimensional) feature vector. Polynomial expansions are the classic example.</dd>
+          <dt>Kernel</dt><dd>A function $k(\mathbf{x}, \mathbf{x}')$ that secretly computes an inner product in some feature space, without ever building the feature vectors explicitly.</dd>
+          <dt>Kernel trick</dt><dd>The observation that many algorithms only ever need inner products between examples — so any kernel will do, including ones whose implicit feature space is infinite-dimensional.</dd>
+          <dt>Gram matrix $\mathbf{K}$</dt><dd>The $N \times N$ table of kernel values between every pair of training examples.</dd>
+          <dt>Representer theorem</dt><dd>The mathematical fact that says the best kernelized solution can always be written as a weighted sum over the training examples — so you never need to work with the implicit features themselves.</dd>
+          <dt>RBF / Gaussian kernel</dt><dd>The kernel $k(\mathbf{x}, \mathbf{x}') = \exp(-\norm{\mathbf{x} - \mathbf{x}'}^2 / (2\ell^2))$ — a smooth bump at every training point. Default-go-to kernel.</dd>
+          <dt>Length scale $\ell$</dt><dd>The dominant tuning knob of an RBF kernel: how far away two points have to be before the model treats them as unrelated.</dd>
+          <dt>SVM (support vector machine)</dt><dd>A classifier that finds the maximum-margin separating boundary. Only the closest examples — the "support vectors" — matter for the final prediction.</dd>
+          <dt>Gaussian process</dt><dd>A kernel method for regression that returns a calibrated uncertainty along with each prediction. Still the right tool for small-data regression.</dd>
+          <dt>Neural Tangent Kernel</dt><dd>A kernel that approximates what an infinite-width neural net does during training. Connects deep nets back to the kernel theory of this chapter.</dd>
+        </dl>
+      </section>
+
       <h2><span class="sec-num">§1</span>Linear regression as projection</h2>
 
       <p>The setup. Stack training inputs into a matrix $\mathbf{X} \in \mathbb{R}^{N \times d}$, targets into a vector $\mathbf{y} \in \mathbb{R}^N$. The linear model predicts $\hat{\mathbf{y}} = \mathbf{X}\mathbf{w}$ for some weight vector $\mathbf{w} \in \mathbb{R}^d$. The squared-error loss is</p>

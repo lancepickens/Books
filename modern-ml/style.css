@@ -279,6 +279,77 @@ aside.where dd {
   font-size: 0.95rem;
 }
 
+/* ── Chapter preamble (plain-English summary + glossary) ── */
+
+section.preamble {
+  background: var(--bg-soft);
+  border-radius: 4px;
+  padding: 1.4rem 1.75rem 1.5rem;
+  margin: 1.6rem auto 2.6rem;
+  font-size: 0.98rem;
+}
+section.preamble .preamble-title {
+  font-family: var(--sans);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent-deep);
+  margin: 0 0 0.9rem;
+}
+section.preamble .preamble-body p {
+  margin: 0 0 0.7rem;
+  color: var(--text);
+  line-height: 1.55;
+}
+section.preamble .preamble-body p:last-child {
+  margin-bottom: 0.2rem;
+}
+section.preamble .glossary-title {
+  font-family: var(--sans);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin: 1.4rem 0 0.7rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 0.95rem;
+}
+section.preamble dl.glossary {
+  margin: 0;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.5rem 1.2rem;
+  align-items: baseline;
+  font-size: 0.93rem;
+  line-height: 1.5;
+}
+section.preamble dl.glossary dt {
+  font-family: var(--serif);
+  font-weight: 600;
+  color: var(--text);
+}
+section.preamble dl.glossary dd {
+  margin: 0;
+  color: var(--text-muted);
+}
+@media (max-width: 600px) {
+  section.preamble {
+    padding: 1.2rem 1.1rem 1.3rem;
+  }
+  section.preamble dl.glossary {
+    grid-template-columns: 1fr;
+    gap: 0.1rem 0;
+  }
+  section.preamble dl.glossary dt {
+    margin-top: 0.7rem;
+  }
+  section.preamble dl.glossary dt:first-of-type {
+    margin-top: 0;
+  }
+}
+
 /* ── Jargon / aside ─────────────────────────────────── */
 
 aside.jargon {

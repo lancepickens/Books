@@ -25,6 +25,44 @@
       <h1 class="chapter-title">From Base Model to Assistant: SFT, RLHF, DPO</h1>
       <p class="lede">A pretrained model knows how to continue text. It does not know how to be helpful, follow instructions, or refuse harmful requests. The post-training stack is what turns a next-token predictor into something a person would want to talk to.</p>
 
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>The output of Chapter VI is a "base model" — a transformer that's seen trillions of tokens and is great at completing text. Ask it "What is the capital of France?" and it might respond with another question instead of "Paris," because that's how the internet often continues a question. This chapter is about turning that base model into a useful assistant.</p>
+          <p>Three techniques do most of the work. <em>SFT</em> (supervised fine-tuning) shows the model thousands of examples of "good answer to a request." <em>RLHF</em> (reinforcement learning from human feedback) lets human labelers say which of two answers they prefer, fits a reward model to those preferences, then uses reinforcement learning to push the model toward higher reward. <em>DPO</em> (direct preference optimization) is a 2023 shortcut that achieves the same effect with a simple supervised loss — no reward model, no RL. The chapter also covers Constitutional AI / RLAIF (have a model grade other models' answers) and LoRA / QLoRA (a memory-efficient way to fine-tune very large models).</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Base model</dt><dd>The output of pretraining — competent at next-token continuation, not yet an assistant.</dd>
+          <dt>Post-training</dt><dd>Everything that happens to a model after pretraining: SFT, RLHF/DPO, RL on verifiable rewards.</dd>
+          <dt>Alignment</dt><dd>Umbrella term for getting a model to do what users actually want and not do what they don't. The chapter's subject; the broader term is contested.</dd>
+          <dt>SFT (supervised fine-tuning)</dt><dd>Continue training on (prompt, good response) pairs using the standard next-token loss. Cheap, fast, and the foundation of every post-training pipeline.</dd>
+          <dt>Instruction tuning</dt><dd>A flavor of SFT specifically on instruction-following examples. Teaches the model the "assistant turn" format.</dd>
+          <dt>Chat template</dt><dd>The specific text format the model expects for a multi-turn conversation (system prompt, user turn, assistant turn). Different models use different templates.</dd>
+          <dt>Reward model</dt><dd>A separate network — usually a head on top of the SFT model — that scores a (prompt, response) pair. Trained on human preference data.</dd>
+          <dt>Preference data</dt><dd>Records of "human labeler preferred response $y_w$ over response $y_l$ for prompt $x$." The raw input to reward modeling and DPO.</dd>
+          <dt>Bradley–Terry model</dt><dd>The 1952 statistical model for pairwise comparisons: the probability that $y_w$ wins is $\sigma(r(y_w) - r(y_l))$. The likelihood the reward model is fit under.</dd>
+          <dt>Reinforcement learning (RL)</dt><dd>The framing where the model is an "agent" producing actions (tokens) to maximize a long-run reward. Used here for the optimization phase of RLHF.</dd>
+          <dt>Policy</dt><dd>The model itself, viewed as "the thing that picks the next token." Trained.</dd>
+          <dt>Reference policy</dt><dd>A frozen copy of the SFT model. The trained policy is penalized for drifting too far from it.</dd>
+          <dt>KL divergence</dt><dd>A measure of how different two probability distributions are. Used to keep the trained policy close to the reference, preventing reward hacking.</dd>
+          <dt>RLHF</dt><dd>Reinforcement Learning from Human Feedback. Train reward model on preferences, then optimize the policy to maximize reward minus a KL penalty.</dd>
+          <dt>PPO (Proximal Policy Optimization)</dt><dd>The RL algorithm typically used in RLHF. Takes many small clipped policy-gradient steps; standard but complex.</dd>
+          <dt>Value head, advantage</dt><dd>PPO uses a "value head" that estimates expected reward from a state; the "advantage" is how much better an action was than that estimate. Used to reduce variance in the policy-gradient update.</dd>
+          <dt>Reward hacking</dt><dd>The policy finds responses that score high under the reward model but are not actually good — exploiting the reward model's blind spots. The central failure mode of RLHF.</dd>
+          <dt>InstructGPT</dt><dd>The 2022 OpenAI paper that made RLHF the default post-training method. Showed a 1.3B-parameter RLHF model could beat a 175B base GPT-3 on user preference.</dd>
+          <dt>DPO (Direct Preference Optimization)</dt><dd>A 2023 trick that derives a closed-form objective in the policy directly from the RLHF formulation. No reward model, no RL loop, no sampling — just a supervised contrastive loss on preference pairs.</dd>
+          <dt>IPO, KTO, ORPO, SimPO</dt><dd>DPO descendants that relax various assumptions of the original formulation. All conceptually similar; differ in details.</dd>
+          <dt>Constitutional AI</dt><dd>Anthropic's 2022 method: give the model a "constitution" of principles; have it critique and revise its own answers against the principles; train preferences from the result. The labels come from the model, the principles come from humans.</dd>
+          <dt>RLAIF</dt><dd>RL from AI Feedback. Like RLHF but the preferences are judged by a (typically stronger) model instead of humans. Faster, cheaper, scales further; inherits the judge's biases.</dd>
+          <dt>LoRA (Low-Rank Adaptation)</dt><dd>Freeze the base model. Insert small low-rank trainable matrices into selected weight matrices. Trainable parameter count drops 100×–1000×; fine-tuning becomes tractable on small hardware.</dd>
+          <dt>QLoRA</dt><dd>LoRA plus 4-bit quantization of the frozen base model. Fits a 65B fine-tune on a single 48GB GPU.</dd>
+          <dt>Quantization</dt><dd>Storing weights in fewer bits (4-bit, 8-bit) instead of the usual 16- or 32-bit. Trades a tiny accuracy hit for big memory savings.</dd>
+          <dt>PEFT (Parameter-Efficient Fine-Tuning)</dt><dd>The umbrella for LoRA, prefix tuning, prompt tuning, adapters, etc. — any fine-tuning method that updates a small fraction of the model's parameters.</dd>
+          <dt>Adapter</dt><dd>A small inserted module trained while the rest of the model stays frozen. LoRA is the most popular kind.</dd>
+        </dl>
+      </section>
+
       <h2><span class="sec-num">§1</span>The gap a base model leaves</h2>
 
       <p>A model that has only seen pretraining minimizes next-token cross-entropy on web text. Ask such a model "What is the capital of France?" and the most likely continuation is not "Paris" — it is a Q&amp;A list, or a quiz preamble, or another question. The model's distribution is the internet's distribution, not a useful-assistant's distribution.</p>

@@ -25,6 +25,45 @@
       <h1 class="chapter-title">Sequences, Attention, and the Transformer</h1>
       <p class="lede">A single architecture, conceptually six lines of code, currently powers every modern language model, most modern image and audio models, and the entire research agenda of the field. It is worth understanding the transformer from the inside.</p>
 
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>Many problems take a sequence as input — words, audio frames, video frames. The old approach was the <em>recurrent neural network</em> (RNN), which walks through the sequence one position at a time, carrying a hidden state. RNNs were slow (sequential by construction) and hard to train past a few dozen steps. The 2017 <em>transformer</em> architecture replaced them with <em>attention</em>: a mechanism that lets every position in the sequence look at every other position in parallel.</p>
+          <p>The transformer is now the architecture behind essentially every modern large language model, most image models (Chapter IV), and large parts of audio and video. The chapter builds it from scratch: attention, then multi-head attention, then the transformer block (attention + a small MLP, both with residual connections), then a stack of blocks. It also covers <em>positional encoding</em> (how an inherently permutation-blind operation gets a sense of order back) and introduces the "residual stream" mental model that has become standard for thinking about what transformers do inside.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Sequence</dt><dd>An ordered list of items: words, audio frames, image patches. The general input type of this chapter.</dd>
+          <dt>Token</dt><dd>One item in the sequence. For language: a sub-word chunk; for an image: a patch.</dd>
+          <dt>Embedding</dt><dd>A learned vector that represents a token. Every token in the vocabulary gets one; the network reads from this table at the start.</dd>
+          <dt>RNN (recurrent neural network)</dt><dd>The pre-transformer way to process sequences: keep a hidden state, update it one step at a time. Sequential, hard to train past a few dozen steps.</dd>
+          <dt>LSTM, GRU</dt><dd>Gated variants of RNNs (1997 and 2014) that mostly fixed the training problem by routing information through learned gates. Ran the field for two decades.</dd>
+          <dt>Hidden state</dt><dd>The running summary an RNN carries from one time step to the next.</dd>
+          <dt>Attention</dt><dd>The core operation: each query vector retrieves a weighted combination of value vectors, with weights determined by how similar the query is to each key vector.</dd>
+          <dt>Query, key, value (Q, K, V)</dt><dd>Three vectors derived from the input. The query asks "what do I want?"; the key advertises "what do I have?"; the value is the actual content returned.</dd>
+          <dt>Self-attention</dt><dd>Attention where Q, K, V are all derived from the same input sequence — every token can look at every other token.</dd>
+          <dt>Multi-head attention</dt><dd>Run $H$ independent attention operations in parallel with different learned projections, then concatenate. Each head can specialize on a different pattern.</dd>
+          <dt>Causal mask</dt><dd>A constraint that prevents each position from attending to future positions. Needed for next-token prediction; the only architectural difference between encoder and decoder attention.</dd>
+          <dt>Softmax (in attention)</dt><dd>Turns raw similarity scores into a probability distribution over keys, so each query gets a normalized weighting.</dd>
+          <dt>Transformer block</dt><dd>One layer of the transformer: an attention sublayer plus a small feed-forward sublayer, both wrapped in residual connections and normalization.</dd>
+          <dt>Residual stream</dt><dd>The "wide vector" carried at each position through the stack — every layer adds to it, never replaces it. The clean mental model for what a transformer does.</dd>
+          <dt>MLP / feed-forward block</dt><dd>The second sublayer of a transformer block: a position-wise two-layer network, applied independently to each token.</dd>
+          <dt>SwiGLU</dt><dd>A specific feed-forward block that gates one linear projection by another. Replaced plain GELU MLPs in most modern LLMs.</dd>
+          <dt>GELU</dt><dd>A smooth nonlinearity used in transformer feed-forward layers.</dd>
+          <dt>LayerNorm</dt><dd>Per-token normalization. Stabilizes training; the default in transformers.</dd>
+          <dt>Pre-norm vs. post-norm</dt><dd>Where the normalization goes relative to the residual connection. Pre-norm (inside the residual) trains stably past hundreds of layers; post-norm (the original 2017 recipe) does not.</dd>
+          <dt>Positional encoding</dt><dd>Information added to token embeddings so the model knows the order of the sequence (since attention by itself is order-blind).</dd>
+          <dt>Sinusoidal embedding</dt><dd>The original positional encoding: a fixed pattern of sines and cosines at different frequencies, added to each token embedding.</dd>
+          <dt>RoPE (Rotary Position Embedding)</dt><dd>The modern positional encoding used in Llama-family models. Rotates query and key vectors by an angle proportional to their position, so attention scores depend only on relative offset.</dd>
+          <dt>Decoder-only, encoder-only, encoder–decoder</dt><dd>Three configurations of the same building block. Decoder-only with a causal mask is the GPT / Llama / DeepSeek family; encoder-only with bidirectional attention is BERT; encoder–decoder is T5 and the original translation transformer.</dd>
+          <dt>BERT, GPT</dt><dd>The two early breakout transformer model families: BERT (2018, encoder-only, masked-word pretraining) and GPT (2018-onward, decoder-only, next-token pretraining).</dd>
+          <dt>FlashAttention</dt><dd>A clever 2022 reimplementation of exact attention that's much more memory-efficient. Lets training and inference run on longer sequences.</dd>
+          <dt>KV cache</dt><dd>At inference time, the cached keys and values from earlier tokens so we don't recompute them. The reason serving an LLM is fast after the first token.</dd>
+          <dt>State-space model / Mamba</dt><dd>A 2023 alternative architecture: a modernized RNN with a parallel-scan training algorithm. Linear in sequence length where attention is quadratic. Competitive at small scales, jury still out at frontier.</dd>
+          <dt>Induction head</dt><dd>A specific attention pattern, identified by interpretability researchers, that implements simple "look back and complete the pattern" behavior. The poster child for mechanistic interpretability (revisited in Chapter X).</dd>
+        </dl>
+      </section>
+
       <h2><span class="sec-num">§1</span>Sequences, and why RNNs lost</h2>
 
       <p>Many problems take a sequence as input — language, audio, time series, video. The natural early approach was the <strong>recurrent neural network</strong>: maintain a hidden state $\mathbf{h}_t$ that updates as you walk through the sequence,</p>

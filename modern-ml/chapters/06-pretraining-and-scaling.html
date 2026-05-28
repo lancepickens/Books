@@ -25,6 +25,48 @@
       <h1 class="chapter-title">Pretraining and Scaling Laws</h1>
       <p class="lede">The Cambrian explosion of capability since 2018 came from one observation, repeated: predict the next token on a lot of text with a transformer, and the model gets reliably better at almost everything. Quantifying "reliably" is what scaling laws do.</p>
 
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>Take a transformer. Ask it to predict the next token on trillions of words of internet text. The model gets reliably better at almost everything — translation, summarization, coding, reasoning — as a <em>side effect</em> of getting better at next-token prediction. That phenomenon, called <em>pretraining</em>, is the engine behind every modern large language model.</p>
+          <p>The <em>scaling laws</em> are the empirical relationships that tell you how loss decreases as you spend more compute. They also tell you how to <em>spend</em> a fixed compute budget — what fraction on a bigger model vs. more training data. The chapter covers: tokenization (how text becomes integers), the next-token objective, Kaplan vs. Chinchilla scaling, Mixture of Experts (a trick for scaling capacity without scaling per-token compute), and the data-curation work that has quietly become the biggest source of progress.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Pretraining</dt><dd>Training a model on a large generic corpus using a self-supervised objective, before any task-specific fine-tuning. The expensive phase that produces the "base model."</dd>
+          <dt>Base model</dt><dd>The output of pretraining: a model that completes text well, but doesn't yet act like a helpful assistant. Chapter VII fixes that part.</dd>
+          <dt>Self-supervised learning</dt><dd>Inventing a supervised task from unlabeled data — e.g., "predict the next word" or "fill in a hidden patch."</dd>
+          <dt>Pretext task</dt><dd>The made-up training task in self-supervised learning. Next-token prediction is the dominant pretext task today.</dd>
+          <dt>Next-token prediction</dt><dd>Given a sequence of tokens, predict what comes next. Repeated over trillions of tokens, this is the only objective most LLMs ever see.</dd>
+          <dt>Masked-token prediction</dt><dd>Hide a fraction of tokens, predict them from the surrounding context. The BERT-style objective.</dd>
+          <dt>Contrastive objective</dt><dd>Pull related pairs together in embedding space, push unrelated pairs apart. Used in CLIP, DINO, sentence embeddings.</dd>
+          <dt>Autoregressive likelihood</dt><dd>The probability of a sequence written as a product of next-token probabilities: $p(\mathbf{x}) = \prod_t p(x_t \mid x_{<t})$.</dd>
+          <dt>Perplexity</dt><dd>$e^{\text{cross-entropy}}$. Roughly, "the model's average uncertainty per token." Lower is better; the metric pretraining tries to push down.</dd>
+          <dt>Tokenizer</dt><dd>The component that converts raw text to a sequence of integers (and back). Modern tokenizers split words into sub-word chunks so even rare words are representable.</dd>
+          <dt>Vocabulary</dt><dd>The fixed set of token IDs the model knows. Typically 32k–256k entries.</dd>
+          <dt>BPE (Byte-Pair Encoding)</dt><dd>A tokenization algorithm that starts from characters and repeatedly merges the most-frequent adjacent pair. Used in GPT-2 onward.</dd>
+          <dt>WordPiece, SentencePiece, Unigram</dt><dd>Alternative subword tokenizers. WordPiece in BERT; SentencePiece + Unigram in T5 and most multilingual models.</dd>
+          <dt>Scaling law</dt><dd>An empirical formula (usually a power law) that says how pretraining loss decreases as you scale up parameter count, data, or compute.</dd>
+          <dt>Kaplan scaling</dt><dd>The original 2020 OpenAI scaling-law paper. Recommended spending most extra compute on bigger models.</dd>
+          <dt>Chinchilla scaling</dt><dd>The 2022 DeepMind correction. For a fixed compute budget, you should grow model size and training data at roughly equal rates — about 20 training tokens per parameter.</dd>
+          <dt>$N$, $D$, $C$</dt><dd>The three scaling-law variables: $N$ = parameters, $D$ = training tokens, $C$ = total compute (roughly $C \approx 6ND$).</dd>
+          <dt>FLOPs</dt><dd>Floating-point operations. The standard unit for "training compute."</dd>
+          <dt>Compute-optimal</dt><dd>The allocation of $N$ and $D$ that minimizes loss for a given budget $C$.</dd>
+          <dt>Dense model</dt><dd>A transformer where every parameter is used for every token. The default.</dd>
+          <dt>Mixture of Experts (MoE)</dt><dd>An architecture that replaces each MLP with several parallel "experts" and a router that picks a small number per token. Total parameters go up; per-token compute stays roughly the same.</dd>
+          <dt>Expert</dt><dd>One of the parallel MLPs inside an MoE block.</dd>
+          <dt>Router</dt><dd>The tiny learned network that decides, per token, which expert(s) to send it to.</dd>
+          <dt>Top-$k$ routing</dt><dd>Each token uses the $k$ experts with the highest router scores (typically $k=1$ or $2$).</dd>
+          <dt>Emergent ability</dt><dd>A capability that appears suddenly at a particular model scale rather than improving smoothly. Real or measurement artifact (depending on the metric) is contested.</dd>
+          <dt>Common Crawl, FineWeb</dt><dd>Public web-scrape corpora used for pretraining. FineWeb is the modern open recipe for cleaning Common Crawl into usable training data.</dd>
+          <dt>Data mixing</dt><dd>Choosing the proportions of different data sources (code, books, math, conversation, multilingual) in the training mix. One of the most heavily-tuned and least-published hyperparameters at the frontier.</dd>
+          <dt>Distillation</dt><dd>Training a smaller "student" model to mimic the outputs of a larger "teacher" model. A common way to ship cheap inference-time models.</dd>
+          <dt>Synthetic data</dt><dd>Training data generated by another model rather than scraped from humans. Increasingly the dominant ingredient in frontier post-training and reasoning training.</dd>
+          <dt>Llama 3 / Llama 4 / DeepSeek-V3</dt><dd>Major open-weights frontier releases (2024–25) whose technical reports are among the most informative public sources on modern pretraining.</dd>
+          <dt>State-space model</dt><dd>An alternative-to-transformers architecture (Mamba, RWKV) that's linear in sequence length. Active research area; not dominant yet.</dd>
+        </dl>
+      </section>
+
       <h2><span class="sec-num">§1</span>Self-supervised learning, briefly</h2>
 
       <p>Supervised learning needs labels — expensive, slow, often biased. Unsupervised learning of generic structure rarely produced features competitive with supervised baselines. The 2018 unlock was <strong>self-supervised learning</strong>: invent a supervised task <em>from the data itself</em>. Common pretext tasks:</p>

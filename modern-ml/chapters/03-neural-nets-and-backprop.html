@@ -25,6 +25,46 @@
       <h1 class="chapter-title">Neural Networks and Backpropagation</h1>
       <p class="lede">A neural network is just function composition. Pile up alternating linear maps and nonlinearities; differentiate the whole thing by the chain rule; minimize the loss by gradient descent. The depth of the consequences is not obvious from the simplicity of the recipe.</p>
 
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>A <em>neural network</em> is a stack of two kinds of operation, repeated: a <em>linear map</em> (multiply by a matrix, add a bias) and an <em>activation</em> (a fixed nonlinear function applied to each entry). To train it, you compute how much the loss changes when you nudge each weight — the <em>gradient</em> — then move every weight a tiny step downhill. Repeat for many billions of examples.</p>
+          <p>The clever algorithm that makes computing those gradients tractable is <em>backpropagation</em>, which is just the calculus chain rule run through the network in reverse. Modern frameworks (PyTorch, JAX) implement backprop automatically; your job is to write the forward pass and they hand you the gradient. The rest of the chapter covers the engineering that makes this train reliably at scale: smarter optimizers (SGD, Adam, AdamW), careful weight initialization, and normalization layers.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>MLP (multilayer perceptron)</dt><dd>The basic neural network: alternating fully-connected linear maps and elementwise nonlinearities.</dd>
+          <dt>Layer</dt><dd>One linear map plus its nonlinearity. A "10-layer network" has ten of them stacked.</dd>
+          <dt>Weights and bias</dt><dd>The trainable numbers inside a layer. Weights form a matrix; the bias is an added offset vector.</dd>
+          <dt>Hidden unit / hidden activation</dt><dd>One of the intermediate values inside the network — the output of one neuron in one layer.</dd>
+          <dt>Activation function</dt><dd>The fixed nonlinearity applied entry-wise after each linear map. Without it the network collapses to a single big linear map.</dd>
+          <dt>ReLU</dt><dd>$\max(0, z)$. Cheap, surprisingly effective, dominant since 2010.</dd>
+          <dt>GELU</dt><dd>A smooth variant of ReLU. The default activation in transformer feed-forward layers.</dd>
+          <dt>Sigmoid / tanh</dt><dd>The 1990s defaults. Saturate at large inputs (gradients shrink to zero), which made training deep networks hard.</dd>
+          <dt>Vanishing / exploding gradients</dt><dd>When gradients through many layers shrink to zero (vanishing) or blow up (exploding), training breaks. The reason for most architectural tricks in this chapter.</dd>
+          <dt>Universal approximation</dt><dd>The theoretical guarantee that a wide enough MLP can approximate any continuous function. Says nothing about whether training will actually find it.</dd>
+          <dt>Forward pass</dt><dd>Running an input through the network to get a prediction.</dd>
+          <dt>Backward pass</dt><dd>Running the gradient backward through the network to compute, for every weight, "how much would the loss change if I nudged this weight."</dd>
+          <dt>Backpropagation</dt><dd>The algorithm for the backward pass. Mechanically applies the chain rule to every operation in the network, in reverse order.</dd>
+          <dt>Autodiff (automatic differentiation)</dt><dd>The general technique backprop is an instance of. Frameworks implement it once, so you never write a backward pass by hand.</dd>
+          <dt>Computation graph</dt><dd>The bookkeeping structure that records every operation in the forward pass so the framework knows how to run it in reverse.</dd>
+          <dt>Gradient descent</dt><dd>The training algorithm: compute the gradient of the loss, subtract a small fraction of it from the parameters, repeat.</dd>
+          <dt>SGD (stochastic gradient descent)</dt><dd>Gradient descent but computed on a small random subset of the data (a "minibatch") at each step. Cheaper, and the noise actually helps.</dd>
+          <dt>Minibatch</dt><dd>The handful (8 to 8000) of examples used to estimate the gradient at each step.</dd>
+          <dt>Learning rate $\eta$</dt><dd>How big a step to take. The single most important hyperparameter.</dd>
+          <dt>Epoch</dt><dd>One full pass through the training set.</dd>
+          <dt>Momentum</dt><dd>An exponentially-weighted average of past gradients added to the update. Accelerates progress along consistent directions.</dd>
+          <dt>Adam / AdamW</dt><dd>The modern default optimizers. Track running averages of the gradient and its square, giving each parameter its own adaptive step size. AdamW is the variant with cleaner weight decay; standard for transformer training.</dd>
+          <dt>Weight decay</dt><dd>A penalty that gently shrinks weights toward zero each step — neural-net regularization, mathematically similar to ridge.</dd>
+          <dt>Learning-rate schedule</dt><dd>How $\eta$ changes through training. Typically: <em>warmup</em> (ramp up over the first few hundred steps), then <em>cosine decay</em> back down to near zero.</dd>
+          <dt>Initialization</dt><dd>How the weights are set before training begins. Glorot and Kaiming initializations pick the right initial variance so signals don't vanish or explode through depth.</dd>
+          <dt>Normalization layer</dt><dd>A built-in layer that re-scales activations to a standard distribution every forward pass. <em>BatchNorm</em> normalizes across the batch (used in CNNs); <em>LayerNorm</em> normalizes across features for each example (used in transformers); <em>RMSNorm</em> is a cheaper LayerNorm without the mean-subtraction step.</dd>
+          <dt>Over-parameterization</dt><dd>Having far more parameters than training examples. Counter-intuitively, large nets do this on purpose — and generalize anyway.</dd>
+          <dt>Implicit regularization</dt><dd>The way the optimizer itself prefers certain solutions among the many that fit training data — a phenomenon nobody fully understands but that explains why huge nets work.</dd>
+          <dt>Gradient clipping</dt><dd>If the gradient gets very large, scale it down to a fixed maximum norm. Cheap insurance against blowups.</dd>
+        </dl>
+      </section>
+
       <h2><span class="sec-num">§1</span>The multilayer perceptron</h2>
 
       <p>An <dfn title="A neural network of fully-connected layers: linear map, nonlinearity, linear map, nonlinearity, … last layer is task-specific.">MLP</dfn> with $L$ layers is a sequence of affine maps interleaved with elementwise nonlinearities:</p>
