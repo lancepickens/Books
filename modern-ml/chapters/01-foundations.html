@@ -83,10 +83,17 @@
       <aside class="where">
         <h4>Where</h4>
         <dl>
-          <dt>$\mathcal{X}, \mathcal{Y}$</dt><dd>Input and output spaces. For pixels, $\mathcal{X} = \mathbb{R}^{H\times W\times 3}$; for text, $\mathcal{X}$ is a sequence of tokens; for a classifier, $\mathcal{Y} = \{1, \dots, K\}$.</dd>
-          <dt>$\boldsymbol{\theta}$</dt><dd>Parameters of the model. Could be ten coefficients (linear regression) or a trillion weights (a frontier LLM).</dd>
-          <dt>$\ell$</dt><dd>Per-example loss. Squared error $(\hat y - y)^2$ for regression; cross-entropy $-\log p_\theta(y \mid \mathbf{x})$ for classification.</dd>
-          <dt>$R$ vs $\hat R$</dt><dd>$R$ is what we want; $\hat R$ is what we have. The gap between them is the central object of learning theory.</dd>
+          <dt>$\mathcal{D}$</dt><dd>A probability distribution over input–output pairs — fixed but unknown. Everything is sampled from it.</dd>
+          <dt>$\mathcal{S}$</dt><dd>A set of $N$ training pairs drawn from $\mathcal{D}$.</dd>
+          <dt>$N$</dt><dd>A scalar (positive integer) — the number of training examples.</dd>
+          <dt>i.i.d.</dt><dd>"Independent and identically distributed": each pair is drawn separately from the same $\mathcal{D}$, with no influence between draws. The assumption that makes the averages below behave.</dd>
+          <dt>$\mathbf{x},\, y$</dt><dd>A single input ($\mathbf{x}$, a vector) and its target ($y$, a scalar for regression or a class label for classification).</dd>
+          <dt>$\mathcal{X}, \mathcal{Y}$</dt><dd>The input and output spaces (sets). For pixels, $\mathcal{X} = \mathbb{R}^{H\times W\times 3}$; for text, $\mathcal{X}$ is a sequence of tokens; for a $K$-class classifier, $\mathcal{Y} = \{1, \dots, K\}$.</dd>
+          <dt>$f_\theta$</dt><dd>The model — a function $\mathcal{X} \to \mathcal{Y}$ controlled by the parameters $\boldsymbol{\theta}$.</dd>
+          <dt>$\boldsymbol{\theta}$</dt><dd>A vector of model parameters. Could be ten coefficients (linear regression) or a trillion weights (a frontier LLM).</dd>
+          <dt>$\ell(\hat y, y)$</dt><dd>A scalar — the per-example loss: how bad it is to predict $\hat y$ when the truth is $y$. Squared error $(\hat y - y)^2$ for regression; cross-entropy $-\log p_\theta(y \mid \mathbf{x})$ for classification.</dd>
+          <dt>$\mathbb{E}_{(\mathbf{x},y)\sim\mathcal{D}}$</dt><dd>An expectation (a probability-weighted average) taken over fresh pairs drawn from $\mathcal{D}$.</dd>
+          <dt>$R$ vs $\hat R$</dt><dd>Both scalars. $R(\boldsymbol\theta)$ is the population (true) risk — average loss over all of $\mathcal{D}$, what we want. $\hat R(\boldsymbol\theta)$ is the empirical risk — average loss over the sample $\mathcal{S}$, what we can actually compute. The gap between them is the central object of learning theory.</dd>
         </dl>
       </aside>
 
@@ -118,6 +125,17 @@
         $$ -\log p(y \mid \mathbf{x}, \boldsymbol{\theta}) \;=\; \frac{1}{2\sigma^2}\bigl(y - f_\theta(\mathbf{x})\bigr)^2 + \text{const}. $$
       </div>
 
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$y$</dt><dd>A scalar — the observed regression target.</dd>
+          <dt>$f_\theta(\mathbf{x})$</dt><dd>A scalar — the model's prediction for input $\mathbf{x}$.</dd>
+          <dt>$\sigma^2$</dt><dd>A scalar — the variance of the assumed Gaussian observation noise. Bigger means noisier data.</dd>
+          <dt>$\mathcal{N}(0, \sigma^2)$</dt><dd>The normal (Gaussian) distribution with mean $0$ and variance $\sigma^2$ — the bell curve we assume the noise $\eps$ follows.</dd>
+          <dt>const</dt><dd>Terms not involving $\boldsymbol\theta$ (here $\tfrac12\log(2\pi\sigma^2)$); they shift the loss but don't change where its minimum sits, so the optimizer ignores them.</dd>
+        </dl>
+      </aside>
+
       <p>Minimizing squared error is maximum-likelihood under Gaussian noise. The variance $\sigma^2$ drops out of the optimization — it sets the units of the loss, not its shape.</p>
 
       <p>For <strong>classification</strong>: a model that emits a probability $p_\theta(y \mid \mathbf{x})$ over $K$ classes has per-example negative log-likelihood</p>
@@ -125,6 +143,14 @@
       <div class="equation-block">
         $$ \ell(\mathbf{x}, y) \;=\; -\log p_\theta(y \mid \mathbf{x}). $$
       </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$p_\theta(y \mid \mathbf{x})$</dt><dd>A scalar in $[0,1]$ — the probability the model assigns to the <em>true</em> class $y$ given input $\mathbf{x}$.</dd>
+          <dt>$-\log(\cdot)$</dt><dd>The negative natural logarithm: near $0$ when the model is confident and correct, growing large when it confidently picks wrong. This is what makes the loss punish overconfident mistakes.</dd>
+        </dl>
+      </aside>
 
       <p>This is <em>the</em> <dfn title="The negative log-likelihood of the true class under the model's predictive distribution. Equivalent to the KL divergence from the empirical distribution up to a constant.">cross-entropy</dfn> loss. Aggregated over $N$ examples, it is the loss every modern language model is trained on, and the loss inside every classification head you will write.</p>
 
@@ -145,9 +171,13 @@
       <aside class="where">
         <h4>Where</h4>
         <dl>
-          <dt>bias</dt><dd>How wrong the <em>average</em> trained model is. Models too simple to express $f^*$ have high bias regardless of how much data they see.</dd>
-          <dt>variance</dt><dd>How much the trained model wobbles as you reshuffle the training set. Models with many parameters and little data have high variance.</dd>
-          <dt>$\sigma^2$</dt><dd>Noise in the data itself. The best possible model still has expected loss $\sigma^2$ at every point. Achievable error has a floor.</dd>
+          <dt>$\mathbf{x}_0,\, y_0$</dt><dd>A single fixed test point (input vector $\mathbf{x}_0$, target scalar $y_0$) we evaluate error at.</dd>
+          <dt>$f^*$</dt><dd>The true underlying function we wish we could recover; $y = f^*(\mathbf{x}) + \eps$.</dd>
+          <dt>$f_{\hat\theta}$</dt><dd>The model actually fitted from one training set. The hat on $\hat\theta$ flags "estimated from data," so $f_{\hat\theta}$ is itself random — it changes if the training set changes.</dd>
+          <dt>$\mathbb{E}_{\mathcal{S}}[\cdot]$</dt><dd>Average over the randomness of <em>which training set</em> $\mathcal{S}$ you happened to draw.</dd>
+          <dt>bias$^2$</dt><dd>A scalar — how wrong the <em>average</em> trained model is. Models too simple to express $f^*$ have high bias regardless of how much data they see.</dd>
+          <dt>variance</dt><dd>A scalar — how much the trained model wobbles as you reshuffle the training set. Models with many parameters and little data have high variance.</dd>
+          <dt>$\sigma^2$</dt><dd>A scalar — noise in the data itself. The best possible model still has expected loss $\sigma^2$ at every point. Achievable error has a floor.</dd>
         </dl>
       </aside>
 

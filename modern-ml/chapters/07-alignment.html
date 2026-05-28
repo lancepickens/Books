@@ -87,6 +87,14 @@
         $$ (\text{prompt}, \text{good response}) \quad\to\quad \text{minimize}\;-\log p_\theta(\text{response} \mid \text{prompt}). $$
       </div>
 
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$p_\theta(\text{response} \mid \text{prompt})$</dt><dd>A scalar in $[0,1]$ — the probability the model assigns to the whole demonstrated response, given the prompt.</dd>
+          <dt>$-\log(\cdot)$</dt><dd>The same next-token cross-entropy as pretraining (Chapter VI) — only the data has changed, from raw web text to curated instruction–response pairs.</dd>
+        </dl>
+      </aside>
+
       <p>That's it. A handful of epochs at a small learning rate ($\sim 10^{-5}$ to $10^{-6}$) suffice. The model learns the format of an assistant turn — chat templates, system prompts, refusal language, code blocks — without forgetting the pretraining knowledge it sits on top of. SFT is fast (hours, not weeks) and gives the bulk of the apparent capability lift visible to a user. It does not do the harder work of capturing nuanced preferences over similar-looking responses; that is what RLHF and DPO are for.</p>
 
       <p>Modern SFT data is heavily synthetic. A common recipe: prompt a stronger model with diverse instructions, filter the responses, and finetune a smaller model on the survivors. The Alpaca and Self-Instruct lines of work (2023) demonstrated this in the open; every frontier lab is doing some version of it now.</p>
@@ -101,7 +109,19 @@
         $$ \mathcal{L}_R(\phi) \;=\; -\mathbb{E}_{(\mathbf{x}, \mathbf{y}_w, \mathbf{y}_l)} \,\log \sigma\bigl(r_\phi(\mathbf{x}, \mathbf{y}_w) - r_\phi(\mathbf{x}, \mathbf{y}_l)\bigr). $$
       </div>
 
-      <p>Where $\mathbf{y}_w$ is the preferred ("winning") response, $\mathbf{y}_l$ the rejected ("losing") one. The model learns to assign higher reward to responses humans prefer, calibrated by how confident the preferences are.</p>
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathbf{x}$</dt><dd>A prompt.</dd>
+          <dt>$\mathbf{y}_w,\, \mathbf{y}_l$</dt><dd>Two responses to that prompt: the preferred ("winning") one $\mathbf{y}_w$ and the rejected ("losing") one $\mathbf{y}_l$.</dd>
+          <dt>$r_\phi(\mathbf{x}, \mathbf{y})$</dt><dd>A scalar — the reward model's score for response $\mathbf{y}$ to prompt $\mathbf{x}$. $\phi$ are its trainable parameters.</dd>
+          <dt>$r_\phi(\mathbf{x},\mathbf{y}_w) - r_\phi(\mathbf{x},\mathbf{y}_l)$</dt><dd>The score gap; the loss pushes it positive, so winners outscore losers.</dd>
+          <dt>$\sigma(\cdot)$</dt><dd>The sigmoid — turns the gap into a probability (this is the Bradley–Terry model of preferences).</dd>
+          <dt>$\mathbb{E}_{(\mathbf{x},\mathbf{y}_w,\mathbf{y}_l)}$</dt><dd>Average over all preference triples in the dataset.</dd>
+        </dl>
+      </aside>
+
+      <p>The model learns to assign higher reward to responses humans prefer, calibrated by how confident the preferences are.</p>
 
       <p>Reward models are notoriously fragile. They <em>overfit to the labeler distribution</em> and <em>extrapolate badly</em> once the policy starts producing responses unlike the training pairs — a phenomenon called <em>reward hacking</em>. Constraining how far the optimized policy can drift from the SFT model is half the engineering of RLHF.</p>
 
@@ -118,10 +138,12 @@
       <aside class="where">
         <h4>Where</h4>
         <dl>
-          <dt>$\pi_\theta$</dt><dd>Trainable policy. Initialized from the SFT checkpoint.</dd>
-          <dt>$\pi_{\text{ref}}$</dt><dd>Frozen reference policy (the SFT model itself).</dd>
+          <dt>$\mathbb{E}_{\mathbf{x}\sim\mathcal{D},\,\mathbf{y}\sim\pi_\theta}$</dt><dd>Average over prompts $\mathbf{x}$ from the data and responses $\mathbf{y}$ <em>sampled from the current policy</em> — the policy generates its own training examples.</dd>
+          <dt>$\pi_\theta$</dt><dd>The trainable policy (the LLM being optimized). Initialized from the SFT checkpoint.</dd>
+          <dt>$\pi_{\text{ref}}$</dt><dd>The frozen reference policy (a copy of the SFT model). Never updated.</dd>
           <dt>$r_\phi$</dt><dd>The reward model from §3, also frozen during PPO.</dd>
-          <dt>$\beta > 0$</dt><dd>KL penalty strength. Small $\beta$: policy can run after reward (risk: hacking). Large $\beta$: policy stays close to SFT (risk: no improvement). Typical values $0.01 \le \beta \le 0.2$.</dd>
+          <dt>$\mathrm{KL}[\pi_\theta \,\|\, \pi_{\text{ref}}]$</dt><dd>The Kullback–Leibler divergence — a non-negative scalar measuring how far the trained policy's output distribution has drifted from the reference. Zero when identical, growing as they diverge.</dd>
+          <dt>$\beta > 0$</dt><dd>A scalar — the KL penalty strength. Small $\beta$: policy can run after reward (risk: hacking). Large $\beta$: policy stays close to SFT (risk: no improvement). Typical values $0.01 \le \beta \le 0.2$.</dd>
         </dl>
       </aside>
 
@@ -139,11 +161,31 @@
         $$ \pi^*(\mathbf{y} \mid \mathbf{x}) \;\propto\; \pi_{\text{ref}}(\mathbf{y} \mid \mathbf{x})\, \exp\!\Bigl(\tfrac{1}{\beta}\, r(\mathbf{x}, \mathbf{y})\Bigr). $$
       </div>
 
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\pi^*$</dt><dd>The optimal policy — the exact solution to the RLHF objective above, derived in closed form.</dd>
+          <dt>$\propto$</dt><dd>"Is proportional to" — the right-hand side isn't normalized; divide by its sum over all $\mathbf{y}$ to make a real probability.</dd>
+          <dt>$\pi_{\text{ref}}(\mathbf{y}\mid\mathbf{x})$</dt><dd>The reference policy's probability for response $\mathbf{y}$ — the starting point the optimum tilts away from.</dd>
+          <dt>$\exp(r/\beta)$</dt><dd>An exponential reweighting: responses with high reward $r$ get boosted, sharply when $\beta$ is small, gently when $\beta$ is large.</dd>
+        </dl>
+      </aside>
+
       <p>Invert this: the implicit reward of any policy is $r(\mathbf{x}, \mathbf{y}) = \beta \log(\pi(\mathbf{y} \mid \mathbf{x}) / \pi_{\text{ref}}(\mathbf{y} \mid \mathbf{x}))$ plus a prompt-only term. Plug into the Bradley–Terry loss for preferences and you get an objective in the policy <em>directly</em>:</p>
 
       <div class="equation-block">
         $$ \mathcal{L}_{\text{DPO}}(\boldsymbol\theta) \;=\; -\mathbb{E}_{(\mathbf{x}, \mathbf{y}_w, \mathbf{y}_l)}\,\log \sigma\!\Bigl(\beta \log \tfrac{\pi_\theta(\mathbf{y}_w \mid \mathbf{x})}{\pi_{\text{ref}}(\mathbf{y}_w \mid \mathbf{x})} - \beta \log \tfrac{\pi_\theta(\mathbf{y}_l \mid \mathbf{x})}{\pi_{\text{ref}}(\mathbf{y}_l \mid \mathbf{x})}\Bigr). $$
       </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\log(\pi_\theta / \pi_{\text{ref}})$</dt><dd>Shorthand for $\log\frac{\pi_\theta(\mathbf{y}\mid\mathbf{x})}{\pi_{\text{ref}}(\mathbf{y}\mid\mathbf{x})}$: the log-ratio of how much more (or less) likely the trained policy makes a response than the reference does — this <em>is</em> the implicit reward DPO uses, no separate reward model needed.</dd>
+          <dt>$\mathbf{y}_w,\, \mathbf{y}_l$</dt><dd>The winning and losing responses, as in the reward-model loss. The objective raises the policy's log-ratio on winners and lowers it on losers.</dd>
+          <dt>$\beta$</dt><dd>A scalar — the same KL strength as before, now just a coefficient that scales the implicit reward.</dd>
+          <dt>$\sigma(\cdot)$, $\mathbb{E}$</dt><dd>Sigmoid and average over preference triples — identical machinery to the reward-model loss, but optimizing the policy $\boldsymbol\theta$ directly.</dd>
+        </dl>
+      </aside>
 
       <p>This is a supervised loss in the standard sense. No reward model, no sampling loop, no value head, no PPO. Just a contrastive objective on preference pairs. It runs at the cost of two forward passes per example (the trainable policy and the frozen reference) and is dramatically simpler to implement than RLHF. Quality is comparable or better on standard benchmarks for most settings; the cases where PPO-RLHF wins are typically ones with very large or curated preference datasets.</p>
 
@@ -168,6 +210,17 @@
       <div class="equation-block">
         $$ \mathbf{W} \;\to\; \mathbf{W} + \mathbf{B}\mathbf{A}, \qquad \mathbf{A} \in \mathbb{R}^{r \times d_{\text{in}}},\; \mathbf{B} \in \mathbb{R}^{d_{\text{out}} \times r},\; r \ll \min(d_{\text{in}}, d_{\text{out}}). $$
       </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathbf{W}$</dt><dd>A pretrained weight matrix ($d_{\text{out}} \times d_{\text{in}}$), kept <em>frozen</em>.</dd>
+          <dt>$\mathbf{A}, \mathbf{B}$</dt><dd>Two small trainable matrices. Their product $\mathbf{B}\mathbf{A}$ has the same shape as $\mathbf{W}$ but is built from far fewer numbers.</dd>
+          <dt>$r$</dt><dd>A scalar (integer) — the rank, typically $8$–$64$. The "width" of the bottleneck between $\mathbf{A}$ and $\mathbf{B}$.</dd>
+          <dt>$r \ll \min(d_{\text{in}}, d_{\text{out}})$</dt><dd>"$r$ is much smaller than" the layer's dimensions — this is why $\mathbf{A}$ and $\mathbf{B}$ together have $100$–$1000\times$ fewer parameters than $\mathbf{W}$.</dd>
+          <dt>$d_{\text{in}}, d_{\text{out}}$</dt><dd>The input and output dimensions of the original layer.</dd>
+        </dl>
+      </aside>
 
       <p>Train only $\mathbf{A}$ and $\mathbf{B}$, typically with $r = 8$–$64$. The total trainable parameter count drops by 100–1000×, gradients and optimizer state shrink correspondingly, and the resulting adapter is a small file (megabytes) you can swap in and out per task.</p>
 

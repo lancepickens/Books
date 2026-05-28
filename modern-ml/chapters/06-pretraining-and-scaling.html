@@ -109,6 +109,19 @@
         $$ \mathcal{L}(\boldsymbol{\theta}) \;=\; -\frac{1}{T}\sum_{t=1}^{T} \log p_\theta(x_t \mid x_{<t}). $$
       </div>
 
+      <aside class="where">
+        <h4>Where (both equations above)</h4>
+        <dl>
+          <dt>$\mathbf{x} = (x_1, \dots, x_T)$</dt><dd>One tokenized sequence — a list of $T$ integer token IDs.</dd>
+          <dt>$T$</dt><dd>A scalar (integer) — the sequence length (number of tokens).</dd>
+          <dt>$x_t$</dt><dd>The token at position $t$ — the one being predicted.</dd>
+          <dt>$x_{<t}$</dt><dd>All tokens before position $t$ — the context the prediction is conditioned on.</dd>
+          <dt>$p_\theta(x_t \mid x_{<t})$</dt><dd>A scalar in $[0,1]$ — the probability the model assigns to the actual next token given everything before it.</dd>
+          <dt>$\prod_{t=1}^{T}$</dt><dd>The product over all positions: the probability of the whole sequence is the product of each next-token probability.</dd>
+          <dt>$-\frac{1}{T}\sum$</dt><dd>The average negative log-probability per token — the loss. Minimizing it = maximizing the probability the model assigns to real text.</dd>
+        </dl>
+      </aside>
+
       <p>Cheap to compute (one forward pass yields $T$ targets in parallel because of the causal mask), trivial to differentiate, and — astonishingly — sufficient. The objective has no notion of facts, reasoning, code, language understanding, or any other capability. Yet a sufficiently large network trained on a sufficiently broad corpus learns all of them as side effects of predicting the next token well.</p>
 
       <p>The shape of the bet is unusual. Almost no other field believes its core problem can be solved by getting better at a proxy task. ML's relationship with next-token prediction is mostly empirical — it kept working, so people kept doing more of it.</p>
@@ -123,6 +136,17 @@
         $$ \mathcal{L}(C) \;\approx\; \mathcal{L}_\infty + \Bigl(\frac{C_0}{C}\Bigr)^{\alpha_C}, $$
       </div>
 
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$C$</dt><dd>A scalar — total training compute (in FLOPs, floating-point operations). The thing you spend.</dd>
+          <dt>$\mathcal{L}(C)$</dt><dd>The pretraining loss you'd reach if you spent compute $C$ optimally.</dd>
+          <dt>$\mathcal{L}_\infty$</dt><dd>A scalar — the irreducible loss: the floor you'd approach with infinite compute (set by the entropy of language itself).</dd>
+          <dt>$C_0$</dt><dd>A scalar constant fit to data; sets the compute scale at which returns kick in.</dd>
+          <dt>$\alpha_C$</dt><dd>A scalar exponent (about $0.05$) — the power law's slope. Small, so loss falls slowly but predictably as compute grows.</dd>
+        </dl>
+      </aside>
+
       <p>with $\alpha_C \approx 0.05$, so loss drops slowly but reliably as you spend more compute. The implication: bigger model + more data + more compute = lower loss, with predictable returns.</p>
 
       <p>The Kaplan paper recommended spending most additional compute on bigger models. <strong>Chinchilla</strong> (Hoffmann et al. 2022, DeepMind) revisited the analysis with a more careful experimental design and reached the opposite conclusion: for fixed compute, optimal allocation grows $N$ and $D$ <em>at roughly equal rates</em>. Their rule of thumb, "Chinchilla-optimal," is roughly 20 training tokens per parameter. Compute-optimal scaling looks like</p>
@@ -130,6 +154,15 @@
       <div class="equation-block">
         $$ N_{\text{opt}}(C) \;\propto\; C^{0.5}, \qquad D_{\text{opt}}(C) \;\propto\; C^{0.5}. $$
       </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$N_{\text{opt}}$</dt><dd>The compute-optimal model size — how many parameters to use for a given budget.</dd>
+          <dt>$D_{\text{opt}}$</dt><dd>The compute-optimal amount of training data — how many tokens to train on.</dd>
+          <dt>$\propto C^{0.5}$</dt><dd>"Grows in proportion to the square root of compute." Both exponents being $0.5$ is the key Chinchilla finding: scale model and data <em>together</em>, not one far ahead of the other.</dd>
+        </dl>
+      </aside>
 
       <p>Most models trained between 2020 and early 2022 were undertrained — too big for the amount of data they saw. Chinchilla, with $N = 70$B parameters and $D = 1.4$T tokens, matched the much larger Gopher's performance at a fraction of the inference cost. The follow-on lesson — well understood by 2023 — is that for <em>inference-cost-aware</em> deployment, you want to train smaller models on <em>more</em> than the Chinchilla-optimal data ratio (LLaMA 1 trained 7B params on 1T tokens, ~140× the parameter count; LLaMA 3 trained on 15T tokens). Training compute pays off slowly; inference compute pays every time someone uses the model.</p>
 
@@ -147,6 +180,17 @@
       <div class="equation-block">
         $$ \mathrm{MoE}(\mathbf{x}) \;=\; \sum_{e \in \text{Top-}k(\mathbf{R}(\mathbf{x}))} g_e(\mathbf{x})\, \mathrm{Expert}_e(\mathbf{x}). $$
       </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathbf{x}$</dt><dd>One token's vector arriving at the MoE layer.</dd>
+          <dt>$\mathbf{R}(\mathbf{x})$</dt><dd>The router — a small learned function that scores how well each expert suits this token.</dd>
+          <dt>$\text{Top-}k(\cdot)$</dt><dd>Select only the $k$ highest-scoring experts (usually $k=1$ or $2$), so most experts stay idle for this token. This is what keeps per-token compute low.</dd>
+          <dt>$\mathrm{Expert}_e(\mathbf{x})$</dt><dd>The $e$-th expert — itself a small feed-forward network.</dd>
+          <dt>$g_e(\mathbf{x})$</dt><dd>A scalar gating weight (from the router) that blends the chosen experts' outputs.</dd>
+        </dl>
+      </aside>
 
       <p>Total parameter count goes up by a factor of $E$; active parameters per token stay roughly constant. The result: a 600B-parameter model can run at the FLOP cost of a 60B dense model, with quality closer to the dense 600B. The router is learned end-to-end with auxiliary losses that encourage balanced expert use.</p>
 

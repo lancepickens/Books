@@ -74,11 +74,24 @@
         $$ \mathbf{X}^\top \mathbf{X}\, \mathbf{w} \;=\; \mathbf{X}^\top \mathbf{y}, \qquad \hat{\mathbf{w}} \;=\; (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{y}. $$
       </div>
 
-      <p>Geometrically: the fitted prediction $\hat{\mathbf{y}} = \mathbf{X}\hat{\mathbf{w}}$ is the orthogonal projection of $\mathbf{y}$ onto the column space of $\mathbf{X}$. The residual $\mathbf{y} - \hat{\mathbf{y}}$ is orthogonal to every column of $\mathbf{X}$ — that is exactly the normal equation. The matrix $\mathbf{H} = \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top$ is the <em>hat matrix</em>, the projector onto column space. Linear regression is one matrix solve. There are no hyperparameters in the unregularized case.</p>
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathbf{X}$</dt><dd>An $N \times d$ matrix — one row per training example, one column per input feature. Called the design matrix.</dd>
+          <dt>$\mathbf{y}$</dt><dd>A vector in $\mathbb{R}^N$ — the target value for each of the $N$ examples, stacked.</dd>
+          <dt>$\mathbf{w}$</dt><dd>A vector in $\mathbb{R}^d$ — one weight per feature. The thing we solve for.</dd>
+          <dt>$\hat{\mathbf{w}}$</dt><dd>A vector in $\mathbb{R}^d$ — the best-fit weights (the hat means "estimated from data").</dd>
+          <dt>$\mathbf{X}^\top$</dt><dd>The transpose of $\mathbf{X}$ (rows become columns): a $d \times N$ matrix.</dd>
+          <dt>$\mathbf{X}^\top\mathbf{X}$</dt><dd>A $d \times d$ matrix — the feature-by-feature covariance pattern. Inverting it solves the system.</dd>
+          <dt>$\nabla_{\mathbf{w}}\mathcal{L}$</dt><dd>The gradient: a vector in $\mathbb{R}^d$ holding the partial derivative of the loss with respect to each weight. Setting it to zero locates the minimum.</dd>
+        </dl>
+      </aside>
+
+      <p>Geometrically: the fitted prediction $\hat{\mathbf{y}} = \mathbf{X}\hat{\mathbf{w}}$ is the <dfn title="The closest point in a subspace to a target, found by dropping a perpendicular onto it.">orthogonal projection</dfn> of $\mathbf{y}$ onto the <dfn title="The set of all vectors you can build as weighted combinations of the columns of X — i.e. every prediction the linear model can possibly make.">column space</dfn> of $\mathbf{X}$. The residual $\mathbf{y} - \hat{\mathbf{y}}$ is orthogonal (at a right angle) to every column of $\mathbf{X}$ — that is exactly the normal equation. The matrix $\mathbf{H} = \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top$ is the <dfn title="The matrix that maps the targets y to the fitted values ŷ; it 'puts the hat on' y. Geometrically, the projector onto the column space of X.">hat matrix</dfn>, the projector onto column space. Linear regression is one matrix solve. There are no hyperparameters in the unregularized case.</p>
 
       <aside class="jargon">
         <h4>When $\mathbf{X}^\top\mathbf{X}$ is singular</h4>
-        <p>If $d > N$ (more features than examples), or if columns of $\mathbf{X}$ are linearly dependent, $\mathbf{X}^\top\mathbf{X}$ is rank-deficient and the closed form fails. Either drop redundant columns, or — almost always cleaner — regularize. The Moore–Penrose pseudoinverse $\mathbf{X}^+$ gives the minimum-norm solution; ridge regression below gives the small-norm preferred-direction solution.</p>
+        <p>If $d > N$ (more features than examples), or if columns of $\mathbf{X}$ are linearly dependent, $\mathbf{X}^\top\mathbf{X}$ is <dfn title="Its columns don't point in enough independent directions to be inverted — so it has no inverse and the formula above breaks.">rank-deficient</dfn> (a.k.a. singular, non-invertible) and the closed form fails. Either drop redundant columns, or — almost always cleaner — regularize. The <dfn title="A generalized inverse that works even when the matrix isn't square or invertible; among all solutions it returns the one of smallest norm.">Moore–Penrose pseudoinverse</dfn> $\mathbf{X}^+$ gives the minimum-norm solution; ridge regression below gives the small-norm preferred-direction solution.</p>
       </aside>
 
       <hr class="section-rule" />
@@ -97,6 +110,17 @@
         $$ \mathcal{L}(\mathbf{w}) \;=\; -\sum_{i=1}^{N} \bigl[\, y_i \log \sigma(\mathbf{w}^\top \mathbf{x}_i) + (1 - y_i) \log(1 - \sigma(\mathbf{w}^\top \mathbf{x}_i)) \,\bigr]. $$
       </div>
 
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathbf{w}^\top\mathbf{x}_i$</dt><dd>A scalar — the dot product of the weight vector with example $i$'s features (the "score" before squashing).</dd>
+          <dt>$\sigma(\cdot)$</dt><dd>The sigmoid, turning the score into a probability in $(0,1)$.</dd>
+          <dt>$y_i$</dt><dd>A scalar that is $0$ or $1$ — the true label of example $i$. Exactly one of the two bracketed terms survives for each example.</dd>
+          <dt>$\sum_{i=1}^N$</dt><dd>Sum over all $N$ training examples; the loss is their total.</dd>
+          <dt>convex</dt><dd>The loss surface is bowl-shaped — one global minimum, no local traps — so gradient methods are guaranteed to find the best $\mathbf{w}$.</dd>
+        </dl>
+      </aside>
+
       <p>The loss is convex in $\mathbf{w}$, with gradient</p>
 
       <div class="equation-block">
@@ -108,6 +132,16 @@
       <div class="equation-block">
         $$ p_\mathbf{W}(y = k \mid \mathbf{x}) \;=\; \frac{e^{\mathbf{w}_k^\top \mathbf{x}}}{\sum_{j=1}^{K} e^{\mathbf{w}_j^\top \mathbf{x}}}, $$
       </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$K$</dt><dd>A scalar (positive integer) — the number of classes.</dd>
+          <dt>$\mathbf{w}_k$</dt><dd>A vector in $\mathbb{R}^d$ — the weight vector for class $k$. Stacked over all classes they form the matrix $\mathbf{W}$.</dd>
+          <dt>$e^{\mathbf{w}_k^\top\mathbf{x}}$</dt><dd>The exponential of class $k$'s score — always positive, so the ratios are valid probabilities.</dd>
+          <dt>denominator $\sum_j e^{\mathbf{w}_j^\top\mathbf{x}}$</dt><dd>The normalizer summing over all classes, forcing the $K$ outputs to add up to $1$.</dd>
+        </dl>
+      </aside>
 
       <p>with a categorical cross-entropy loss. Logistic-softmax classification is the head sitting on top of almost every modern classifier; everything between input and the final linear layer is feature extraction.</p>
 
@@ -132,9 +166,11 @@
       <aside class="where">
         <h4>Where</h4>
         <dl>
-          <dt>$\lambda \geq 0$</dt><dd>Regularization strength. $\lambda = 0$ recovers ordinary least squares; $\lambda \to \infty$ shrinks $\mathbf{w}$ to zero.</dd>
-          <dt>$\norm{\mathbf{w}}_2^2$</dt><dd>Sum of squared weights. Penalty is smooth — adds $2\lambda \mathbf{I}$ to the normal equations.</dd>
-          <dt>$\norm{\mathbf{w}}_1$</dt><dd>Sum of absolute values. Non-smooth at zero — exactly the property that drives weights to be <em>exactly</em> zero. Lasso fits are sparse.</dd>
+          <dt>$\arg\min_{\mathbf{w}}$</dt><dd>"The value of $\mathbf{w}$ that minimizes what follows" — not the minimum value itself, but the weights that achieve it.</dd>
+          <dt>$\lambda \geq 0$</dt><dd>A scalar — the regularization strength. $\lambda = 0$ recovers ordinary least squares; $\lambda \to \infty$ shrinks $\mathbf{w}$ to zero.</dd>
+          <dt>$\norm{\mathbf{w}}_2^2$</dt><dd>The squared $\ell_2$ norm: the sum of squared weights. Smooth — adds $2\lambda \mathbf{I}$ to the normal equations.</dd>
+          <dt>$\norm{\mathbf{w}}_1$</dt><dd>The $\ell_1$ norm: the sum of absolute values. Non-smooth at zero — exactly the property that drives weights to be <em>exactly</em> zero. Lasso fits are sparse.</dd>
+          <dt>$\mathbf{I}$</dt><dd>The $d \times d$ identity matrix (ones on the diagonal, zeros elsewhere). Adding $2\lambda\mathbf{I}$ nudges $\mathbf{X}^\top\mathbf{X}$ back to invertibility.</dd>
         </dl>
       </aside>
 
@@ -148,15 +184,26 @@
 
       <p>Linear models are weak; their power explodes the moment you allow nonlinear features. The naïve route is to engineer features $\phi(\mathbf{x}) \in \mathbb{R}^D$ — polynomial terms, indicator buckets, interaction products — and fit a linear model in $\phi$. For high-order polynomials in many input dimensions, $D$ grows combinatorially and the approach becomes infeasible.</p>
 
-      <p>The <strong>kernel trick</strong> is the observation that for many problems, predictions and the loss depend on the feature vectors only through inner products $\phi(\mathbf{x})^\top \phi(\mathbf{x}')$ — never through the feature vectors themselves. If we can evaluate that inner product directly, without ever materializing $\phi$, we are free to use feature spaces of enormous (even infinite) dimension.</p>
+      <p>The <strong>kernel trick</strong> is the observation that for many problems, predictions and the loss depend on the feature vectors only through <dfn title="The dot product ⟨a,b⟩ = Σ aᵢbᵢ — a single number measuring how aligned two vectors are. Large when they point the same way, zero when perpendicular.">inner products</dfn> $\phi(\mathbf{x})^\top \phi(\mathbf{x}')$ — never through the feature vectors themselves. If we can evaluate that inner product directly, without ever materializing $\phi$, we are free to use feature spaces of enormous (even infinite) dimension.</p>
 
-      <p>A <dfn title="A symmetric positive-definite function k(x, x') that equals an inner product in some Hilbert space H: k(x, x') = ⟨φ(x), φ(x')⟩_H.">kernel</dfn> $k(\mathbf{x}, \mathbf{x}')$ is exactly such a function: symmetric, positive-semidefinite (so the Gram matrix $\mathbf{K}_{ij} = k(\mathbf{x}_i, \mathbf{x}_j)$ is PSD), and corresponding to some feature map $\phi$ in a Hilbert space. The <strong>representer theorem</strong> (Kimeldorf &amp; Wahba 1971) says the optimal weight vector for any regularized empirical-risk problem with a kernel lives in the span of the training data:</p>
+      <p>A <dfn title="A symmetric positive-definite function k(x, x') that equals an inner product in some Hilbert space H: k(x, x') = ⟨φ(x), φ(x')⟩_H.">kernel</dfn> $k(\mathbf{x}, \mathbf{x}')$ is exactly such a function: symmetric, <dfn title="A matrix M is positive-semidefinite if vᵀMv ≥ 0 for every vector v — it never flips a vector to point 'backward' against itself. The matrix analogue of a non-negative number; guarantees the kernel behaves like a genuine inner product.">positive-semidefinite</dfn> (so the <dfn title="The N×N table K whose entry (i,j) is the kernel value between examples i and j — every pairwise similarity in the training set.">Gram matrix</dfn> $\mathbf{K}_{ij} = k(\mathbf{x}_i, \mathbf{x}_j)$ is PSD), and corresponding to some feature map $\phi$ in a <dfn title="A (possibly infinite-dimensional) vector space with a well-defined inner product and notion of distance — the natural home for the implicit features a kernel represents.">Hilbert space</dfn>. The <strong>representer theorem</strong> (Kimeldorf &amp; Wahba 1971) says the optimal weight vector for any regularized empirical-risk problem with a kernel lives in the span of the training data:</p>
 
       <div class="equation-block">
         $$ \mathbf{w}^* \;=\; \sum_{i=1}^{N} \alpha_i\, \phi(\mathbf{x}_i), \qquad f^*(\mathbf{x}) \;=\; \sum_{i=1}^{N} \alpha_i\, k(\mathbf{x}_i, \mathbf{x}). $$
       </div>
 
-      <p>So we never need $\phi$ explicitly — we just need the kernel function and the dual coefficients $\boldsymbol\alpha \in \mathbb{R}^N$. For kernel ridge regression, $\boldsymbol\alpha = (\mathbf{K} + \lambda \mathbf{I})^{-1} \mathbf{y}$. For SVMs (Cortes &amp; Vapnik 1995) you solve a quadratic program in $\boldsymbol\alpha$ with hinge loss and only the <em>support vectors</em> end up nonzero.</p>
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\phi(\mathbf{x})$</dt><dd>The feature map — turns a raw input into a (possibly infinite-dimensional) feature vector. Never computed explicitly.</dd>
+          <dt>$\alpha_i$</dt><dd>A scalar — the dual coefficient (weight) attached to training example $i$. Collected into the vector $\boldsymbol\alpha \in \mathbb{R}^N$.</dd>
+          <dt>$\mathbf{w}^*$</dt><dd>The optimal weight vector, written as a combination of the training feature vectors — this is what the representer theorem guarantees.</dd>
+          <dt>$k(\mathbf{x}_i, \mathbf{x})$</dt><dd>A scalar — the kernel similarity between training point $i$ and a new input $\mathbf{x}$. The only thing the prediction actually needs.</dd>
+          <dt>$f^*(\mathbf{x})$</dt><dd>The predicted output: a weighted sum of similarities to the training points.</dd>
+        </dl>
+      </aside>
+
+      <p>So we never need $\phi$ explicitly — we just need the kernel function and the dual coefficients $\boldsymbol\alpha \in \mathbb{R}^N$. For kernel ridge regression, $\boldsymbol\alpha = (\mathbf{K} + \lambda \mathbf{I})^{-1} \mathbf{y}$. For SVMs (Cortes &amp; Vapnik 1995) you solve a <dfn title="An optimization problem whose objective is quadratic (a sum of squares) and whose constraints are linear — a well-studied, efficiently solvable shape.">quadratic program</dfn> in $\boldsymbol\alpha$ with <dfn title="The loss max(0, 1 − y·score): zero once an example is correctly classified with margin, linear penalty otherwise. The hinge is what makes most coefficients vanish.">hinge loss</dfn> and only the <em>support vectors</em> (the handful of training points sitting on the decision boundary) end up nonzero.</p>
 
       <hr class="section-rule" />
 

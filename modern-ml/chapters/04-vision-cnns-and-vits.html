@@ -79,9 +79,11 @@
       <aside class="where">
         <h4>Where</h4>
         <dl>
+          <dt>$\mathbf{x}$</dt><dd>The input feature map — a 3D array of shape $H \times W \times C_{\text{in}}$ (height, width, channels).</dd>
+          <dt>$*$</dt><dd>The convolution operator: slide the filter to every position and take a weighted sum. (Strictly a cross-correlation, but everyone calls it convolution.)</dd>
           <dt>$\mathbf{K} \in \mathbb{R}^{k \times k \times C_{\text{in}} \times C_{\text{out}}}$</dt><dd>The kernel — $C_{\text{out}}$ independent filters, each of which scans the input.</dd>
           <dt>$h, w$</dt><dd>Output spatial coordinates. The same filter weights are applied at every $(h, w)$ — this is the parameter sharing.</dd>
-          <dt>$c, c'$</dt><dd>Input and output channels. RGB inputs have $C_{\text{in}} = 3$.</dd>
+          <dt>$c, c'$</dt><dd>Input and output channel indices. RGB inputs have $C_{\text{in}} = 3$.</dd>
           <dt>$i, j$</dt><dd>Indices into the local window. For a typical $3 \times 3$ kernel, $i, j \in \{-1, 0, 1\}$.</dd>
         </dl>
       </aside>
@@ -119,6 +121,15 @@
       <div class="equation-block">
         $$ \mathbf{h}_{\ell+1} \;=\; \mathbf{h}_\ell + F(\mathbf{h}_\ell; \mathbf{W}_\ell). $$
       </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathbf{h}_\ell$</dt><dd>The input feature map to block $\ell$ (and, added back at the end, the "skip" that lets signal bypass the block).</dd>
+          <dt>$F(\cdot\,; \mathbf{W}_\ell)$</dt><dd>The block's learned transformation — typically two or three convolutions with weights $\mathbf{W}_\ell$.</dd>
+          <dt>$\mathbf{h}_\ell + F(\dots)$</dt><dd>The addition is the whole point: the block only has to learn the <em>correction</em> $F$ to $\mathbf{h}_\ell$, and gradients flow straight through the $+\mathbf{h}_\ell$ path unobstructed.</dd>
+        </dl>
+      </aside>
 
       <p>The block now learns a <em>residual</em> $F$ — the correction to apply to $\mathbf{h}_\ell$ — rather than a full transformation. Gradients flow through the identity branch unobstructed, so deep nets train. ResNet trained 152-layer networks; descendants train arbitrarily deep. The residual stream is the single most important architectural pattern of the last decade; it returns in every chapter that follows, including in the transformer (Chapter V).</p>
 

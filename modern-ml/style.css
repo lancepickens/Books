@@ -348,6 +348,18 @@ section.preamble dl.glossary dd {
   section.preamble dl.glossary dt:first-of-type {
     margin-top: 0;
   }
+  /* "Where" legends also stack on narrow screens so wide symbol
+     cells (e.g. ∂L/∂h, long π ratios) never overflow horizontally. */
+  aside.where dl {
+    grid-template-columns: 1fr;
+    gap: 0.1rem 0;
+  }
+  aside.where dt {
+    margin-top: 0.6rem;
+  }
+  aside.where dt:first-of-type {
+    margin-top: 0;
+  }
 }
 
 /* ── Jargon / aside ─────────────────────────────────── */

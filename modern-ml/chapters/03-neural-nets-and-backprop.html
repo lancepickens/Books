@@ -104,6 +104,15 @@
         $$ \mathrm{GELU}(z) \;=\; z \cdot \Phi(z) \;\approx\; \half z\Bigl(1 + \tanh\bigl(\sqrt{2/\pi}\,(z + 0.044715\, z^3)\bigr)\Bigr), $$
       </div>
 
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$z$</dt><dd>A scalar — one pre-activation value (the output of a linear map, before the nonlinearity). The function is applied to every entry independently.</dd>
+          <dt>$\Phi(z)$</dt><dd>A scalar in $(0,1)$ — the standard-normal cumulative distribution function: the probability a unit Gaussian lands below $z$. It plays the role of a soft, input-dependent gate.</dd>
+          <dt>$\tanh$</dt><dd>The hyperbolic tangent, an S-shaped function from $-1$ to $1$; used here only to approximate $\Phi$ cheaply.</dd>
+        </dl>
+      </aside>
+
       <p>where $\Phi$ is the standard normal CDF. GELU smoothly gates by the input's percentile rather than a hard cut at zero. <strong>SwiGLU</strong> (Shazeer 2020) is the gated-linear variant that dominates current LLM feedforward layers; we will meet it in Chapter V.</p>
 
       <hr class="section-rule" />
@@ -119,6 +128,18 @@
       <div class="equation-block">
         $$ \frac{\partial \mathcal{L}}{\partial \mathbf{z}_\ell} \;=\; \frac{\partial \mathcal{L}}{\partial \mathbf{h}_\ell} \odot \sigma'(\mathbf{z}_\ell), \qquad \frac{\partial \mathcal{L}}{\partial \mathbf{W}_\ell} \;=\; \frac{\partial \mathcal{L}}{\partial \mathbf{z}_\ell}\, \mathbf{h}_{\ell-1}^\top, \qquad \frac{\partial \mathcal{L}}{\partial \mathbf{h}_{\ell-1}} \;=\; \mathbf{W}_\ell^\top\, \frac{\partial \mathcal{L}}{\partial \mathbf{z}_\ell}. $$
       </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathbf{z}_\ell$</dt><dd>A vector — the pre-activation at layer $\ell$ ($\mathbf{z}_\ell = \mathbf{W}_\ell \mathbf{h}_{\ell-1} + \mathbf{b}_\ell$), before $\sigma$ is applied.</dd>
+          <dt>$\partial \mathcal{L} / \partial \mathbf{h}_\ell$</dt><dd>A vector of the same shape as $\mathbf{h}_\ell$ — how much the loss changes per unit change in each activation. This is the signal handed down from the layer above.</dd>
+          <dt>$\sigma'(\mathbf{z}_\ell)$</dt><dd>A vector — the derivative of the activation, evaluated entry-by-entry. For ReLU it is $1$ where $z>0$ and $0$ otherwise.</dd>
+          <dt>$\odot$</dt><dd>The Hadamard (elementwise) product: multiply two equal-length vectors entry by entry, giving a vector — not a dot product.</dd>
+          <dt>$\mathbf{h}_{\ell-1}^\top$</dt><dd>The transpose of the previous layer's activations, turning the column vector into a row so the product $\frac{\partial\mathcal{L}}{\partial\mathbf{z}_\ell}\,\mathbf{h}_{\ell-1}^\top$ is a matrix the same shape as $\mathbf{W}_\ell$ (an outer product).</dd>
+          <dt>$\mathbf{W}_\ell^\top$</dt><dd>The transpose of the weight matrix. Multiplying by it sends the gradient <em>backward</em> across the layer — the mirror image of the forward map.</dd>
+        </dl>
+      </aside>
 
       <p>That's it. The whole of backpropagation is the chain rule applied to each operation in the graph, plus the bookkeeping to traverse the graph in topological-reverse order. Total cost is the same as a forward pass within a constant factor (Baur &amp; Strassen 1983 — the <em>cheap gradient principle</em>).</p>
 
@@ -145,6 +166,18 @@
         $$ \mathbf{v}_{t+1} = \mu\, \mathbf{v}_t + \nabla \mathcal{L}, \qquad \boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t - \eta\, \mathbf{v}_{t+1}, $$
       </div>
 
+      <aside class="where">
+        <h4>Where (both updates above)</h4>
+        <dl>
+          <dt>$\boldsymbol{\theta}_t$</dt><dd>The parameter vector at step $t$; $\boldsymbol\theta_{t+1}$ is its value after one update.</dd>
+          <dt>$t$</dt><dd>A scalar (integer) — the iteration counter, one per minibatch.</dd>
+          <dt>$\eta$</dt><dd>A scalar — the learning rate, the size of each downhill step. Too big diverges, too small crawls.</dd>
+          <dt>$\nabla_{\boldsymbol\theta}\mathcal{L}_{\text{batch}}$</dt><dd>A vector the same shape as $\boldsymbol\theta$ — the gradient of the loss on the current minibatch. Points uphill, so we subtract it.</dd>
+          <dt>$\mathbf{v}_t$</dt><dd>A vector — the "velocity," an exponentially-decaying running average of past gradients.</dd>
+          <dt>$\mu$</dt><dd>A scalar in $[0,1)$ — the momentum coefficient (typically $0.9$). How much of the previous velocity carries over.</dd>
+        </dl>
+      </aside>
+
       <p>which accelerates progress along directions of consistent gradient sign. Nesterov's variant offers a sharper convergence bound on convex problems.</p>
 
       <p><strong>Adam</strong> (Kingma &amp; Ba 2014) tracks running estimates of the first and second moments of the gradient and uses them to give each parameter its own adaptive learning rate:</p>
@@ -156,6 +189,20 @@
       <div class="equation-block">
         $$ \hat{\mathbf{m}} = \mathbf{m}_{t+1} / (1 - \beta_1^{t+1}), \quad \hat{\mathbf{v}} = \mathbf{v}_{t+1} / (1 - \beta_2^{t+1}), \quad \boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t - \eta \frac{\hat{\mathbf{m}}}{\sqrt{\hat{\mathbf{v}}} + \eps}. $$
       </div>
+
+      <aside class="where">
+        <h4>Where (both Adam lines above)</h4>
+        <dl>
+          <dt>$\mathbf{g}_t$</dt><dd>A vector — the current gradient (shorthand for $\nabla_{\boldsymbol\theta}\mathcal{L}$); $\mathbf{g}_t^2$ squares it entry by entry.</dd>
+          <dt>$\mathbf{m}_{t+1}$</dt><dd>A vector — the running average of the gradient (the "first moment"). Like momentum.</dd>
+          <dt>$\mathbf{v}_{t+1}$</dt><dd>A vector — the running average of the squared gradient (the "second moment"). Estimates how large each coordinate's swings are. (Unrelated to the velocity $\mathbf{v}$ in momentum above — same letter, different role.)</dd>
+          <dt>$\beta_1, \beta_2$</dt><dd>Scalars in $[0,1)$ — the decay rates for the two averages (defaults $0.9$ and $0.999$). Closer to $1$ = longer memory.</dd>
+          <dt>$\hat{\mathbf{m}}, \hat{\mathbf{v}}$</dt><dd>The same averages after "bias correction" — dividing by $1-\beta^{t+1}$ undoes the fact that the averages start at zero and are too small early on.</dd>
+          <dt>$\sqrt{\hat{\mathbf{v}}}$</dt><dd>The entrywise square root: each parameter gets divided by its own typical gradient size, giving it an adaptive step.</dd>
+          <dt>$\eps$</dt><dd>A tiny scalar (e.g. $10^{-8}$) added to avoid dividing by zero.</dd>
+          <dt>$\eta$</dt><dd>A scalar — the global learning rate, as before.</dd>
+        </dl>
+      </aside>
 
       <p>Default $(\beta_1, \beta_2, \eps) = (0.9, 0.999, 10^{-8})$ works for almost everything. <strong>AdamW</strong> (Loshchilov &amp; Hutter 2019) is Adam with weight decay applied directly to the parameters rather than folded into the gradient — a small but consistent improvement, and the default for transformer training today.</p>
 

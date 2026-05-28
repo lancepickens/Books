@@ -116,7 +116,7 @@ Final answer: 511,684.</code></pre>
       <ol>
         <li><strong>Embed</strong> a corpus of documents into vectors with an embedding model.</li>
         <li>Given a query, embed it the same way.</li>
-        <li>Retrieve the top-$k$ corpus documents by similarity (typically cosine, sometimes a learned reranker on top).</li>
+        <li>Retrieve the top-$k$ corpus documents by similarity (typically <dfn title="cos(a,b) = (a·b)/(‖a‖‖b‖): the cosine of the angle between two vectors. 1 = same direction, 0 = perpendicular/unrelated, −1 = opposite. Ignores vector length, comparing only direction.">cosine similarity</dfn>, sometimes a learned reranker on top).</li>
         <li>Stuff the retrieved chunks into the model's context window along with the query, and ask the model to answer.</li>
       </ol>
 

@@ -72,6 +72,18 @@
         $$ \mathbf{h}_t \;=\; \sigma\bigl(\mathbf{W}_h \mathbf{h}_{t-1} + \mathbf{W}_x \mathbf{x}_t + \mathbf{b}\bigr). $$
       </div>
 
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$t$</dt><dd>A scalar (integer) — the position in the sequence; we step $t = 1, 2, 3, \dots$.</dd>
+          <dt>$\mathbf{x}_t$</dt><dd>A vector — the input at position $t$ (e.g. the embedding of the $t$-th word).</dd>
+          <dt>$\mathbf{h}_t$</dt><dd>A vector — the hidden state, a running summary of everything seen up to position $t$. $\mathbf{h}_{t-1}$ is the previous step's summary.</dd>
+          <dt>$\mathbf{W}_h, \mathbf{W}_x$</dt><dd>Matrices — the (shared, reused at every step) weights that mix in the previous state and the new input.</dd>
+          <dt>$\mathbf{b}$</dt><dd>A bias vector.</dd>
+          <dt>$\sigma$</dt><dd>An elementwise nonlinearity. Note $\mathbf{W}_h$ multiplies repeatedly across steps — the source of the vanishing/exploding-gradient trouble described next.</dd>
+        </dl>
+      </aside>
+
       <p>This is a beautiful idea — a model with state that can in principle remember arbitrarily long histories. The execution had two flaws.</p>
 
       <p>First, training: gradients through $T$ time steps multiply $T$ factors of $\mathbf{W}_h$, which either vanish (most directions in $\mathbf{W}_h$) or explode (a few directions). The LSTM (Hochreiter &amp; Schmidhuber 1997) and GRU (Cho et al. 2014) routed information through gates designed to keep gradients alive, and ran the field for two decades.</p>
@@ -95,10 +107,14 @@
       <aside class="where">
         <h4>Where</h4>
         <dl>
-          <dt>$\mathbf{Q}\mathbf{K}^\top \in \mathbb{R}^{n \times m}$</dt><dd>Pairwise similarity scores: entry $(i, j)$ measures how much query $i$ looks like key $j$.</dd>
+          <dt>$\mathbf{Q}$</dt><dd>An $n \times d_k$ matrix — one query vector per row (one per position asking "what am I looking for?").</dd>
+          <dt>$\mathbf{K}$</dt><dd>An $m \times d_k$ matrix — one key vector per row (each advertising "here's what I contain").</dd>
+          <dt>$\mathbf{V}$</dt><dd>An $m \times d_v$ matrix — one value vector per row (the actual content returned when a key is matched).</dd>
+          <dt>$d_k$</dt><dd>A scalar — the dimension of the query/key vectors.</dd>
+          <dt>$\mathbf{Q}\mathbf{K}^\top \in \mathbb{R}^{n \times m}$</dt><dd>Pairwise similarity scores: entry $(i, j)$ measures how much query $i$ looks like key $j$. ($\mathbf{K}^\top$ is the transpose, so each query-row dots against each key.)</dd>
           <dt>$1/\sqrt{d_k}$</dt><dd>Scaling: without it, dot products grow as $\sqrt{d_k}$ in magnitude, pushing softmax into saturated regions where gradients vanish.</dd>
           <dt>softmax (row-wise)</dt><dd>Converts each row to a probability distribution over keys. Each query winds up with a soft selection over values.</dd>
-          <dt>output</dt><dd>$n \times d_v$. Row $i$ is the value retrieved by query $i$.</dd>
+          <dt>output</dt><dd>An $n \times d_v$ matrix. Row $i$ is the value retrieved by query $i$.</dd>
         </dl>
       </aside>
 
@@ -113,6 +129,15 @@
       <div class="equation-block">
         $$ \mathbf{Q} = \mathbf{X}\mathbf{W}_Q, \qquad \mathbf{K} = \mathbf{X}\mathbf{W}_K, \qquad \mathbf{V} = \mathbf{X}\mathbf{W}_V, $$
       </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathbf{X}$</dt><dd>An $n \times d$ matrix — the input sequence, one token embedding per row.</dd>
+          <dt>$\mathbf{W}_Q, \mathbf{W}_K, \mathbf{W}_V$</dt><dd>Learned $d \times d_k$ projection matrices — three different linear maps that turn each token into its query, key, and value. These are the trainable parameters of an attention layer.</dd>
+          <dt>$\mathbf{Q}, \mathbf{K}, \mathbf{V}$</dt><dd>The resulting query/key/value matrices, now all derived from the <em>same</em> input $\mathbf{X}$ — that "self" is what makes it self-attention.</dd>
+        </dl>
+      </aside>
 
       <p>and the attention layer's output is $\mathrm{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V})$. Each token's new representation is a weighted average of every other token's value, weighted by content similarity. Information flows from anywhere to anywhere in a single layer.</p>
 
@@ -132,11 +157,32 @@
         $$ \mathbf{x}' \;=\; \mathbf{x} + \mathrm{Attn}\bigl(\mathrm{LN}(\mathbf{x})\bigr), \qquad \mathbf{x}'' \;=\; \mathbf{x}' + \mathrm{MLP}\bigl(\mathrm{LN}(\mathbf{x}')\bigr). $$
       </div>
 
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathbf{x}$</dt><dd>The block's input (the residual stream); $\mathbf{x}'$ and $\mathbf{x}''$ are the running totals after the two sublayers.</dd>
+          <dt>$\mathrm{LN}(\cdot)$</dt><dd>Layer normalization — rescales each token's vector to a standard distribution before the sublayer (this "pre-norm" placement is what trains stably).</dd>
+          <dt>$\mathrm{Attn}(\cdot)$</dt><dd>The self-attention sublayer from above — moves information <em>between</em> positions.</dd>
+          <dt>$\mathrm{MLP}(\cdot)$</dt><dd>A small feed-forward network — processes each position <em>independently</em>.</dd>
+          <dt>$\mathbf{x} + (\dots)$</dt><dd>The residual connection: each sublayer only adds to the stream, it never overwrites it.</dd>
+        </dl>
+      </aside>
+
       <p>The MLP is a position-wise two-layer feed-forward network — typically 4× the embedding dimension wide — applied independently to every token. The modern feed-forward block is <strong>SwiGLU</strong> (Shazeer 2020):</p>
 
       <div class="equation-block">
         $$ \mathrm{SwiGLU}(\mathbf{x}) \;=\; \bigl(\mathrm{Swish}(\mathbf{x}\mathbf{W}_1) \odot \mathbf{x}\mathbf{W}_2\bigr)\, \mathbf{W}_3, $$
       </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathbf{x}$</dt><dd>A single token's vector (the feed-forward block runs on each position independently).</dd>
+          <dt>$\mathbf{W}_1, \mathbf{W}_2, \mathbf{W}_3$</dt><dd>Three learned weight matrices: two project the input up to a wider hidden size, the third projects back down.</dd>
+          <dt>$\mathrm{Swish}(z) = z\,\sigma(z)$</dt><dd>A smooth nonlinearity (also called SiLU), close cousin of GELU.</dd>
+          <dt>$\odot$</dt><dd>Elementwise product — one branch <em>gates</em> the other, letting the layer modulate how much of each feature passes through.</dd>
+        </dl>
+      </aside>
 
       <p>which gates the activation by another linear projection — empirically a meaningful boost over a plain GELU MLP. Normalization is almost always <em>pre-norm</em> (apply LN inside the residual) for training stability; <em>post-norm</em> (LN after the residual addition) is the original Vaswani recipe and is harder to train past 12 layers without warmup tricks.</p>
 
@@ -145,6 +191,18 @@
       <div class="equation-block">
         $$ \mathbf{x}_0 = \mathrm{Embed}(\text{tokens}) + \mathrm{Pos}, \quad \mathbf{x}_\ell = \mathrm{Block}_\ell(\mathbf{x}_{\ell-1}), \quad \text{logits} = \mathbf{x}_L \mathbf{W}_U. $$
       </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathrm{Embed}(\text{tokens})$</dt><dd>Look up each token's learned embedding vector from a table — turns integer token IDs into vectors.</dd>
+          <dt>$\mathrm{Pos}$</dt><dd>The positional encoding added in, so the model knows the order of the tokens (next section).</dd>
+          <dt>$\mathbf{x}_\ell$</dt><dd>The residual stream after $\ell$ blocks; $\mathbf{x}_0$ is the input, $\mathbf{x}_L$ the output of the final ($L$-th) block.</dd>
+          <dt>$\mathrm{Block}_\ell$</dt><dd>The $\ell$-th transformer block (the two-sublayer unit above). The model is just $L$ of these stacked.</dd>
+          <dt>$\mathbf{W}_U$</dt><dd>The unembedding matrix — projects each final vector to one score per vocabulary token.</dd>
+          <dt>logits</dt><dd>The raw, pre-softmax scores over the vocabulary; a softmax turns them into next-token probabilities.</dd>
+        </dl>
+      </aside>
 
       <hr class="section-rule" />
 
@@ -157,6 +215,16 @@
       <div class="equation-block">
         $$ \mathrm{PE}(p, 2k) = \sin(p / 10000^{2k/d}), \qquad \mathrm{PE}(p, 2k+1) = \cos(p / 10000^{2k/d}). $$
       </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$p$</dt><dd>A scalar (integer) — the position of the token in the sequence ($0, 1, 2, \dots$).</dd>
+          <dt>$k$</dt><dd>A scalar (integer) — which pair of dimensions of the embedding we're filling; each pair $(2k, 2k{+}1)$ gets a sine and a cosine.</dd>
+          <dt>$d$</dt><dd>The embedding dimension. Different $k$ use different wavelengths, so together they encode position at many scales.</dd>
+          <dt>$10000^{2k/d}$</dt><dd>The wavelength: small for low $k$ (fast oscillation, fine position), huge for high $k$ (slow oscillation, coarse position).</dd>
+        </dl>
+      </aside>
 
       <p>Later models used learned absolute position embeddings, then relative position bias (T5; ALiBi). The modern dominant choice in LLaMA-family models is <strong>RoPE</strong> (Rotary Position Embedding; Su et al. 2021): rotate the query and key vectors by an angle proportional to position, encoding position into the <em>angle</em> of $\mathbf{Q}$ and $\mathbf{K}$ rather than adding to the embedding. The attention score between positions $i$ and $j$ then depends only on $i - j$, the relative offset — an elegant geometric property that extrapolates better to longer sequences than absolute encoding.</p>
 

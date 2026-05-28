@@ -96,6 +96,8 @@
         $$ \text{accuracy}(\text{problem}) \;\approx\; f(\text{model size},\; \text{training compute},\; \underbrace{\text{inference compute}}_{\text{new axis}}). $$
       </div>
 
+      <p>Reading it: $f$ is some increasing function, and each argument is a quantity of compute measured in FLOPs (floating-point operations). The first two — how big the model is and how much compute went into training it — are the axes Chapter VI scaled. <em>Inference compute</em>, the compute spent thinking at answer time, is the new third axis this chapter is about.</p>
+
       <p>Snell et al. (2024) showed empirically that, on hard problems, spending compute at inference time — through long CoT, repeated sampling, or tree search — can substitute for spending compute at training time. A smaller model that thinks for a minute often beats a larger model that answers in a second. The implication for the field is large: pretraining is no longer the only place to scale.</p>
 
       <hr class="section-rule" />

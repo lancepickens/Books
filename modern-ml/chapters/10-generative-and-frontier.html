@@ -110,17 +110,44 @@
         $$ \mathcal{L}(\boldsymbol\theta) \;=\; \mathbb{E}_{t,\, \mathbf{x}_0,\, \eps}\bigl[\,\norm{\eps - \eps_\theta(\sqrt{\bar\alpha_t} \mathbf{x}_0 + \sqrt{1 - \bar\alpha_t}\, \eps,\, t)}^2 \,\bigr]. $$
       </div>
 
+      <aside class="where">
+        <h4>Where (the three diffusion equations above)</h4>
+        <dl>
+          <dt>$\mathbf{x}_0$</dt><dd>A clean data sample (e.g. a real image), as a vector.</dd>
+          <dt>$\mathbf{x}_t$</dt><dd>The sample after $t$ steps of added noise; $\mathbf{x}_T$ is (almost) pure noise.</dd>
+          <dt>$t$</dt><dd>A scalar (integer) — the timestep / noise level, from $1$ to $T$.</dd>
+          <dt>$\mathcal{N}(\mathbf{x};\, \mu,\, \Sigma)$</dt><dd>A Gaussian (normal) distribution over $\mathbf{x}$ with mean $\mu$ and covariance $\Sigma$ — the bell curve in many dimensions.</dd>
+          <dt>$\beta_t$</dt><dd>A scalar in $(0,1)$ — how much noise is injected at step $t$ (the fixed noise schedule).</dd>
+          <dt>$\bar\alpha_t$</dt><dd>A scalar — the cumulative product $\prod_{s\le t}(1-\beta_s)$: the fraction of the original signal still present at step $t$. Lets you jump straight to any noise level.</dd>
+          <dt>$\mathbf{I}$</dt><dd>The identity matrix — here it means the noise is added independently in every dimension with equal variance.</dd>
+          <dt>$\eps$</dt><dd>A noise vector drawn from a unit Gaussian $\mathcal{N}(0,\mathbf{I})$ — the actual randomness added.</dd>
+          <dt>$\eps_\theta(\cdot)$</dt><dd>The neural network — given a noisy input and the timestep, it predicts the noise $\eps$ that was added. Training regresses its guess against the true $\eps$.</dd>
+          <dt>$\norm{\cdot}^2$</dt><dd>The squared length of the error vector — plain mean-squared error between true and predicted noise.</dd>
+        </dl>
+      </aside>
+
       <p>Sample $\mathbf{x}_0$ from data, sample $t$ uniformly from $\{1, \dots, T\}$, sample $\eps$ from a unit Gaussian, regress. To generate, start from $\mathbf{x}_T \sim \mathcal{N}(0, \mathbf{I})$ and iteratively denoise using $\eps_\theta$ for $T$ steps, ending at $\mathbf{x}_0$. The denoising network is typically a U-Net (Ronneberger et al. 2015) for images, or a transformer (DiT; Peebles &amp; Xie 2023) for larger models.</p>
 
       <hr class="section-rule" />
 
       <h2><span class="sec-num">§3</span>The score-matching and SDE view</h2>
 
-      <p>Song &amp; Ermon (2019) and Song et al. (2021) gave the cleanest formulation: the model learns the <strong>score</strong> $\nabla_{\mathbf{x}} \log p_t(\mathbf{x})$ — the gradient of log-density at noise level $t$. The reverse process is then a stochastic differential equation</p>
+      <p>Song &amp; Ermon (2019) and Song et al. (2021) gave the cleanest formulation: the model learns the <strong>score</strong> $\nabla_{\mathbf{x}} \log p_t(\mathbf{x})$ — the gradient of log-density at noise level $t$, a vector that at every point indicates the direction of higher data probability. The reverse process is then a <dfn title="A differential equation with a random (noise) term, so it describes a trajectory that is partly deterministic drift and partly random wiggle. The continuous-time version of the step-by-step denoising.">stochastic differential equation</dfn></p>
 
       <div class="equation-block">
         $$ \dd \mathbf{x} \;=\; \bigl[\mathbf{f}(\mathbf{x}, t) - g(t)^2 \nabla_{\mathbf{x}} \log p_t(\mathbf{x})\bigr] \dd t + g(t)\, \dd \bar{\mathbf{w}}, $$
       </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\dd\mathbf{x}$</dt><dd>An infinitesimal change in the sample over an infinitesimal time $\dd t$ — the equation says how $\mathbf{x}$ evolves moment to moment.</dd>
+          <dt>$\mathbf{f}(\mathbf{x}, t)$</dt><dd>The drift term — the deterministic pull (set by the forward process being reversed).</dd>
+          <dt>$g(t)$</dt><dd>A scalar — the diffusion coefficient, controlling how much randomness enters at time $t$.</dd>
+          <dt>$\nabla_{\mathbf{x}} \log p_t(\mathbf{x})$</dt><dd>The score (a vector) — points toward higher-probability regions. Following it is what turns noise back into data; the network supplies it.</dd>
+          <dt>$\dd\bar{\mathbf{w}}$</dt><dd>A step of Brownian motion (random Gaussian wiggle) running backward in time — the stochastic part.</dd>
+        </dl>
+      </aside>
 
       <p>which moves $\mathbf{x}_T$ noise back to $\mathbf{x}_0$ data along the score field. The DDPM loss above is one specific discretization. The SDE view also exposes a deterministic <em>probability-flow ODE</em> with the same marginals, giving samplers (DDIM, DPM-Solver, EDM) that produce samples in 20–50 steps rather than 1000.</p>
 
@@ -140,6 +167,17 @@
         $$ \tilde\eps_\theta(\mathbf{x}_t, t, \mathbf{c}) \;=\; (1 + w)\, \eps_\theta(\mathbf{x}_t, t, \mathbf{c}) - w\, \eps_\theta(\mathbf{x}_t, t, \emptyset). $$
       </div>
 
+      <aside class="where">
+        <h4>Where (both equations above)</h4>
+        <dl>
+          <dt>$\mathbf{c}$</dt><dd>The conditioning — a vector encoding the text prompt (from a frozen CLIP or T5 text encoder). The model's noise prediction now depends on it.</dd>
+          <dt>$\emptyset$</dt><dd>The "null" / empty condition — what you feed when there's no prompt. The model is trained on both, dropping $\mathbf{c}$ a fraction of the time.</dd>
+          <dt>$\eps_\theta(\mathbf{x}_t, t, \mathbf{c})$ vs. $\eps_\theta(\mathbf{x}_t, t, \emptyset)$</dt><dd>The conditional and unconditional noise predictions. Their <em>difference</em> is the direction the prompt pulls the image.</dd>
+          <dt>$w$</dt><dd>A scalar — the guidance strength ($\approx 5$–$8$). Larger $w$ amplifies prompt adherence at the cost of diversity; $w=0$ recovers plain conditional sampling.</dd>
+          <dt>$\tilde\eps_\theta$</dt><dd>The guided noise prediction actually used during sampling.</dd>
+        </dl>
+      </aside>
+
       <p>With $w > 0$ the sampler is pushed in the direction the conditioning shifts, amplifying prompt adherence at the cost of some sample diversity. $w$ around 5–8 is standard for Stable Diffusion-class models.</p>
 
       <p><strong>Latent diffusion</strong> (Rombach et al. 2022, the architecture under Stable Diffusion) runs the diffusion process not on raw pixels but on the latent of a pretrained VAE — about 8× smaller per side, $64\times$ less compute. Every modern text-to-image and text-to-video system uses a latent space of some kind.</p>
@@ -153,6 +191,18 @@
       <div class="equation-block">
         $$ \mathcal{L}(\boldsymbol\theta) \;=\; \mathbb{E}_{t,\, \mathbf{x}_0,\, \mathbf{x}_1}\bigl[\,\norm{(\mathbf{x}_1 - \mathbf{x}_0) - \mathbf{v}_\theta(t \mathbf{x}_1 + (1-t)\mathbf{x}_0,\, t)}^2 \,\bigr]. $$
       </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathbf{x}_0$</dt><dd>A noise sample (here the start of the path), as a vector.</dd>
+          <dt>$\mathbf{x}_1$</dt><dd>A data sample (the end of the path). Flow matching learns to travel from $\mathbf{x}_0$ to $\mathbf{x}_1$.</dd>
+          <dt>$t \mathbf{x}_1 + (1-t)\mathbf{x}_0$</dt><dd>A point on the straight line between noise and data, at fraction $t \in [0,1]$ — where the network is asked for its velocity.</dd>
+          <dt>$\mathbf{x}_1 - \mathbf{x}_0$</dt><dd>The target velocity: the constant direction that walks straight from noise to data.</dd>
+          <dt>$\mathbf{v}_\theta(\cdot)$</dt><dd>The network's predicted velocity field. Training regresses it onto the target velocity — no noise schedule, no $\bar\alpha_t$.</dd>
+          <dt>$t$</dt><dd>A scalar in $[0,1]$ — position along the path (continuous time, not discrete steps).</dd>
+        </dl>
+      </aside>
 
       <p>Simpler than DDPM (no noise schedule, no $\bar\alpha_t$ algebra), trains stably, often gives straighter sampling paths so you need fewer integration steps. Flow matching and its variants (Rectified Flow, Optimal Transport flow) are the technique behind several 2024–25 frontier image and video models (Stable Diffusion 3, Flux, and Sora-class systems by inference).</p>
 
