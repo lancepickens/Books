@@ -1,0 +1,64 @@
+<!doctype html>
+<!-- TEMPLATE book cover + TOC. Replace <PLACEHOLDERS>. Keep KaTeX CDN tags (with
+     their integrity hashes) and the structure exactly; they are shared by every book. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><BOOK TITLE></title>
+  <meta name="description" content="<ONE-LINE BOOK DESCRIPTION>" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../">← Books</a>
+      <span class="crumb-section"><SHORT BOOK NAME></span>
+    </header>
+
+    <article>
+      <p class="cover-eyebrow"><EYEBROW, e.g. "An Introduction"></p>
+      <h1 class="cover-title"><BOOK TITLE></h1>
+      <p class="cover-subtitle"><ONE-SENTENCE PITCH; mention "something to play with in every chapter".></p>
+      <p class="cover-meta"><strong>10 chapters</strong> · in browser · self-contained</p>
+
+      <hr class="section-rule" />
+
+      <div class="toc-wrap">
+        <ol class="toc">
+          <!-- Repeat this <li> for each chapter. Use Roman numerals in .toc-num. -->
+          <li>
+            <a href="chapters/01-<slug>.html">
+              <span class="toc-num">I</span>
+              <span>
+                <span class="toc-title"><CHAPTER TITLE></span>
+                <span class="toc-desc"><ONE-SENTENCE CHAPTER DESCRIPTION></span>
+              </span>
+            </a>
+          </li>
+          <!-- ... chapters II–X ... -->
+        </ol>
+      </div>
+
+      <hr class="ornament" />
+
+      <p style="font-family: var(--sans); font-size: 0.85rem; color: var(--text-muted); text-align: center; max-width: 38rem;">
+        <!-- The conventions footer: units, symbol meanings, any coordinate/notation switches,
+             reference constants, and the audience contract. State everything a reader needs to
+             read every chapter consistently. Inline math renders via KaTeX. -->
+        Conventions used throughout: <FILL IN>.
+      </p>
+    </article>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="book.js"></script>
+</body>
+</html>

@@ -1,2 +1,4 @@
-.claude/
+# Ignore local Claude state, but track shared project skills under .claude/skills/.
+.claude/*
+!.claude/skills/
 .DS_Store

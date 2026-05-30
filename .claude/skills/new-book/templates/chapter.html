@@ -1,0 +1,94 @@
+<!doctype html>
+<!-- TEMPLATE chapter. Replace <PLACEHOLDERS>. The <head> and the trailing <script>
+     tags (KaTeX CDN with integrity hashes, ../book.js, ../interactive/<slug>.js) must
+     be present and correct. See reference/house-style.md for the full conventions. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter <ROMAN> · <SHORT TITLE> — <BOOK TITLE></title>
+  <meta name="description" content="<ONE-LINE CHAPTER DESCRIPTION>" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter <ROMAN> of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter <ROMAN></p>
+      <h1 class="chapter-title"><CHAPTER TITLE></h1>
+      <p class="lede"><ONE VIVID ITALIC SENTENCE.></p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p><TWO plain-English paragraphs, almost no math: what this chapter does and why.></p>
+          <p><...></p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt><Term></dt><dd><Plain definition.></dd>
+          <!-- 18–30 terms: every domain word a newcomer wouldn't know. -->
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span><Section heading></h2>
+
+      <p><Prose. Introduce a term inline with <dfn title="one-sentence definition">term</dfn>.></p>
+
+      <div class="equation-block">
+        $$ <equation> $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$<symbol>$</dt><dd><Type (scalar / vector / field / constant w/ value+units) and role.></dd>
+          <!-- one row per symbol the equation introduces -->
+        </dl>
+      </aside>
+
+      <!-- Optional asides:
+        <aside class="jargon"><h4>TITLE</h4><p>…</p></aside>
+        <aside class="note"><h4>Note</h4><p>…</p></aside>
+        Separate major sections with: <hr class="section-rule" /> -->
+
+      <section class="interactive" data-widget="<widget-slug>" aria-label="<description>">
+        <header>
+          <h4>Interactive · <Widget title></h4>
+          <span class="hint"><short verbs, e.g. "drag · resample"></span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption"><2–4 sentences explaining what it shows and the physics; inline $math$ ok.></p>
+      </section>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title"><Author(s).></span> <em><Title></em>, edition/venue year — coverage, with §/chapter or arXiv ID.</li>
+          <!-- 5–7 verified sources -->
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="<PREV>.html"><span class="label">← Previous</span><PREV LABEL></a>
+      <a class="next" href="<NEXT>.html"><span class="label">Next chapter</span><NEXT LABEL> →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/<widget-slug>.js"></script>
+</body>
+</html>
