@@ -1,0 +1,619 @@
+/* Meteorology: The Atmosphere in Motion — editorial theme.
+   Self-contained, browser-only. Inspired by Stripe Press / Tufte CSS / Distill.
+   Distinct from the prior books by a storm slate-blue accent
+   (string-theory: terracotta; comp-chem: petroleum-teal; modern-ml: forest-green). */
+
+:root {
+  --bg: #fbfaf7;
+  --bg-card: #ffffff;
+  --bg-soft: #eceff3;
+  --text: #1c1f21;
+  --text-muted: #5f6d72;
+  --text-faint: #8e9a9e;
+  --accent: #2b5c8a;
+  --accent-soft: #e3eaf1;
+  --accent-deep: #173a5a;
+  --rule: #dde3ea;
+  --rule-strong: #c6cfd9;
+
+  --serif: "Source Serif 4", "Source Serif Pro", "Charter", "Iowan Old Style", "Hoefler Text", Georgia, serif;
+  --sans: "Inter", "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Consolas, monospace;
+
+  --measure: 36rem;
+  --measure-wide: 52rem;
+  --measure-full: 64rem;
+}
+
+* { box-sizing: border-box; }
+html { font-size: 18px; -webkit-text-size-adjust: 100%; }
+@media (max-width: 600px) { html { font-size: 17px; } }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 1.02rem;
+  line-height: 1.62;
+  font-feature-settings: "kern", "liga", "onum";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Page frame ─────────────────────────────────────── */
+
+.page {
+  max-width: var(--measure-full);
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 5rem;
+}
+
+header.book-bar {
+  font-family: var(--sans);
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.85rem;
+  margin-bottom: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  font-weight: 500;
+}
+header.book-bar a {
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 120ms;
+}
+header.book-bar a:hover { border-bottom-color: var(--accent); color: var(--accent); }
+header.book-bar .crumb-section { color: var(--text-faint); }
+
+/* ── Article column ─────────────────────────────────── */
+
+article {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+article > * {
+  width: 100%;
+  max-width: var(--measure);
+}
+article > figure,
+article > .interactive,
+article > .figure-wide,
+article > .equation-block.wide {
+  max-width: var(--measure-wide);
+}
+article > .toc-wrap { max-width: var(--measure-wide); }
+
+/* ── Typography ─────────────────────────────────────── */
+
+p.chapter-eyebrow {
+  font-family: var(--sans);
+  text-transform: uppercase;
+  font-size: 0.76rem;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+  margin: 0 auto 0.9rem;
+  font-weight: 600;
+}
+
+h1.chapter-title {
+  font-size: 2.6rem;
+  line-height: 1.08;
+  letter-spacing: -0.012em;
+  margin: 0 auto 1rem;
+  font-weight: 600;
+}
+
+p.lede {
+  font-size: 1.18rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 0 auto 2.5rem;
+  max-width: 36rem;
+}
+
+h2 {
+  font-size: 1.42rem;
+  margin: 3rem auto 0.85rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  position: relative;
+}
+h2 .sec-num {
+  color: var(--accent);
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 0.85em;
+  margin-right: 0.6em;
+  letter-spacing: 0.02em;
+}
+
+h3 {
+  font-size: 1.1rem;
+  margin: 2rem auto 0.5rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+p { margin: 0 auto 1.05rem; }
+
+article > p + p { text-indent: 0; }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+a {
+  color: var(--accent-deep);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 0.6px;
+  text-decoration-color: rgba(43, 92, 138, 0.5);
+  transition: color 120ms, text-decoration-color 120ms;
+}
+a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+dfn {
+  font-style: normal;
+  font-weight: 500;
+  border-bottom: 1px dotted var(--accent);
+  cursor: help;
+}
+
+blockquote {
+  border-left: 2px solid var(--accent);
+  margin: 1.5rem auto;
+  padding: 0.15rem 0 0.15rem 1.1rem;
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: 1.05rem;
+  max-width: 34rem;
+}
+blockquote p:last-child { margin-bottom: 0; }
+
+ul, ol { margin: 0 auto 1.05rem; padding-left: 1.25rem; }
+li { margin-bottom: 0.35rem; }
+li::marker { color: var(--text-faint); }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.92em;
+  background: var(--bg-soft);
+  padding: 0.05em 0.32em;
+  border-radius: 2px;
+}
+
+pre {
+  font-family: var(--mono);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  background: var(--bg-soft);
+  padding: 0.85rem 1rem;
+  border-radius: 3px;
+  overflow-x: auto;
+  margin: 1.3rem auto;
+  max-width: var(--measure-wide);
+}
+pre code { background: transparent; padding: 0; font-size: 1em; }
+
+hr.section-rule {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 3rem auto;
+  width: 6rem;
+}
+
+hr.ornament {
+  border: 0;
+  margin: 3rem auto;
+  width: 100%;
+  text-align: center;
+  font-family: var(--serif);
+  color: var(--text-faint);
+  letter-spacing: 1em;
+}
+hr.ornament::before { content: "✦ ✦ ✦"; letter-spacing: 1em; }
+
+/* ── Equations ──────────────────────────────────────── */
+
+.equation-block {
+  margin: 1.4rem auto 1.6rem;
+  padding: 0.25rem 0;
+}
+.equation-block .katex-display {
+  margin: 0.5rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+.equation-block .eq-label {
+  float: right;
+  color: var(--text-faint);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  margin-top: -2.2rem;
+}
+
+.katex { font-size: 1.05em; }
+.katex-display { margin: 1.2rem 0; }
+
+/* "Where" block — variable legend after an equation */
+aside.where {
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 0.8rem 0 0.85rem;
+  margin: 1rem auto 1.6rem;
+  font-size: 0.94rem;
+}
+aside.where h4 {
+  font-family: var(--sans);
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin: 0 0 0.55rem;
+  font-weight: 600;
+}
+aside.where dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.35rem 1rem;
+  align-items: baseline;
+}
+aside.where dt {
+  font-family: var(--serif);
+  font-weight: 500;
+}
+aside.where dt .katex { font-size: 1em; }
+aside.where dd {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* ── Chapter preamble (plain-English summary + glossary) ── */
+
+section.preamble {
+  background: var(--bg-soft);
+  border-radius: 4px;
+  padding: 1.4rem 1.75rem 1.5rem;
+  margin: 1.6rem auto 2.6rem;
+  font-size: 0.98rem;
+}
+section.preamble .preamble-title {
+  font-family: var(--sans);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent-deep);
+  margin: 0 0 0.9rem;
+}
+section.preamble .preamble-body p {
+  margin: 0 0 0.7rem;
+  color: var(--text);
+  line-height: 1.55;
+}
+section.preamble .preamble-body p:last-child {
+  margin-bottom: 0.2rem;
+}
+section.preamble .glossary-title {
+  font-family: var(--sans);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin: 1.4rem 0 0.7rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 0.95rem;
+}
+section.preamble dl.glossary {
+  margin: 0;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.5rem 1.2rem;
+  align-items: baseline;
+  font-size: 0.93rem;
+  line-height: 1.5;
+}
+section.preamble dl.glossary dt {
+  font-family: var(--serif);
+  font-weight: 600;
+  color: var(--text);
+}
+section.preamble dl.glossary dd {
+  margin: 0;
+  color: var(--text-muted);
+}
+@media (max-width: 600px) {
+  section.preamble {
+    padding: 1.2rem 1.1rem 1.3rem;
+  }
+  section.preamble dl.glossary {
+    grid-template-columns: 1fr;
+    gap: 0.1rem 0;
+  }
+  section.preamble dl.glossary dt {
+    margin-top: 0.7rem;
+  }
+  section.preamble dl.glossary dt:first-of-type {
+    margin-top: 0;
+  }
+  /* "Where" legends also stack on narrow screens so wide symbol
+     cells never overflow horizontally. */
+  aside.where dl {
+    grid-template-columns: 1fr;
+    gap: 0.1rem 0;
+  }
+  aside.where dt {
+    margin-top: 0.6rem;
+  }
+  aside.where dt:first-of-type {
+    margin-top: 0;
+  }
+}
+
+/* ── Jargon / aside ─────────────────────────────────── */
+
+aside.jargon {
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  padding: 0.9rem 1.15rem 1rem;
+  margin: 1.6rem auto;
+  font-size: 0.96rem;
+  border-radius: 0 2px 2px 0;
+}
+aside.jargon h4 {
+  font-family: var(--sans);
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--accent-deep);
+  margin: 0 0 0.4rem;
+  font-weight: 700;
+}
+aside.jargon p { margin: 0 0 0.4rem; }
+aside.jargon p:last-child { margin-bottom: 0; }
+
+aside.note {
+  background: var(--bg-soft);
+  padding: 0.85rem 1.1rem;
+  margin: 1.4rem auto;
+  font-size: 0.94rem;
+  border-radius: 2px;
+}
+aside.note h4 {
+  font-family: var(--sans);
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin: 0 0 0.4rem;
+  font-weight: 600;
+}
+aside.note p { margin: 0 0 0.4rem; }
+aside.note p:last-child { margin-bottom: 0; }
+
+/* ── Interactive widget container ───────────────────── */
+
+.interactive {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  padding: 1.25rem 1.5rem 1.6rem;
+  margin: 2.2rem auto;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+}
+.interactive header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+  gap: 1rem;
+}
+.interactive h4 {
+  font-family: var(--sans);
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin: 0;
+  font-weight: 700;
+}
+.interactive .hint {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--text-faint);
+}
+.interactive .caption {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 0.6rem;
+  line-height: 1.45;
+}
+
+/* ── Figures ────────────────────────────────────────── */
+
+figure { margin: 2rem auto; }
+figure svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+figcaption {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 0.7rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* ── TOC (book index) ───────────────────────────────── */
+
+.toc-wrap { margin: 2.5rem auto 1rem; }
+
+ol.toc {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid var(--rule);
+}
+ol.toc li {
+  border-bottom: 1px solid var(--rule);
+}
+ol.toc li a {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  column-gap: 1.25rem;
+  padding: 1.1rem 0.25rem 1.15rem;
+  text-decoration: none;
+  color: var(--text);
+  transition: background 120ms;
+}
+ol.toc li a:hover { background: var(--bg-soft); }
+ol.toc li a:hover .toc-title { color: var(--accent); }
+ol.toc .toc-num {
+  font-family: var(--sans);
+  color: var(--text-faint);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  padding-top: 0.18rem;
+}
+ol.toc .toc-title {
+  font-size: 1.12rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  transition: color 120ms;
+}
+ol.toc .toc-desc {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* ── Further reading / citations ────────────────────── */
+
+section.further-reading {
+  margin: 3rem auto 1rem;
+  font-size: 0.93rem;
+}
+section.further-reading h2 {
+  font-size: 1rem;
+  font-family: var(--sans);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin: 0 0 0.8rem;
+}
+section.further-reading h2 .sec-num { display: none; }
+section.further-reading ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+section.further-reading li {
+  padding: 0.45rem 0;
+  border-bottom: 1px dotted var(--rule);
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+section.further-reading li .src-title { color: var(--text); font-weight: 500; }
+section.further-reading li code { font-size: 0.82em; background: transparent; color: var(--accent-deep); padding: 0; }
+
+/* ── Chapter nav footer ─────────────────────────────── */
+
+footer.chapter-nav {
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--rule);
+  padding-top: 1.5rem;
+  margin-top: 4rem;
+  gap: 1.5rem;
+  max-width: var(--measure-wide);
+  width: 100%;
+}
+footer.chapter-nav a {
+  color: var(--text);
+  text-decoration: none;
+  display: block;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color 120ms;
+}
+footer.chapter-nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+footer.chapter-nav .label {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 0.2rem;
+  font-weight: 600;
+}
+footer.chapter-nav .prev { text-align: left; }
+footer.chapter-nav .next { text-align: right; margin-left: auto; }
+
+/* ── Cover page bits (book index only) ──────────────── */
+
+.cover-eyebrow {
+  font-family: var(--sans);
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  margin: 0 auto 1.2rem;
+  font-weight: 600;
+}
+.cover-title {
+  font-size: 3.4rem;
+  line-height: 1.02;
+  letter-spacing: -0.018em;
+  margin: 0 auto 1.4rem;
+  font-weight: 600;
+  max-width: 14ch;
+}
+@media (max-width: 600px) {
+  .cover-title { font-size: 2.6rem; }
+}
+.cover-subtitle {
+  font-size: 1.25rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 0 auto 2.5rem;
+  max-width: 30rem;
+}
+.cover-meta {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: var(--text-faint);
+  letter-spacing: 0.05em;
+  margin: 0 auto 3rem;
+}
+.cover-meta strong { color: var(--text-muted); font-weight: 500; }
+
+/* ── KaTeX overrides for editorial feel ─────────────── */
+
+.katex-display > .katex { font-size: 1.12em; }
+.katex .mathit, .katex .mathnormal { font-style: italic; }
+
+/* Long equations on narrow screens */
+@media (max-width: 600px) {
+  .katex-display { font-size: 0.95em; }
+}

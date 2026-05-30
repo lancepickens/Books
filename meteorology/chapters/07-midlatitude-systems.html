@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter VII · Mid-latitude Weather Systems — Meteorology: The Atmosphere in Motion</title>
+  <meta name="description" content="Chapter 7: the synoptic map, the quasi-geostrophic approximation, the QG vorticity and thermodynamic equations, the omega equation and Q-vectors, baroclinic instability and the Eady model, the cyclone life cycle, and frontogenesis." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter VII of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter VII</p>
+      <h1 class="chapter-title">Mid-latitude Weather Systems</h1>
+      <p class="lede">A weather map of the temperate zones is a record of waves that grow on their own — pulling cold air south, warm air north, and wringing the difference out as rain.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>Outside the tropics, the day-to-day weather is run by travelling waves. On the surface map they appear as <em>cyclones</em> — spinning low-pressure centres a thousand kilometres across, trailing warm and cold fronts — and as the high-pressure ridges between them. A few kilometres up, the same disturbances show as a wavy jet stream of <em>troughs</em> and <em>ridges</em>. These systems are not stirred by anything external. The temperate atmosphere is a fluid with cold air to the north and warm air to the south, sheared by the westerly winds aloft, and that arrangement is <em>unstable</em>: the smallest ripple feeds on the stored temperature contrast and grows, doubling in strength roughly every day until it has overturned the air and exhausted its fuel.</p>
+          <p>This chapter builds the theory that makes those systems calculable. We simplify the full equations of motion into a tractable set — the <em>quasi-geostrophic</em> equations — that keeps exactly the physics weather needs and throws away the fast noise. From them we get a single diagnostic, the <em>omega equation</em>, that tells you from a map alone where air is rising (so where the clouds and rain will be). And we get the cleanest model of why the waves exist at all — the <em>Eady model</em> of baroclinic instability, which predicts that they grow fastest at a wavelength of a few thousand kilometres, exactly the size of the storms you see on the map.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Synoptic scale</dt><dd>The scale of weather maps: ~1000 km horizontally, ~1 day in time. The home turf of cyclones and fronts.</dd>
+          <dt>Mid-latitudes</dt><dd>The temperate belts, roughly 30°–60° in each hemisphere, between the tropics and the poles.</dd>
+          <dt>Extratropical cyclone</dt><dd>A large low-pressure storm outside the tropics, powered by temperature contrasts rather than by latent heat from a warm ocean.</dd>
+          <dt>Trough / ridge</dt><dd>A southward dip (trough) or northward bulge (ridge) in the wavy upper-level flow. Troughs are associated with low pressure, ridges with high.</dd>
+          <dt>Front</dt><dd>A narrow zone where two air masses of different temperature meet, with a sharp temperature gradient across it.</dd>
+          <dt>Geostrophic balance</dt><dd>The balance between the pressure-gradient force and the Coriolis force that holds large-scale winds nearly parallel to the isobars.</dd>
+          <dt>Geostrophic wind</dt><dd>The wind you would have if that balance held exactly — set entirely by the slope of the pressure field.</dd>
+          <dt>Ageostrophic wind</dt><dd>The small leftover wind after subtracting the geostrophic part. Small, but it does all the vertical-motion bookkeeping.</dd>
+          <dt>Quasi-geostrophic (QG)</dt><dd>An approximation that treats the flow as geostrophic to leading order and tracks the small departures that make weather evolve.</dd>
+          <dt>Vorticity</dt><dd>The local spin of the air about a vertical axis. Counter-clockwise (cyclonic) is positive in the Northern Hemisphere.</dd>
+          <dt>Absolute vorticity</dt><dd>The spin seen from space: the air's own spin plus the planet's, $\zeta + f$.</dd>
+          <dt>Coriolis parameter</dt><dd>$f = 2\Omega\sin\phi$ — the planetary spin felt at latitude $\phi$. It is what makes the wind turn.</dd>
+          <dt>Beta effect</dt><dd>The northward increase of $f$, $\beta = \mathrm{d}f/\mathrm{d}y$. It gives the waves a westward-propagating tendency.</dd>
+          <dt>Static stability</dt><dd>How strongly the atmosphere resists vertical displacements; large when temperature falls slowly with height.</dd>
+          <dt>Potential temperature</dt><dd>$\theta$ — the temperature a parcel would have if brought to a reference pressure with no heat added. Conserved in dry adiabatic motion, so it labels air masses.</dd>
+          <dt>Pressure coordinates</dt><dd>Using pressure $p$ as the vertical coordinate instead of height $z$. Legal because pressure falls monotonically with height.</dd>
+          <dt>Geopotential</dt><dd>$\Phi$ — the gravitational potential energy per unit mass at a given height; its gradient on a pressure surface plays the role of the pressure-gradient force.</dd>
+          <dt>Omega (vertical velocity)</dt><dd>$\omega = Dp/Dt$ — vertical motion measured in pressure coordinates. Rising air has $\omega < 0$.</dd>
+          <dt>Omega equation</dt><dd>A diagnostic that converts the horizontal map into a field of vertical motion: where air rises, and therefore where it rains.</dd>
+          <dt>Q-vector</dt><dd>A compact vector built from the geostrophic wind and temperature gradient; air rises where Q-vectors converge.</dd>
+          <dt>Thermal wind</dt><dd>The vertical shear of the geostrophic wind, tied directly to the horizontal temperature gradient.</dd>
+          <dt>Baroclinic</dt><dd>Describing air in which surfaces of constant pressure and constant density (or temperature) are tilted relative to each other — the configuration that stores available energy.</dd>
+          <dt>Baroclinic instability</dt><dd>The spontaneous growth of waves that tap the stored energy of a horizontal temperature gradient. The engine of mid-latitude weather.</dd>
+          <dt>Eady model</dt><dd>The simplest exactly-solvable model of baroclinic instability: uniform shear, uniform stratification, two rigid lids.</dd>
+          <dt>Rossby radius of deformation</dt><dd>$L_d = NH/f$ — the natural horizontal length over which rotation and stratification balance; it sets the size of the waves.</dd>
+          <dt>Brunt–Väisälä frequency</dt><dd>$N$ — the frequency at which a displaced parcel oscillates vertically in a stable atmosphere. A measure of stratification.</dd>
+          <dt>Growth rate</dt><dd>How fast a wave's amplitude grows; its reciprocal is the e-folding time, the time to grow by a factor $e \approx 2.72$.</dd>
+          <dt>Frontogenesis</dt><dd>The tightening of a temperature gradient into a sharp front by the wind field.</dd>
+          <dt>Available potential energy</dt><dd>The fraction of the atmosphere's potential energy that can be released by flattening tilted density surfaces — the fuel of cyclones.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>The synoptic map: troughs, ridges, cyclones, fronts</h2>
+
+      <p>Pick any winter day and look at two charts of the mid-latitudes. The first is the surface map: a field of pressure with closed <dfn title="Lines of constant pressure on a weather map.">isobars</dfn> looping around <strong>low</strong> and <strong>high</strong> centres, and trailing from each low a pair of lines — a <dfn title="The leading edge of advancing warm air.">warm front</dfn> and a <dfn title="The leading edge of advancing cold air.">cold front</dfn> — that mark where air masses of different temperature collide. The low is an <dfn title="A large extratropical low-pressure storm system.">extratropical cyclone</dfn>: air spirals counter-clockwise into it (in the Northern Hemisphere), clouds and rain wrap around its centre, and over a few days it sweeps across the map and decays.</p>
+
+      <p>The second chart is the upper-air map, conventionally drawn on the 500-hPa surface — about 5.5 km up, near the middle of the atmosphere's mass. Here the flow is a smooth, wavy west-to-east river: the <dfn title="The fast, narrow current of upper-level westerly wind.">jet stream</dfn>, dipping south into <strong>troughs</strong> and bulging north into <strong>ridges</strong>. The surface cyclone sits a quarter-wavelength downstream — to the east — of an upper trough. This phase tilt, the surface low leaning westward with height toward the trough aloft, is not incidental: it is the signature of a growing baroclinic wave, and §5 explains why every healthy cyclone must have it.</p>
+
+      <p>Throughout this chapter we use <strong>pressure as the vertical coordinate</strong> rather than height $z$. Because pressure falls monotonically with height in a hydrostatic atmosphere, the map $z \leftrightarrow p$ is one-to-one, and we may label every level by its pressure. The payoff is bookkeeping: in pressure coordinates the mass-continuity equation becomes exactly non-divergent in three dimensions, and the horizontal pressure-gradient force — awkward in height coordinates — turns into the clean gradient of the <dfn title="Gravitational potential energy per unit mass; its value on a pressure surface measures that surface's height.">geopotential</dfn> $\Phi$ along a constant-pressure surface. We pay for this with one new symbol: vertical motion is now</p>
+
+      <div class="equation-block">
+        $$ \omega \;\equiv\; \DDt{p} \;=\; \pd_t p + \vu\cdot\grad p + w\,\pd_z p. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\omega$</dt><dd>Vertical velocity in pressure coordinates — a scalar field, units $\unit{Pa\,s^{-1}}$. Because $p$ decreases upward, <strong>rising air has $\omega &lt; 0$</strong>. This sign trap recurs all chapter.</dd>
+          <dt>$\Dt$</dt><dd>The material derivative — rate of change following a moving air parcel.</dd>
+          <dt>$\vu$</dt><dd>The horizontal wind vector $(u, v)$, with $u$ eastward and $v$ northward — a vector field, $\unit{m\,s^{-1}}$.</dd>
+          <dt>$w$</dt><dd>Vertical velocity in height coordinates, $\unit{m\,s^{-1}}$; for synoptic systems $\omega \approx -\rho g\,w$.</dd>
+          <dt>$\grad_p$</dt><dd>The horizontal gradient taken at constant pressure (the subscript $p$ marks the surface we hold fixed). The unsubscripted $\grad$ in the definition above is the ordinary horizontal gradient at constant <em>height</em>, so $\vu\cdot\grad p$ is genuine horizontal pressure advection — nonzero, unlike $\grad_p p \equiv 0$.</dd>
+          <dt>$\Phi$</dt><dd>Geopotential, $\Phi = \int_0^z g\,\dd z'$ — a scalar field, $\unit{m^2\,s^{-2}}$. On a pressure surface $\grad_p\Phi$ replaces the height-coordinate force $-\tfrac{1}{\rho}\grad p$.</dd>
+        </dl>
+      </aside>
+
+      <p>One more piece of vocabulary makes the rest of the chapter readable. We track <dfn title="The temperature a parcel would have if compressed or expanded adiabatically to a reference pressure.">potential temperature</dfn> $\theta$, which is conserved when a dry parcel moves without exchanging heat. Surfaces of constant $\theta$ are the natural "layers" of the atmosphere; weather is largely the story of how the wind rearranges them. When those layers are tilted — cold dense air wedged under warm light air at the same height — the atmosphere is <strong>baroclinic</strong> and stores energy that the waves of this chapter exist to release.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The quasi-geostrophic approximation</h2>
+
+      <p>The full equations of motion (Chapter IV) admit fast sound and gravity waves that have nothing to do with weather. The art of synoptic theory is to filter them out, keeping only the slow, balanced motion that cyclones are made of. The filter is a single observation: at synoptic scales the flow is <em>almost</em> in geostrophic balance.</p>
+
+      <p>Geostrophic balance is the standoff between two forces. The pressure-gradient force pushes air from high to low geopotential; the Coriolis force, turned $90^\circ$ to the right of the motion in the Northern Hemisphere, deflects it. When they cancel, the wind blows along the geopotential contours rather than across them:</p>
+
+      <div class="equation-block">
+        $$ f\,\vk\times\vV_g \;=\; -\grad_p\Phi \qquad\Longleftrightarrow\qquad u_g = -\frac{1}{f}\pd_y\Phi,\quad v_g = \frac{1}{f}\pd_x\Phi. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\vV_g = (u_g, v_g)$</dt><dd>The geostrophic wind — a vector field defined entirely by the geopotential slope. Not the true wind, but very close to it at synoptic scales.</dd>
+          <dt>$f$</dt><dd>The Coriolis parameter $f = 2\Omega\sin\phi$ — a scalar, $\unit{s^{-1}}$. In QG we use a constant reference value $f_0$ (its value at the latitude of interest) everywhere except where its variation is the whole point.</dd>
+          <dt>$\vk$</dt><dd>The vertical unit vector (pointing up). The cross product $\vk\times$ rotates a horizontal vector $90^\circ$ counter-clockwise.</dd>
+          <dt>$\Omega$</dt><dd>Earth's rotation rate, $\Omega = 7.292\times10^{-5}\ \unit{s^{-1}}$ — a constant.</dd>
+          <dt>$\phi$</dt><dd>Latitude. We work in the Northern Hemisphere where $f &gt; 0$.</dd>
+        </dl>
+      </aside>
+
+      <p>The geostrophic wind is non-divergent on an $f$-plane: $\grad_p\cdot\vV_g = \pd_x u_g + \pd_y v_g = 0$ when $f = f_0$ is constant, because the two terms are mixed second derivatives of $\Phi$ with opposite sign. That is a problem, because vertical motion — the rain-maker — is driven by horizontal convergence. The resolution is the heart of QG: the true wind is the geostrophic wind plus a small correction.</p>
+
+      <div class="equation-block">
+        $$ \vV \;=\; \vV_g + \vV_a, \qquad \frac{\abs{\vV_a}}{\abs{\vV_g}} \;\sim\; \Ro \;=\; \frac{U}{f_0 L} \;\ll\; 1. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\vV_a$</dt><dd>The <dfn title="The small departure of the true wind from geostrophic balance.">ageostrophic wind</dfn> — the leftover after subtracting $\vV_g$. Small in magnitude, but it carries <em>all</em> the horizontal divergence and so all the vertical motion.</dd>
+          <dt>$\Ro$</dt><dd>The Rossby number — a dimensionless ratio of the parcel's own acceleration to the Coriolis acceleration. For synoptic weather $U\sim 10\ \unit{m\,s^{-1}}$, $L\sim 10^6\ \unit{m}$, $f_0\sim 10^{-4}\ \unit{s^{-1}}$, giving $\Ro\sim 0.1$.</dd>
+          <dt>$U,\,L$</dt><dd>Characteristic wind speed and horizontal length scale of the system — scalars used only for the estimate.</dd>
+        </dl>
+      </aside>
+
+      <aside class="jargon">
+        <h4>WHY $\Ro \ll 1$ BUYS A SIMPLER WORLD</h4>
+        <p>A small Rossby number means rotation dominates inertia: a parcel turns before it can accelerate far. To leading order in $\Ro$ the flow is geostrophic and the temperature field is in <em>thermal-wind</em> balance with it. The QG equations are the systematic next order — the $O(\Ro)$ terms — that tell the leading-order picture how to evolve. We advect quantities <em>with the geostrophic wind</em> (the leading-order flow) but let the tiny ageostrophic wind do the vertical-motion accounting. This separation is what makes weather predictable a few days out: the slow balanced part is forecastable; the fast unbalanced part is noise we have filtered away.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The QG vorticity and thermodynamic equations</h2>
+
+      <p>QG dynamics reduces to two prognostic equations — one for spin, one for temperature — coupled by vertical motion. The first tracks <dfn title="The local rate of spin of the air about a vertical axis.">vorticity</dfn>, the vertical component of the curl of the wind,</p>
+
+      <div class="equation-block">
+        $$ \zeta_g \;=\; \pd_x v_g - \pd_y u_g \;=\; \frac{1}{f_0}\grad_p^2\Phi. $$
+      </div>
+
+      <p>The right-hand identity is worth pausing on: under geostrophy the vorticity is just the Laplacian of the geopotential. A geopotential <em>low</em> — a bowl in the $\Phi$ field — has positive Laplacian, hence positive (cyclonic) vorticity. The trough on the upper map and the spin of the cyclone are the same fact seen two ways.</p>
+
+      <p>What moves vorticity around is the advection of <strong>absolute</strong> vorticity $\zeta_g + f$ by the geostrophic wind, with vertical motion acting as a source through stretching:</p>
+
+      <div class="equation-block">
+        $$ \left(\pd_t + \vV_g\cdot\grad_p\right)\!\left(\zeta_g + f\right) \;=\; f_0\,\pd_p\omega. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\zeta_g$</dt><dd>Geostrophic relative vorticity — a scalar field, $\unit{s^{-1}}$. Positive means cyclonic (counter-clockwise) spin.</dd>
+          <dt>$\zeta_g + f$</dt><dd>Absolute vorticity — the spin including the planet's own rotation. It is what the flow conserves in the absence of stretching.</dd>
+          <dt>$\vV_g\cdot\grad_p$</dt><dd>Advection by the geostrophic wind: the rate at which the flow carries a quantity past a fixed point.</dd>
+          <dt>$f_0\,\pd_p\omega$</dt><dd>The stretching term. Where $\omega$ changes with pressure, a column is being stretched or squashed; like a spinning skater pulling in her arms, a stretched column spins faster. This is the only way QG vorticity is created.</dd>
+        </dl>
+      </aside>
+
+      <p>The advection term hides the $\beta$-effect. Writing $\vV_g\cdot\grad_p f = v_g\,\beta$ with $\beta = \mathrm{d}f/\mathrm{d}y = 2\Omega\cos\phi/a$, we see that simply moving north (where $f$ is larger) changes a parcel's relative vorticity — the mechanism that makes Rossby waves propagate westward relative to the flow.</p>
+
+      <p>The second equation is the first law of thermodynamics, written for potential temperature. Adiabatic vertical motion cools rising air and warms sinking air; horizontal advection moves warm and cold air around. In pressure coordinates, with the static-stability parameter doing the vertical bookkeeping,</p>
+
+      <div class="equation-block">
+        $$ \left(\pd_t + \vV_g\cdot\grad_p\right)\!\left(-\,\pd_p\Phi\right) \;-\; \sigma\,\omega \;=\; 0, \qquad \sigma \;=\; -\frac{\Rd T}{p}\,\pd_p\ln\theta. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$-\pd_p\Phi$</dt><dd>Proportional to temperature: hydrostatic balance in pressure coordinates reads $\pd_p\Phi = -\Rd T/p$, so $-\pd_p\Phi = \Rd T/p$. Advecting temperature is advecting $-\pd_p\Phi$.</dd>
+          <dt>$\sigma$</dt><dd>The <dfn title="A measure of how strongly the stratification resists vertical motion.">static stability parameter</dfn> — a scalar, positive in a stably stratified atmosphere. Larger $\sigma$ means a given $\omega$ produces more adiabatic temperature change, so the atmosphere resists vertical motion more stiffly.</dd>
+          <dt>$\Rd$</dt><dd>The gas constant for dry air, $\Rd = 287\ \unit{J\,kg^{-1}\,K^{-1}}$ — a constant.</dd>
+          <dt>$T$</dt><dd>Temperature, $\unit{K}$. $\theta$ is potential temperature; $\pd_p\ln\theta &lt; 0$ in a stable layer (since $\theta$ rises with height, i.e. falls with $p$), making $\sigma &gt; 0$.</dd>
+        </dl>
+      </aside>
+
+      <p>These two equations share a single unknown that neither alone determines: the vertical velocity $\omega$. The vorticity equation wants $\omega$ to balance the spin-up from advection; the thermodynamic equation wants $\omega$ to balance the warming from advection. Both demands must be met at once. Eliminating the time derivatives between them yields a single diagnostic for $\omega$ — the omega equation — which is the subject of §4.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The omega equation: where it rises</h2>
+
+      <p>The omega equation answers the forecaster's first question — <em>where will it rain?</em> — from a single snapshot of the geopotential and temperature fields, with no time stepping at all. It is a diagnostic: given the map now, it returns the field of vertical motion now. Combining the vorticity and thermodynamic equations of §3 (take $f_0\,\pd_p$ of the first, $\grad_p^2$ of the second, subtract, and the time derivatives cancel) gives</p>
+
+      <div class="equation-block wide">
+        $$ \left(\grad_p^2 + \frac{f_0^2}{\sigma}\,\pd_p^2\right)\omega \;=\; -\frac{2}{\sigma}\,\grad_p\cdot\vQ, \qquad \vQ \;=\; -\frac{\Rd}{p}\left(\frac{\pd\vV_g}{\pd x}\cdot\grad_p T,\; \frac{\pd\vV_g}{\pd y}\cdot\grad_p T\right). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\grad_p^2 + \tfrac{f_0^2}{\sigma}\pd_p^2$</dt><dd>A three-dimensional Laplacian-like operator (an elliptic operator). For a sinusoidal disturbance it acts like multiplication by a negative number, so $\omega$ tracks the <em>negative</em> of the right-hand side.</dd>
+          <dt>$\vQ$</dt><dd>The <dfn title="A vector measuring how the geostrophic wind reshapes the temperature gradient.">Q-vector</dfn> — a horizontal vector field, $\unit{K\,m^{-1}\,s^{-1}}$. It measures the rate at which the geostrophic flow tilts and stretches the temperature gradient.</dd>
+          <dt>$\grad_p\cdot\vQ$</dt><dd>The divergence of the Q-vector field. Where Q-vectors <strong>converge</strong> ($\grad_p\cdot\vQ &lt; 0$), the right-hand side is positive, and solving the elliptic operator gives $\omega &lt; 0$: <strong>ascent</strong>.</dd>
+          <dt>$\partial\vV_g/\partial x,\ \partial\vV_g/\partial y$</dt><dd>How the geostrophic wind vector changes eastward and northward — the ingredients that, dotted into $\grad_p T$, build $\vQ$.</dd>
+        </dl>
+      </aside>
+
+      <p>The logic is geometric. The elliptic operator on the left behaves, for a wavelike $\omega$, like $-(k^2 + \ell^2 + f_0^2 m^2/\sigma)\,\omega$ — a strictly negative multiplier. So the sign of $\omega$ is opposite to the sign of the right-hand side. Since the right-hand side is $-\tfrac{2}{\sigma}\grad_p\cdot\vQ$, we land on a rule a forecaster can apply by eye:</p>
+
+      <blockquote>
+        <p>Q-vectors point toward rising air. Where they <em>converge</em>, the air ascends — clouds, cloud-tops, rain. Where they <em>diverge</em>, it sinks — clear skies.</p>
+      </blockquote>
+
+      <aside class="jargon">
+        <h4>THE CLASSICAL TWO-TERM FORM</h4>
+        <p>Before Hoskins reorganized it into the Q-vector in 1978, the omega equation was written with two forcing terms: the vertical derivative of <em>vorticity advection</em> plus the Laplacian of <em>thickness (temperature) advection</em>. In that form ascent occurs ahead of an upper trough, where positive vorticity advection increases with height, and over regions of warm-air advection. The two terms famously tend to oppose each other, and estimating their small difference by eye is treacherous. The Q-vector form is mathematically identical but combines both effects into one field whose convergence you read off directly — no cancellation, no sign juggling. This is why it took over operational practice.</p>
+      </aside>
+
+      <p>The omega equation is also where the chapter's threads meet. The right-hand side is large precisely where the geostrophic wind is deforming a strong temperature gradient — that is, near fronts and within growing baroclinic waves. The ascent it diagnoses is what lifts moist air to saturation, and the descent is what dries the air behind the cold front. The dynamics of §3 and the energetics of §5 are joined by this single diagnostic of where the air goes up.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Baroclinic instability: the Eady model</h2>
+
+      <p>Why do the waves exist at all? Because the basic state of the mid-latitudes — cold north, warm south, westerlies increasing with height — is unstable. The tilted potential-temperature surfaces store <dfn title="The releasable part of the atmosphere's potential energy, freed by flattening tilted density surfaces.">available potential energy</dfn>, and a wave that slumps the cold air down and the warm air up converts that energy into the kinetic energy of its own circulation. The wave grows by eating its background. This is <strong>baroclinic instability</strong>, and the cleanest model of it is due to Eric Eady (1949).</p>
+
+      <p>Eady stripped the problem to essentials: a uniform vertical shear, uniform stratification and Coriolis parameter, and two rigid horizontal lids — the ground below and a model tropopause above. The background zonal wind grows linearly with height by thermal-wind balance,</p>
+
+      <div class="equation-block">
+        $$ U(z) \;=\; \Lambda z, \qquad \Lambda \;=\; \frac{\pd U}{\pd z} \;=\; -\frac{g}{f\,\theta_0}\,\pd_y\theta. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Lambda$</dt><dd>The constant vertical shear of the background wind — a scalar, $\unit{s^{-1}}$. By thermal wind it equals the horizontal temperature gradient: a stronger north–south $\theta$ contrast means stronger shear and a more unstable atmosphere.</dd>
+          <dt>$\theta_0$</dt><dd>A constant reference potential temperature, $\unit{K}$.</dd>
+          <dt>$g$</dt><dd>Gravitational acceleration, $g = 9.81\ \unit{m\,s^{-2}}$ — a constant.</dd>
+        </dl>
+      </aside>
+
+      <p>The relevant horizontal scale is the <dfn title="The length over which rotation and stratification trade off; sets the size of balanced disturbances.">Rossby radius of deformation</dfn>,</p>
+
+      <div class="equation-block">
+        $$ L_d \;=\; \frac{N H}{f}, \qquad N^2 \;=\; \frac{g}{\theta_0}\,\pd_z\theta. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$L_d$</dt><dd>The Rossby radius — a length, $\unit{m}$. With $N\sim10^{-2}\ \unit{s^{-1}}$, $H\sim10^4\ \unit{m}$, $f\sim10^{-4}\ \unit{s^{-1}}$, $L_d\sim10^6\ \unit{m} = 1000\ \unit{km}$. It is the size at which a disturbance "feels" both rotation and stratification, and so the size baroclinic waves prefer.</dd>
+          <dt>$N$</dt><dd>The <dfn title="The buoyancy oscillation frequency of a stably stratified fluid.">Brunt–Väisälä frequency</dfn> — a scalar, $\unit{s^{-1}}$; the rate at which a vertically displaced parcel bobs back. Stronger stratification (larger $N$) stiffens the atmosphere and enlarges $L_d$.</dd>
+          <dt>$H$</dt><dd>The depth of the unstable layer (lid spacing), here the troposphere, $H\sim10\ \unit{km}$.</dd>
+        </dl>
+      </aside>
+
+      <p>Seeking wavelike disturbances $\propto e^{ik(x - ct)}$ and applying the rigid-lid conditions ($\omega = 0$ at top and bottom) yields a quadratic for the complex phase speed $c$. A nonzero imaginary part $c_i$ means the amplitude $e^{k c_i t}$ <em>grows</em>: the mode is unstable. In terms of the dimensionless wavenumber $\mu = k L_d = k N H / f$, the growth-bearing part of the solution is</p>
+
+      <div class="equation-block">
+        $$ c_i \;=\; \frac{\Lambda H}{\mu}\left[\left(\coth\frac{\mu}{2} - \frac{\mu}{2}\right)\!\left(\frac{\mu}{2} - \tanh\frac{\mu}{2}\right)\right]^{1/2}, \qquad \sigma_E \;=\; k\,c_i. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mu = k L_d$</dt><dd>The dimensionless wavenumber — a scalar. Small $\mu$ means a long wave (large wavelength $L = 2\pi/k = 2\pi L_d/\mu$); large $\mu$ a short wave.</dd>
+          <dt>$c_i$</dt><dd>The imaginary part of the phase speed, $\unit{m\,s^{-1}}$. It is real and positive only where the bracket is positive — that is, for $\mu$ below a cutoff. Outside that band the mode merely propagates and does not grow.</dd>
+          <dt>$\sigma_E = k\,c_i$</dt><dd>The <strong>growth rate</strong> — a scalar, $\unit{s^{-1}}$; the amplitude grows as $e^{\sigma_E t}$. Using $L_d = NH/f$ this simplifies to $\sigma_E = (\Lambda f / N)\big[(\coth\tfrac\mu2 - \tfrac\mu2)(\tfrac\mu2 - \tanh\tfrac\mu2)\big]^{1/2}$.</dd>
+          <dt>$\coth,\tanh$</dt><dd>Hyperbolic functions from the vertical structure between the two lids; their interplay is what produces a finite preferred scale rather than runaway growth at all wavelengths.</dd>
+        </dl>
+      </aside>
+
+      <p>The bracket is positive only for $\mu &lt; \mu_c$, where the <strong>short-wave cutoff</strong> is</p>
+
+      <div class="equation-block">
+        $$ \mu_c \;\approx\; 2.399. $$
+      </div>
+
+      <p>Short waves do not grow: a wave smaller than roughly $2\pi L_d/\mu_c \approx 2.6\,L_d$ cannot couple its top and bottom edges across the layer, so it finds no purchase on the shear. Within the unstable band, the growth rate has a clear maximum. Maximizing $\sigma_E(\mu)$ numerically gives the most-unstable mode at</p>
+
+      <div class="equation-block">
+        $$ \mu_{\max} \;\approx\; 1.61, \qquad \sigma_{\max} \;\approx\; 0.31\,\frac{f}{N}\,\frac{\pd U}{\pd z} \;=\; 0.31\,\frac{f\,\Lambda}{N}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mu_{\max}\approx1.61$</dt><dd>The dimensionless wavenumber of fastest growth — a pure number. It fixes the preferred wavelength $L_{\max} = 2\pi L_d/\mu_{\max} \approx 3.9\,L_d$.</dd>
+          <dt>$0.31$</dt><dd>A pure number — the peak value of the bracket $[\,\cdots\,]^{1/2}$ at $\mu_{\max}$. Together with $f\Lambda/N$ it sets the fastest growth rate. Note what it depends on: more shear $\Lambda$ or weaker stratification $N$ both grow storms faster.</dd>
+          <dt>$\sigma_{\max}$</dt><dd>The maximum growth rate, $\unit{s^{-1}}$. For typical mid-latitude values ($f\sim10^{-4}$, $\Lambda\sim3\times10^{-3}\ \unit{s^{-1}}$, $N\sim10^{-2}$) it gives $\sigma_{\max}\sim10^{-5}\ \unit{s^{-1}}$, an e-folding time $1/\sigma_{\max}\sim1\ \unit{day}$.</dd>
+        </dl>
+      </aside>
+
+      <p>Now read off the numbers. With $L_d \approx 1000\ \unit{km}$, the most-unstable wavelength is</p>
+
+      <div class="equation-block">
+        $$ L_{\max} \;=\; \frac{2\pi}{k} \;=\; \frac{2\pi L_d}{\mu_{\max}} \;\approx\; 3{,}900\ \unit{km}, $$
+      </div>
+
+      <p>and the e-folding time is about a day. The model, built from nothing but a uniform shear and two lids, has predicted the two defining facts of mid-latitude weather: that storms are a few thousand kilometres across, and that they grow and decay over a few days. The widget below is this dispersion relation made interactive — every number on its screen comes from the equation above.</p>
+
+      <section class="interactive" data-widget="eady-growth" aria-label="Eady baroclinic growth rate versus wavelength">
+        <header>
+          <h4>Interactive · The Eady growth rate</h4>
+          <span class="hint">drag shear · stratification · depth · latitude</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The curve is the Eady growth rate $\sigma_E$ plotted against wavelength $L = 2\pi L_d/\mu$, computed directly from the dispersion relation $\sigma_E = (\Lambda f/N)\,[(\coth\tfrac\mu2-\tfrac\mu2)(\tfrac\mu2-\tanh\tfrac\mu2)]^{1/2}$. The warm marker sits at the most-unstable wavelength ($\mu\approx1.61$, near $3{,}900$ km); the gold dashes mark the short-wave cutoff ($\mu_c\approx2.399$) beyond which nothing grows. Increasing the shear $\Lambda$ raises the whole curve (faster storms); increasing the stratification $N$ both lowers it and pushes the peak to larger scales, since $L_d = NH/f$ grows. The readout's e-folding time hovers near one day — the timescale of real cyclogenesis.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The cyclone life cycle; fronts and frontogenesis</h2>
+
+      <p>The Eady mode is an idealized sinusoid, but it already contains the anatomy of a real storm. The growing mode tilts <em>westward with height</em> — exactly the phase relationship of §1, surface low beneath and behind the upper trough. That tilt is not cosmetic. It is what lets warm air rise poleward ahead of the wave while cold air sinks equatorward behind it; the slumping of the tilted $\theta$-surfaces releases the available potential energy that feeds the growth. A wave that did <em>not</em> tilt with height could not convert energy and would not grow.</p>
+
+      <p>The classical Norwegian picture (Bjerknes and Solberg, 1922) traces the life cycle. A wave forms on the polar front; a kink develops with a warm front leading and a cold front trailing; the cyclone deepens as the omega-equation ascent (§4) builds clouds and rain in the warm conveyor of air streaming up and over the warm front. The faster-moving cold front eventually overtakes the warm front, lifting the warm air entirely off the surface in an <dfn title="The stage when the cold front catches the warm front, lifting warm air aloft.">occlusion</dfn>. Cut off from its warm-air fuel, the cyclone fills and decays over a day or two. The whole sequence — birth, deepening, occlusion, decay — is the nonlinear destiny of the linear Eady mode.</p>
+
+      <p>Fronts deserve their own equation, because the wind does not merely advect temperature contrasts — it <em>sharpens</em> them. The rate of sharpening is the frontogenesis function,</p>
+
+      <div class="equation-block">
+        $$ F \;=\; \Dt\,\abs{\grad_p\theta}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$F$</dt><dd>The <dfn title="The rate at which the magnitude of the temperature gradient is increasing following the flow.">frontogenesis function</dfn> — a scalar, $\unit{K\,m^{-1}\,s^{-1}}$. Positive $F$ means the temperature gradient is tightening (a front forming or strengthening); negative $F$ (frontolysis) means it is relaxing.</dd>
+          <dt>$\abs{\grad_p\theta}$</dt><dd>The magnitude of the horizontal potential-temperature gradient — how sharp the temperature contrast is across the front.</dd>
+          <dt>$\Dt$</dt><dd>The material derivative following the flow: $F$ asks how the gradient an air parcel carries changes as it moves through the deforming wind field.</dd>
+        </dl>
+      </aside>
+
+      <p>A confluent wind field — air streaming together, the classic "deformation" flow — packs the $\theta$-contours closer and makes $F &gt; 0$. As the gradient tightens, thermal-wind balance demands stronger shear across it, and the QG response is a thermally direct circulation: warm air rising on the warm side, cold air sinking on the cold side, with a narrow band of ascent along the front. That ascent, again diagnosed by the omega equation, is why fronts are where the weather is — the rain band, the wind shift, the temperature drop you feel when one passes.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>From idealized wave to real storm</h2>
+
+      <p>The Eady model is deliberately spare, and three of its simplifications matter for the real atmosphere. First, Eady set $\beta = 0$. Restoring the northward increase of $f$ (the Charney 1947 model) adds a westward propagation tendency and a low-level steering, but leaves the headline numbers — preferred scale of a few thousand kilometres, growth in about a day — essentially intact. The robustness of those numbers across models is why we trust them.</p>
+
+      <p>Second, real instability needs an interior gradient of <dfn title="A single conserved quantity combining absolute vorticity and stratification.">potential vorticity</dfn>, or — as in Eady — temperature gradients at the boundaries that act as edge waves. The full statement is the Charney–Stern–Pedlosky theorem: instability requires the background potential-vorticity gradient (including boundary contributions) to change sign somewhere. The growing cyclone, in this modern view, is two counter-propagating edge waves — one on the ground, one at the tropopause — that lock in phase and amplify each other. The westward tilt of §6 is exactly the phase-locking those two waves settle into.</p>
+
+      <p>Third, moisture. Latent heat released as the ascending warm air saturates adds buoyancy that the dry Eady model omits, and it can roughly double the growth rate and shift the preferred scale smaller. The most explosive cyclones — the "bombs" that deepen $24\ \unit{hPa}$ in $24\ \unit{hours}$ — are moist-amplified baroclinic waves. The dry theory of this chapter is the skeleton; the latent-heat engine of Chapter VIII is the muscle that turns a textbook wave into a destructive storm.</p>
+
+      <p>What survives all of this is the frame. The mid-latitude atmosphere stores energy in its tilted temperature surfaces; that store is unstable; waves of a preferred size grow by releasing it; the omega equation tells you where they lift air into cloud; and the whole apparatus is calculable from a snapshot. Every operational forecast model is, at bottom, an industrial-strength version of the three equations of this chapter — vorticity, thermodynamics, and the omega diagnostic that binds them.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">J. R. Holton and G. J. Hakim.</span> <em>An Introduction to Dynamic Meteorology</em>, 5th ed., Academic Press 2013 — Ch. 6 ("Quasi-geostrophic Analysis") for QG theory, the omega equation and Q-vectors; Ch. 7 ("Baroclinic Development") for baroclinic instability and the Eady model. The primary source for every equation here.</li>
+          <li><span class="src-title">G. K. Vallis.</span> <em>Atmospheric and Oceanic Fluid Dynamics</em>, 2nd ed., Cambridge 2017 — Ch. 9 derives the Eady solution in full, including the dispersion relation, the cutoff $\mu_c\approx2.4$, and the $\sigma_{\max}\approx0.31\,f\Lambda/N$ result.</li>
+          <li><span class="src-title">E. T. Eady.</span> "Long waves and cyclone waves." <em>Tellus</em> 1(3), 33–52 (1949) — the original baroclinic-instability paper and the model that bears his name.</li>
+          <li><span class="src-title">B. J. Hoskins, I. Draghici and H. C. Davies.</span> "A new look at the $\omega$-equation." <em>Quart. J. Roy. Meteor. Soc.</em> 104(439), 31–38 (1978) — the paper that introduced the Q-vector form used in §4.</li>
+          <li><span class="src-title">J. M. Wallace and P. V. Hobbs.</span> <em>Atmospheric Science: An Introductory Survey</em>, 2nd ed., Academic Press 2006 — Ch. 8 for the observational anatomy of cyclones, fronts, and the Norwegian life-cycle model.</li>
+          <li><span class="src-title">J. Pedlosky.</span> <em>Geophysical Fluid Dynamics</em>, 2nd ed., Springer 1987 — Ch. 7 for the rigorous Charney–Stern–Pedlosky stability theorem and the edge-wave interpretation of §7.</li>
+          <li><span class="src-title">J. Bjerknes and H. Solberg.</span> "Life cycle of cyclones and the polar front theory of atmospheric circulation." <em>Geofys. Publ.</em> 3(1), 1–18 (1922) — the original Norwegian cyclone model.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="06-boundary-layer-turbulence.html"><span class="label">← Previous</span>VI · The Boundary Layer and Turbulence</a>
+      <a class="next" href="08-moist-convection-mesoscale.html"><span class="label">Next chapter</span>VIII · Moist Convection and Mesoscale Storms →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/eady-growth.js"></script>
+</body>
+</html>

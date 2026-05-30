@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter VI · The Boundary Layer and Turbulence — Meteorology: The Atmosphere in Motion</title>
+  <meta name="description" content="Chapter 6: the atmospheric boundary layer, Reynolds averaging and the closure problem, turbulent fluxes, K-theory, the Ekman spiral and pumping, the logarithmic wind profile, and Monin–Obukhov similarity." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter VI of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter VI</p>
+      <h1 class="chapter-title">The Boundary Layer and Turbulence</h1>
+      <p class="lede">Near the ground the atmosphere stops gliding and starts grinding: friction and turbulence churn the lowest kilometre, and the clean balanced flow of the free air dissolves into a froth of eddies we can never resolve, only average.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>Everything in the previous chapter assumed the wind was smooth — that you could draw a single arrow at each point and trust it. That picture is true a kilometre or two up, in the <em>free atmosphere</em>, where the only forces that matter are pressure gradients and the Earth's rotation. But it fails completely near the surface. The ground drags on the air, the sun heats it from below, and the result is <em>turbulence</em>: a chaotic stew of swirls of every size, from dust devils to invisible eddies a few metres across, all mixing momentum, heat, and moisture up and down. This bottom layer — typically the lowest few hundred metres to a couple of kilometres — is the <em>boundary layer</em>, and it is where the atmosphere actually touches the world.</p>
+          <p>We cannot track every eddy; there are too many and they are too small. So meteorologists do something clever and slightly desperate: they split every quantity into a smooth average plus a fluctuating wiggle, average the equations of motion, and accept that this leaves behind new terms — <em>turbulent fluxes</em> — that the averaged equations cannot themselves predict. Closing that gap is the central problem of this chapter. The simplest closure treats turbulence like a very efficient molecular diffusion; from it follow three of the most useful results in applied meteorology: the wind spirals as it descends to the ground (the Ekman spiral), it follows a clean logarithmic profile in the lowest tens of metres, and how vigorously it mixes depends on whether the ground is heating or cooling the air above it.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Boundary layer</dt><dd>The lowest part of the atmosphere, directly affected by the surface through friction and heating — typically 0.1 to 2 km deep. Also called the planetary or atmospheric boundary layer (PBL / ABL).</dd>
+          <dt>Free atmosphere</dt><dd>The air above the boundary layer, where surface friction is negligible and the flow is nearly geostrophic.</dd>
+          <dt>Turbulence</dt><dd>Chaotic, three-dimensional, eddying motion across a wide range of sizes. It mixes far more efficiently than molecular diffusion.</dd>
+          <dt>Eddy</dt><dd>A swirl of fluid — a coherent rotating parcel. Turbulence is a population of eddies of many sizes.</dd>
+          <dt>Reynolds decomposition</dt><dd>Splitting a quantity into a slowly-varying mean plus a fast fluctuation: $u = \overline{u} + u'$.</dd>
+          <dt>Reynolds averaging</dt><dd>Applying that split to the equations of motion and averaging, to get equations for the mean flow.</dd>
+          <dt>Closure problem</dt><dd>The fact that averaging the equations introduces new unknowns (turbulent fluxes) faster than it introduces equations — so the system is never closed without extra assumptions.</dd>
+          <dt>Turbulent flux</dt><dd>The net transport of a quantity (momentum, heat, moisture) by correlated fluctuations, e.g. $\overline{u'w'}$.</dd>
+          <dt>Reynolds stress</dt><dd>The turbulent flux of momentum, $-\rho\,\overline{u'w'}$, which acts on the mean flow exactly like a frictional stress.</dd>
+          <dt>Eddy viscosity (K-theory)</dt><dd>The assumption that a turbulent flux is proportional to the mean gradient, with a proportionality constant $K$ — turbulence treated as a strong diffusion.</dd>
+          <dt>Mixing length</dt><dd>A typical distance an eddy travels before mixing with its surroundings; a way to estimate the eddy viscosity $K$.</dd>
+          <dt>Ekman layer</dt><dd>The part of the boundary layer where friction and the Coriolis force balance the pressure gradient, producing a wind that turns with height.</dd>
+          <dt>Ekman spiral</dt><dd>The shape traced by the wind vector as height increases through the Ekman layer — a spiral from the surface wind out to the geostrophic wind.</dd>
+          <dt>Hodograph</dt><dd>A plot of the wind vector's tip as you change height (or time) — the curve whose shape <em>is</em> the spiral.</dd>
+          <dt>Geostrophic wind</dt><dd>The frictionless balanced wind of the free atmosphere, parallel to the isobars (Chapter V).</dd>
+          <dt>Ekman pumping</dt><dd>The gentle vertical motion forced at the top of the boundary layer when frictional inflow converges (rising) or diverges (sinking).</dd>
+          <dt>Cross-isobar flow</dt><dd>Wind blowing across the lines of constant pressure rather than along them — a signature of friction, directed toward low pressure.</dd>
+          <dt>Surface layer</dt><dd>The lowest tenth or so of the boundary layer, where turbulent fluxes are nearly constant with height and the wind follows a logarithmic profile.</dd>
+          <dt>Logarithmic wind profile</dt><dd>The law that wind speed grows with the logarithm of height in a neutral surface layer.</dd>
+          <dt>Friction velocity</dt><dd>A velocity scale $u_*$ built from the surface stress; it sets the magnitude of the surface-layer wind and fluxes.</dd>
+          <dt>Roughness length</dt><dd>The height $z_0$ at which the extrapolated logarithmic wind formally vanishes — a measure of how rough the surface is.</dd>
+          <dt>von Kármán constant</dt><dd>The empirical constant $k \approx 0.40$ that appears in the logarithmic profile.</dd>
+          <dt>Static stability</dt><dd>Whether a lifted air parcel is buoyantly resisted (stable) or accelerated (unstable) — set by how temperature changes with height.</dd>
+          <dt>Virtual potential temperature</dt><dd>The potential temperature adjusted for moisture, $\theta_v$ — the right buoyancy variable for moist air.</dd>
+          <dt>Buoyancy flux</dt><dd>The turbulent heat flux $\overline{w'\theta_v'}$ that produces or consumes turbulence; positive when the surface heats the air.</dd>
+          <dt>Monin–Obukhov length</dt><dd>The height $L$ at which buoyant and mechanical (shear) production of turbulence are comparable — the master scale of the stratified surface layer.</dd>
+          <dt>Convective boundary layer</dt><dd>A daytime boundary layer driven by surface heating, full of rising thermals and vigorously mixed.</dd>
+          <dt>Stable boundary layer</dt><dd>A nighttime boundary layer where the surface cools, buoyancy suppresses turbulence, and mixing is weak.</dd>
+          <dt>Entrainment</dt><dd>The mixing of free-atmosphere air down into the growing boundary layer across its top.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>What the boundary layer is</h2>
+
+      <p>Stand in an open field on a sunny afternoon and the wind is gusty, swirling, never quite steady. Climb into an airplane and a few thousand feet up the ride smooths out. You have crossed a real boundary. Below it is the <dfn title="The lowest part of the atmosphere, directly coupled to the surface by friction and heating; depth ranges from tens of metres at night to a couple of kilometres in midday convection.">atmospheric boundary layer</dfn> — the slice of atmosphere that <em>feels</em> the ground on a timescale of an hour or less. Above it is the <dfn title="The atmosphere above the boundary layer, effectively frictionless, where the wind is nearly geostrophic.">free atmosphere</dfn>, where the balanced flow of Chapter V holds and friction is a rounding error.</p>
+
+      <p>Two things distinguish the boundary layer. First, it is in direct frictional contact with the surface, so the wind must go to zero at the ground (the <dfn title="The condition that fluid velocity matches the surface velocity — zero — right at a solid boundary.">no-slip condition</dfn>) and recover its free-atmosphere value only some hundreds of metres up. Second, it is <em>turbulent</em>: shot through with eddies that mix momentum, heat, and moisture far more effectively than molecular processes ever could. Turbulence is what makes the boundary layer a distinct object — without it, the influence of the surface would diffuse upward at a snail's pace and stay pressed against the ground.</p>
+
+      <p>The boundary layer breathes on a daily cycle, and the engine is the sun. After sunrise the ground warms, heats the air just above it, and sets off buoyant <dfn title="Rising plumes of warm air that carry heat upward in the convective boundary layer.">thermals</dfn> that punch upward and stir the layer into a deep, well-mixed <dfn title="A daytime boundary layer driven by surface heating, vigorously mixed by thermals; often 1–2 km deep.">convective boundary layer</dfn>. After sunset the ground radiates heat away, cools, and chills the air from below; buoyancy now <em>opposes</em> vertical motion, turbulence is throttled, and the layer collapses into a shallow, weakly-mixed <dfn title="A nighttime boundary layer where surface cooling suppresses turbulence; often only tens to a few hundred metres deep.">stable boundary layer</dfn>, sometimes only tens of metres deep. The whole structure inflates by day and deflates by night, and at its top, free-atmosphere air is continually mixed downward — a process called <dfn title="The incorporation of free-atmosphere air into the boundary layer across its top as the layer grows.">entrainment</dfn>.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>"Turbulent" here is not a metaphor for "messy." It is a precise dynamical regime, reached when the <dfn title="The ratio of inertial to viscous forces in a flow; large Reynolds number signals turbulence.">Reynolds number</dfn> $\mathrm{Re} = UL/\nu$ is enormous. For the atmosphere $\mathrm{Re} \sim 10^8$ or more, so molecular viscosity $\nu$ is utterly negligible against turbulent mixing — except in a millimetre-thin film right at the surface.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Reynolds decomposition and the closure problem</h2>
+
+      <p>We have no hope of writing down, let alone solving, equations for every eddy. So we change the question. We ask only for the <em>average</em> wind, temperature, and moisture, and let the eddies enter as a statistical effect. The tool is the <dfn title="Splitting a field into a slowly-varying mean and a rapidly-varying fluctuation.">Reynolds decomposition</dfn>: write each field as a mean plus a fluctuation.</p>
+
+      <div class="equation-block">
+        $$ u = \overline{u} + u', \qquad \overline{u'} = 0. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$u$</dt><dd>The instantaneous eastward velocity component (a field, $\unit{m\,s^{-1}}$) — the full, eddy-laden wind.</dd>
+          <dt>$\overline{u}$</dt><dd>The mean, formed by averaging over a window long compared with an eddy but short compared with the weather — typically tens of minutes. A smooth field.</dd>
+          <dt>$u'$</dt><dd>The turbulent fluctuation, $u' = u - \overline{u}$ (a field). It is what the average throws away.</dd>
+          <dt>$\overline{u'} = 0$</dt><dd>The fluctuation has zero mean <em>by construction</em> — averaging again changes nothing. This is the defining property of a Reynolds average.</dd>
+        </dl>
+      </aside>
+
+      <p>The same split applies to every variable: $v = \overline{v} + v'$, $w = \overline{w} + w'$, $\theta = \overline{\theta} + \theta'$, and so on. The averaging operation obeys a few rules — it is linear, it commutes with derivatives, and the average of an already-averaged quantity is itself. From those rules a crucial fact follows: the average of a <em>product</em> is not the product of averages. For two fluctuating fields,</p>
+
+      <div class="equation-block">
+        $$ \overline{u\,w} = \overline{(\overline{u}+u')(\overline{w}+w')} = \overline{u}\,\overline{w} + \overline{u'w'}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\overline{u'w'}$</dt><dd>The <em>covariance</em> of the two fluctuations (a field, $\unit{m^2\,s^{-2}}$) — the average of their product. It does not vanish: if upward gusts ($w'>0$) systematically carry slower-than-average air ($u'<0$), then $\overline{u'w'} < 0$. This single surviving term is the seed of every turbulent flux.</dd>
+        </dl>
+      </aside>
+
+      <p>The cross terms like $\overline{\overline{u}\,w'}$ vanish because the mean factors out of the average and $\overline{w'} = 0$. What survives, $\overline{u'w'}$, is the statistical fingerprint of turbulence — a measure of how the fluctuations in two directions move <em>together</em>.</p>
+
+      <p>Now apply this to the equations of motion. Take the horizontal momentum equation from Chapter IV, written for the eastward component, decompose every field, and average the whole equation. After the dust settles the mean flow obeys an equation that looks almost like the original — but with one extra term:</p>
+
+      <div class="equation-block">
+        $$ \frac{\pd \overline{u}}{\pd t} + \overline{\vu}\cdot\grad\,\overline{u} = -\frac{1}{\rho}\frac{\pd \overline{p}}{\pd x} + f\,\overline{v} \;-\; \frac{\pd}{\pd z}\overline{u'w'} \;-\; \frac{\pd}{\pd x}\overline{u'u'} \;-\; \frac{\pd}{\pd y}\overline{u'v'}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\overline{u},\ \overline{v}$</dt><dd>Mean wind components ($\unit{m\,s^{-1}}$) — what we are solving for.</dd>
+          <dt>$\overline{\vu}\cdot\grad\,\overline{u}$</dt><dd>Advection of mean eastward momentum by the mean wind (the nonlinear transport term from Chapter IV).</dd>
+          <dt>$\rho$</dt><dd>Air density (a field, $\unit{kg\,m^{-3}}$).</dd>
+          <dt>$\overline{p}$</dt><dd>Mean pressure (a field, $\unit{Pa}$); $-\tfrac{1}{\rho}\pd\overline{p}/\pd x$ is the pressure-gradient force per unit mass.</dd>
+          <dt>$f$</dt><dd>The Coriolis parameter $f = 2\Omega\sin\phi$ (a scalar at each latitude, $\unit{s^{-1}}$; here $f>0$, Northern Hemisphere), with $\Omega = 7.292\times10^{-5}\ \unit{s^{-1}}$ and latitude $\phi$.</dd>
+          <dt>$-\dfrac{\pd}{\pd z}\overline{u'w'},\ \dots$</dt><dd>The <em>turbulent-flux divergence</em> terms (a field, $\unit{m\,s^{-2}}$) — the new force per unit mass that turbulence exerts on the mean flow. The vertical one (in $z$) dominates, because gradients are far steeper in the vertical than the horizontal.</dd>
+        </dl>
+      </aside>
+
+      <p>Here is the catch, and it is fundamental. To predict the mean wind $\overline{u}$ we now need to know the covariances $\overline{u'w'}$, $\overline{u'u'}$, and friends. If we write equations for those covariances — and we can — they turn out to depend on <em>triple</em> products like $\overline{u'u'w'}$, whose equations depend on quadruple products, and so on without end. Each level of averaging spawns more unknowns than equations. This is the <dfn title="Averaging the turbulent equations always produces more unknown statistical moments than equations to determine them; the hierarchy never closes.">closure problem</dfn>, and it is not a temporary embarrassment but a structural feature of turbulence. There is no exact, self-contained set of equations for the mean flow.</p>
+
+      <aside class="jargon">
+        <h4>WHY AVERAGING DOESN'T CLOSE</h4>
+        <p>The nonlinear advection term $\vu\cdot\grad\,\vu$ is quadratic in velocity. Averaging a quadratic gives a covariance; writing an equation for that covariance requires the next moment up, because the original nonlinearity reappears at every level. A linear equation would close instantly — its average is just an equation for the mean. Turbulence is hard <em>precisely because</em> the Navier–Stokes equations are nonlinear. Every turbulence model is, at bottom, a guess that truncates this infinite hierarchy at some level and models the rest.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Turbulent stress and eddy fluxes</h2>
+
+      <p>Before modeling the fluxes, let us understand what they physically <em>are</em>. Move the dominant term to where it belongs and multiply by density:</p>
+
+      <div class="equation-block">
+        $$ \tau_{\mathrm{turb}} = -\rho\,\overline{u'w'}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\tau_{\mathrm{turb}}$</dt><dd>The <em>Reynolds stress</em> (a field, $\unit{Pa} = \unit{N\,m^{-2}}$) — the vertical turbulent transport of horizontal momentum, expressed as a stress. It acts on the mean flow exactly like a frictional shear stress between fluid layers.</dd>
+          <dt>$-\rho\,\overline{u'w'}$</dt><dd>The flux written so that $\tau_{\mathrm{turb}}>0$ corresponds to a downward transport of eastward momentum (since fast air carried down, $u'>0,\ w'<0$, gives $\overline{u'w'}<0$).</dd>
+        </dl>
+      </aside>
+
+      <p>The interpretation is mechanical and intuitive. Picture a horizontal surface inside the flow. An eddy that carries air upward ($w'>0$) drags up with it whatever eastward momentum that air had. If the air below is slow (which it is, near the ground, where the wind is weaker) then upward gusts carry a deficit of eastward momentum upward, and downward gusts carry a surplus downward. On average, faster air is shuttled toward the ground and slower air away from it — a <em>downward flux of eastward momentum</em>. That flux is a force: it decelerates the faster air aloft and accelerates the sluggish air below, smearing the wind profile toward uniformity. That is exactly what friction does, which is why $-\rho\,\overline{u'w'}$ earns the name "stress."</p>
+
+      <p>The same logic gives the turbulent fluxes of heat and moisture, which is where the boundary layer earns its keep in the climate system:</p>
+
+      <div class="equation-block">
+        $$ H = \rho\,\cp\,\overline{w'\theta'}, \qquad E = \rho\,\Lv\,\overline{w'q'}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$H$</dt><dd>The <dfn title="The turbulent vertical transport of heat, in W per square metre.">sensible heat flux</dfn> (a field, $\unit{W\,m^{-2}}$) — the rate at which turbulence carries warmth upward. Positive on a sunny day.</dd>
+          <dt>$\overline{w'\theta'}$</dt><dd>Covariance of vertical velocity and potential-temperature fluctuations ($\unit{K\,m\,s^{-1}}$). Warm rising air ($w'>0,\ \theta'>0$) makes it positive.</dd>
+          <dt>$\cp$</dt><dd>Specific heat of air at constant pressure, $\cp = 1004\ \unit{J\,kg^{-1}\,K^{-1}}$ (a constant).</dd>
+          <dt>$E$</dt><dd>The <dfn title="The turbulent vertical transport of water vapor, expressed as an energy flux via the latent heat of vaporization.">latent heat flux</dfn> (a field, $\unit{W\,m^{-2}}$) — energy carried upward as water vapor.</dd>
+          <dt>$\overline{w'q'}$</dt><dd>Covariance of vertical velocity and specific-humidity fluctuations ($\unit{kg\,kg^{-1}\,m\,s^{-1}}$); $q$ is specific humidity.</dd>
+          <dt>$\Lv$</dt><dd>Latent heat of vaporization, $\Lv = 2.5\times10^{6}\ \unit{J\,kg^{-1}}$ (a constant).</dd>
+        </dl>
+      </aside>
+
+      <p>These two fluxes are how the surface unloads the energy it absorbs from the sun back into the atmosphere — the lower boundary condition for the entire weather machine. The boundary layer is, quite literally, where the atmosphere talks to the surface, and these covariances are the language.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>K-theory: turbulence as diffusion</h2>
+
+      <p>We need a closure — a rule that gives the fluxes in terms of the mean fields we are solving for. The oldest and most useful is <dfn title="Modeling a turbulent flux as proportional to the mean gradient, with an eddy-viscosity (or eddy-diffusivity) coefficient K.">K-theory</dfn>, also called first-order closure or the eddy-viscosity hypothesis. Its idea is a bold analogy: turbulence mixes momentum so efficiently that it behaves like a souped-up molecular viscosity, so let the flux be proportional to the mean gradient and point down it.</p>
+
+      <div class="equation-block">
+        $$ \overline{u'w'} = -K_m\,\frac{\pd \overline{u}}{\pd z}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$K_m$</dt><dd>The <em>eddy viscosity</em> (a field, $\unit{m^2\,s^{-1}}$) — the turbulent analogue of molecular viscosity, but typically $10^5$ times larger. The subscript $m$ marks momentum; heat and moisture get their own $K_h$, $K_q$.</dd>
+          <dt>$\dfrac{\pd \overline{u}}{\pd z}$</dt><dd>The vertical <em>shear</em> of the mean wind ($\unit{s^{-1}}$) — how fast the mean wind changes with height.</dd>
+          <dt>minus sign</dt><dd>Ensures the flux runs <em>down</em> the gradient: from fast wind to slow, from warm to cool. Turbulence, like diffusion, erodes gradients.</dd>
+        </dl>
+      </aside>
+
+      <p>The down-gradient form is exactly Fick's law for diffusion or Fourier's law for heat, with $K_m$ in place of the molecular coefficient. Substituting it into the mean momentum equation turns the awkward flux-divergence term into something familiar:</p>
+
+      <div class="equation-block">
+        $$ -\frac{\pd}{\pd z}\overline{u'w'} = \frac{\pd}{\pd z}\!\left(K_m\,\frac{\pd \overline{u}}{\pd z}\right) \;\xrightarrow{\ K_m=\text{const}\ }\; K_m\,\frac{\pd^2 \overline{u}}{\pd z^2}. $$
+      </div>
+
+      <p>The mean wind now obeys a diffusion equation, and friction has become a second derivative — a Laplacian in the vertical. That is enormous progress: the closed, solvable equations of the next three sections all flow from this one substitution. But honesty requires a caveat.</p>
+
+      <aside class="jargon">
+        <h4>WHERE K-THEORY GOES WRONG</h4>
+        <p>The down-gradient assumption says a flux can only flow from high to low values of the mean — but the daytime convective boundary layer flatly violates this. Large thermals carry heat <em>upward through layers where the mean potential temperature increases with height</em>, a counter-gradient flux that no positive $K_h$ can reproduce. K-theory is a <em>local</em> closure: it assumes eddies are small compared with the scale over which the mean varies, like molecules. When the dominant eddies span the whole boundary layer, that assumption breaks, and one needs non-local or higher-order closures (Chapter VII touches on how forecast models handle this). K-theory is right where eddies are small — which is exactly the surface layer, our next two destinations.</p>
+      </aside>
+
+      <p>One way to estimate $K_m$ from physics rather than fiat is the <dfn title="Prandtl's idea that an eddy carries its momentum a characteristic distance ℓ before mixing, giving K ≈ ℓ² times the shear.">mixing-length</dfn> hypothesis: an eddy carries its momentum a typical distance $\ell$ before blending in, which gives $K_m \approx \ell^2\,\bigl|\pd\overline{u}/\pd z\bigr|$. Near the ground the eddies can be no larger than their height, so $\ell \approx k\,z$ — a guess that, as we will see, delivers the logarithmic wind profile exactly.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The Ekman layer and the spiral</h2>
+
+      <p>Now we cash in. Consider steady, horizontally uniform flow above flat ground, with a constant eddy viscosity $K_m$ and a fixed geostrophic wind aloft that we orient along the $x$-axis, $(\overline{u},\overline{v}) \to (u_g,\,0)$ as $z\to\infty$. In the free atmosphere the pressure-gradient force balances Coriolis (geostrophic balance, Chapter V). Down in the boundary layer a third force enters — friction, now written as $K_m\,\pd^2/\pd z^2$ — and the three-way balance is the <dfn title="The steady balance of pressure-gradient, Coriolis, and turbulent friction forces in the boundary layer.">Ekman balance</dfn>:</p>
+
+      <div class="equation-block">
+        $$ K_m\,\frac{\dd^2 \overline{u}}{\dd z^2} + f\,\overline{v} = 0, \qquad K_m\,\frac{\dd^2 \overline{v}}{\dd z^2} - f\,(\overline{u} - u_g) = 0. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\overline{u},\,\overline{v}$</dt><dd>The mean wind components ($\unit{m\,s^{-1}}$), now functions of height $z$ alone.</dd>
+          <dt>$u_g$</dt><dd>The geostrophic wind speed (a constant, $\unit{m\,s^{-1}}$), built from the pressure gradient via $f\,u_g = -\tfrac{1}{\rho}\pd\overline{p}/\pd y$. We chose axes so the geostrophic wind is purely eastward.</dd>
+          <dt>$K_m\,\dd^2\overline{u}/\dd z^2$</dt><dd>The frictional force per unit mass (eddy viscosity acting on curvature of the profile).</dd>
+          <dt>$f\,\overline{v},\ -f(\overline{u}-u_g)$</dt><dd>The Coriolis terms; the $u_g$ stands in for the pressure-gradient force, since geostrophy fixes the two together.</dd>
+        </dl>
+      </aside>
+
+      <p>This is a linear system, and it solves cleanly. With the no-slip condition $\overline{u}=\overline{v}=0$ at $z=0$ and the requirement that the wind approach geostrophic far aloft, the solution is the celebrated <dfn title="The exact solution for wind in a constant-K Ekman layer; named for V. W. Ekman, who derived the oceanic analogue in 1905.">Ekman spiral</dfn>:</p>
+
+      <div class="equation-block">
+        $$ \overline{u}(z) = u_g\Bigl(1 - e^{-z/d}\cos(z/d)\Bigr), \qquad \overline{v}(z) = u_g\,e^{-z/d}\sin(z/d), \qquad d = \sqrt{\frac{2K_m}{f}}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$d$</dt><dd>The <em>Ekman depth scale</em> (a constant, $\unit{m}$) — the e-folding height over which the frictional deviation decays. With $K_m \sim 5\ \unit{m^2\,s^{-1}}$ and $f \sim 10^{-4}\ \unit{s^{-1}}$, $d \sim 300\ \unit{m}$.</dd>
+          <dt>$e^{-z/d}$</dt><dd>The decay envelope: the frictional correction shrinks by $1/e$ every depth $d$, so the wind is nearly geostrophic a few $d$ up.</dd>
+          <dt>$\cos(z/d),\,\sin(z/d)$</dt><dd>The rotation: the deviation from geostrophic turns through a full angle as $z/d$ grows, which is what makes the hodograph spiral rather than simply shrink.</dd>
+        </dl>
+      </aside>
+
+      <p>Read the geometry off the formula. As height increases the tip of the wind vector traces a spiral — the <dfn title="A plot of the wind vector's tip as height varies; its curve is the Ekman spiral.">hodograph</dfn> — winding inward from the surface value to the geostrophic point $(u_g, 0)$. Right at the ground, expand the exponential and trig for small $z/d$: both components grow like $u_g\,z/d$, so $\overline{u}\approx\overline{v}$ and the surface wind points at <strong>45° to the left of the geostrophic wind</strong> (Northern Hemisphere). Since the geostrophic wind runs along the isobars with low pressure on its left, a wind deflected leftward blows partly <em>toward</em> low pressure: friction makes the near-surface air spiral inward across the isobars.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>Be careful with two "depths." Our $d=\sqrt{2K_m/f}$ is the <em>e-folding</em> scale. The height at which the wind first swings back into alignment with the geostrophic direction (where $\overline{v}$ returns to zero) is $z = \pi d$ — Holton calls <em>that</em> the Ekman layer depth $D_e = \pi\sqrt{2K_m/f}$. The spiral reaches geostrophic near $z=\pi d$, not $z=d$. The factor of $\pi$ belongs to $D_e$ and nowhere else; it does not appear in $d$ or in the pumping formula below.</p>
+      </aside>
+
+      <p>The idealized 45° deflection is larger than what is observed — real surface winds cross the isobars at more like 10–30° over land — because the constant-$K_m$ assumption is crude and the surface layer (next section) does not obey it. But the <em>qualitative</em> result is robust and consequential: <strong>friction turns the boundary-layer wind toward low pressure</strong>. That single fact drives the weather.</p>
+
+      <h3>Ekman pumping</h3>
+
+      <p>Here is the payoff. Because the frictional wind spirals inward toward low pressure, air <em>converges</em> into the bottom of a low. It has nowhere to go but up. Mass conservation then forces a gentle vertical velocity out the top of the boundary layer — <dfn title="The vertical velocity at the top of the boundary layer forced by frictionally-driven convergence or divergence; rising over lows, sinking over highs.">Ekman pumping</dfn>. Integrating the continuity equation through the layer, the convergence of the spiraling flow gives</p>
+
+      <div class="equation-block">
+        $$ w_{\mathrm{Ek}} \approx \frac{d}{2}\,\zeta_g \qquad\text{(up over lows, down over highs).} $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$w_{\mathrm{Ek}}$</dt><dd>The vertical velocity at the top of the boundary layer (a field, $\unit{m\,s^{-1}}$), forced by frictional convergence below. Small — centimetres per second — but relentless and large-scale.</dd>
+          <dt>$\zeta_g$</dt><dd>The geostrophic relative vorticity (a field, $\unit{s^{-1}}$), $\zeta_g = \pd v_g/\pd x - \pd u_g/\pd y$. A low-pressure center has cyclonic spin, $\zeta_g > 0$, so $w_{\mathrm{Ek}} > 0$: rising motion.</dd>
+          <dt>$d/2$</dt><dd>Half the Ekman depth ($\unit{m}$); equivalently $\tfrac{d}{2}=\sqrt{K_m/2f}$. No $\pi$ appears here.</dd>
+        </dl>
+      </aside>
+
+      <p>The sign is everything. A cyclone ($\zeta_g>0$) gets <strong>rising</strong> motion pumped through its boundary-layer top — cooling, condensation, clouds, the engine of weather. An anticyclone ($\zeta_g<0$) gets <strong>sinking</strong> motion — warming, drying, fair skies. And because that rising motion of a cyclone removes the very spin that drives it (this is <dfn title="The decay of a vortex due to frictionally-forced secondary circulation; the spin-down timescale is far shorter than molecular diffusion would give.">Ekman spin-down</dfn>), friction in the boundary layer quietly throttles the rotation of the entire system above. A mid-latitude cyclone spun down purely by molecular friction would take months; Ekman pumping does it in a few days. The boundary layer reaches up and brakes the free atmosphere.</p>
+
+      <section class="interactive" data-widget="ekman-spiral" aria-label="The Ekman spiral hodograph: wind turning with height in the boundary layer">
+        <header>
+          <h4>Interactive · The Ekman spiral</h4>
+          <span class="hint">drag eddy viscosity · geostrophic speed · latitude</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The hodograph of the constant-$K_m$ Ekman solution. Each plotted point is the wind vector $(\overline{u},\overline{v})$ at a height $z$; as $z$ rises from $0$, the tip spirals from the surface wind — deflected $45^\circ$ to the left of geostrophic — out to the geostrophic point $(u_g,0)$. Raising the eddy viscosity $K_m$ or dropping toward the equator (smaller $f$) deepens the layer $d=\sqrt{2K_m/f}$; the marked heights $z=d,2d,3d$ slide outward but the surface deflection stays pinned near $45^\circ$, since that angle is set by the structure of the solution, not its scale. The readout computes $d$ and the surface angle $\arctan(\overline{v}/\overline{u})$ directly from the formulas.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The surface layer and the logarithmic wind profile</h2>
+
+      <p>The constant-$K_m$ Ekman picture is wrong in its bottom tenth — the <dfn title="The lowest ~10% of the boundary layer, where turbulent fluxes are nearly constant with height and rotation is negligible.">surface layer</dfn>, the lowest few tens of metres. Here two things change. First, the eddies cannot be larger than their distance from the ground, so $K_m$ is emphatically <em>not</em> constant — it grows with height. Second, the layer is thin enough that the Coriolis force is negligible over it, so the turning of the wind can be ignored and the stress is nearly constant with height. That constancy is the defining property and gives the layer its other name, the <dfn title="The surface layer, where the turbulent momentum flux varies little with height.">constant-flux layer</dfn>.</p>
+
+      <p>Constant stress means a constant velocity scale. Define the <dfn title="A velocity scale built from the surface stress, ubiquitous in surface-layer theory.">friction velocity</dfn> $u_*$ from the surface stress:</p>
+
+      <div class="equation-block">
+        $$ u_*^2 = \frac{\tau_0}{\rho} = -\overline{u'w'}\big|_{z=0}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$u_*$</dt><dd>The friction velocity (a constant within the surface layer, $\unit{m\,s^{-1}}$) — the natural velocity scale of surface turbulence; typically a few tenths of $\unit{m\,s^{-1}}$.</dd>
+          <dt>$\tau_0$</dt><dd>The surface stress (a scalar, $\unit{Pa}$) — the drag the ground exerts on the wind.</dd>
+          <dt>$\rho$</dt><dd>Air density ($\unit{kg\,m^{-3}}$).</dd>
+        </dl>
+      </aside>
+
+      <p>Now combine constant stress with the mixing-length closure and the geometric fact that eddy size scales with height, $\ell = k\,z$. The down-gradient flux is $u_*^2 = K_m\,(\dd\overline{u}/\dd z)$ with $K_m = (kz)^2\,(\dd\overline{u}/\dd z)$, which collapses to $u_* = k z\,(\dd\overline{u}/\dd z)$, i.e. a shear that falls off inversely with height:</p>
+
+      <div class="equation-block">
+        $$ \frac{\dd \overline{u}}{\dd z} = \frac{u_*}{k\,z}. $$
+      </div>
+
+      <p>Integrate from the height $z_0$ where the wind formally vanishes, and you get one of the most-used formulas in all of applied meteorology — the <dfn title="The law that wind speed increases with the logarithm of height in a neutral surface layer.">logarithmic wind profile</dfn>:</p>
+
+      <div class="equation-block">
+        $$ \overline{u}(z) = \frac{u_*}{k}\,\ln\!\frac{z}{z_0}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$k$</dt><dd>The <em>von Kármán constant</em>, $k \approx 0.40$ (a dimensionless empirical constant). Not to be confused with any unit vector — it is just the number $0.4$.</dd>
+          <dt>$z_0$</dt><dd>The <dfn title="The height at which the extrapolated logarithmic wind profile reaches zero; a measure of surface roughness.">roughness length</dfn> (a constant, $\unit{m}$) — the height at which the formula gives zero wind. Smooth surfaces have tiny $z_0$ (open water, $\sim 0.1\ \unit{mm}$); rough ones large ($\sim 1\ \unit{m}$ for a forest or a city).</dd>
+          <dt>$z$</dt><dd>Height above the surface ($\unit{m}$); the profile is valid for $z_0 \ll z \lesssim$ (surface-layer top).</dd>
+          <dt>$\ln$</dt><dd>The natural logarithm. Wind grows fast near the ground, then ever more slowly — equal <em>ratios</em> of height add equal increments of wind.</dd>
+        </dl>
+      </aside>
+
+      <p>The logarithmic shape is the signature of the constant-flux layer, and it is the reason a 10 m anemometer reading can be sensibly translated to the 80 m hub height of a wind turbine, or why surface gusts and aircraft winds differ so sharply. The roughness length $z_0$ packages everything about the surface — grass, ocean swell, skyscrapers — into a single number. This profile holds, however, only when the air is neither heating nor cooling from below. The moment buoyancy enters, the log law bends.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Stability and the Monin–Obukhov length</h2>
+
+      <p>Turbulence has two engines. <em>Shear</em> generates it mechanically — the wind tearing past itself, the energy source behind the log law. <em>Buoyancy</em> generates or destroys it thermally — on a sunny day, warm parcels rising freely add turbulent energy; on a clear night, the cold dense surface air resists being lifted and saps it. The character of the surface layer depends entirely on which engine wins, and the variable that decides static stability for moist air is the <dfn title="Potential temperature corrected for the buoyancy effect of water vapor; the proper variable for parcel buoyancy in moist air.">virtual potential temperature</dfn> $\theta_v$.</p>
+
+      <p>Monin and Obukhov's insight (1954) was that the entire stratified surface layer is governed by a single length scale, formed from the competition between the two engines. Mechanical production of turbulence scales with $u_*^3$; buoyant production scales with the surface buoyancy flux $\overline{w'\theta_v'}$. Their ratio defines a height — the <dfn title="The height at which buoyant and shear production of turbulence are equal; the governing scale of the stratified surface layer.">Monin–Obukhov length</dfn>:</p>
+
+      <div class="equation-block">
+        $$ L = -\frac{u_*^3\,\overline{\theta_v}}{k\,g\,\overline{w'\theta_v'}}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$L$</dt><dd>The Monin–Obukhov length (a scalar, $\unit{m}$) — the height at which buoyant and shear production of turbulence are comparable. Its <em>sign</em> reports the stability; its <em>magnitude</em> reports how strongly.</dd>
+          <dt>$u_*$</dt><dd>Friction velocity ($\unit{m\,s^{-1}}$); the $u_*^3$ measures mechanical (shear) production.</dd>
+          <dt>$\overline{\theta_v}$</dt><dd>Mean virtual potential temperature ($\unit{K}$) — the reference buoyancy state; here just a normalizing temperature near $288\ \unit{K}$.</dd>
+          <dt>$g$</dt><dd>Gravitational acceleration, $g = 9.81\ \unit{m\,s^{-2}}$ (a constant); $g/\overline{\theta_v}$ converts a temperature anomaly into a buoyant acceleration.</dd>
+          <dt>$\overline{w'\theta_v'}$</dt><dd>The surface <em>buoyancy flux</em> (a scalar, $\unit{K\,m\,s^{-1}}$) — the turbulent vertical heat flux that drives buoyant production. Positive when the surface heats the air.</dd>
+          <dt>$k$</dt><dd>von Kármán constant, $0.40$ (dimensionless).</dd>
+        </dl>
+      </aside>
+
+      <p>The minus sign makes the sign convention work out as follows.</p>
+
+      <ul>
+        <li><strong>Unstable (daytime, $L<0$).</strong> The surface heats the air, so $\overline{w'\theta_v'}>0$, and the minus sign makes $L$ <em>negative</em>. Buoyancy adds turbulence; thermals rise; the layer mixes vigorously. The convective boundary layer.</li>
+        <li><strong>Stable (nighttime, $L>0$).</strong> The surface cools the air, so $\overline{w'\theta_v'}<0$, and $L$ comes out <em>positive</em>. Buoyancy suppresses turbulence; mixing is throttled; the layer is shallow. The stable boundary layer.</li>
+        <li><strong>Neutral ($L\to\pm\infty$).</strong> No surface heat flux, $\overline{w'\theta_v'}\to 0$; buoyancy is irrelevant and shear rules. This is the regime in which the plain log law of §6 is exact.</li>
+      </ul>
+
+      <p>The dimensionless height $z/L$ is the master variable. When $|z/L|\ll 1$ — close to the ground, or under strong winds — mechanical production dominates and the flow is effectively neutral; the log law holds. When $|z/L|\gtrsim 1$, buoyancy takes over and the profiles must be corrected. <dfn title="The framework asserting that surface-layer profiles, made dimensionless with u*, z, and L, are universal functions of z/L.">Monin–Obukhov similarity theory</dfn> asserts that once you nondimensionalize with $u_*$, $z$, and $L$, the wind and temperature profiles become <em>universal functions of $z/L$ alone</em>, the same over any flat surface on Earth. The neutral log law gets a stability correction $\psi_m(z/L)$:</p>
+
+      <div class="equation-block">
+        $$ \overline{u}(z) = \frac{u_*}{k}\left[\ln\!\frac{z}{z_0} - \psi_m\!\left(\frac{z}{L}\right)\right]. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\psi_m(z/L)$</dt><dd>The <em>stability correction function</em> (dimensionless) — an empirically-determined universal function. Unstable conditions ($z/L<0$) make $\psi_m>0$, weakening the shear (more mixing, flatter profile); stable conditions ($z/L>0$) make $\psi_m<0$, sharpening it. It vanishes in the neutral limit, recovering the log law.</dd>
+        </dl>
+      </aside>
+
+      <p>This is the quiet workhorse beneath every weather and climate model. To couple the atmosphere to the land or ocean, a model needs the surface fluxes of momentum, heat, and moisture given the wind, temperature, and humidity at the lowest model level — and Monin–Obukhov similarity is how nearly every model computes them. The 45° spiral, the log law, and the $z/L$ corrections are not curiosities; they are the bottom boundary condition for the atmosphere in motion. The next chapter takes the spiraling, converging, frictionally-braked flow of this one and lets it organize itself into the great cyclones and fronts of the mid-latitudes.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">R. B. Stull.</span> <em>An Introduction to Boundary Layer Meteorology.</em> Kluwer 1988 — the standard text; Ch. 1–2 (the boundary layer and its daily cycle), Ch. 3–4 (Reynolds averaging, the closure problem, turbulent fluxes), Ch. 9 (similarity theory, the log law, Monin–Obukhov).</li>
+          <li><span class="src-title">J. R. Holton and G. J. Hakim.</span> <em>An Introduction to Dynamic Meteorology</em>, 5th ed., Academic Press 2012 — Ch. 8 on the planetary boundary layer: the Ekman spiral, the depth $D_e=\pi\sqrt{2K_m/f}$, Ekman pumping, and spin-down.</li>
+          <li><span class="src-title">J. R. Garratt.</span> <em>The Atmospheric Boundary Layer.</em> Cambridge University Press 1992 — a focused, authoritative treatment of surface-layer flux–gradient relationships and similarity theory.</li>
+          <li><span class="src-title">J. C. Wyngaard.</span> <em>Turbulence in the Atmosphere.</em> Cambridge University Press 2010 — the closure problem and the statistical structure of atmospheric turbulence, from a leader of the field.</li>
+          <li><span class="src-title">A. S. Monin and A. M. Obukhov.</span> "Basic laws of turbulent mixing in the surface layer of the atmosphere." <em>Tr. Geofiz. Inst. Akad. Nauk SSSR</em> 24(151), 163–187 (1954) — the original paper introducing the length scale $L$ and surface-layer similarity.</li>
+          <li><span class="src-title">G. K. Batchelor.</span> <em>An Introduction to Fluid Dynamics.</em> Cambridge University Press 1967 — Ch. 3 (equations of motion and the stress tensor) and Ch. 4 (viscous flow) for the continuum-mechanics foundations of stress and viscosity on which the turbulent analogy is built.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="05-balanced-flow.html"><span class="label">← Previous</span>V · Balanced Flow and Vorticity</a>
+      <a class="next" href="07-midlatitude-systems.html"><span class="label">Next chapter</span>VII · Mid-latitude Weather Systems →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/ekman-spiral.js"></script>
+</body>
+</html>

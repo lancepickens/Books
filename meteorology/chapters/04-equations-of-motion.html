@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter IV · The Equations of Motion — Meteorology: The Atmosphere in Motion</title>
+  <meta name="description" content="Chapter 4: Newton's second law for a fluid parcel in the rotating frame of the Earth — the material derivative, pressure-gradient, Coriolis and centrifugal forces, continuity, the thermodynamic equation, scale analysis, the Rossby number, and the primitive equations in pressure coordinates." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter IV of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter IV</p>
+      <h1 class="chapter-title">The Equations of Motion</h1>
+      <p class="lede">Newton's second law, written for a parcel of air on a spinning planet, is the whole of dynamical meteorology — the trick is knowing which terms to keep.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>Air is a fluid, and a fluid obeys Newton's laws like everything else: the acceleration of a little blob of it equals the forces acting on it, divided by its mass. The catch is that we watch the atmosphere from the surface of a rotating planet, and a rotating viewpoint is not an inertial one. Writing $F = ma$ in that turning frame conjures two new apparent forces — the centrifugal force, which we quietly fold into gravity, and the Coriolis force, which deflects every moving parcel and is the single most important reason weather behaves the way it does. This chapter builds those equations from scratch and is the spine the rest of the book hangs on: every convention later chapters use is fixed here.</p>
+          <p>Once we have the full equations they turn out to be too rich. For the large, slow weather systems that fill a daily map — the highs and lows a thousand kilometres across — most of the terms are tiny. A careful bookkeeping of magnitudes, called <em>scale analysis</em>, throws the small terms away and leaves a clean set of working equations. The same analysis reveals something elegant: because pressure always falls with height, pressure itself can replace height as the vertical coordinate, which is why weather maps are drawn on constant-pressure surfaces. That switch, set up at the end of this chapter, is inherited by every chapter that follows.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Parcel</dt><dd>An imagined small blob of air, big enough to have a well-defined temperature and density but small enough to move as one thing. The atom of fluid dynamics.</dd>
+          <dt>Eulerian view</dt><dd>Watching the flow from a fixed point in space, like a weather station — you see whatever air happens to pass by.</dd>
+          <dt>Lagrangian view</dt><dd>Riding along with a particular parcel and recording what happens to it, like a weather balloon drifting with the wind.</dd>
+          <dt>Material derivative</dt><dd>The rate of change of some quantity following a moving parcel — the Lagrangian rate of change, written $D/Dt$.</dd>
+          <dt>Advection</dt><dd>Transport of a property (heat, moisture, momentum) by the bulk motion of the air. Wind carrying cold air south is cold advection.</dd>
+          <dt>Pressure-gradient force</dt><dd>The push a parcel feels from high pressure toward low pressure. The atmosphere's engine.</dd>
+          <dt>Inertial frame</dt><dd>A non-accelerating reference frame in which Newton's laws hold in their plain form. The fixed stars provide one; the spinning Earth does not.</dd>
+          <dt>Rotating frame</dt><dd>A reference frame turning with the Earth. Convenient — we live in it — but it introduces apparent forces.</dd>
+          <dt>Centrifugal force</dt><dd>The apparent outward force felt in a rotating frame, pointing away from the rotation axis. We absorb it into gravity.</dd>
+          <dt>Effective gravity</dt><dd>True gravitational attraction plus the centrifugal force, combined into the single downward $\mathbf{g}$ we measure as $9.81\ \mathrm{m\,s^{-2}}$.</dd>
+          <dt>Coriolis force</dt><dd>The apparent sideways force on anything moving in a rotating frame. In the Northern Hemisphere it deflects motion to the right.</dd>
+          <dt>Coriolis parameter</dt><dd>The local strength of the Coriolis effect, $f = 2\Omega\sin\phi$ — zero at the equator, largest at the poles.</dd>
+          <dt>$f$-plane</dt><dd>An idealization that holds $f$ constant over a region, treating a patch of the rotating Earth as a flat turning table.</dd>
+          <dt>Geopotential</dt><dd>The potential energy per unit mass in the effective gravity field, $\Phi$; its gradient is the gravity-plus-centrifugal force.</dd>
+          <dt>Continuity equation</dt><dd>The statement that mass is conserved — air cannot be created or destroyed, only moved and compressed.</dd>
+          <dt>Incompressible flow</dt><dd>Flow in which density following a parcel barely changes, so the velocity field has no net divergence. A good approximation for slow atmospheric motion.</dd>
+          <dt>Divergence</dt><dd>The net rate at which a vector field spreads out of a point; for a velocity field, the fractional rate of volume expansion of a parcel.</dd>
+          <dt>Diabatic heating</dt><dd>Any addition of heat to a parcel from outside — radiation, condensation, mixing — as opposed to heating by compression.</dd>
+          <dt>Potential temperature</dt><dd>The temperature a parcel would have if brought adiabatically to a reference pressure of $1000\ \mathrm{hPa}$; conserved for dry adiabatic motion.</dd>
+          <dt>Scale analysis</dt><dd>Estimating the typical size of each term in an equation to find out which ones matter for a given kind of flow.</dd>
+          <dt>Synoptic scale</dt><dd>The scale of the large weather systems on a daily map: lengths $\sim\!1000\ \mathrm{km}$, speeds $\sim\!10\ \mathrm{m\,s^{-1}}$, lasting days.</dd>
+          <dt>Rossby number</dt><dd>The ratio of a parcel's acceleration to the Coriolis force it feels, $\mathrm{Ro} = U/(fL)$. Small for big slow weather; large for a draining bathtub.</dd>
+          <dt>Geostrophic balance</dt><dd>The standoff between the pressure-gradient and Coriolis forces that holds when the Rossby number is small — the wind blows along the isobars, not across them.</dd>
+          <dt>Hydrostatic balance</dt><dd>The vertical standoff between gravity and the upward pressure-gradient force, accurate to a fraction of a percent for large-scale flow.</dd>
+          <dt>Pressure coordinates</dt><dd>Using pressure $p$ instead of height $z$ as the vertical coordinate; legitimate because hydrostatic balance makes $p$ fall monotonically with height.</dd>
+          <dt>Omega (vertical motion)</dt><dd>Vertical velocity measured in pressure coordinates, $\omega = Dp/Dt$ in $\mathrm{Pa\,s^{-1}}$. Negative $\omega$ means rising air.</dd>
+          <dt>Primitive equations</dt><dd>The hydrostatic, scaled equations of motion in pressure coordinates — the set actually integrated by weather and climate models.</dd>
+          <dt>Tangent plane</dt><dd>A flat Cartesian patch laid tangent to the spherical Earth at a given latitude, with $x$ east, $y$ north, $z$ up — the local stage for the equations.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>Two ways to watch a fluid: the material derivative</h2>
+
+      <p>Before we can write down a law of motion we must decide how to label the thing that is moving. There are two choices, and meteorology uses both constantly.</p>
+
+      <p>The <dfn title="Describing the flow by what passes a fixed point in space.">Eulerian</dfn> description fixes attention on points in space. A thermometer bolted to a mast reports the temperature $T(x, y, z, t)$ of whatever air is passing it right now. The <dfn title="Describing the flow by following individual parcels.">Lagrangian</dfn> description instead follows a particular <dfn title="A small blob of air treated as a single moving object.">parcel</dfn> of air — a weather balloon released into the wind — and records how its properties change as it drifts. The two views are connected by a derivative.</p>
+
+      <p>Ask how fast some property $\psi$ — temperature, a velocity component, humidity — changes <em>following a parcel</em>. The parcel moves, so in a small time $\dd t$ it both ages (the field changes everywhere with $t$) and relocates (it samples a new place where the field has a different value). Chasing this with the chain rule gives the <dfn title="Rate of change following a moving parcel; the sum of local change and advection.">material derivative</dfn>:</p>
+
+      <div class="equation-block">
+        $$ \Dt \;=\; \frac{\pd}{\pd t} \;+\; \vu\cdot\grad \;=\; \frac{\pd}{\pd t} + u\frac{\pd}{\pd x} + v\frac{\pd}{\pd y} + w\frac{\pd}{\pd z}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\dfrac{D}{Dt}$</dt><dd>The material (Lagrangian) derivative — an operator giving the rate of change of any field following a parcel.</dd>
+          <dt>$\dfrac{\pd}{\pd t}$</dt><dd>The local (Eulerian) rate of change at a fixed point — what a stationary thermometer measures.</dd>
+          <dt>$\vu$</dt><dd>The three-dimensional velocity field, a vector $\vu = (u, v, w)$ with components $u$ (eastward), $v$ (northward), $w$ (upward), in $\mathrm{m\,s^{-1}}$.</dd>
+          <dt>$\grad$</dt><dd>The gradient operator $\left(\frac{\pd}{\pd x}, \frac{\pd}{\pd y}, \frac{\pd}{\pd z}\right)$; the dot product $\vu\cdot\grad$ measures change along the direction the parcel moves.</dd>
+          <dt>$\vu\cdot\grad\,\psi$</dt><dd>The <dfn title="Transport of a property by the bulk flow.">advection</dfn> term — the change a parcel sees purely because it has moved to where the field is different.</dd>
+        </dl>
+      </aside>
+
+      <p>Read this as a sentence: <em>the change a parcel experiences (left) is the change happening locally in time (first term) plus the change it runs into by being carried through a spatially varying field (advection).</em> If a cold front is parked to your west and the wind is from the west, the local temperature falls even though the front itself is not changing — that is advection doing the work. Every governing equation below is just Newton's law, mass conservation, or the first law of thermodynamics with $D/Dt$ playing the role of "acceleration of," "rate of change of mass density following," and so on.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>The material derivative is nonlinear: the velocity $\vu$ appears multiplying the gradient of $\vu$ itself in the momentum equation. That single quadratic term, $\vu\cdot\grad\,\vu$, is the source of turbulence, of weather's unpredictability, and of essentially every hard problem in fluid dynamics. We will spend the rest of the book living with it.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The forces on a parcel</h2>
+
+      <p>Newton's second law for a parcel of air says its acceleration equals the sum of forces per unit mass acting on it. In an <dfn title="A non-accelerating frame where Newton's laws hold in plain form.">inertial frame</dfn> — one not rotating with the Earth — there are three of them, and they are worth meeting one at a time before we complicate life by spinning the frame.</p>
+
+      <h3>Pressure-gradient force</h3>
+
+      <p>Pressure is the force per unit area the surrounding air exerts on a parcel's faces. If pressure is higher on one side than the other, the parcel feels a net push from high pressure toward low. Working out the net force on a small box and dividing by its mass gives the <dfn title="The force per unit mass pushing a parcel from high to low pressure.">pressure-gradient force</dfn> per unit mass:</p>
+
+      <div class="equation-block">
+        $$ \vF_{\text{press}} \;=\; -\frac{1}{\rho}\grad p. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$p$</dt><dd>Pressure, a scalar field, in pascals ($\mathrm{Pa}$); meteorologists quote it in hectopascals ($1\ \mathrm{hPa} = 100\ \mathrm{Pa} = 1\ \mathrm{mbar}$).</dd>
+          <dt>$\rho$</dt><dd>Air density, a scalar field, in $\mathrm{kg\,m^{-3}}$; near sea level $\rho \approx 1.2\ \mathrm{kg\,m^{-3}}$.</dd>
+          <dt>$-\grad p$</dt><dd>Points from high pressure toward low pressure — the minus sign is the whole physics: air accelerates <em>down</em> the pressure gradient.</dd>
+        </dl>
+      </aside>
+
+      <p>Note that the acceleration depends on $\grad p$ divided by $\rho$: the same pressure difference pushes thin high-altitude air harder than dense surface air. This is the term that ultimately drives all weather, because the Sun heats the planet unevenly and uneven heating makes pressure gradients.</p>
+
+      <h3>Gravity</h3>
+
+      <p>Every parcel is pulled toward the centre of the Earth by true gravitational attraction $\mathbf{g}^*$, of magnitude about $9.81\ \mathrm{m\,s^{-2}}$ near the surface and very nearly constant through the depth of the weather-bearing atmosphere. In a moment we will quietly redefine this as <em>effective</em> gravity to swallow the centrifugal force; for now treat it as a downward pull $\mathbf{g}^*$.</p>
+
+      <h3>Friction</h3>
+
+      <p>Real air is viscous and, more importantly, turbulent; momentum is exchanged between fast and slow layers. We lump every such effect — molecular viscosity, turbulent stress, drag against the ground — into a single frictional force per unit mass $\vF$. Away from the ground it is small enough to ignore for the large-scale flow; within the lowest kilometre or so it is decisive, and Chapter VI is devoted to it. Here it rides along as a placeholder.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Into the rotating frame: centrifugal and Coriolis</h2>
+
+      <p>We do not observe the atmosphere from the fixed stars. We observe it standing on a planet that turns once a day, and Newton's law in its plain form holds only in an <dfn title="A non-accelerating frame.">inertial frame</dfn>. Transforming the law into a frame rotating with constant angular velocity $\vOmega$ introduces two apparent forces. The derivation is a standard exercise in classical mechanics (relate the time derivative of any vector in the two frames, apply it twice to the position vector); the result is what we need:</p>
+
+      <div class="equation-block">
+        $$ \left(\frac{D\vu}{Dt}\right)_{\text{inertial}} \;=\; \frac{D\vu}{Dt} \;+\; 2\,\vOmega\times\vu \;+\; \vOmega\times(\vOmega\times\vr). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\vOmega$</dt><dd>The Earth's angular velocity vector, pointing out of the North Pole along the rotation axis, of magnitude $\Omega = 7.292\times10^{-5}\ \mathrm{s^{-1}}$ (one turn per sidereal day).</dd>
+          <dt>$\vu$</dt><dd>Velocity measured <em>in the rotating frame</em> — the wind as we observe it.</dd>
+          <dt>$\vr$</dt><dd>The position vector of the parcel from the Earth's centre.</dd>
+          <dt>$2\,\vOmega\times\vu$</dt><dd>Twice the cross product of rotation and velocity — its negative is the Coriolis force per unit mass.</dd>
+          <dt>$\vOmega\times(\vOmega\times\vr)$</dt><dd>Points inward toward the axis; its negative is the centrifugal force per unit mass, $\Omega^2$ times the distance from the axis.</dd>
+        </dl>
+      </aside>
+
+      <p>Moving the apparent terms to the force side of Newton's law, the rotating-frame acceleration $D\vu/Dt$ acquires a $-2\vOmega\times\vu$ (the Coriolis force) and a $-\vOmega\times(\vOmega\times\vr)$ (the centrifugal force).</p>
+
+      <h3>Centrifugal force, absorbed into gravity</h3>
+
+      <p>The centrifugal force points outward from the rotation axis with magnitude $\Omega^2 R_\perp$, where $R_\perp$ is the perpendicular distance to the axis. It depends only on position, not on the parcel's motion, so it behaves exactly like a (small) addition to gravity. We therefore define <dfn title="True gravity plus the centrifugal force, combined into one downward field.">effective gravity</dfn> by adding the two:</p>
+
+      <div class="equation-block">
+        $$ \vg \;=\; \mathbf{g}^* \;-\; \vOmega\times(\vOmega\times\vr) \;=\; \mathbf{g}^* \;+\; \Omega^2\,\mathbf{R}_\perp. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\vg$</dt><dd>Effective gravity, a vector of magnitude $g \approx 9.81\ \mathrm{m\,s^{-2}}$, pointing toward the local vertical (which is what a plumb line defines). This is the $g$ we actually measure.</dd>
+          <dt>$\mathbf{g}^*$</dt><dd>True Newtonian gravitational attraction toward the Earth's centre.</dd>
+          <dt>$\mathbf{R}_\perp$</dt><dd>The vector from the rotation axis to the parcel, perpendicular to the axis; $\Omega^2\,\mathbf{R}_\perp$ is the outward centrifugal acceleration.</dd>
+        </dl>
+      </aside>
+
+      <p>Two consequences worth stating plainly. First, the centrifugal part is why the measured $g = 9.81\ \mathrm{m\,s^{-2}}$ is slightly smaller than the true gravitational attraction and why it varies with latitude — the value already <em>bakes in</em> rotation, which is exactly why we call it "effective." Second, the Earth long ago adjusted its shape (it bulges at the equator) so that effective gravity points perpendicular to mean sea level everywhere; this is why we can treat $\vg$ as simply "down" and need never write the centrifugal term again. It is gone, hidden inside $g$.</p>
+
+      <aside class="jargon">
+        <h4>Why centrifugal hides but Coriolis cannot</h4>
+        <p>The centrifugal force depends only on where a parcel is, so it can be folded into a position-dependent field — gravity. The Coriolis force depends on how a parcel is <em>moving</em> ($2\vOmega\times\vu$), so it cannot be absorbed into any static field; it must be carried explicitly. That is the deep reason the two apparent forces of the rotating frame meet such different fates, and why Coriolis, not centrifugal, is the protagonist of dynamical meteorology.</p>
+      </aside>
+
+      <h3>The Coriolis force</h3>
+
+      <p>The surviving apparent force is the <dfn title="The apparent deflecting force on a parcel moving in a rotating frame.">Coriolis force</dfn> per unit mass, $-2\vOmega\times\vu$. It is always perpendicular to the velocity, so it does no work and cannot change a parcel's speed — only its direction. In the Northern Hemisphere it deflects moving air to the <em>right</em> of its motion; in the Southern Hemisphere, to the left. It is feeble — for a $10\ \mathrm{m\,s^{-1}}$ wind it is some ten-thousandth of gravity — but it acts steadily over the days and thousands of kilometres of a weather system, and over those scales it bends straight flow into the great swirls of highs and lows.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The momentum equations in component form</h2>
+
+      <p>Collecting the pressure-gradient force, effective gravity, friction, and the Coriolis force gives the momentum equation in the rotating frame, in compact vector form:</p>
+
+      <div class="equation-block">
+        $$ \frac{D\vu}{Dt} \;=\; -\frac{1}{\rho}\grad p \;-\; 2\,\vOmega\times\vu \;+\; \vg \;+\; \vF. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\dfrac{D\vu}{Dt}$</dt><dd>Acceleration of the parcel following its motion in the rotating frame.</dd>
+          <dt>$-\frac{1}{\rho}\grad p$</dt><dd>Pressure-gradient force per unit mass — pushes from high to low pressure.</dd>
+          <dt>$-2\,\vOmega\times\vu$</dt><dd>Coriolis force per unit mass — deflects motion (rightward in the NH), does no work.</dd>
+          <dt>$\vg$</dt><dd>Effective gravity (true gravity + centrifugal), pointing down; $\vg = -g\,\hat{\mathbf{k}}$ with $\hat{\mathbf{k}}$ the upward unit vector.</dd>
+          <dt>$\vF$</dt><dd>Friction per unit mass — molecular and turbulent stresses, important only near the ground.</dd>
+        </dl>
+      </aside>
+
+      <p>To work with this we lay down a local <dfn title="A flat Cartesian patch tangent to the sphere at a point.">tangent plane</dfn> at our latitude $\phi$: $x$ pointing east, $y$ north, $z$ up. The Earth's rotation vector, resolved onto these axes, has a northward component $\Omega\cos\phi$ and an upward component $\Omega\sin\phi$, so</p>
+
+      <div class="equation-block">
+        $$ \vOmega \;=\; (0,\ \Omega\cos\phi,\ \Omega\sin\phi). $$
+      </div>
+
+      <p>Forming the cross product $2\vOmega\times\vu$ and writing the three components out in full is straightforward but produces, alongside the terms we want, several smaller ones — pieces proportional to $\Omega\cos\phi$ that couple horizontal and vertical motion, and curvature ("metric") terms like $uv\tan\phi/a$ that arise because the tangent plane is really wrapped on a sphere of radius $a$. For the large, nearly horizontal weather-system flow of this book, scale analysis (§7) shows every one of these to be small, and dropping them is the <dfn title="Retaining only the vertical component of Earth's rotation, sin φ, in the Coriolis terms.">traditional approximation</dfn>. What survives keeps only the <em>vertical</em> component of the rotation, $\Omega\sin\phi$, packaged into a single number:</p>
+
+      <div class="equation-block">
+        $$ f \;\equiv\; 2\Omega\sin\phi. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$f$</dt><dd>The <dfn title="Local strength of the Coriolis effect, twice the vertical component of Earth's rotation.">Coriolis parameter</dfn>, in $\mathrm{s^{-1}}$ — the local strength of the Coriolis deflection. Zero at the equator ($\phi=0$), maximal at the poles. At $45^\circ$N, $f \approx 1.03\times10^{-4}\ \mathrm{s^{-1}}$.</dd>
+          <dt>$\phi$</dt><dd>Latitude; positive in the Northern Hemisphere, so $f > 0$ there throughout this book.</dd>
+          <dt>$a$</dt><dd>The Earth's mean radius, $a = 6.371\times10^{6}\ \mathrm{m}$, setting the size of the curvature terms we just discarded.</dd>
+        </dl>
+      </aside>
+
+      <p>With the small terms gone, the two horizontal momentum equations take the clean tangent-plane form that forecasters and models actually use:</p>
+
+      <div class="equation-block">
+        $$ \frac{Du}{Dt} \;-\; f\,v \;=\; -\frac{1}{\rho}\frac{\pd p}{\pd x} \;+\; F_x, $$
+      </div>
+
+      <div class="equation-block">
+        $$ \frac{Dv}{Dt} \;+\; f\,u \;=\; -\frac{1}{\rho}\frac{\pd p}{\pd y} \;+\; F_y. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$u,\ v$</dt><dd>Eastward and northward wind components, in $\mathrm{m\,s^{-1}}$.</dd>
+          <dt>$-f\,v,\ +f\,u$</dt><dd>The horizontal Coriolis terms. Check the sign: a parcel moving east ($u>0$) gets $+fu$ added to the northward equation as $Dv/Dt = -fu - \dots$, i.e. it accelerates <em>southward</em> — a deflection to the right, as promised for the NH.</dd>
+          <dt>$\frac{\pd p}{\pd x},\ \frac{\pd p}{\pd y}$</dt><dd>Horizontal pressure gradients; their negatives, divided by $\rho$, are the eastward and northward pressure-gradient accelerations.</dd>
+          <dt>$F_x,\ F_y$</dt><dd>Horizontal components of friction per unit mass.</dd>
+        </dl>
+      </aside>
+
+      <p>The vertical equation is where scale analysis bites hardest. The vertical acceleration $Dw/Dt$ and the leftover Coriolis term $2\Omega\cos\phi\,u$ are both utterly dwarfed by the near-cancellation of gravity against the vertical pressure gradient. Dropping them leaves the cornerstone of large-scale meteorology, <dfn title="The standoff between gravity and the upward pressure-gradient force.">hydrostatic balance</dfn>:</p>
+
+      <div class="equation-block">
+        $$ 0 \;=\; -\frac{1}{\rho}\frac{\pd p}{\pd z} \;-\; g. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$-\frac{1}{\rho}\frac{\pd p}{\pd z}$</dt><dd>Upward pressure-gradient force per unit mass; pressure falls with height, so $\pd p/\pd z < 0$ and this term is positive (upward).</dd>
+          <dt>$-g$</dt><dd>Effective gravity per unit mass, downward, $g = 9.81\ \mathrm{m\,s^{-2}}$. The two balance to better than one part in a thousand for synoptic flow.</dd>
+        </dl>
+      </aside>
+
+      <p>Hydrostatic balance is the same relation that fixed pressure with height back in Chapter I; here we have earned it again from the full equations and learned precisely which terms it neglects. It will repay us at the end of the chapter by letting pressure serve as a vertical coordinate.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Mass conservation: continuity</h2>
+
+      <p>Momentum is not the whole story — air is conserved. Consider a fixed volume of space: the rate at which mass piles up inside it must equal the rate at which mass flows in across its walls. Shrinking that statement to a point gives the <dfn title="The differential statement that mass is conserved.">continuity equation</dfn>:</p>
+
+      <div class="equation-block">
+        $$ \frac{\pd\rho}{\pd t} \;+\; \grad\cdot(\rho\vu) \;=\; 0 \qquad\Longleftrightarrow\qquad \frac{1}{\rho}\Dt\rho \;+\; \grad\cdot\vu \;=\; 0. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\frac{\pd\rho}{\pd t}$</dt><dd>Local rate of change of density at a fixed point (the Eulerian, flux form on the left).</dd>
+          <dt>$\grad\cdot(\rho\vu)$</dt><dd>The <dfn title="Net outflow rate of a vector field per unit volume.">divergence</dfn> of the mass flux $\rho\vu$ — the net rate mass streams out of a point.</dd>
+          <dt>$\frac{1}{\rho}\frac{D\rho}{Dt}$</dt><dd>The fractional rate of density change following a parcel (the Lagrangian form on the right).</dd>
+          <dt>$\grad\cdot\vu$</dt><dd>Velocity divergence — the fractional rate at which a parcel's volume expands. Positive divergence means the parcel is spreading out and thinning.</dd>
+        </dl>
+      </aside>
+
+      <p>The two forms are algebraically identical (expand the divergence of the product and regroup using $D/Dt = \pd/\pd t + \vu\cdot\grad$); the right-hand version reads most physically — <em>if a parcel's density drops, it must be expanding, and vice versa.</em> Volume and density trade off exactly because mass is fixed.</p>
+
+      <p>For the slow flows of large-scale meteorology, density following a parcel changes only a little, and the equation simplifies to the statement that the velocity field has essentially no divergence:</p>
+
+      <div class="equation-block">
+        $$ \grad\cdot\vu \;\approx\; 0. $$
+      </div>
+
+      <p>This is the <dfn title="Flow in which parcels barely change density, so velocity is divergence-free.">incompressible</dfn> (or Boussinesq) limit. It is not exactly true — sound waves and deep vertical motions need the full equation — but as a constraint on the horizontal wind it is invaluable: where air converges at low levels it must rise, and where it diverges aloft, air must sink to replace it. Continuity is what ties the horizontal winds to the vertical motion that makes clouds and rain.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The thermodynamic equation: closing the system</h2>
+
+      <p>Count the unknowns. The momentum equations give three ($u, v, w$); continuity relates density to the velocity. But pressure and temperature are still loose, and they are coupled through the ideal-gas law $p = \rho R_d T$. We need one more physical law, and it is the first law of thermodynamics from Chapter II, now written for a moving parcel. Heat added to a parcel either raises its temperature or does expansion work:</p>
+
+      <div class="equation-block">
+        $$ \cp\frac{DT}{Dt} \;-\; \frac{1}{\rho}\frac{Dp}{Dt} \;=\; \dot q. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\cp$</dt><dd>Specific heat of dry air at constant pressure, $\cp = 1004\ \mathrm{J\,kg^{-1}\,K^{-1}}$.</dd>
+          <dt>$\frac{DT}{Dt}$</dt><dd>Rate of change of a parcel's temperature following its motion.</dd>
+          <dt>$\frac{1}{\rho}\frac{Dp}{Dt}$</dt><dd>The work term: a parcel rising into lower pressure expands and cools even with no heat added.</dd>
+          <dt>$\dot q$</dt><dd>The <dfn title="Heat added to a parcel from outside per unit mass per unit time.">diabatic heating</dfn> rate per unit mass, in $\mathrm{W\,kg^{-1}}$ — radiation, latent heat of condensation, turbulent mixing. Zero for an adiabatic (insulated) parcel.</dd>
+        </dl>
+      </aside>
+
+      <p>This form is most cleanly rewritten using <dfn title="The temperature a parcel would have at 1000 hPa after dry-adiabatic compression; conserved for adiabatic motion.">potential temperature</dfn> $\theta$, introduced in Chapter II as the variable that stays constant when a parcel moves adiabatically. The first law becomes simply</p>
+
+      <div class="equation-block">
+        $$ \frac{D\ln\theta}{Dt} \;=\; \frac{\dot q}{\cp\,T}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\theta$</dt><dd>Potential temperature, $\theta = T\,(p_0/p)^{\kappa}$ with $p_0 = 1000\ \mathrm{hPa}$ and $\kappa = R_d/\cp = 0.286$, in kelvin.</dd>
+          <dt>$\frac{D\ln\theta}{Dt}$</dt><dd>Fractional rate of change of $\theta$ following a parcel; it is the cleanest measure of diabatic effects.</dd>
+          <dt>$T$</dt><dd>Absolute temperature of the parcel, in kelvin.</dd>
+        </dl>
+      </aside>
+
+      <p>The message is sharp: <em>without diabatic heating, $\theta$ is conserved following the flow.</em> A dry parcel carries its potential temperature like a label, and surfaces of constant $\theta$ become material surfaces the flow slides along. That conservation is the backbone of the potential-vorticity thinking in Chapter V and the air-mass analysis of Chapter VII.</p>
+
+      <p>Now the books balance. Seven equations — three momentum, continuity, the first law, the gas law, and a moisture equation we defer — close on seven unknowns $u, v, w, \rho, p, T$, and humidity. Given an initial state and boundary conditions, the future is in principle determined. <em>In principle</em>: the nonlinear advection term sees to it that "in principle" and "in practice" diverge after about two weeks, which is the subject of Chapter X.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Scale analysis, the Rossby number, and pressure coordinates</h2>
+
+      <p>The equations above describe sound waves, the draining of a sink, a tornado, and a continent-spanning cyclone all at once. To isolate the weather on a daily map — the <dfn title="The scale of large weather systems: ~1000 km, ~10 m/s, several days.">synoptic scale</dfn> — we estimate the size of each term using its characteristic values and keep only the leaders. For mid-latitude synoptic flow the standard estimates are a horizontal length $L \sim 10^6\ \mathrm{m}$, a wind speed $U \sim 10\ \mathrm{m\,s^{-1}}$, a timescale $L/U \sim 10^5\ \mathrm{s}$ (about a day), and $f \sim 10^{-4}\ \mathrm{s^{-1}}$.</p>
+
+      <p>Compare the parcel's horizontal acceleration with the Coriolis force it feels. Their ratio is the central dimensionless number of dynamical meteorology, the <dfn title="The ratio of acceleration to Coriolis force; small means rotation dominates.">Rossby number</dfn>:</p>
+
+      <div class="equation-block">
+        $$ \Ro \;=\; \frac{U}{f\,L}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Ro$</dt><dd>The Rossby number, dimensionless — acceleration $\sim U^2/L$ divided by Coriolis $\sim fU$.</dd>
+          <dt>$U$</dt><dd>Characteristic horizontal wind speed, $\sim 10\ \mathrm{m\,s^{-1}}$ for synoptic flow.</dd>
+          <dt>$L$</dt><dd>Characteristic horizontal length scale, $\sim 10^6\ \mathrm{m}$.</dd>
+          <dt>$f$</dt><dd>Coriolis parameter, $\sim 10^{-4}\ \mathrm{s^{-1}}$ in mid-latitudes.</dd>
+        </dl>
+      </aside>
+
+      <p>Plugging in the numbers, $\Ro \sim 10 / (10^{-4}\cdot 10^{6}) = 0.1$. The acceleration term is roughly a tenth of the Coriolis term. So to leading order the horizontal momentum equations are not about acceleration at all — they are a standoff between just two terms, the pressure-gradient force and the Coriolis force:</p>
+
+      <div class="equation-block">
+        $$ f\,v \;\approx\; \frac{1}{\rho}\frac{\pd p}{\pd x}, \qquad f\,u \;\approx\; -\frac{1}{\rho}\frac{\pd p}{\pd y}. $$
+      </div>
+
+      <p>This is <dfn title="The standoff of pressure-gradient and Coriolis forces; wind blows along the isobars.">geostrophic balance</dfn>, and it is the reason the wind on a weather map blows <em>along</em> the isobars rather than across them, with low pressure to its left in the Northern Hemisphere. When $\Ro \ll 1$, rotation rules and the flow is balanced; when $\Ro \gtrsim 1$ — a tornado, the draining bathtub of legend — the acceleration terms dominate and the Coriolis force is irrelevant. Chapter V develops the balanced flow that geostrophy implies; here it is enough to see <em>why</em> it emerges.</p>
+
+      <h3>From height to pressure as the vertical coordinate</h3>
+
+      <p>Hydrostatic balance, $\pd p/\pd z = -\rho g$, has a quiet structural consequence. Since $\rho$ and $g$ are positive, $\pd p/\pd z$ is always negative: pressure falls <em>monotonically</em> with height, never doubling back. A quantity that is strictly monotonic in $z$ can serve as a coordinate <em>in place of</em> $z$. We therefore switch from height $z$ to pressure $p$ as the vertical coordinate — the convention every large-scale chapter that follows (V, VII, IX) will use, and the reason weather charts are drawn on the $500\ \mathrm{hPa}$ or $850\ \mathrm{hPa}$ surface.</p>
+
+      <p>Two changes come with the switch. The vertical velocity is now measured as a rate of change of pressure following a parcel, given its own symbol:</p>
+
+      <div class="equation-block">
+        $$ \omega \;\equiv\; \frac{Dp}{Dt}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\omega$</dt><dd>Vertical velocity in pressure coordinates, in $\mathrm{Pa\,s^{-1}}$. Because pressure decreases upward, rising air has $\omega < 0$ — a sign worth memorizing now.</dd>
+        </dl>
+      </aside>
+
+      <p>And the horizontal pressure-gradient force changes its face. On a surface of constant pressure, the force that pushes air around is no longer the gradient of $p$ (which is zero along such a surface) but the slope of that surface — encoded by the gradient of the <dfn title="Geopotential: potential energy per unit mass in the effective-gravity field.">geopotential</dfn> $\Phi$:</p>
+
+      <div class="equation-block">
+        $$ -\frac{1}{\rho}\grad p \Big|_{z} \;\longrightarrow\; -\grad_p \Phi, \qquad \Phi \;=\; \int_0^z g\,\dd z'. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Phi$</dt><dd>Geopotential, in $\mathrm{m^2\,s^{-2}}$ — the work per unit mass to lift a parcel from sea level to height $z$ against effective gravity.</dd>
+          <dt>$\grad_p$</dt><dd>The horizontal gradient taken <em>at constant pressure</em>, i.e. along a constant-$p$ surface — note the subscript distinguishes it from the constant-height gradient.</dd>
+          <dt>$-\grad_p\Phi$</dt><dd>The horizontal pressure-gradient force per unit mass in pressure coordinates. Where a pressure surface tilts down toward the north, this force points north — air slides downhill on the pressure surface.</dd>
+        </dl>
+      </aside>
+
+      <p>This is a genuine economy. The awkward $1/\rho$ factor disappears, and the geostrophic wind on a pressure surface depends only on the slope of the height contours that fill a weather map. With $\omega$ for vertical motion and $-\grad_p\Phi$ for the horizontal push, the scaled, hydrostatic system in pressure coordinates is the set of <dfn title="The hydrostatic, scaled equations of motion in pressure coordinates used by forecast models.">primitive equations</dfn> — the equations every operational forecast and climate model integrates forward in time, and the equations Chapters V, VII, and IX take as their starting point.</p>
+
+      <section class="interactive" data-widget="coriolis-circles" aria-label="Inertial oscillation on an f-plane">
+        <header>
+          <h4>Interactive · Inertial circles</h4>
+          <span class="hint">set latitude · set speed · play</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">With no pressure gradient and no friction, the horizontal momentum equations collapse to $du/dt = fv$ and $dv/dt = -fu$, whose solution traces an <em>inertial circle</em> of radius $V/f$, swept clockwise in the Northern Hemisphere with period $T_i = 2\pi/f = (11.97\ \mathrm{h})/\sin\phi$. The parcel coasts in a circle because the Coriolis force, always pointing to its right and doing no work, supplies exactly the centripetal pull. Raise the latitude and $f$ grows: the circle tightens and the loop quickens — pure rotation, no weather at all.</p>
+      </section>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">J. R. Holton and G. J. Hakim.</span> <em>An Introduction to Dynamic Meteorology</em>, 5th ed., Academic Press 2013 — the rotating-frame momentum equations and scale analysis (Ch. 2), and the inertial oscillation (§3.2.3). The closest single source for this chapter.</li>
+          <li><span class="src-title">G. K. Vallis.</span> <em>Atmospheric and Oceanic Fluid Dynamics</em>, 2nd ed., Cambridge 2017 — Chapter 2 derives the equations of motion in rotating frames with unusual care, including the metric and traditional-approximation terms dropped here.</li>
+          <li><span class="src-title">J. Marshall and R. A. Plumb.</span> <em>Atmosphere, Ocean and Climate Dynamics</em>, Academic Press 2008 — Chapters 6–7 give the most physical, picture-driven account of rotation, effective gravity, and the Coriolis force.</li>
+          <li><span class="src-title">J. M. Wallace and P. V. Hobbs.</span> <em>Atmospheric Science: An Introductory Survey</em>, 2nd ed., Academic Press 2006 — Chapter 7 introduces the momentum and continuity equations at the level of this book.</li>
+          <li><span class="src-title">A. E. Gill.</span> <em>Atmosphere–Ocean Dynamics</em>, Academic Press 1982 — Chapter 4 develops the governing equations and the Boussinesq approximation; a rigorous reference for the continuity and thermodynamic equations.</li>
+          <li><span class="src-title">B. Cushman-Roisin and J.-M. Beckers.</span> <em>Introduction to Geophysical Fluid Dynamics</em>, 2nd ed., Academic Press 2011 — Chapters 1–4 for the Rossby number, the $f$-plane, and inertial motion, with worked scale analyses.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="03-radiation-energy-balance.html"><span class="label">← Previous</span>III · Radiation and the Energy Balance</a>
+      <a class="next" href="05-balanced-flow.html"><span class="label">Next chapter</span>V · Balanced Flow and Vorticity →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/coriolis-circles.js"></script>
+</body>
+</html>

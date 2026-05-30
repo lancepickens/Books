@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter IX · The General Circulation and Climate — Meteorology: The Atmosphere in Motion</title>
+  <meta name="description" content="Chapter 9: the zonal-mean general circulation — Hadley, Ferrel and polar cells, trade winds and the subtropical jet — built from unequal heating, the required poleward energy transport, conservation of angular momentum, Hadley-cell scaling and eddy-driven flow, ENSO and monsoons, and the one-dimensional energy-balance model with its ice–albedo snowball bifurcation." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter IX of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter IX</p>
+      <h1 class="chapter-title">The General Circulation and Climate</h1>
+      <p class="lede">The Sun heats the tropics and starves the poles; everything from the trade winds to the ice ages is the atmosphere and ocean trying to settle that imbalance.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>Every chapter so far has zoomed in — on a parcel, a front, a thunderstorm. Now we pull all the way back and look at the planet as one machine. Sunlight pours into the tropics, where the Sun rides high, and barely grazes the poles, where it strikes at a glancing angle. If nothing carried heat from one to the other, the tropics would broil and the poles would deep-freeze far beyond what we observe. They do not, because the atmosphere and ocean run a vast heat engine that ferries energy poleward. This chapter is the anatomy of that engine: the belts of wind that circle the globe, the jet streams that snake between them, and the storms that — as Chapter VII showed — do most of the actual hauling.</p>
+          <p>The same machinery, coupled to the sluggish ocean and to ice that reflects sunlight, also sets the climate and lets it wobble. We will meet the El Niño cycle that re-warms and re-cools the Pacific every few years, the monsoons that reverse with the seasons, and — most dramatically — the possibility that the whole planet has more than one stable temperature. A simple model, just one equation in latitude, shows how a colder Earth grows more ice, which reflects more sunlight, which makes it colder still: a runaway that can flip the planet into a frozen "snowball" state. The chapter ends there, at the edge between weather and climate, which is where Chapter X picks up.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>General circulation</dt><dd>The time-averaged, planet-wide pattern of winds and overturning that the atmosphere settles into when you average away individual storms.</dd>
+          <dt>Zonal mean</dt><dd>An average taken all the way around a circle of latitude, leaving a quantity that depends only on latitude and height — the natural way to see the global picture.</dd>
+          <dt>Zonal / meridional</dt><dd>Zonal means along latitude circles (east–west); meridional means along meridians (north–south). The trade winds are zonal; the overturning cells are meridional.</dd>
+          <dt>Hadley cell</dt><dd>The tropical overturning loop: air rises near the equator, flows poleward aloft, sinks in the subtropics, and returns along the surface as the trade winds.</dd>
+          <dt>Ferrel cell</dt><dd>The weaker mid-latitude overturning, running "backwards" (thermally indirect), maintained not by heating but by the storms that cross it.</dd>
+          <dt>Polar cell</dt><dd>The shallow, weak overturning at high latitudes: cold air sinks at the pole and creeps equatorward at the surface.</dd>
+          <dt>Trade winds</dt><dd>The steady surface easterlies of the tropics, blowing from the subtropical highs toward the equator and curving westward.</dd>
+          <dt>Westerlies</dt><dd>The prevailing surface winds of the mid-latitudes, blowing from west to east — the storm-track belt.</dd>
+          <dt>Intertropical Convergence Zone</dt><dd>The ring of deep cloud and rain near the equator where the trade winds of both hemispheres meet and air rises; the ITCZ.</dd>
+          <dt>Subtropical jet</dt><dd>The fast westerly current near the top of the troposphere at the poleward edge of the Hadley cell, around 30° latitude.</dd>
+          <dt>Eddy-driven jet</dt><dd>The mid-latitude westerly jet maintained by the momentum carried by baroclinic storms, distinct from the subtropical jet.</dd>
+          <dt>Storm track</dt><dd>The band, near 40–60° latitude, where mid-latitude cyclones repeatedly form and travel; the conveyor that moves most of the heat poleward.</dd>
+          <dt>Angular momentum</dt><dd>The rotational analogue of momentum: for a ring of air, its spin about the Earth's axis, which is conserved when no torques act on it.</dd>
+          <dt>Poleward energy transport</dt><dd>The net rate at which the atmosphere and ocean carry energy across a latitude circle toward the pole, measured in petawatts.</dd>
+          <dt>Outgoing longwave radiation</dt><dd>The infrared energy the planet radiates to space, OLR; the "out" side of the energy budget at the top of the atmosphere.</dd>
+          <dt>Absorbed solar radiation</dt><dd>The sunlight a latitude band keeps after reflection, ASR; the "in" side of the budget.</dd>
+          <dt>Baroclinic eddy</dt><dd>A growing mid-latitude wave (Chapter VII) that tilts warm air poleward-and-up and cold air equatorward-and-down, transporting heat as it grows.</dd>
+          <dt>Thermally direct / indirect</dt><dd>A circulation is direct if warm air rises and cold air sinks (releasing potential energy, like the Hadley cell), indirect if it does the opposite (like the Ferrel cell).</dd>
+          <dt>ENSO</dt><dd>The El Niño–Southern Oscillation: a coupled ocean–atmosphere swing of the tropical Pacific between warm (El Niño) and cool (La Niña) states every few years.</dd>
+          <dt>Bjerknes feedback</dt><dd>The positive loop in which weaker trade winds warm the eastern Pacific, which further weakens the trades — the engine of El Niño.</dd>
+          <dt>Thermocline</dt><dd>The sharp boundary in the ocean between the warm surface layer and the cold deep water; its tilt across the Pacific is central to ENSO.</dd>
+          <dt>Monsoon</dt><dd>A seasonally reversing wind system, driven by the contrast between a continent that heats and cools quickly and an ocean that does not.</dd>
+          <dt>Albedo</dt><dd>The fraction of incoming sunlight a surface reflects. Ice and snow have high albedo (bright); open ocean and bare ground have low albedo (dark).</dd>
+          <dt>Ice–albedo feedback</dt><dd>The amplifying loop in which cooling grows ice, which reflects more sunlight, which cools further — the seed of multiple climate states.</dd>
+          <dt>Energy-balance model</dt><dd>A climate model that tracks only the surface temperature through its radiation budget, ignoring the detailed dynamics; an EBM.</dd>
+          <dt>Ice line</dt><dd>The latitude poleward of which the surface is cold enough to be permanently frozen, in an energy-balance model.</dd>
+          <dt>Bifurcation</dt><dd>A point where a system's set of stable states changes — for the EBM, where the temperate climate ceases to exist and the planet must jump to a snowball.</dd>
+          <dt>Hysteresis</dt><dd>The lag in which a system's state depends on its history: ramping a control up and then down traces different paths, leaving a loop.</dd>
+          <dt>Snowball Earth</dt><dd>A hypothesized past state, supported by geology, in which ice-albedo feedback drove glaciation all the way to the equator.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>The zonal-mean picture: three cells, two jets, three wind belts</h2>
+
+      <p>Average the wind all the way around a latitude circle and over a season, and the turbulent confusion of individual storms melts into a strikingly orderly picture. This <dfn title="An average around a full circle of latitude, leaving dependence only on latitude and height.">zonal mean</dfn> — the circulation you would see if the planet were smeared into rings — is the subject of this chapter. In each hemisphere it organizes into three overturning loops stacked side by side from equator to pole, called <dfn title="Meridional overturning loops in the zonal-mean atmosphere.">meridional cells</dfn>.</p>
+
+      <p>Nearest the equator is the <dfn title="The tropical overturning cell: rising at the equator, sinking in the subtropics.">Hadley cell</dfn>, named for George Hadley, who in 1735 first explained the trade winds. Intense sunlight at the equator drives deep convection along the <dfn title="The equatorial band of rising air and heavy rain where the trade winds converge.">Intertropical Convergence Zone</dfn> (ITCZ); the rising air spreads poleward at the tropopause, cools and sinks around 30° latitude in the great subtropical high-pressure belts (and the deserts beneath them), then streams back toward the equator along the surface. The Coriolis force (Chapter IV) bends that returning surface flow westward, producing the steady <dfn title="The tropical surface easterlies blowing toward the equator.">trade winds</dfn>. The Hadley cell is <dfn title="A circulation in which warm air rises and cool air sinks, releasing potential energy.">thermally direct</dfn>: warm air rises, cool air sinks, and the loop releases potential energy, making it the most vigorous part of the circulation.</p>
+
+      <p>Poleward of the Hadley cell, from roughly 30° to 60°, sits the <dfn title="The mid-latitude overturning cell, thermally indirect, driven by eddies.">Ferrel cell</dfn>. It turns the "wrong" way — air rises in the cold subpolar latitudes and sinks in the warm subtropics, a <dfn title="A circulation in which cold air rises and warm air sinks, consuming energy.">thermally indirect</dfn> loop that, left to itself, could not exist. It is maintained mechanically, by the baroclinic storms of Chapter VII, and §4 explains how. Beneath it the surface winds blow from the west: the mid-latitude <dfn title="The prevailing west-to-east surface winds of the mid-latitudes.">westerlies</dfn>, the belt that carries our weather. A weak, shallow <dfn title="The high-latitude overturning cell: sinking at the pole, creeping equatorward at the surface.">polar cell</dfn> completes the set, with cold air subsiding over the pole and oozing equatorward.</p>
+
+      <p>Riding atop this structure are two ribbons of fast westerly wind. The <dfn title="The fast upper-level westerly current at the poleward edge of the Hadley cell, near 30°.">subtropical jet</dfn> sits near the tropopause at the Hadley cell's poleward edge, around 30°; §3 builds it from the conservation of angular momentum. The <dfn title="The mid-latitude westerly jet maintained by eddy momentum fluxes.">eddy-driven jet</dfn>, near 50°, is held up by the storms themselves. The two often merge into the single meandering jet stream of the daily map.</p>
+
+      <aside class="jargon">
+        <h4>WHY THREE CELLS AND NOT ONE</h4>
+        <p>Hadley imagined a single cell spanning equator to pole. On a slowly rotating planet that is exactly what forms. But on a rapidly rotating planet like ours, a pole-to-equator cell would conserve so much angular momentum that the upper winds would reach hundreds of metres per second — a flow so strongly sheared it is violently unstable to the baroclinic waves of Chapter VII. The single cell breaks. Rotation confines the direct, heat-driven overturning to the tropics (the Hadley cell), and hands the mid-latitude heat transport to the eddies, which carve out the Ferrel cell as a by-product. The number three is a fingerprint of the Earth's rotation rate.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The radiative drive and the heat that must move</h2>
+
+      <p>The engine's fuel is the latitudinal imbalance in the top-of-atmosphere radiation budget. Recall from Chapter III the global bookkeeping: the planet reflects a fraction $\alpha_p$ of the sunlight it intercepts and radiates the rest as infrared, balancing at the emission temperature $T_e$,</p>
+
+      <div class="equation-block">
+        $$ (1-\alpha_p)\,\frac{S_0}{4} \;=\; \sigma\,T_e^{4}, \qquad T_e \approx 255\ \mathrm{K}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$S_0$</dt><dd>The solar constant, $S_0 = 1361\ \mathrm{W\,m^{-2}}$ — the solar flux on a surface facing the Sun at Earth's orbit. A constant.</dd>
+          <dt>$\alpha_p$</dt><dd>The planetary albedo, $\approx 0.30$, dimensionless — the fraction of sunlight reflected straight back to space.</dd>
+          <dt>$S_0/4$</dt><dd>The global-mean incident flux. The factor of $4$ is geometry: the planet catches sunlight on a disk of area $\pi a^2$ but radiates from a sphere of area $4\pi a^2$.</dd>
+          <dt>$\sigma$</dt><dd>The Stefan–Boltzmann constant, $\sigma = 5.67\times10^{-8}\ \mathrm{W\,m^{-2}\,K^{-4}}$.</dd>
+          <dt>$T_e$</dt><dd>The planet's emission temperature — the blackbody temperature at which it radiates the solar power it absorbs.</dd>
+        </dl>
+      </aside>
+
+      <p>That balance holds for the planet as a whole, but not latitude by latitude. The sunlight reaching a given latitude depends on the angle the Sun makes with the local horizontal, and that angle is steep in the tropics and shallow at the poles. Writing the annual-mean insolation as $S(x)$ with $x = \sin\phi$, a good two-term fit is</p>
+
+      <div class="equation-block">
+        $$ S(x) \;=\; S_0\,s(x), \qquad s(x) \;=\; 1 - 0.477\,P_2(x), \qquad P_2(x) = \tfrac{1}{2}\,(3x^2 - 1). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$x = \sin\phi$</dt><dd>The sine of latitude, used as the coordinate so that equal steps in $x$ are equal areas on the sphere — the natural measure for global averages.</dd>
+          <dt>$s(x)$</dt><dd>The dimensionless insolation shape, normalized so its global mean is $1$; it is largest at the equator ($s\approx1.24$) and smallest at the poles ($s\approx0.52$).</dd>
+          <dt>$P_2(x)$</dt><dd>The second Legendre polynomial; the coefficient $0.477$ encodes the Earth's tilt and orbit, fitting the observed annual-mean pattern.</dd>
+        </dl>
+      </aside>
+
+      <p>Because the tropics absorb far more sunlight than they radiate while the poles do the opposite, there is a surplus of energy at low latitudes and a deficit at high latitudes. In a steady climate the surplus cannot simply pile up — it must be carried poleward across each latitude circle. Integrating the top-of-atmosphere imbalance from the South Pole up to latitude $\phi$ gives exactly the energy flux that the atmosphere and ocean together must transport across that circle:</p>
+
+      <div class="equation-block">
+        $$ \mathcal{H}(\phi) \;=\; 2\pi a^2 \int_{-\pi/2}^{\phi} \Big[(1-\alpha)\,\tfrac{S}{4} - \mathrm{OLR}\Big]\cos\phi'\,\dd\phi'. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathcal{H}(\phi)$</dt><dd>The required poleward energy transport across the circle at latitude $\phi$ — a flux, in watts (quoted in petawatts, $1\ \mathrm{PW} = 10^{15}\ \mathrm{W}$). Positive means energy flows northward.</dd>
+          <dt>$(1-\alpha)\,\tfrac{S}{4}$</dt><dd>The <dfn title="The sunlight a latitude band keeps after reflection.">absorbed solar radiation</dfn> (ASR) per unit area — the local "in."</dd>
+          <dt>$\mathrm{OLR}$</dt><dd>The <dfn title="The infrared energy radiated to space.">outgoing longwave radiation</dfn> per unit area — the local "out."</dd>
+          <dt>$a$</dt><dd>The Earth's radius, $a = 6.371\times10^{6}\ \mathrm{m}$.</dd>
+          <dt>$2\pi a^2\cos\phi'\,\dd\phi'$</dt><dd>The area of a thin latitude ring, the weight that turns a per-area imbalance into a total power.</dd>
+        </dl>
+      </aside>
+
+      <p>The verdict is quantitative and famous. The integral vanishes at both poles (nothing crosses a point) and at the equator (by symmetry, in the annual mean), and it peaks near 35° latitude at about $\mathcal{H} \approx 5.6\ \mathrm{PW}$ — roughly five and a half million billion watts of heat marching poleward in each hemisphere, several hundred times humanity's total power use. <em>This number is the job description for the entire general circulation.</em> The rest of the chapter is about which parts of the machine do the carrying: the Hadley cell in the tropics, the baroclinic eddies in mid-latitudes, and the ocean throughout.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>The total $\mathcal{H}$ splits between atmosphere and ocean. The ocean dominates in the deep tropics, where warm currents like the Gulf Stream carry heat poleward; the atmosphere takes over in mid-latitudes, where the storm track does the bulk of the work. Their sum is constrained tightly by the radiation budget — you can measure $\mathcal{H}$ from satellites alone, without knowing a single thing about winds or currents.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Angular momentum and the subtropical jet</h2>
+
+      <p>Why is there a fast westerly jet at the edge of the tropics, and why there? The answer is one of the most elegant arguments in meteorology, and it rests on a single conserved quantity. Consider a ring of air encircling the Earth at latitude $\phi$. Its <dfn title="The spin of a ring of air about the Earth's rotation axis, per unit mass.">absolute angular momentum</dfn> per unit mass about the planet's axis — the spin it carries because the planet turns, plus the spin from its own west–east wind — is</p>
+
+      <div class="equation-block">
+        $$ M \;=\; \Omega\,a^2\cos^2\phi \;+\; u\,a\cos\phi. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$M$</dt><dd>Absolute angular momentum per unit mass, in $\mathrm{m^2\,s^{-1}}$ — the conserved quantity for a ring on which no torque acts.</dd>
+          <dt>$\Omega$</dt><dd>The Earth's rotation rate, $\Omega = 7.292\times10^{-5}\ \mathrm{s^{-1}}$.</dd>
+          <dt>$a\cos\phi$</dt><dd>The distance from the rotation axis to the ring; $\Omega\,a\cos\phi$ is the eastward speed the ground itself carries at latitude $\phi$.</dd>
+          <dt>$\Omega\,a^2\cos^2\phi$</dt><dd>The planetary part — the angular momentum a parcel has just by sitting still on the spinning Earth.</dd>
+          <dt>$u\,a\cos\phi$</dt><dd>The wind part — the extra angular momentum from the parcel's own eastward wind $u$.</dd>
+        </dl>
+      </aside>
+
+      <p>Now follow the upper branch of the Hadley cell. Air rises at the equator essentially at rest relative to the ground ($u \approx 0$ there), so it starts with $M = \Omega a^2$. As it flows poleward at the tropopause it feels almost no friction, so to a first approximation $M$ is conserved. But the ring is shrinking toward the axis as it moves poleward — like a skater pulling in her arms — so it must spin up. Setting $M(\phi)$ equal to its equatorial value $\Omega a^2$ and solving for the wind gives the speed of the poleward-moving air:</p>
+
+      <div class="equation-block">
+        $$ u_M(\phi) \;=\; \Omega\,a\,\frac{\sin^2\phi}{\cos\phi}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$u_M(\phi)$</dt><dd>The eastward wind of an angular-momentum-conserving ring that left the equator at rest, in $\mathrm{m\,s^{-1}}$. It grows rapidly with latitude and is the idealized subtropical jet.</dd>
+          <dt>$\sin^2\phi/\cos\phi$</dt><dd>The geometric amplification: small near the equator, it climbs steeply as the ring approaches the axis.</dd>
+        </dl>
+      </aside>
+
+      <p>The arithmetic is striking. At 10° the formula gives a gentle $14\ \mathrm{m\,s^{-1}}$; at 20°, $58\ \mathrm{m\,s^{-1}}$; at 30°, a ferocious $134\ \mathrm{m\,s^{-1}}$. The west wind soars as the air moves poleward, and this concentration of fast westerly flow at the Hadley cell's edge <em>is</em> the subtropical jet. The location is explained too: the cell cannot extend much past 30° precisely because the implied winds become so strong that the flow turns baroclinically unstable, spawning the eddies of Chapter VII — which is where the Hadley cell hands off to the Ferrel cell.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>The $134\ \mathrm{m\,s^{-1}}$ at 30° is an <em>upper bound</em>, not the observed jet, which runs nearer $35\text{–}40\ \mathrm{m\,s^{-1}}$. Real air does not conserve angular momentum perfectly: eddies reach into the subtropics and bleed momentum out of the jet, and the Hadley cell never fully realizes the angular-momentum-conserving ideal. The formula's value is conceptual — it shows <em>why</em> a strong westerly jet must form where it does, and that friction and eddies, not the absence of a mechanism, set its actual strength.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Hadley-cell scaling and why eddies make the Ferrel cell</h2>
+
+      <p>How far poleward does the Hadley cell reach, and how strong is it? Held and Hou (1980) answered this with a clean scaling argument. Demand two things at once: that the upper branch conserve angular momentum (giving $u_M$ above), and that the cell be in <dfn title="The standoff between vertical wind shear and the horizontal temperature gradient.">thermal-wind balance</dfn> with the temperature field it maintains, with no temperature discontinuity at the cell's edge. Those constraints fix the latitude $\phi_H$ of the poleward edge:</p>
+
+      <div class="equation-block">
+        $$ \phi_H \;\sim\; \left(\frac{5}{3}\,\frac{g\,H\,\Delta_H}{\Omega^2 a^2}\right)^{1/2}, $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\phi_H$</dt><dd>The latitude of the Hadley cell's poleward edge (in radians), where the rising-and-sinking loop gives way to the eddy regime — about $30^\circ$ for Earth.</dd>
+          <dt>$g$</dt><dd>Gravity, $9.81\ \mathrm{m\,s^{-2}}$.</dd>
+          <dt>$H$</dt><dd>The depth of the troposphere, $H \approx 10^4\ \mathrm{m}$ — the vertical scale of the overturning.</dd>
+          <dt>$\Delta_H$</dt><dd>The fractional equator-to-pole contrast in the radiative-equilibrium potential temperature, dimensionless and of order $1/10$ — how hard the Sun tries to make the tropics hotter than the poles.</dd>
+          <dt>$\Omega^2 a^2$</dt><dd>The rotational scale that resists the overturning; faster rotation (larger $\Omega$) makes a narrower cell.</dd>
+        </dl>
+      </aside>
+
+      <p>The scaling captures the essential physics in one line: <em>a hotter equator-to-pole contrast (larger $\Delta_H$) widens the cell, faster rotation (larger $\Omega$) narrows it.</em> Plugging in Earth's numbers gives $\phi_H$ near 30°, in good agreement with observation — a genuine prediction from first principles. It also explains the three-cell structure of §1 from the other side: on a fast-rotating planet the direct cell simply cannot reach the pole.</p>
+
+      <p>Beyond $\phi_H$ the heat transport is taken over entirely by the <dfn title="Growing mid-latitude waves that tilt warm air poleward-and-up and cold air equatorward-and-down.">baroclinic eddies</dfn> of Chapter VII. A growing cyclone tilts so that warm air moves poleward and upward on its eastern flank while cold air moves equatorward and downward behind it; averaged over many storms, this systematically carries heat poleward and (because of the eddies' own tilt) carries westerly momentum into the jet. The Ferrel cell is the residual overturning left behind by this eddy activity. It runs thermally indirect — cold air rising, warm air sinking — which would be impossible for a free fluid, but the eddies are doing work on it, paying the energy bill. <em>The Ferrel cell is not an engine; it is the exhaust of the storm track.</em></p>
+
+      <aside class="jargon">
+        <h4>EDDIES, NOT CELLS, MOVE THE HEAT</h4>
+        <p>It is tempting to read the three cells as three conveyor belts that carry the heat of §2. Only the Hadley cell really works that way. In mid-latitudes the <em>mean</em> overturning (the Ferrel cell) actually transports heat the wrong way — equatorward — and is more than cancelled by the eddies. The honest decomposition, due to the "transformed Eulerian mean" framework, shows that what survives is dominated by the storms. When you see the poleward-transport curve peak near 35–40°, you are looking at the collective work of every winter cyclone that has ever crossed the Atlantic and Pacific.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Variability: El Niño and the monsoons</h2>
+
+      <p>The circulation of §1 is a long-term average; the real system wobbles. Its two grandest wobbles both come from coupling the atmosphere to the ocean, which stores and moves heat with a memory far longer than any storm.</p>
+
+      <h3>ENSO and the Bjerknes feedback</h3>
+
+      <p>The tropical Pacific has two faces. In its normal (La Niña) state, the trade winds blow steadily westward, piling warm surface water against Indonesia and dragging the cold <dfn title="The boundary between the warm surface layer and cold deep ocean.">thermocline</dfn> up toward the surface in the east, off South America. Every few years it flips: in an <dfn title="The El Niño–Southern Oscillation, a coupled swing of the tropical Pacific.">El Niño</dfn>, the trades slacken, the warm pool sloshes back east, and the eastern Pacific warms by several degrees, redrawing rainfall patterns across half the planet.</p>
+
+      <p>What makes the flip self-reinforcing is the <dfn title="The positive loop linking trade-wind strength to east-Pacific temperature.">Bjerknes feedback</dfn>, identified by Jacob Bjerknes in 1969. The trade winds are driven by the east–west temperature contrast across the Pacific; the contrast is maintained by the trade winds. That is a loop:</p>
+
+      <div class="equation-block">
+        $$ \text{weaker trades} \;\longrightarrow\; \text{warmer east Pacific} \;\longrightarrow\; \text{weaker zonal contrast} \;\longrightarrow\; \text{weaker trades}. $$
+      </div>
+
+      <p>Each arrow strengthens the next, so a small initial weakening of the winds amplifies itself into a full El Niño — a positive feedback exactly analogous to the ice–albedo loop we build in §6. What turns the swing back is the slow adjustment of the ocean's subsurface, whose memory (carried by waves that take months to cross the basin) eventually flips the system into the opposite phase. The result is an irregular oscillation with a period of roughly two to seven years — the strongest year-to-year climate signal on the planet, and the main reason seasonal forecasting is possible at all.</p>
+
+      <h3>Monsoons</h3>
+
+      <p>The <dfn title="A seasonally reversing wind system driven by land–sea heating contrast.">monsoon</dfn> is the seasonal cousin of the same land–sea contrast. Land has a small heat capacity and warms quickly in summer; the ocean, mixing heat through a deep layer, lags far behind. In the northern summer the Asian continent heats far above the surrounding sea, the warm land air rises, and moist ocean air is drawn in to replace it — a sea-breeze on a continental scale, soaked with the rain that sustains billions of people. In winter the contrast reverses: the cold continent becomes a source of sinking, dry air that flows offshore. The monsoon is, in essence, a Hadley-type direct circulation anchored to geography and switched by the calendar, and its rains are modulated from year to year by the state of ENSO next door.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Energy-balance models and the ice–albedo feedback</h2>
+
+      <p>We now strip the climate to its barest skeleton and find something remarkable: more than one possible Earth. The trick is to forget the winds entirely and track only the surface temperature through its energy budget — an <dfn title="A climate model tracking only surface temperature via the radiation budget.">energy-balance model</dfn> (EBM), pioneered independently by Mikhail Budyko and William Sellers in 1969. Heat in, heat out, heat carried sideways: that is the whole physics.</p>
+
+      <p>Write the temperature $T(x)$ as a function of $x = \sin\phi$ and balance four terms — solar heating in, infrared cooling out, and diffusion to model the poleward transport of §2 as if it were a conduction down the temperature gradient:</p>
+
+      <div class="equation-block">
+        $$ C\frac{\pd T}{\pd t} \;=\; \frac{S(x)}{4}\,\big(1-\alpha(T)\big) \;-\; (A + B\,T) \;+\; \frac{\pd}{\pd x}\!\left[D\,(1-x^2)\,\frac{\pd T}{\pd x}\right]. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$T(x)$</dt><dd>Surface temperature, in $\degC$ (degrees Celsius — the linear infrared law below is fit in Celsius, not kelvin).</dd>
+          <dt>$C$</dt><dd>The surface heat capacity per unit area; it sets only how fast the climate adjusts, not the equilibria.</dd>
+          <dt>$\frac{S(x)}{4}\,(1-\alpha)$</dt><dd>Absorbed solar radiation, with $S(x)$ the insolation of §2 and the factor $4$ the same sphere-versus-disk geometry.</dd>
+          <dt>$A + B\,T$</dt><dd>The outgoing longwave radiation, linearized in temperature: $A = 211.2\ \mathrm{W\,m^{-2}}$ and $B = 1.55\ \mathrm{W\,m^{-2}\,{}^{\circ}C^{-1}}$ (the satellite-fit coefficients of the North-type EBM, as tabulated by Tung 2007) — a tangent line to $\sigma T^4$ that already bakes in the greenhouse effect.</dd>
+          <dt>$\alpha(T)$</dt><dd>The albedo, made temperature-dependent to capture ice (below).</dd>
+          <dt>$D$</dt><dd>The diffusion coefficient for poleward heat transport, $D \approx 0.65\ \mathrm{W\,m^{-2}\,{}^{\circ}C^{-1}}$; the factor $(1-x^2) = \cos^2\phi$ makes the transport vanish at the poles.</dd>
+        </dl>
+      </aside>
+
+      <p>The one nonlinearity — and the whole story — is the albedo. Where it is warm enough, the surface is dark (ocean, land) and reflects little; where it is cold enough to freeze, it turns bright with ice and snow. Model this as a step at a critical temperature:</p>
+
+      <div class="equation-block">
+        $$ \alpha(T) \;=\; \begin{cases} \alpha_{\mathrm{warm}} = 0.30, & T > T_{\mathrm{ice}}, \\[2pt] \alpha_{\mathrm{ice}} = 0.60, & T < T_{\mathrm{ice}}, \end{cases} \qquad T_{\mathrm{ice}} = -10\,\degC. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\alpha_{\mathrm{warm}},\ \alpha_{\mathrm{ice}}$</dt><dd>The albedos of ice-free and ice-covered surface — dark ($0.30$) versus bright ($0.60$).</dd>
+          <dt>$T_{\mathrm{ice}}$</dt><dd>The temperature below which the surface freezes over, $-10\,\degC$. The latitude where $T = T_{\mathrm{ice}}$ is the <dfn title="The boundary latitude poleward of which the EBM surface is frozen.">ice line</dfn>.</dd>
+        </dl>
+      </aside>
+
+      <p>Here is the feedback. Cool the planet a little, and the ice line creeps equatorward; the new ice is bright, so it reflects more sunlight, so the planet absorbs less and cools further, advancing the ice still more. This <dfn title="The amplifying loop in which growing ice reflects more sunlight, cooling further.">ice–albedo feedback</dfn> is positive, and when it is strong enough it overwhelms the stabilizing infrared cooling. The consequence is that the EBM has, over a range of solar forcing, <em>three</em> equilibria for a single value of the Sun's brightness: a warm, nearly ice-free Earth; a frozen "snowball" Earth glaciated to the equator; and an unstable intermediate state with ice at mid-latitudes that the climate can never actually rest in.</p>
+
+      <p>Plot the equilibrium global-mean temperature against the solar multiplier $\mu = S/S_0$ and the three states trace an S-shaped curve. Solving the model with these standard North-type coefficients gives a present-day ($\mu = 1$) ice-free climate near a global mean of $+17\,\degC$ — comfortably realistic. But reduce the Sun's brightness by only about four percent ($\mu \approx 0.96$) and the warm branch <em>ends</em>: it folds back on itself at a <dfn title="A point where the set of stable states of a system changes.">bifurcation</dfn>, beyond which no temperate climate exists and the planet must drop catastrophically onto the snowball branch. The fall is irreversible in the obvious way — to climb back out, you must brighten the Sun far past $\mu = 1$, because a fully white planet reflects most of the light you give it. Ramping $\mu$ down and then up traces two different paths: the climate shows <dfn title="History-dependence: the up-ramp and down-ramp trace different paths.">hysteresis</dfn>, a loop with two tipping points.</p>
+
+      <p>This is not a mathematical curiosity. The geological record carries strong evidence that the Earth fell into near-global glaciation at least twice, around 700 million years ago — <dfn title="A past state of near-total glaciation, supported by geological evidence.">Snowball Earth</dfn> — and the EBM is the simplest model that shows how a planet very much like ours can have a frozen alternative waiting one bad feedback away.</p>
+
+      <section class="interactive" data-widget="energy-balance-model" aria-label="One-dimensional energy-balance model with ice–albedo feedback and snowball bifurcation">
+        <header>
+          <h4>Interactive · The snowball bifurcation</h4>
+          <span class="hint">drag the Sun · ramp the loop</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The S-shaped curve is the equilibrium global-mean temperature of the one-dimensional EBM versus the solar multiplier $\mu = S/S_0$, computed by solving $B\,T - \frac{\dd}{\dd x}[D(1-x^2)T'] = \mu\,\frac{S(x)}{4}(1-\alpha) - A$ for each ice line. The warm branch (solid) carries today's $+17\,\degC$ climate at $\mu = 1$; the dashed middle branch is unstable — no climate can sit there — and the lower branch is the frozen snowball. Drag the Sun and watch the ice line march; press <em>ramp the loop</em> to dim the Sun and watch the warm climate cling to its branch until it tips at the fold near $\mu \approx 0.96$ and crashes onto the snowball, then re-brighten and watch it stay frozen — the escape fold lies past $\mu = 1.10$, off the right edge. That wide gap between the warm and snowball branches at the same $\mu$ is the hysteresis that makes a snowball so hard to escape.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>From weather to climate</h2>
+
+      <p>We have travelled in this book from a single parcel to the whole planet, and this chapter closes the arc. Weather is the atmosphere's instantaneous state — the cyclone crossing tonight, the front due tomorrow — and it is, as Chapter VII showed, chaotic and unpredictable beyond a couple of weeks. Climate is the <em>statistics</em> of that weather: the average circulation of §1, the heat transport of §2, the jets, the storm tracks, and the slow variability of §5. The distinction is the one between the path of a single molecule and the temperature of a gas. You cannot forecast the molecule; you can predict the temperature with great confidence, because it is set by conservation laws — here, the energy budget of §2 and §6.</p>
+
+      <p>That is why a chaotic atmosphere can still have a knowable climate. The general circulation is the attractor the weather wanders on, pinned in place by the requirement that the planet shed exactly the sunlight it absorbs. Change the boundary conditions — brighten the Sun, add a greenhouse gas, alter the albedo — and the attractor itself shifts, sometimes smoothly and sometimes, as the snowball bifurcation warns, by a sudden jump to an entirely different state. Predicting those shifts, with the full equations of motion rather than a single diffusive balance, is the business of the climate models that close the book in Chapter X.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">J. Marshall and R. A. Plumb.</span> <em>Atmosphere, Ocean and Climate Dynamics</em>, Academic Press 2008 — Chapter 8 gives the most physical account of the general circulation, the three cells, and the angular-momentum argument for the subtropical jet; Chapter 12 covers the ocean's role in heat transport.</li>
+          <li><span class="src-title">G. K. Vallis.</span> <em>Atmospheric and Oceanic Fluid Dynamics</em>, 2nd ed., Cambridge 2017 — Chapters 11–15 develop the zonal-mean circulation, the Hadley-cell scaling, eddy-driven jets, and the transformed Eulerian mean rigorously; Chapter 11 derives the Held–Hou edge latitude.</li>
+          <li><span class="src-title">I. M. Held and A. Y. Hou.</span> <em>Nonlinear axially symmetric circulations in a nearly inviscid atmosphere</em>, J. Atmos. Sci. <strong>37</strong>, 515–533 (1980) — the original angular-momentum-conserving scaling for the width and strength of the Hadley cell.</li>
+          <li><span class="src-title">M. I. Budyko.</span> <em>The effect of solar radiation variations on the climate of the Earth</em>, Tellus <strong>21</strong>, 611–619 (1969); and <span class="src-title">W. D. Sellers,</span> <em>A global climatic model based on the energy balance of the Earth–atmosphere system</em>, J. Appl. Meteor. <strong>8</strong>, 392–400 (1969) — the founding energy-balance models with ice–albedo feedback and multiple equilibria.</li>
+          <li><span class="src-title">G. R. North.</span> <em>Theory of energy-balance climate models</em>, J. Atmos. Sci. <strong>32</strong>, 2033–2043 (1975) — the diffusive ($D(1-x^2)\,\partial_x T$) EBM framework with linearized $A + BT$ longwave cooling that §6 and the widget build on.</li>
+          <li><span class="src-title">K. K. Tung.</span> <em>Topics in Mathematical Modeling</em>, Princeton University Press 2007 — the climate-modeling chapter works the North-type EBM with the specific coefficients used in §6 and the widget ($A = 211.2\ \mathrm{W\,m^{-2}}$, $B = 1.55\ \mathrm{W\,m^{-2}\,{}^{\circ}C^{-1}}$, $D = 0.649\ \mathrm{W\,m^{-2}\,{}^{\circ}C^{-1}}$) and traces the ice–albedo multiple equilibria.</li>
+          <li><span class="src-title">D. L. Hartmann.</span> <em>Global Physical Climatology</em>, 2nd ed., Elsevier 2016 — Chapters 6 and 8 for the observed energy budget, the poleward heat transport, and the general circulation, with the data behind §2.</li>
+          <li><span class="src-title">J. P. Peixoto and A. H. Oort.</span> <em>Physics of Climate</em>, American Institute of Physics 1992 — the definitive observational synthesis of the zonal-mean circulation, angular-momentum and energy budgets.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="08-moist-convection-mesoscale.html"><span class="label">← Previous</span>VIII · Moist Convection and Mesoscale Storms</a>
+      <a class="next" href="10-numerical-prediction-frontier.html"><span class="label">Next chapter</span>X · Numerical Prediction and the Frontier →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/energy-balance-model.js"></script>
+</body>
+</html>

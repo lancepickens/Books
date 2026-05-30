@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter X · Numerical Prediction and the Frontier — Meteorology: The Atmosphere in Motion</title>
+  <meta name="description" content="Chapter 10: how a weather forecast is made — the primitive equations discretized on a grid and marched forward; numerical stability and the CFL condition; data assimilation by 3D/4D-Var and the Kalman filter; chaos, the Lorenz system and the predictability horizon; ensemble forecasting; and the machine-learning revolution trained on the ERA5 reanalysis." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter X of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter X</p>
+      <h1 class="chapter-title">Numerical Prediction and the Frontier</h1>
+      <p class="lede">A forecast is the equations of Chapter IV cut into a grid, fed an estimate of this morning's atmosphere, and marched forward until chaos catches up.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>Everything in this book has been building one object: a set of equations that say how the atmosphere changes from one instant to the next. A weather forecast is what you get when you stop admiring those equations and actually solve them on a computer. You cannot solve them on paper — they are nonlinear and coupled — so you chop space into a grid of millions of points, replace every derivative with a difference between neighbours, and step the whole array forward a few minutes at a time, again and again, for two weeks of simulated weather. The machinery is enormous but the idea is humble: arithmetic, repeated.</p>
+          <p>Three facts shape and limit the enterprise. A step too large makes the arithmetic blow up, so the time step is bound to the grid spacing by the <em>CFL condition</em>. The starting state is never known exactly — there is no global snapshot of the atmosphere — so forecasters blend a short prior forecast with scattered observations to estimate it, a craft called <em>data assimilation</em>. And the atmosphere is chaotic: Edward Lorenz discovered in 1963 that two nearly identical states drift apart exponentially, which caps useful prediction at about two weeks and forces us to forecast a spread of futures, an <em>ensemble</em>, rather than one. The chapter ends at the live frontier — machine-learning models that, since 2022, learned the dynamics from decades of archived weather and now rival the great physics codes for a thousandth of the cost.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Numerical weather prediction</dt><dd>Forecasting the weather by solving the governing equations on a computer; abbreviated NWP.</dd>
+          <dt>Primitive equations</dt><dd>The hydrostatic, scaled equations of motion in pressure coordinates from Chapter IV — the set a forecast model actually integrates.</dd>
+          <dt>Discretization</dt><dd>Replacing a continuous field and its derivatives with values on a finite grid and arithmetic between them, so a computer can handle them.</dd>
+          <dt>Grid point</dt><dd>One of the finitely many locations where the model stores the state of the atmosphere. Modern global grids have spacings of a few kilometres.</dd>
+          <dt>Finite difference</dt><dd>Approximating a derivative by a difference of nearby grid values divided by their spacing.</dd>
+          <dt>Spectral method</dt><dd>Representing a field as a sum of smooth global waves (spherical harmonics) instead of grid-point values; long the standard for global models.</dd>
+          <dt>Time step</dt><dd>The interval $\Delta t$ by which the model advances the clock each iteration — minutes, not the hours we care about.</dd>
+          <dt>Tendency</dt><dd>The rate of change of a field with time, the quantity the equations compute at each step.</dd>
+          <dt>Advection</dt><dd>Transport of a property by the wind — the term whose numerics set the stability limit.</dd>
+          <dt>CFL condition</dt><dd>Courant–Friedrichs–Lewy: a signal must not cross more than one grid cell per time step, or the scheme is unstable. Bounds $\Delta t$ from above.</dd>
+          <dt>Courant number</dt><dd>The dimensionless ratio $C = c\,\Delta t/\Delta x$; the CFL condition is $C \le 1$.</dd>
+          <dt>Numerical stability</dt><dd>The property that small errors stay bounded as the model steps forward, rather than growing without limit and destroying the solution.</dd>
+          <dt>Data assimilation</dt><dd>Estimating the current state of the atmosphere by optimally combining a short prior forecast with new observations.</dd>
+          <dt>Analysis</dt><dd>The best estimate of the atmospheric state at a given time, produced by data assimilation; the initial condition for the next forecast.</dd>
+          <dt>Background (first guess)</dt><dd>The short prior forecast used as the starting estimate in assimilation, before observations correct it.</dd>
+          <dt>Reanalysis</dt><dd>A consistent, decades-long record of past weather built by assimilating historical observations with one fixed modern system. ERA5 is the leading example.</dd>
+          <dt>Variational assimilation</dt><dd>Finding the analysis by minimizing a cost function that penalizes departures from both background and observations; 3D-Var and 4D-Var.</dd>
+          <dt>Kalman filter</dt><dd>A sequential assimilation scheme that propagates not just the state but its uncertainty, updating both with each observation.</dd>
+          <dt>Chaos</dt><dd>Sensitive dependence on initial conditions: in a deterministic system, tiny differences in the start grow exponentially.</dd>
+          <dt>Lorenz system</dt><dd>A three-variable toy model of convection whose solutions are chaotic — the first clear demonstration of deterministic unpredictability.</dd>
+          <dt>Lyapunov exponent</dt><dd>The exponential rate at which nearby trajectories of a system separate; a positive value is the signature of chaos.</dd>
+          <dt>Attractor</dt><dd>The set of states a dissipative system settles onto in the long run. A chaotic system has a strange attractor — the Lorenz "butterfly".</dd>
+          <dt>Predictability horizon</dt><dd>The lead time beyond which initial-condition errors have grown so large the forecast is no better than climatology — about two weeks for weather.</dd>
+          <dt>Ensemble forecast</dt><dd>A set of forecasts started from slightly different initial states (and/or model versions), whose spread estimates the forecast uncertainty.</dd>
+          <dt>Climatology</dt><dd>The long-run average weather for a place and date; the fallback a useful forecast must beat.</dd>
+          <dt>ERA5</dt><dd>The European reanalysis of the global climate from 1940 onward at hourly resolution — the dataset on which modern ML weather models are trained.</dd>
+          <dt>Machine-learning weather prediction</dt><dd>Forecasting by a neural network trained to map one atmospheric state to the next, learned from reanalysis rather than coded from physics; MLWP.</dd>
+          <dt>Deterministic forecast</dt><dd>A single predicted future state, as opposed to a probabilistic ensemble of possible states.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>From equations to a forecast model</h2>
+
+      <p>The grand promise of dynamical meteorology was stated in 1904 by Vilhelm Bjerknes and attempted, by hand, by Lewis Fry Richardson during the First World War: the atmosphere obeys known physical laws, so if we knew its present state precisely we could compute its future by solving those laws forward in time. The laws are exactly the ones assembled in Chapter IV — three momentum equations, continuity, the thermodynamic equation, the gas law, and a budget for water — closed on the prognostic variables and written, for the large scale, as the hydrostatic <dfn title="The hydrostatic, scaled equations of motion in pressure coordinates that forecast models integrate.">primitive equations</dfn> in pressure coordinates.</p>
+
+      <p>Schematically, every one of those equations has the same shape. It isolates the time rate of change of a field — a <dfn title="The time rate of change of a field that the equations compute at each step.">tendency</dfn> — and sets it equal to everything else:</p>
+
+      <div class="equation-block">
+        $$ \frac{\pd \psi}{\pd t} \;=\; \underbrace{-\,\vu\cdot\grad\psi}_{\text{advection}} \;+\; \underbrace{\;\mathcal{S}(\psi, \dots)\;}_{\text{forces, sources}}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\psi$</dt><dd>Any prognostic field the model carries forward — a wind component $u, v$, temperature $T$, geopotential $\Phi$, humidity. A scalar field on the grid.</dd>
+          <dt>$\dfrac{\pd \psi}{\pd t}$</dt><dd>Its local tendency — the quantity solved for at every grid point, every step.</dd>
+          <dt>$-\vu\cdot\grad\psi$</dt><dd>Advection: transport of $\psi$ by the wind $\vu$. The numerically delicate term — its discretization sets the stability limit of §3.</dd>
+          <dt>$\mathcal{S}$</dt><dd>The collected sources and forces — pressure gradient, Coriolis, gravity, friction, diabatic heating, condensation. Everything that is not advection.</dd>
+        </dl>
+      </aside>
+
+      <p>If we know $\psi$ now everywhere, the right-hand side gives its rate of change now everywhere, and a small step forward in time updates the field. Repeat for every variable, every grid point, every step — and a forecast is born. The rest of this section's promise is in the details that this artless description hides: how to represent $\grad\psi$ on a finite machine (§2), how large a step is safe (§3), and where the "now everywhere" comes from when nobody ever measured it (§4). Richardson did all of this by hand for a single six-hour forecast and got a surface-pressure change of $145\ \mathrm{hPa}$ — catastrophically wrong, because his initial winds were not balanced and his step violated a stability limit nobody yet understood. The physics was right; the numerics were not yet invented.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>The variable $\psi$ here is a generic stand-in, not a stream function — every model field plays its role in turn. We use it only to write one template equation instead of eight nearly identical ones.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Discretization: finite differences, grids, and spectral methods</h2>
+
+      <p>A computer holds numbers, not functions. To put the atmosphere inside one we sample each field at a finite set of <dfn title="The discrete locations where a model stores the atmospheric state.">grid points</dfn> and approximate every derivative by arithmetic on neighbouring samples. The workhorse is the <dfn title="A derivative approximated by a difference of nearby grid values over their spacing.">finite difference</dfn>. Label the grid points along $x$ by an index $j$, spaced $\Delta x$ apart, so $u_j = u(j\,\Delta x)$. A Taylor expansion shows that the symmetric, <em>centered</em> difference estimates the first derivative to second order in the spacing:</p>
+
+      <div class="equation-block">
+        $$ \frac{\pd u}{\pd x}\bigg|_{j} \;\approx\; \frac{u_{j+1} - u_{j-1}}{2\,\Delta x} \;+\; \mathcal{O}\!\left(\Delta x^2\right). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$j$</dt><dd>Integer index labelling grid points along $x$; the point sits at $x = j\,\Delta x$.</dd>
+          <dt>$\Delta x$</dt><dd>Grid spacing, a constant length in metres. Global models today run at a few kilometres; the finer the grid, the smaller the truncation error and the more points to update.</dd>
+          <dt>$u_j$</dt><dd>The value of the field at grid point $j$ — a stored number, not a function.</dd>
+          <dt>$\mathcal{O}(\Delta x^2)$</dt><dd>The truncation error: the difference between the true derivative and its grid estimate, shrinking like $\Delta x^2$ as the grid is refined.</dd>
+        </dl>
+      </aside>
+
+      <p>The same idea discretizes time. Knowing the field at step $n$ (time $t = n\,\Delta t$), the simplest forward step combines a centered space difference for advection with a forward time difference for the tendency. For one-dimensional advection at constant speed $c$, $\pd u/\pd t = -c\,\pd u/\pd x$, this reads</p>
+
+      <div class="equation-block">
+        $$ \frac{u_j^{\,n+1} - u_j^{\,n}}{\Delta t} \;=\; -\,c\,\frac{u_{j+1}^{\,n} - u_{j-1}^{\,n}}{2\,\Delta x} \;+\; \dots $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$u_j^{\,n}$</dt><dd>The field at grid point $j$ and time step $n$; superscript counts steps in time, subscript counts points in space.</dd>
+          <dt>$\Delta t$</dt><dd>The time step, in seconds — the interval the model advances each iteration. Bounded from above by §3.</dd>
+          <dt>$c$</dt><dd>The advecting (signal) speed, in $\mathrm{m\,s^{-1}}$; here the wind, but in the full equations the fastest signals are sound and gravity waves.</dd>
+          <dt>$+\dots$</dt><dd>The remaining sources $\mathcal{S}$ — pressure gradient, Coriolis, heating — each discretized the same way.</dd>
+        </dl>
+      </aside>
+
+      <p>Solving for $u_j^{\,n+1}$ gives an explicit update: the new field at each point is the old field plus a step times the tendency built from its neighbours. That is the entire loop of a forecast model, dressed in three dimensions and a dozen variables. We will see in §3 that <em>this particular</em> scheme is in fact a poor one — but as a picture of the arithmetic it is exactly right.</p>
+
+      <h3>Grids on a sphere, and the spectral alternative</h3>
+
+      <p>Laying a regular latitude–longitude grid on the globe has an ugly flaw: the meridians crowd together at the poles, so grid cells shrink to slivers there and the stability limit of §3 demands an absurdly tiny time step. Modern models dodge this with quasi-uniform meshes — cubed-sphere, icosahedral, or octahedral grids — that keep cells nearly equal in size everywhere.</p>
+
+      <p>For decades the dominant global models avoided grids for the horizontal entirely, using a <dfn title="Representing a field as a sum of smooth global basis functions — spherical harmonics on the sphere.">spectral method</dfn>. Instead of storing field values point by point, they store the coefficients of a sum of <dfn title="The natural smooth wave functions on a sphere, indexed by total and zonal wavenumber.">spherical harmonics</dfn> $Y_\ell^m$ — the sphere's analogue of a Fourier series:</p>
+
+      <div class="equation-block">
+        $$ \psi(\lambda, \phi, t) \;=\; \sum_{\ell=0}^{N}\sum_{m=-\ell}^{\ell} \psi_\ell^m(t)\,Y_\ell^m(\lambda, \phi). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$Y_\ell^m$</dt><dd>A spherical harmonic of total wavenumber $\ell$ and zonal wavenumber $m$; the smooth, naturally global basis on the sphere.</dd>
+          <dt>$\psi_\ell^m(t)$</dt><dd>The (complex) coefficient of each harmonic — the actual numbers the spectral model carries forward in time.</dd>
+          <dt>$\lambda, \phi$</dt><dd>Longitude and latitude; the truncation $N$ (e.g. $N \approx 1279$ in a high-resolution model) sets the smallest resolved wavelength.</dd>
+        </dl>
+      </aside>
+
+      <p>The payoff is that horizontal derivatives become exact and trivial — differentiating $Y_\ell^m$ just multiplies its coefficient — so there is no truncation error in space and no polar grid problem at all. The cost is transforming between coefficient space (where derivatives are easy) and grid space (where the nonlinear products $\vu\cdot\grad\psi$ and the moisture physics are easy) at every step. As machines grew and that transform's cost grew faster, the pendulum has swung back toward grid-point models on quasi-uniform meshes — the design most ML emulators (§7) implicitly inherit.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The CFL condition: a speed limit on the clock</h2>
+
+      <p>You cannot choose $\Delta t$ freely. Push the time step too far and the numerical solution does not merely grow inaccurate — it explodes, doubling in amplitude every few steps until the numbers overflow. The boundary between a step that stays bounded and one that blows up is the most famous result in computational physics, the <dfn title="Courant–Friedrichs–Lewy: a signal may not cross more than one grid cell per time step.">Courant–Friedrichs–Lewy</dfn> (CFL) condition, found in 1928. Its statement is a single inequality on the dimensionless <dfn title="The ratio of distance a signal travels in one step to the grid spacing.">Courant number</dfn>:</p>
+
+      <div class="equation-block">
+        $$ C \;\equiv\; \frac{c\,\Delta t}{\Delta x} \;\le\; 1. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$C$</dt><dd>The Courant number, dimensionless — the number of grid cells the fastest signal crosses in one time step.</dd>
+          <dt>$c$</dt><dd>The speed of the fastest signal the scheme must follow, in $\mathrm{m\,s^{-1}}$. For the full equations this is <em>not</em> the wind but the sound speed ($\sim\!340\ \mathrm{m\,s^{-1}}$) or external gravity-wave speed — which is why fast modes dominate the limit.</dd>
+          <dt>$\Delta x, \Delta t$</dt><dd>Grid spacing and time step. Their ratio $\Delta x/\Delta t$ is the model's "grid speed"; the condition says no real signal may outrun it.</dd>
+        </dl>
+      </aside>
+
+      <p>The geometry behind the inequality is its real content. In one step the numerical scheme can only pass information one cell each way — its <em>numerical</em> domain of dependence is the stencil $\{j-1, j, j+1\}$. The true solution, meanwhile, depends on wherever the physical signal came from, a distance $c\,\Delta t$ upstream. If $c\,\Delta t > \Delta x$ the physical signal originates <em>outside</em> the cells the scheme can see: the update is computed without the information that actually determines the answer, and the scheme is doomed. The CFL condition simply demands that the numerical stencil reach at least as far as the physics — that $C \le 1$.</p>
+
+      <aside class="jargon">
+        <h4>Necessary, not sufficient — and why FTCS fails</h4>
+        <p>The CFL condition is a <em>necessary</em> condition for stability; it is not by itself sufficient. The very scheme written in §2 — forward in time, centered in space (FTCS) — illustrates the gap painfully. A von Neumann analysis (substitute a wave $u_j^n = G^n e^{ikj\Delta x}$ and track the amplification factor $G$) gives $|G|^2 = 1 + C^2\sin^2(k\Delta x) > 1$ for <em>every</em> nonzero $C$. FTCS advection is <dfn title="Unstable for any time step, however small.">unconditionally unstable</dfn>: no choice of $\Delta t$ saves it. Working models therefore use better schemes — leapfrog (centered in time), upwind (one-sided in the flow direction), or semi-Lagrangian and semi-implicit methods that treat the fastest waves implicitly so the CFL limit is set by the wind, not the sound speed, allowing far longer steps. CFL bounds the step; a sound time-stepping scheme is what makes that bound usable.</p>
+      </aside>
+
+      <p>The practical sting is brutal. Halve the grid spacing to resolve finer weather and you must also halve the time step to keep $C \le 1$ — and in three dimensions you have eight times as many points to update, each twice as often. The cost of a forecast scales like the fourth power of resolution. This single inequality is why operational global models sit at a few kilometres and not a few hundred metres, and why every gain in forecast detail has been paid for in supercomputer cycles.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Data assimilation: where the initial state comes from</h2>
+
+      <p>The forecast needs a starting state — the field "now everywhere." But there is no instant when the whole atmosphere is measured. Observations are a heterogeneous scatter: balloons twice a day at a few hundred sites, aircraft along flight tracks, ships, buoys, and above all satellites measuring radiances that depend only indirectly on temperature and humidity. They are sparse, irregular, of mixed accuracy, and far too few to pin down the billion numbers a model grid holds. <dfn title="Estimating the current atmospheric state by combining a short prior forecast with observations.">Data assimilation</dfn> is the art of turning that scatter into a complete, physically consistent <dfn title="The best estimate of the state at a given time; the model's initial condition.">analysis</dfn>.</p>
+
+      <p>The trick is to not start from scratch. A short forecast from the previous analysis — the <dfn title="The short prior forecast used as the first guess in assimilation.">background</dfn>, written $\vx_b$ — is already a good, complete first guess that obeys the equations. Assimilation nudges that guess toward the new observations, trusting each by its known error. The variational form makes this a single optimization: find the state $\vx$ that minimizes a cost balancing two misfits.</p>
+
+      <div class="equation-block">
+        $$ J(\vx) \;=\; \half\,(\vx - \vx_b)^{\!\top}\,\mathbf{B}^{-1}(\vx - \vx_b) \;+\; \half\sum_i \big(H(\vx_i) - \mathbf{y}_i\big)^{\!\top}\,\mathbf{R}^{-1}\big(H(\vx_i) - \mathbf{y}_i\big). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\vx$</dt><dd>The model state vector — every prognostic variable at every grid point, a single very long vector. The unknown we solve for.</dd>
+          <dt>$\vx_b$</dt><dd>The background: the short prior forecast used as the first guess.</dd>
+          <dt>$\mathbf{B}$</dt><dd>The background-error covariance matrix — how much we trust $\vx_b$ and how its errors correlate in space and between variables. Its inverse weights the first term.</dd>
+          <dt>$\mathbf{y}_i$</dt><dd>The observations (at time $i$ in the 4D case) — the measured values, in their own units.</dd>
+          <dt>$H$</dt><dd>The observation operator: maps a model state to what each instrument <em>would</em> measure (e.g. turns the temperature profile into a satellite radiance). Generally nonlinear.</dd>
+          <dt>$\mathbf{R}$</dt><dd>The observation-error covariance — instrument noise plus representativeness error. Its inverse weights the second term.</dd>
+        </dl>
+      </aside>
+
+      <p>Read the two terms as a tug of war. The first penalizes straying from the trusted prior forecast; the second penalizes disagreeing with the observations. Minimizing their sum finds the state that is as consistent as possible with both, weighted by how much each is believed. If the sum over a single time is taken with the observations all valid at one instant, this is <dfn title="Three-dimensional variational assimilation: observations treated at a single analysis time.">3D-Var</dfn>. If instead the sum runs over a window of several hours, with the model integrated forward so that $\vx_i$ is the state evolved to each observation time, it is <dfn title="Four-dimensional variational assimilation: observations fitted over a time window by integrating the model through it.">4D-Var</dfn> — the method that, for two decades, gave the European centre its forecasting edge. 4D-Var fits the observations <em>and</em> the dynamics simultaneously, threading a single model trajectory through the whole window of measurements.</p>
+
+      <h3>The Kalman view: carrying the uncertainty</h3>
+
+      <p>There is a complementary, sequential picture. The <dfn title="A sequential scheme that updates both the state and its uncertainty with each observation.">Kalman filter</dfn> treats assimilation as one correction step: take the background, compare its predicted observations $H\vx_b$ to the real ones $\mathbf{y}$, and add a fraction of the discrepancy back to the state.</p>
+
+      <div class="equation-block">
+        $$ \vx_a \;=\; \vx_b \;+\; \mathbf{K}\,\big(\mathbf{y} - H\vx_b\big), \qquad \mathbf{K} \;=\; \mathbf{B}\,H^{\!\top}\big(H\,\mathbf{B}\,H^{\!\top} + \mathbf{R}\big)^{-1}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\vx_a$</dt><dd>The analysis — the corrected best estimate, used as the next forecast's initial state.</dd>
+          <dt>$\mathbf{y} - H\vx_b$</dt><dd>The innovation: how far the observations fall from what the background predicted. The information the new data actually add.</dd>
+          <dt>$\mathbf{K}$</dt><dd>The Kalman gain — the optimal weight given to the innovation. It is large where the background is uncertain ($\mathbf{B}$ big) and the observations are sharp ($\mathbf{R}$ small), and small in the reverse case.</dd>
+          <dt>$H$</dt><dd>The (linearized) observation operator, mapping state space to observation space.</dd>
+        </dl>
+      </aside>
+
+      <p>The gain $\mathbf{K}$ is precisely the minimizer of the variational cost $J$ when $H$ is linear and the errors Gaussian: the two pictures are the same optimum seen from different angles. The Kalman filter's distinctive contribution is that it also propagates the uncertainty $\mathbf{B}$ forward with the flow, so that confidence sloshes around the globe with the weather. In practice the full covariance is far too large to store, and operational systems use the <dfn title="A Monte-Carlo Kalman filter that estimates the covariance from an ensemble of states.">ensemble Kalman filter</dfn> or hybrid ensemble-variational schemes that estimate $\mathbf{B}$ from a forecast ensemble — tying assimilation directly to the ensemble forecasting of §6.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>Run this machinery not in real time but over the entire historical archive, with one fixed modern model and every observation ever made, and you produce a <dfn title="A consistent, decades-long reconstruction of past weather by assimilating historical data with one fixed system.">reanalysis</dfn>. The ECMWF reanalysis ERA5 — hourly fields of the whole atmosphere from 1940 to now — is the single most important dataset in this chapter: it is both the yardstick that scores forecasts and, as we reach §7, the training set from which machines learned to forecast at all.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Chaos and predictability: the Lorenz system</h2>
+
+      <p>Suppose, generously, that the numerics were perfect and the analysis nearly so. Could we then forecast indefinitely? In 1963 Edward Lorenz answered no, and the answer reshaped science. Truncating the equations for thermal convection to just three modes, he obtained a tiny deterministic system — and found that its solutions never repeat and are exquisitely sensitive to their starting point. The system bears his name:</p>
+
+      <div class="equation-block">
+        $$ \frac{\dd x}{\dd t} = \sigma\,(y - x), \qquad \frac{\dd y}{\dd t} = x\,(\rho - z) - y, \qquad \frac{\dd z}{\dd t} = x\,y - \beta\,z. $$
+      </div>
+
+      <div class="equation-block">
+        $$ \sigma = 10, \qquad \rho = 28, \qquad \beta = \tfrac{8}{3}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$x, y, z$</dt><dd>The three state variables — abstract amplitudes of convection modes (roughly: overturning intensity, and two temperature contrasts). They are <em>not</em> the spatial coordinates $x, y, z$ used elsewhere in this book; here they are the entire state of a toy atmosphere.</dd>
+          <dt>$\sigma, \rho, \beta$</dt><dd>The Lorenz parameters — proportional to the Prandtl number, the Rayleigh number, and a geometric aspect ratio. With the classic values $(10,\,28,\,8/3)$ the system is chaotic. <strong>Caution:</strong> these are Lorenz's symbols, unrelated to the Stefan–Boltzmann constant $\sigma$, density $\rho$, and $\beta$-plane gradient used in earlier chapters.</dd>
+          <dt>$t$</dt><dd>A dimensionless time. One time unit corresponds, very loosely, to a few days of real convective evolution.</dd>
+        </dl>
+      </aside>
+
+      <p>The system is deterministic and dissipative: volumes in its three-dimensional state space shrink steadily (the divergence of the flow is the constant $-(\sigma + 1 + \beta) < 0$), so all trajectories are drawn onto a bounded set — an <dfn title="The set of states a dissipative system settles onto; the Lorenz one is a strange attractor.">attractor</dfn>. But the attractor is <em>strange</em>: a fractal, two-lobed surface — the famous butterfly — on which the trajectory loops around one wing, then jumps to the other in a sequence that never repeats and cannot be predicted long-term. The geometry is the message: orbits on the attractor that start a hair apart are pulled around the wings at slightly different rates and soon find themselves on opposite lobes.</p>
+
+      <p>Quantify that separation. Let $\delta(t)$ be the distance between two solutions that began a tiny distance $\delta_0$ apart. On a chaotic attractor it grows, on average, exponentially:</p>
+
+      <div class="equation-block">
+        $$ \delta(t) \;\approx\; \delta_0\,e^{\lambda t}, \qquad \lambda > 0. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\delta(t)$</dt><dd>The distance in state space between two initially close trajectories at time $t$ — the growing forecast error.</dd>
+          <dt>$\delta_0$</dt><dd>The initial separation — the analysis error, however small.</dd>
+          <dt>$\lambda$</dt><dd>The leading <dfn title="The exponential rate at which nearby trajectories separate; positive means chaos.">Lyapunov exponent</dfn>. For Lorenz-63 with the classic parameters $\lambda \approx 0.9$ per time unit; its reciprocal $1/\lambda$ is the e-folding time of errors. A positive $\lambda$ <em>is</em> chaos.</dd>
+        </dl>
+      </aside>
+
+      <p>Exponential growth has a devastating consequence for prediction. To extend a useful forecast by one more error-doubling time, you must <em>halve</em> the initial error — and to extend it by ten such times you must shrink the initial error by a factor of a thousand. No feasible improvement in observations buys more than a little extra lead time. This is the origin of the famous metaphor, taken straight from Lorenz's later talk: the flap of a butterfly's wings in Brazil, an immeasurably small perturbation, can set off a tornado in Texas weeks later — not by some hidden force, but because the immeasurable error grew. For the real atmosphere, with its own positive Lyapunov exponent, errors double roughly every day or two, and that fixes the <dfn title="The lead time beyond which forecasts are no better than the climatological average.">predictability horizon</dfn> at around two weeks. Beyond it, a deterministic forecast is no better than quoting the climatological average for the date.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Ensemble forecasting: predicting the spread</h2>
+
+      <p>Chaos does not make forecasting hopeless — it makes <em>single</em>-state forecasting incomplete. If the analysis is uncertain by some small $\delta_0$, the honest forecast is not one trajectory but the whole cloud of trajectories consistent with that uncertainty. Following that cloud is <dfn title="Running many forecasts from slightly different initial states to estimate uncertainty.">ensemble forecasting</dfn>: perturb the analysis in many slightly different but equally plausible ways, run the full model from each, and read the result as a probability distribution over future weather.</p>
+
+      <p>The ensemble does two things a single forecast cannot. It gives a probabilistic forecast — "70% chance of rain" is literally the fraction of ensemble members that rain. And its spread is a flow-dependent measure of confidence: when the members stay tightly bunched the atmosphere is in a predictable regime and the forecast is trustworthy; when they fan out quickly, that day's flow is sitting near a sensitive, fast-growing direction and even a short forecast is shaky. The growth of ensemble spread $S(t)$ — the root-mean-square scatter of the members about their mean — is the operational reading of the Lyapunov growth of §5:</p>
+
+      <div class="equation-block">
+        $$ S(t) \;=\; \sqrt{\,\frac{1}{M}\sum_{m=1}^{M}\big\lVert \vx_m(t) - \overline{\vx}(t)\big\rVert^2\,}, \qquad \overline{\vx}(t) = \frac{1}{M}\sum_{m=1}^{M}\vx_m(t). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$M$</dt><dd>The ensemble size — the number of perturbed forecasts run, typically $\sim 50$ in an operational system.</dd>
+          <dt>$\vx_m(t)$</dt><dd>The state of the $m$-th ensemble member at lead time $t$.</dd>
+          <dt>$\overline{\vx}(t)$</dt><dd>The ensemble mean — itself often a better deterministic forecast than any single member, because averaging cancels unpredictable detail.</dd>
+          <dt>$S(t)$</dt><dd>The ensemble spread, growing with lead time; it saturates at the climatological variability once predictability is lost — the quantitative end of the forecast.</dd>
+        </dl>
+      </aside>
+
+      <p>A well-tuned ensemble is <dfn title="The property that ensemble spread matches the actual forecast-error magnitude on average.">reliable</dfn>: averaged over many cases, its spread equals the actual error of its mean. Designing the initial perturbations to sample the genuinely fast-growing directions — singular vectors at the European centre, bred vectors and ensemble-Kalman perturbations elsewhere — is a discipline of its own, and it closes the loop with §4, since the same ensemble that forecasts the spread also supplies the flow-dependent background covariance $\mathbf{B}$ for assimilation. The widget below makes the whole mechanism visible on the only system simple enough to watch: launch a small ensemble of nearby states into the Lorenz attractor and see the spread grow until it fills the butterfly.</p>
+
+      <section class="interactive" data-widget="lorenz-attractor" aria-label="Lorenz attractor and ensemble divergence">
+        <header>
+          <h4>Interactive · The Lorenz butterfly and the predictability horizon</h4>
+          <span class="hint">set ensemble size · set perturbation · run / reset</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">An ensemble of nearby initial states is integrated through Lorenz-63 with a fourth-order Runge–Kutta step, drawn in the $x$–$z$ projection of the butterfly attractor. The members overlap at first — a tiny initial spread $\delta_0$ — then separate exponentially at the system's Lyapunov rate, so that after a finite time they populate both wings independently and the spread $S(t)$ saturates. That saturation time <em>is</em> the predictability horizon: beyond it the ensemble tells you only the climatology of the attractor, not which wing you are on. Shrinking the initial perturbation buys only logarithmically more lead time — the cruel arithmetic of chaos.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>The machine-learning revolution in weather prediction</h2>
+
+      <p>Everything so far is physics: equations written down by people, discretized, and integrated. Since 2022 a different paradigm has matched and then beaten it. A <dfn title="Forecasting by a neural network trained to map one atmospheric state to the next.">machine-learning weather prediction</dfn> (MLWP) model never sees the primitive equations. It is a large neural network trained on the ERA5 reanalysis to do one thing: given the global atmospheric state now, output the state six or twelve hours later. Stack that learned map and you have a forecast. The dynamics are not coded — they are inferred from forty years of the atmosphere's own behaviour.</p>
+
+      <p>The opening move was <strong>FourCastNet</strong> (Pathak et al. 2022, <code>arXiv:2202.11214</code>), which used adaptive Fourier neural operators to make the first credible global ML forecast — fast, and skilful at short range, if not yet competitive at medium range. The breakthroughs came the next year. <strong>Pangu-Weather</strong> (Bi et al., <em>Nature</em> 619, 533–538, 2023; <code>arXiv:2211.02556</code>) used a three-dimensional transformer with Earth-specific position encodings and was the first ML model to beat the European centre's operational high-resolution forecast on deterministic scores, including tropical-cyclone tracks. Weeks later <strong>GraphCast</strong> (Lam et al., <em>Science</em> 382, 1416–1421, 2023; <code>arXiv:2212.12794</code>) — a graph neural network on a multi-mesh icosahedral grid at $0.25^\circ$ resolution — outperformed that forecast on roughly 90% of more than a thousand verification targets, producing a ten-day forecast in under a minute on a single chip.</p>
+
+      <p>The story did not stop at deterministic forecasts. Because §5 makes ensembles mandatory, the natural next target was probabilistic MLWP. <strong>GenCast</strong> (Price et al., <em>Nature</em> 637, 84–90, 2025; <code>arXiv:2312.15796</code>) recast forecasting as a conditional diffusion model — generating 15-day ensembles by learning to denoise weather — and beat the European centre's 50-member operational ensemble on the large majority of targets, including extremes and cyclone tracks. In parallel, the operational centres entered the field on their own terms: ECMWF's <strong>AIFS</strong> (Lang et al. 2024, <code>arXiv:2406.01465</code>) is a graph-transformer model now running operationally alongside the physics code, and <strong>Aurora</strong> (Bodnar et al. 2024, <code>arXiv:2405.13063</code>) pushed toward a <dfn title="A single large model pretrained on diverse data and adapted to many downstream tasks.">foundation-model</dfn> approach — one network pretrained on heterogeneous Earth-system data and fine-tuned to forecasts, air quality, and ocean waves alike.</p>
+
+      <aside class="jargon">
+        <h4>Why it works — and what it inherits</h4>
+        <p>An ML emulator is roughly $10^3$–$10^4$ times cheaper to run than a physics model at the same resolution, because it replaces millions of tiny explicit time steps (bounded by the CFL condition of §3) with one large learned leap of six hours, and runs on the parallel hardware built for deep learning. But it does not escape the physics it skips. It is trained on ERA5, so it inherits the reanalysis's biases and, crucially, still needs a data-assimilation system (§4) to make the initial state it consumes. And it cannot evade chaos: GenCast must be an ensemble for exactly Lorenz's reason. The frontier question, unsettled as this book goes to press, is whether learned models — which tend to blur the sharpest gradients and have no built-in conservation laws — can be trusted in the genuinely unprecedented states a warming climate will produce, states absent from the training archive by construction.</p>
+      </aside>
+
+      <p>It is a fitting place to end. The thread of this book ran from a parcel of air feeling a pressure gradient, through balance and instability, storms and circulation, to a set of equations that in principle determine the weather. This chapter solved them — discretized, assimilated, ensembled — and then watched a neural network learn to short-circuit the whole apparatus by studying the atmosphere's own record. Both routes bow to the same master: the chaos Lorenz found in three equations, which guarantees that however we forecast, we forecast a fog of possibilities, and only for about two weeks.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">E. N. Lorenz.</span> "Deterministic Nonperiodic Flow." <em>Journal of the Atmospheric Sciences</em> 20(2), 130–141 (1963) — the founding paper of chaos theory; the three-variable system, the strange attractor, and the death of long-range determinism (§5).</li>
+          <li><span class="src-title">E. Kalnay.</span> <em>Atmospheric Modeling, Data Assimilation and Predictability</em>, Cambridge University Press 2003 — the standard graduate text spanning this entire chapter: discretization and the CFL condition (Ch. 3), variational and Kalman assimilation (Ch. 5), and predictability and ensembles (Ch. 6).</li>
+          <li><span class="src-title">D. R. Durran.</span> <em>Numerical Methods for Fluid Dynamics</em>, 2nd ed., Springer 2010 — the authoritative treatment of finite differences, the CFL condition, von Neumann stability analysis, and semi-Lagrangian schemes (Ch. 2–3) behind §§2–3.</li>
+          <li><span class="src-title">R. Lam et al.</span> "Learning skillful medium-range global weather forecasting." <em>Science</em> 382(6677), 1416–1421 (2023); <code>arXiv:2212.12794</code> — GraphCast, the graph-neural-network model that first beat operational NWP on most targets (§7).</li>
+          <li><span class="src-title">K. Bi et al.</span> "Accurate medium-range global weather forecasting with 3D neural networks." <em>Nature</em> 619, 533–538 (2023); <code>arXiv:2211.02556</code> — Pangu-Weather, the 3D transformer with Earth-specific priors (§7).</li>
+          <li><span class="src-title">I. Price et al.</span> "Probabilistic weather forecasting with machine learning." <em>Nature</em> 637, 84–90 (2025); <code>arXiv:2312.15796</code> — GenCast, the diffusion-based ML ensemble that outperformed the operational ensemble (§§6–7).</li>
+          <li><span class="src-title">P. Bauer, A. Thorpe, and G. Brunet.</span> "The quiet revolution of numerical weather prediction." <em>Nature</em> 525, 47–55 (2015) — a panoramic review of how NWP became the quietly successful science this chapter describes.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="09-general-circulation-climate.html"><span class="label">← Previous</span>IX · The General Circulation and Climate</a>
+      <a class="next" href="../index.html"><span class="label">↑</span> Back to Contents →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/lorenz-attractor.js"></script>
+</body>
+</html>

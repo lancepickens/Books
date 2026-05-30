@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter II · Atmospheric Thermodynamics — Meteorology: The Atmosphere in Motion</title>
+  <meta name="description" content="Chapter 2: the first law for a moving air parcel, potential temperature, the dry and moist adiabatic lapse rates, Clausius–Clapeyron, stability and the Brunt–Väisälä frequency, and CAPE/CIN read off a Skew-T." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter II of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter II</p>
+      <h1 class="chapter-title">Atmospheric Thermodynamics</h1>
+      <p class="lede">A rising bubble of air cools as it expands; whether it keeps rising depends only on how its temperature compares to the air around it.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>Almost every interesting thing the atmosphere does — clouds, thunderstorms, the layer of haze that traps pollution, the calm of a clear cold morning — comes down to a single question asked over and over: if you nudge a small blob of air upward, does it keep going on its own, or does it sink back? This chapter builds the bookkeeping that answers it. The blob, which meteorologists call a <em>parcel</em>, cools as it rises because the pressure squeezing it weakens and it expands. The surrounding air also gets colder with height. The race between those two coolings decides everything.</p>
+          <p>The accounting has two big complications, both about water. Water vapor can carry an enormous amount of hidden energy, released as latent heat the moment the vapor condenses into cloud droplets — and that release changes how fast a rising parcel cools. And the amount of vapor air can hold before it saturates climbs steeply with temperature, roughly seven percent per degree, which is why warm air is muggy and a warming climate holds more water. By the end we will fold all of this onto one diagram, the Skew-T, the working forecaster's phase chart, and read a thunderstorm's potential energy straight off it as the area between two curves.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Air parcel</dt><dd>An imagined small blob of air that stays together, exchanges no heat with its surroundings, and keeps its pressure equal to the air around it as it moves. The atom of atmospheric thermodynamics.</dd>
+          <dt>Adiabatic</dt><dd>A process with no heat exchanged — the parcel warms or cools purely by being compressed or allowed to expand.</dd>
+          <dt>Specific volume</dt><dd>Volume per unit mass, $\alpha = 1/\rho$. The reciprocal of density; how much room a kilogram of air takes up.</dd>
+          <dt>Lapse rate</dt><dd>How fast temperature falls with height, $\Gamma = -\,\mathrm{d}T/\mathrm{d}z$. Positive when it gets colder going up, which is the usual case.</dd>
+          <dt>Dry adiabatic lapse rate</dt><dd>The cooling rate of a rising unsaturated parcel, about $9.8$ degrees per kilometre. Set by gravity and the heat capacity of air alone.</dd>
+          <dt>Moist (saturated) adiabatic lapse rate</dt><dd>The slower cooling rate of a rising saturated parcel, because condensing water keeps adding latent heat. Typically $4$–$7$ degrees per kilometre.</dd>
+          <dt>Potential temperature</dt><dd>The temperature a parcel would have if brought to a reference pressure of $1000$ hPa with no heat added. A label that does not change during dry adiabatic motion.</dd>
+          <dt>Latent heat</dt><dd>Energy absorbed or released when water changes phase — about $2.5$ million joules per kilogram of vapor condensed, all of it warming the air.</dd>
+          <dt>Saturation</dt><dd>The state where air holds as much water vapor as it can at a given temperature; any extra condenses out.</dd>
+          <dt>Vapor pressure</dt><dd>The partial pressure of water vapor in the air, written $e$. At saturation it is $e_s$, a function of temperature alone.</dd>
+          <dt>Mixing ratio</dt><dd>The mass of water vapor per mass of dry air, $w$. At saturation, $w_s$. A convenient measure of how much moisture air carries.</dd>
+          <dt>Dewpoint</dt><dd>The temperature to which air must be cooled, at fixed pressure, for it to just saturate. The closer the dewpoint to the actual temperature, the more humid the air.</dd>
+          <dt>Clausius–Clapeyron relation</dt><dd>The law fixing how steeply saturation vapor pressure climbs with temperature — the source of the "warmer air holds more water" rule.</dd>
+          <dt>Equivalent potential temperature</dt><dd>Potential temperature with the latent heat of all the vapor counted as if it had already condensed. Conserved through both dry and moist ascent.</dd>
+          <dt>Virtual temperature</dt><dd>The temperature dry air would need to have the same density as a given moist parcel. Water vapor is lighter than dry air, so moist air is buoyant; $T_v$ corrects for it.</dd>
+          <dt>Buoyancy</dt><dd>The net upward push on a parcel less dense than its surroundings (or downward, if denser). Drives all of convection.</dd>
+          <dt>Stability</dt><dd>Whether a displaced parcel returns to where it started (stable), keeps going (unstable), or sits still (neutral).</dd>
+          <dt>Brunt–Väisälä frequency</dt><dd>The frequency $N$ at which a parcel bobs up and down in a stable atmosphere, like a buoy in water. Larger $N$ means stiffer, more stable layers.</dd>
+          <dt>Sounding</dt><dd>A vertical profile of temperature, dewpoint, and wind measured by a weather balloon — the raw data plotted on a Skew-T.</dd>
+          <dt>Skew-T log-p diagram</dt><dd>The standard chart for plotting soundings: temperature axis tilted about $45^\circ$, pressure decreasing upward on a logarithmic scale. The forecaster's phase diagram.</dd>
+          <dt>LCL</dt><dd>Lifting condensation level — the height a surface parcel must rise to before it saturates and a cloud base forms.</dd>
+          <dt>LFC</dt><dd>Level of free convection — the height above which a parcel is warmer than its surroundings and accelerates upward on its own.</dd>
+          <dt>EL</dt><dd>Equilibrium level — the height where a rising parcel finally becomes colder than its surroundings again and stops accelerating, near the cloud top.</dd>
+          <dt>CAPE</dt><dd>Convective available potential energy — the energy a parcel gains between the LFC and EL. The fuel gauge for thunderstorms.</dd>
+          <dt>CIN</dt><dd>Convective inhibition — the energy that must be spent to push a parcel up to its LFC through a stable layer. The lid that has to be broken first.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>The first law for a parcel</h2>
+
+      <p>Begin with the object of the whole chapter. An <dfn title="An imagined small mass of air that moves as a unit, exchanges no heat with its surroundings, and stays at the pressure of the air around it.">air parcel</dfn> is a small mass of air we follow as it moves. We grant it two idealizations: it exchanges no heat with the air around it (it is thermally insulated), and it stays at the same pressure as its surroundings (any pressure imbalance equalizes at the speed of sound, almost instantly). Both are excellent approximations for the slow, large vertical motions of weather.</p>
+
+      <p>The <dfn title="Energy is conserved: heat added to a system goes into raising its internal energy and into the work it does on its surroundings.">first law of thermodynamics</dfn> says energy is conserved: heat added to a parcel either raises its temperature or does work pushing back the surrounding air as the parcel expands. Per unit mass, written with the specific volume $\alpha = 1/\rho$, the cleanest form for meteorology is</p>
+
+      <div class="equation-block">
+        $$ \dd q = \cp\,\dd T - \alpha\,\dd p, \qquad \alpha = \frac{1}{\rho}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\dd q$</dt><dd>Heat added per unit mass — a scalar in $\mathrm{J\,kg^{-1}}$. Positive when heat flows <em>into</em> the parcel (sunlight, latent-heat release, mixing).</dd>
+          <dt>$\cp$</dt><dd>Specific heat of dry air at constant pressure — a constant, $\cp = 1004\ \mathrm{J\,kg^{-1}\,K^{-1}}$. The heat needed to warm a kilogram by one kelvin while it is free to expand.</dd>
+          <dt>$\dd T$</dt><dd>Change in the parcel's temperature, in $\mathrm{K}$.</dd>
+          <dt>$\alpha$</dt><dd>Specific volume — the volume of a kilogram of air, $\alpha = 1/\rho$ in $\mathrm{m^3\,kg^{-1}}$.</dd>
+          <dt>$\rho$</dt><dd>Air density, in $\mathrm{kg\,m^{-3}}$.</dd>
+          <dt>$\dd p$</dt><dd>Change in pressure, in $\mathrm{Pa}$. As a parcel rises, $p$ falls and the $-\alpha\,\dd p$ term is positive: expansion does work, which would cool the parcel unless heat is supplied.</dd>
+        </dl>
+      </aside>
+
+      <p>The form above already contains a small piece of physics. We could equally write the first law with internal energy and the constant-<em>volume</em> heat capacity, $\dd q = \cv\,\dd T + p\,\dd\alpha$; the two are connected because air is an <dfn title="A gas obeying p = ρ R_d T, with R_d the gas constant for dry air.">ideal gas</dfn>. Differentiating the ideal-gas law $p\alpha = \Rd T$ gives $p\,\dd\alpha + \alpha\,\dd p = \Rd\,\dd T$, and substituting reproduces the pressure form with the identity</p>
+
+      <div class="equation-block">
+        $$ \cp = \cv + \Rd . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\cv$</dt><dd>Specific heat of dry air at constant volume — a constant, $\cv = 717\ \mathrm{J\,kg^{-1}\,K^{-1}}$.</dd>
+          <dt>$\Rd$</dt><dd>Specific gas constant for dry air — a constant, $\Rd = 287\ \mathrm{J\,kg^{-1}\,K^{-1}}$. It is the difference $\cp - \cv$ because the extra heat at constant pressure goes entirely into expansion work.</dd>
+        </dl>
+      </aside>
+
+      <p>That difference, $\Rd = \cp - \cv = 287\ \mathrm{J\,kg^{-1}\,K^{-1}}$, is the work of expansion — the only reason warming a parcel at constant pressure costs more heat than warming it in a sealed box. Everything in this chapter is built from the one equation $\dd q = \cp\,\dd T - \alpha\,\dd p$, applied with a different choice of what is held fixed.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Adiabatic motion and potential temperature</h2>
+
+      <p>Set $\dd q = 0$: no heat in or out. This is the <dfn title="A process in which no heat is exchanged; the parcel changes temperature only by expanding or being compressed.">adiabatic</dfn> case, and it describes a parcel rising or sinking faster than it can trade heat with its surroundings — which, for the bulk vertical motions of weather, is essentially always. With $\dd q = 0$ the first law becomes $\cp\,\dd T = \alpha\,\dd p$, and using $\alpha = \Rd T/p$ to eliminate $\alpha$,</p>
+
+      <div class="equation-block">
+        $$ \cp\,\frac{\dd T}{T} = \Rd\,\frac{\dd p}{p}. $$
+      </div>
+
+      <p>Both sides are now perfect differentials. Integrating from a reference pressure $p_0$, where the temperature is by definition the <dfn title="The temperature a parcel would have if compressed adiabatically to the reference pressure of 1000 hPa.">potential temperature</dfn> $\theta$, up to pressure $p$ and temperature $T$, gives the Poisson relation:</p>
+
+      <div class="equation-block">
+        $$ \theta = T\left(\frac{p_0}{p}\right)^{\Rd/\cp}, \qquad \kappa \equiv \frac{\Rd}{\cp} \approx 0.286 . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\theta$</dt><dd>Potential temperature, in $\mathrm{K}$ — the temperature the parcel would have if brought adiabatically to $p_0$. A scalar that <strong>does not change</strong> as long as $\dd q = 0$.</dd>
+          <dt>$T$</dt><dd>The parcel's actual temperature at its actual pressure $p$, in $\mathrm{K}$.</dd>
+          <dt>$p_0$</dt><dd>Reference pressure, a constant fixed by convention at $p_0 = 1000\ \mathrm{hPa}$.</dd>
+          <dt>$\kappa$</dt><dd>The Poisson exponent, dimensionless, $\kappa = \Rd/\cp = 287/1004 \approx 0.286$. The same exponent appears throughout dynamics.</dd>
+        </dl>
+      </aside>
+
+      <p>Why this is the central quantity: actual temperature $T$ is a bad label for an air mass, because it changes the moment the parcel moves to a new altitude and pressure. Potential temperature factors that change out. Take the differential of $\ln\theta = \ln T - \kappa\ln p + \text{const}$ and multiply by $\cp T$; you recover $\cp T\,\dd\ln\theta = \dd q$ exactly. So</p>
+
+      <div class="equation-block">
+        $$ \dd q = 0 \quad\Longleftrightarrow\quad \dd\theta = 0 . $$
+      </div>
+
+      <p>Potential temperature is <em>conserved</em> following an adiabatic parcel. Two air masses with the same $\theta$ are, thermodynamically, the same air at different altitudes. Mapping $\theta$ instead of $T$ on a weather chart reveals which air came from where, undisturbed by the trivial cooling of being lifted.</p>
+
+      <aside class="jargon">
+        <h4>θ AS A VERTICAL COORDINATE</h4>
+        <p>Because $\theta$ usually increases monotonically with height in a stable atmosphere, surfaces of constant $\theta$ — <em>isentropic surfaces</em>, surfaces of constant entropy — can be used as a vertical coordinate. Air flows along them when it moves adiabatically, so isentropic analysis turns three-dimensional flow into a near-two-dimensional picture of sliding sheets. We will see in Chapter V that potential vorticity, the master variable of large-scale dynamics, is most naturally defined on exactly these surfaces.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The dry adiabatic lapse rate</h2>
+
+      <p>How fast does a rising unsaturated parcel actually cool? Combine the adiabatic first law with the fact that the parcel's pressure tracks the surroundings, which are in <dfn title="The vertical pressure-gradient force balances gravity, so dp/dz = -ρg.">hydrostatic balance</dfn> — the result of Chapter I — namely $\dd p = -\rho g\,\dd z$. Starting from $\cp\,\dd T = \alpha\,\dd p = (1/\rho)\,\dd p$ and substituting,</p>
+
+      <div class="equation-block">
+        $$ \cp\,\dd T = \frac{1}{\rho}\,(-\rho g\,\dd z) = -g\,\dd z . $$
+      </div>
+
+      <p>The density cancels cleanly. Rearranging, the temperature of a dry adiabatic parcel falls with height at the constant rate</p>
+
+      <div class="equation-block">
+        $$ \Gamma_d \equiv -\frac{\dd T}{\dd z} = \frac{g}{\cp} \approx \frac{9.81}{1004}\ \frac{\mathrm{K}}{\mathrm{m}} \approx 9.8\ \mathrm{K\,km^{-1}} . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Gamma_d$</dt><dd>The dry adiabatic lapse rate, in $\mathrm{K\,km^{-1}}$ — the cooling rate of a rising <em>unsaturated</em> parcel. A constant, $\approx 9.8\ \mathrm{K\,km^{-1}}$.</dd>
+          <dt>$g$</dt><dd>Gravitational acceleration, a constant, $g = 9.81\ \mathrm{m\,s^{-2}}$.</dd>
+          <dt>$z$</dt><dd>Height above the surface, in $\mathrm{m}$.</dd>
+        </dl>
+      </aside>
+
+      <p>A clean, memorable number: a dry parcel lifted one kilometre is about ten degrees colder. Note what $\Gamma_d$ is <em>not</em>. It is not the lapse rate of the atmosphere itself — that is whatever the environment happens to be, measured by a weather balloon, and it varies. $\Gamma_d$ is the rate at which a <em>parcel</em> cools when you lift it. The comparison between the two — parcel versus environment — is the whole game of stability in §6.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>The same calculation says potential temperature is constant in a dry-adiabatic layer: where the environment cools at exactly $\Gamma_d$, every parcel keeps its $\theta$ no matter where you put it. Such a layer is called <em>neutrally stratified</em>, and it is what a well-mixed daytime boundary layer (Chapter VI) looks like — a deep slab of constant $\theta$.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Water vapor: mixing ratio, saturation, Clausius–Clapeyron</h2>
+
+      <p>Everything so far ignored water. Water vapor is a minor constituent by mass, yet it controls the weather, because it carries latent heat and because the amount the air can hold is exquisitely sensitive to temperature. We need two measures.</p>
+
+      <p>The <dfn title="The partial pressure exerted by water vapor in the air.">vapor pressure</dfn> $e$ is the part of the total air pressure contributed by water-vapor molecules. The <dfn title="The mass of water vapor per unit mass of dry air.">mixing ratio</dfn> $w$ is the mass of vapor per mass of dry air. They are tied together because vapor is lighter than dry air by exactly the ratio of gas constants $\epsilon = \Rd/\Rv$:</p>
+
+      <div class="equation-block">
+        $$ w = \frac{\epsilon\, e}{p - e}, \qquad \epsilon \equiv \frac{\Rd}{\Rv} = \frac{287}{461} \approx 0.622 . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$w$</dt><dd>Mixing ratio — mass of water vapor per mass of dry air, dimensionless (often quoted in $\mathrm{g\,kg^{-1}}$). Typical surface values: $1$–$20\ \mathrm{g\,kg^{-1}}$.</dd>
+          <dt>$e$</dt><dd>Vapor pressure — the partial pressure of water vapor, in $\mathrm{hPa}$. A few tens of hPa at most.</dd>
+          <dt>$p$</dt><dd>Total air pressure, in $\mathrm{hPa}$.</dd>
+          <dt>$\epsilon$</dt><dd>Ratio of gas constants, dimensionless, $\epsilon = \Rd/\Rv \approx 0.622$. It is the molecular weight of water ($18$) divided by that of dry air ($29$).</dd>
+          <dt>$\Rv$</dt><dd>Specific gas constant for water vapor — a constant, $\Rv = 461\ \mathrm{J\,kg^{-1}\,K^{-1}}$.</dd>
+        </dl>
+      </aside>
+
+      <p>Air is <dfn title="The state holding the maximum water vapor possible at a given temperature; further vapor condenses.">saturated</dfn> when it holds the most vapor it can at its temperature. The saturation vapor pressure $e_s(T)$ is set by the physics of evaporation off a flat water surface, and how steeply it rises with temperature is the single most consequential fact in this chapter. It is fixed by the <dfn title="The relation governing how saturation vapor pressure varies with temperature along a phase boundary.">Clausius–Clapeyron relation</dfn>:</p>
+
+      <div class="equation-block">
+        $$ \frac{\dd e_s}{\dd T} = \frac{\Lv\, e_s}{\Rv T^2} . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$e_s$</dt><dd>Saturation vapor pressure, in $\mathrm{hPa}$ — a function of temperature alone.</dd>
+          <dt>$\Lv$</dt><dd>Latent heat of vaporization of water — a constant, $\Lv = 2.5\times10^{6}\ \mathrm{J\,kg^{-1}}$. The energy needed to evaporate a kilogram of liquid water (and released when it condenses).</dd>
+          <dt>$T$</dt><dd>Absolute temperature, in $\mathrm{K}$.</dd>
+        </dl>
+      </aside>
+
+      <p>Treating $\Lv$ as constant — a good approximation over the meteorological range — the right side is proportional to $e_s$ itself, so $e_s$ grows <em>exponentially</em>. Integrating from a reference point $(T_0, e_{s0})$:</p>
+
+      <div class="equation-block">
+        $$ e_s(T) = e_{s0}\,\exp\!\left[\frac{\Lv}{\Rv}\left(\frac{1}{T_0} - \frac{1}{T}\right)\right], \qquad e_{s0} = 6.11\ \mathrm{hPa},\quad T_0 = 273.15\ \mathrm{K}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$e_{s0}$</dt><dd>Saturation vapor pressure at the reference temperature, $e_{s0} = 6.11\ \mathrm{hPa}$ at the freezing point — a calibration constant.</dd>
+          <dt>$T_0$</dt><dd>Reference temperature, the ice point, $T_0 = 273.15\ \mathrm{K}\ (0\,\degC)$.</dd>
+        </dl>
+      </aside>
+
+      <p>Differentiate the logarithm and the slope at room temperature comes out near $\Lv/(\Rv T^2) \approx 0.07\ \mathrm{K^{-1}}$: saturation vapor pressure rises about <strong>seven percent for every degree</strong> of warming. That single number explains a remarkable amount of the world. Warm tropical air can hold many times the moisture of cold polar air, so the tropics are where the great rains and the storms live. And in a warming climate the air's water-holding capacity rises at that same compounding seven-percent-per-degree rate, intensifying the heaviest downpours — the most robust prediction of climate science traces straight back to this equation.</p>
+
+      <p>The <dfn title="The temperature to which air must be cooled at constant pressure to reach saturation.">dewpoint</dfn> $T_d$ is the temperature at which the air's actual vapor pressure $e$ would be the saturation value: $e = e_s(T_d)$. It is the most useful single number for humidity, because the gap $T - T_d$ measures directly how much cooling — how much lifting — it takes to make a cloud.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The moist adiabat and latent heat</h2>
+
+      <p>Now follow a parcel that rises until it saturates. Below saturation it cools at the dry rate $\Gamma_d$. But the moment its temperature drops to the dewpoint, further lifting forces vapor to condense — and condensation dumps latent heat $\Lv$ back into the parcel. That heat partly offsets the cooling of expansion, so a <em>saturated</em> parcel cools more slowly. Its cooling rate is the <dfn title="The cooling rate of a rising saturated parcel, reduced below the dry rate by latent-heat release.">saturated (moist) adiabatic lapse rate</dfn>.</p>
+
+      <p>To find it, add the latent-heat source to the first law. When the saturation mixing ratio $w_s$ changes by $\dd w_s$ as the parcel lifts, the heat released per unit mass is $\dd q = -\Lv\,\dd w_s$ (condensation, $\dd w_s < 0$, releases heat). Carrying this through the same hydrostatic substitution as §3, and using Clausius–Clapeyron to relate $\dd w_s$ to $\dd T$, yields a closed form (Wallace &amp; Hobbs §3.5.4, <em>The Saturated Adiabatic Lapse Rate</em>):</p>
+
+      <div class="equation-block wide">
+        $$ \Gamma_s = \Gamma_d\,\frac{\,1 + \dfrac{\Lv\, w_s}{\Rd\, T}\,}{\,1 + \dfrac{\Lv^{2}\, w_s\,\epsilon}{\cp\,\Rd\, T^{2}}\,} . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Gamma_s$</dt><dd>The saturated adiabatic lapse rate, in $\mathrm{K\,km^{-1}}$ — the cooling rate of a rising <em>saturated</em> parcel. Smaller than $\Gamma_d$, and not constant: it depends on $T$ and $p$ through $w_s$.</dd>
+          <dt>$w_s$</dt><dd>Saturation mixing ratio at the parcel's temperature and pressure, $w_s = \epsilon\,e_s/(p - e_s)$ from §4, dimensionless.</dd>
+          <dt>$\Gamma_d,\ \Lv,\ \Rd,\ \cp,\ \epsilon$</dt><dd>The dry lapse rate and the constants already defined above. Both numerator and denominator are dimensionless.</dd>
+        </dl>
+      </aside>
+
+      <p>The ratio is always less than one, so $\Gamma_s < \Gamma_d$ always. How much smaller depends on how much vapor there is to condense. In warm, vapor-rich low-level air $w_s$ is large and $\Gamma_s$ can drop to $\sim4\ \mathrm{K\,km^{-1}}$, less than half the dry rate. High and cold, $w_s \to 0$, the correction vanishes and $\Gamma_s \to \Gamma_d$: there is almost no vapor left to release, so the moist adiabat straightens back toward the dry one. <strong>This is why the moist adiabat is shallower than the dry adiabat near the ground but converges to it aloft</strong> — a curvature you will see directly on the Skew-T, and the reason deep clouds can tower so high.</p>
+
+      <p>There is a conserved label for moist ascent too, the analogue of $\theta$. Imagine lifting a parcel until <em>every</em> bit of its vapor has condensed and released its latent heat, then bringing it back to $p_0$. The temperature it ends with is the <dfn title="Potential temperature with the latent heat of all the parcel's vapor folded in; conserved through dry and moist ascent.">equivalent potential temperature</dfn> $\theta_e$, well approximated by (Wallace &amp; Hobbs eq. 3.71)</p>
+
+      <div class="equation-block">
+        $$ \theta_e \approx \theta\,\exp\!\left(\frac{\Lv\, w_s}{\cp\, T}\right) . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\theta_e$</dt><dd>Equivalent potential temperature, in $\mathrm{K}$ — conserved under <em>both</em> dry and moist (pseudo)adiabatic motion. The master tracer for moist air masses.</dd>
+          <dt>$\theta$</dt><dd>Ordinary potential temperature of the parcel, from §2.</dd>
+          <dt>$w_s,\ \Lv,\ \cp,\ T$</dt><dd>As above. The exponent is the latent heat of all the vapor, $\Lv w_s$, expressed as a temperature increment $\Lv w_s/\cp T$.</dd>
+        </dl>
+      </aside>
+
+      <p>Whereas $\theta$ jumps upward the moment a cloud forms (latent heat warms the parcel), $\theta_e$ is built to stay put through the phase change — it already counted the latent heat in advance. A column where $\theta_e$ <em>decreases</em> with height is primed for deep convection: lift a low-level parcel and it conserves a high $\theta_e$ into surroundings of lower $\theta_e$, arriving warmer and buoyant. This <em>potential</em> (or convective) instability is the thermodynamic seed of thunderstorms.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Stability and the Brunt–Väisälä frequency</h2>
+
+      <p>Now the payoff. Displace a parcel a small distance $\delta z$ upward and ask what happens. The parcel cools along its adiabat — $\Gamma_d$ if unsaturated, $\Gamma_s$ if saturated. The surrounding air has its own measured lapse rate $\Gamma_{\text{env}} = -\,\dd T_{\text{env}}/\dd z$. The parcel keeps rising on its own only if it ends up <em>warmer</em>, hence less dense, than its new surroundings. Comparing the two coolings gives three regimes:</p>
+
+      <ul>
+        <li><strong>Stable</strong> ($\Gamma_{\text{env}} < \Gamma_{\text{parcel}}$): the environment cools more slowly than the parcel, so a lifted parcel becomes colder, denser, and sinks back. Displacements are resisted.</li>
+        <li><strong>Neutral</strong> ($\Gamma_{\text{env}} = \Gamma_{\text{parcel}}$): parcel and environment stay equal in temperature; the parcel feels no net force and stays where you put it.</li>
+        <li><strong>Unstable</strong> ($\Gamma_{\text{env}} > \Gamma_{\text{parcel}}$): the environment cools faster, so a lifted parcel is warmer, more buoyant, and accelerates away. Convection erupts.</li>
+      </ul>
+
+      <p>Because the parcel adiabat is $\Gamma_d$ when dry and $\Gamma_s$ when saturated, and $\Gamma_s < \Gamma_d$, there is an intermediate band $\Gamma_s < \Gamma_{\text{env}} < \Gamma_d$ that is stable for dry parcels but unstable for saturated ones — <em>conditional instability</em>, the everyday state of the lower atmosphere. The condition is met all the time; what is rationed is whether a parcel can be lifted to saturation in the first place. That is the question §7 answers with CAPE and CIN.</p>
+
+      <p>For the stable case there is a clean quantitative measure. The net upward force per mass on a displaced parcel is its <dfn title="The net buoyant acceleration on a parcel, g times its fractional density (or virtual-temperature) excess over the environment.">buoyancy</dfn>, $g\,(T_{\text{parcel}} - T_{\text{env}})/T_{\text{env}}$. For a small dry displacement this works out to a linear restoring force, and Newton's second law $\ddot{z} = -N^2\,\delta z$ defines the <dfn title="The natural oscillation frequency of a parcel bobbing vertically in a stable atmosphere.">Brunt–Väisälä frequency</dfn>:</p>
+
+      <div class="equation-block">
+        $$ N^2 = \frac{g}{\theta}\frac{\dd\theta}{\dd z} . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$N$</dt><dd>The Brunt–Väisälä (buoyancy) frequency, in $\mathrm{s^{-1}}$ — the rate at which a displaced parcel oscillates vertically. Typical tropospheric value $N \approx 0.01\ \mathrm{s^{-1}}$, a period of about ten minutes.</dd>
+          <dt>$N^2$</dt><dd>Its square, in $\mathrm{s^{-2}}$. The sign is the diagnostic: $N^2 > 0$ is stable (real oscillation), $N^2 = 0$ neutral, $N^2 < 0$ unstable (the parcel runs away exponentially rather than oscillating).</dd>
+          <dt>$\theta$</dt><dd>Environmental potential temperature, in $\mathrm{K}$. Since $N^2 \propto \dd\theta/\dd z$, stability is exactly "$\theta$ increases with height."</dd>
+        </dl>
+      </aside>
+
+      <p>The form $N^2 = (g/\theta)\,\dd\theta/\dd z$ is the cleanest statement of stability in the book: an atmosphere is stable precisely when potential temperature increases upward. A strong inversion — $\theta$ rising sharply with height — gives a large $N$ and rigidly suppresses vertical motion, which is why pollution and fog get trapped under one. When $N^2 > 0$, $N$ is the frequency of internal <em>gravity waves</em>, the ripples that ride along stable layers and corrugate the sky into rows of cloud.</p>
+
+      <section class="interactive" data-widget="skew-t" aria-label="A working Skew-T log-p diagram with parcel ascent, CAPE and CIN">
+        <header>
+          <h4>Interactive · Read a Skew-T</h4>
+          <span class="hint">drag surface T · drag dewpoint</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">A synthetic but realistic sounding: environmental temperature (right) and dewpoint (left), with pressure decreasing upward on a log axis and the temperature axis skewed about $45^\circ$. A surface parcel is lifted dry-adiabatically to its <strong>LCL</strong> (where $w_s$ falls to the surface mixing ratio), then along the moist adiabat $\Gamma_s$ to the <strong>EL</strong>. Green shading is <strong>CAPE</strong> (parcel warmer than environment); the blue notch below the <strong>LFC</strong> is <strong>CIN</strong>. Raising the surface temperature or dewpoint pumps up CAPE — and you can watch the storm fuel grow. For clarity the parcel ascent here compares ordinary temperature $T$ rather than virtual temperature $T_v$, a simplification of a few hundred $\mathrm{J\,kg^{-1}}$.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>CAPE, CIN, and reading a Skew-T</h2>
+
+      <p>The <dfn title="A vertical profile of temperature, dewpoint and wind from a weather balloon.">sounding</dfn> from a weather balloon is plotted on a <dfn title="The standard thermodynamic chart for soundings: temperature axis tilted, pressure logarithmic and decreasing upward.">Skew-T log-p diagram</dfn>: pressure decreasing upward on a logarithmic scale (so equal heights are roughly equal spacings), and the temperature axis skewed to the right by about $45^\circ$ so that the dry adiabats, moist adiabats, and temperature isolines all cross at useful angles. On it we trace one surface parcel and mark three levels.</p>
+
+      <ul>
+        <li>The <strong>LCL</strong>, the <dfn title="The level a lifted surface parcel reaches saturation and a cloud base forms.">lifting condensation level</dfn>: lift the parcel dry-adiabatically until it saturates. Below it the parcel follows $\Gamma_d$; at it, the cloud base forms.</li>
+        <li>The <strong>LFC</strong>, the <dfn title="The level above which a lifted parcel is warmer than its surroundings and rises freely.">level of free convection</dfn>: keep lifting along the moist adiabat until the parcel first becomes <em>warmer</em> than the environment. Above the LFC, buoyancy is positive and the parcel rises on its own.</li>
+        <li>The <strong>EL</strong>, the <dfn title="The level a rising parcel becomes colder than its surroundings again and stops accelerating.">equilibrium level</dfn>: higher still, the environment (cooled less, or warmed by the stratosphere) overtakes the parcel again; above it buoyancy is negative. This sets the anvil-top height of a thunderstorm.</li>
+      </ul>
+
+      <p>Between LFC and EL the parcel is buoyant, and the work buoyancy does on it is the <dfn title="The energy a parcel gains from buoyancy between the LFC and EL; the integrated positive area on a sounding.">convective available potential energy</dfn>, CAPE — the green area between the parcel and environment curves on the Skew-T. Using buoyancy in height and, via hydrostatic balance, in pressure:</p>
+
+      <div class="equation-block wide">
+        $$ \CAPE = \int_{z_{\mathrm{LFC}}}^{z_{\mathrm{EL}}} g\,\frac{T_{v,\mathrm{parcel}} - T_{v,\mathrm{env}}}{T_{v,\mathrm{env}}}\,\dd z = \Rd\!\int_{p_{\mathrm{EL}}}^{p_{\mathrm{LFC}}} \bigl(T_{v,\mathrm{parcel}} - T_{v,\mathrm{env}}\bigr)\,\dd\ln p . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\CAPE$</dt><dd>Convective available potential energy, in $\mathrm{J\,kg^{-1}}$. A few hundred is weak, $\sim1000$ moderate, $>2500$ is severe-storm territory.</dd>
+          <dt>$T_v$</dt><dd>Virtual temperature, in $\mathrm{K}$ — the temperature dry air would need to match the density of the moist parcel, $T_v \approx T(1 + 0.61\,w)$. Vapor is lighter than dry air, so accounting for it (rather than using $T$) is what makes buoyancy honest.</dd>
+          <dt>$z_{\mathrm{LFC}},\ z_{\mathrm{EL}}$</dt><dd>Heights of the level of free convection and equilibrium level; $p_{\mathrm{LFC}}, p_{\mathrm{EL}}$ the corresponding pressures.</dd>
+          <dt>$\dd\ln p$</dt><dd>The differential of $\ln p$. The pressure form is what the Skew-T's log-$p$ axis makes into a literal area: $\Rd$ times the area between the curves.</dd>
+        </dl>
+      </aside>
+
+      <p>The flip side is <dfn title="The energy needed to lift a parcel up to its LFC through a stable layer; the integrated negative area.">convective inhibition</dfn>, CIN — the <em>negative</em> area below the LFC, where the parcel is still colder than its surroundings and lifting must be forced. It is the same integral taken over the region where the integrand is negative. CIN is the lid: a sounding can hold a thousand joules of CAPE and produce nothing, because a cap of warm air aloft (high CIN) keeps any parcel from ever reaching its LFC. Storms fire when something — daytime heating, a front, terrain — finally supplies enough lift to break through the inhibition and release the CAPE above.</p>
+
+      <p>CAPE has a tidy interpretation as a speed limit. If <em>all</em> of it converted to kinetic energy, $\half w_{\max}^2 = \CAPE$, so the theoretical updraft ceiling is</p>
+
+      <div class="equation-block">
+        $$ w_{\max} = \sqrt{2\,\CAPE} . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$w_{\max}$</dt><dd>The maximum updraft speed, in $\mathrm{m\,s^{-1}}$, that the available potential energy could in principle produce. For $\CAPE = 2500\ \mathrm{J\,kg^{-1}}$ this is $\approx 70\ \mathrm{m\,s^{-1}}$.</dd>
+        </dl>
+      </aside>
+
+      <p>Real updrafts reach perhaps half this — entrainment of dry environmental air, the weight of condensed water, and the work done lifting precipitation all skim energy off the ideal. But the scaling is right, and it is why high-CAPE environments produce the violent updrafts that loft hail and spin up tornadoes. The Skew-T compresses all of this chapter — the dry and moist adiabats, saturation, latent heat, stability — onto one chart a forecaster reads in seconds. That is the payoff of the bookkeeping: the area between two curves is a thunderstorm's potential, drawn to scale.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">J. M. Wallace and P. V. Hobbs.</span> <em>Atmospheric Science: An Introductory Survey</em>, 2nd ed., Academic Press 2006 — Chapter 3 covers the first law, potential temperature, the dry and saturated adiabats (the $\Gamma_s$ form is in §3.5.4; the $\theta_e$ approximation of §5 is eq. 3.71), Clausius–Clapeyron, and stability. The primary source for this chapter.</li>
+          <li><span class="src-title">C. F. Bohren and B. A. Albrecht.</span> <em>Atmospheric Thermodynamics</em>, Oxford University Press 1998 — a careful, physically grounded treatment of parcels, latent heat, and entropy; especially good on what the idealizations actually assume.</li>
+          <li><span class="src-title">K. A. Emanuel.</span> <em>Atmospheric Convection</em>, Oxford University Press 1994 — the definitive reference for CAPE, equivalent potential temperature, conditional and potential instability, and the energetics of moist convection (Chapters 4–6).</li>
+          <li><span class="src-title">J. R. Holton and G. J. Hakim.</span> <em>An Introduction to Dynamic Meteorology</em>, 5th ed., Academic Press 2013 — §2.7 derives the dry adiabatic lapse rate, potential temperature, and the static-stability / Brunt–Väisälä framework used in §3 and §6.</li>
+          <li><span class="src-title">D. Bolton.</span> "The computation of equivalent potential temperature." <em>Monthly Weather Review</em> 108, 1046–1053 (1980) — the standard accurate formula for $\theta_e$ that the approximation in §5 stands in for; the reference every operational center uses.</li>
+          <li><span class="src-title">American Meteorological Society.</span> <em>Glossary of Meteorology</em>, online edition (glossary.ametsoc.org) — authoritative definitions of LCL, LFC, EL, CAPE, CIN, mixing ratio, and dewpoint.</li>
+          <li><span class="src-title">G. K. Vallis.</span> <em>Atmospheric and Oceanic Fluid Dynamics</em>, 2nd ed., Cambridge University Press 2017 — §1.5 (<em>Thermodynamic Relations</em>) develops potential temperature, while stratification, the buoyancy frequency, and static instability (§2.9) are treated in Chapter 2 — the broader geophysical-fluid setting that Chapters IV–V build on.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="01-atmosphere-as-system.html"><span class="label">← Previous</span>I · The Atmosphere as a System</a>
+      <a class="next" href="03-radiation-energy-balance.html"><span class="label">Next chapter</span>III · Radiation and the Energy Balance →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/skew-t.js"></script>
+</body>
+</html>

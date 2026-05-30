@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter III · Radiation and the Energy Balance — Meteorology: The Atmosphere in Motion</title>
+  <meta name="description" content="Chapter 3: blackbody radiation, the solar and terrestrial spectra, the planetary emission temperature, Beer–Lambert absorption, the Schwarzschild equation, and the gray greenhouse — the energy balance that drives every wind." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter III of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter III</p>
+      <h1 class="chapter-title">Radiation and the Energy Balance</h1>
+      <p class="lede">Sunlight pours in as visible light and leaves as invisible infrared — and in the gap between those two acts of radiation lies the heat that drives every wind.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>Nothing moves in the atmosphere without an energy source, and that source is radiation. The Sun delivers energy as visible light; the Earth — far cooler — returns it as infrared. If those two flows did not balance over the long run, the planet would relentlessly heat or cool. They do balance, but not at the surface temperature you might naively guess. A bare rock at Earth's distance from the Sun would sit near a frigid $-18\,\degC$. The actual surface is a habitable $+15\,\degC$, some $33$ degrees warmer. The difference is the greenhouse effect, and this chapter derives it from scratch.</p>
+          <p>We start with how any warm object radiates (the blackbody laws), separate the Sun's light from the Earth's by wavelength, find the planet's <em>emission temperature</em> from a single line of bookkeeping, then ask what happens when the air in between absorbs some of the outgoing infrared. A layer that intercepts infrared and re-radiates it — half upward, half back down — warms the ground beneath it. Stack such layers and the surface gets warmer still. That simple "gray" model captures the essential physics of the greenhouse effect; we close by noting why the real lower atmosphere is set not by radiation alone but by radiation fighting convection.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Radiation</dt><dd>Energy carried by electromagnetic waves — light, infrared, ultraviolet. It needs no medium and travels at the speed of light.</dd>
+          <dt>Flux</dt><dd>Energy crossing a unit area per unit time. Measured in watts per square metre ($\mathrm{W\,m^{-2}}$).</dd>
+          <dt>Blackbody</dt><dd>An idealized object that absorbs all radiation hitting it and emits the maximum possible for its temperature. A useful baseline; real surfaces fall a little short.</dd>
+          <dt>Spectral radiance</dt><dd>How much a body radiates at each wavelength — the spectrum, before you add up all colours.</dd>
+          <dt>Wavelength</dt><dd>The distance between wave crests. Short for visible light (~$0.5\,\mu\mathrm{m}$), long for infrared (~$10\,\mu\mathrm{m}$).</dd>
+          <dt>Shortwave / longwave</dt><dd>Meteorologists' split: "shortwave" is solar (visible and near-infrared); "longwave" is the thermal infrared the Earth emits. They barely overlap.</dd>
+          <dt>Emission temperature</dt><dd>The single temperature at which the planet, seen from space, would radiate exactly the sunlight it absorbs. About $255\,\mathrm{K}$ for Earth.</dd>
+          <dt>Albedo</dt><dd>The fraction of incoming sunlight a surface or planet reflects without absorbing. Earth's planetary albedo is about $0.30$.</dd>
+          <dt>Solar constant</dt><dd>The solar flux arriving at the top of the atmosphere on a surface facing the Sun: about $1361\,\mathrm{W\,m^{-2}}$.</dd>
+          <dt>Greenhouse effect</dt><dd>The warming of a surface caused by an atmosphere that lets sunlight in but absorbs and re-emits the outgoing infrared.</dd>
+          <dt>Greenhouse gas</dt><dd>A gas that absorbs infrared — water vapour, carbon dioxide, methane, ozone. The bulk of the air ($\mathrm{N_2}$, $\mathrm{O_2}$) does not.</dd>
+          <dt>Optical depth</dt><dd>A dimensionless measure of how opaque a slab is. $\tau = 1$ dims a beam to about $37\%$; large $\tau$ means nearly opaque.</dd>
+          <dt>Absorption coefficient</dt><dd>How strongly a gas absorbs per unit mass it traverses — varies sharply with wavelength.</dd>
+          <dt>Emissivity</dt><dd>The fraction of blackbody emission a body actually radiates, between $0$ and $1$. By Kirchhoff's law it equals the absorptivity.</dd>
+          <dt>Gray atmosphere</dt><dd>A modelling fiction: an atmosphere whose absorption is the same at every infrared wavelength. It misses spectral detail but gets the energetics right.</dd>
+          <dt>Radiative transfer</dt><dd>The bookkeeping of how a beam of radiation gains energy by emission and loses it to absorption as it threads through a medium.</dd>
+          <dt>Radiative equilibrium</dt><dd>The temperature profile at which each layer emits exactly as much radiation as it absorbs — radiation alone, no air motion.</dd>
+          <dt>Lapse rate</dt><dd>The rate at which temperature falls with height, $\Gamma \equiv -\,\dd T/\dd z$. Positive when it gets colder as you climb.</dd>
+          <dt>Convection</dt><dd>Heat carried by the bodily motion of air — warm parcels rising, cool ones sinking — rather than by radiation.</dd>
+          <dt>Radiative–convective equilibrium</dt><dd>The real balance in the lower atmosphere: radiation tries to set a steep profile, convection stirs it back to the adiabatic lapse rate.</dd>
+          <dt>Stefan–Boltzmann constant</dt><dd>The constant $\sigma$ that ties a blackbody's total flux to the fourth power of its temperature.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>How warm bodies radiate</h2>
+
+      <p>Every object above absolute zero glows. Not always in visible light — a person, a cloud, a patch of soil all radiate, but in the infrared, invisible to the eye. The amount and the colour of that glow depend only on temperature, and the relationship is one of the cleanest in physics.</p>
+
+      <p>Imagine a perfect absorber — a <dfn title="An idealized body that absorbs all incident radiation and emits the theoretical maximum for its temperature.">blackbody</dfn> — held at temperature $T$. The energy it radiates, sorted by wavelength, is given by the <strong>Planck function</strong>:</p>
+
+      <div class="equation-block">
+        $$ B_\lambda(T) = \frac{2hc^2}{\lambda^5}\,\frac{1}{e^{\,hc/\lambda k_B T}-1}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$B_\lambda(T)$</dt><dd>Spectral radiance — power emitted per unit area, per unit wavelength, per unit solid angle. A field over wavelength $\lambda$ and temperature $T$; units $\mathrm{W\,m^{-2}\,\mu m^{-1}\,sr^{-1}}$.</dd>
+          <dt>$\lambda$</dt><dd>Wavelength of the radiation — a scalar, in metres (often quoted in $\mu\mathrm{m}$). The horizontal axis of the spectrum.</dd>
+          <dt>$T$</dt><dd>Absolute temperature of the body — a scalar, in kelvin.</dd>
+          <dt>$h$</dt><dd>Planck's constant, $6.626\times10^{-34}\ \mathrm{J\,s}$ — the quantum of action, the reason the spectrum has a peak at all.</dd>
+          <dt>$c$</dt><dd>Speed of light, $2.998\times10^{8}\ \mathrm{m\,s^{-1}}$ — a constant.</dd>
+          <dt>$k_B$</dt><dd>Boltzmann's constant, $1.381\times10^{-23}\ \mathrm{J\,K^{-1}}$ — converts temperature into a typical thermal energy.</dd>
+          <dt>$e^{\,hc/\lambda k_B T}$</dt><dd>The exponential that cuts emission off sharply at short wavelengths; the competition between this and the $\lambda^{-5}$ prefactor places the peak.</dd>
+        </dl>
+      </aside>
+
+      <p>You do not need to memorize the Planck function. Two facts distilled from it carry the whole chapter. The first is <em>where</em> the spectrum peaks. Differentiate $B_\lambda$ with respect to $\lambda$, set it to zero, and you get <strong>Wien's displacement law</strong>:</p>
+
+      <div class="equation-block">
+        $$ \lambda_{\max}\,T = 2898\ \mu\mathrm{m\,K}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\lambda_{\max}$</dt><dd>The wavelength at which $B_\lambda$ is largest — where the body glows brightest. A scalar, in $\mu\mathrm{m}$.</dd>
+          <dt>$2898\ \mu\mathrm{m\,K}$</dt><dd>Wien's constant — a fixed number. Hotter bodies peak at shorter wavelengths; the product stays constant.</dd>
+        </dl>
+      </aside>
+
+      <p>Plug in the Sun's surface temperature, about $5780\,\mathrm{K}$: $\lambda_{\max} \approx 0.50\,\mu\mathrm{m}$, smack in the middle of the visible band — which is no coincidence, since our eyes evolved under that light. Plug in the Earth, near $255\,\mathrm{K}$: $\lambda_{\max} \approx 11\,\mu\mathrm{m}$, deep in the thermal infrared, more than twenty times longer. The hot Sun and the cool Earth radiate in almost entirely different parts of the spectrum. That separation, which §2 makes precise, is what makes the greenhouse effect possible.</p>
+
+      <p>The second distilled fact is the <em>total</em> energy radiated, summed over all wavelengths. Integrate $B_\lambda$ over $\lambda$ and over the hemisphere of directions and you arrive at the <strong>Stefan–Boltzmann law</strong>:</p>
+
+      <div class="equation-block">
+        $$ F = \sigma T^4. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$F$</dt><dd>The total radiative flux leaving a blackbody surface — a scalar, $\mathrm{W\,m^{-2}}$. The power per unit area, all colours combined.</dd>
+          <dt>$\sigma$</dt><dd>The Stefan–Boltzmann constant, $5.67\times10^{-8}\ \mathrm{W\,m^{-2}\,K^{-4}}$ — a fixed constant built from $h$, $c$, and $k_B$.</dd>
+          <dt>$T^4$</dt><dd>The fourth power of absolute temperature. This steep dependence is the lever behind everything that follows: small temperature changes move the flux a great deal.</dd>
+        </dl>
+      </aside>
+
+      <p>The fourth power matters enormously. Double a body's temperature and it radiates sixteen times as much. Raise it a mere $1\%$ and the flux climbs $4\%$. This is the restoring force of the climate system: warm a surface and it sheds energy fast; cool it and it sheds energy slowly. The $T^4$ law is what lets the planet settle into a steady temperature at all.</p>
+
+      <aside class="jargon">
+        <h4>EMISSIVITY AND KIRCHHOFF'S LAW</h4>
+        <p>Real surfaces are not perfect blackbodies. A body at temperature $T$ radiates $F = \varepsilon\,\sigma T^4$, where the <dfn title="The fraction of blackbody emission a real surface actually radiates, between 0 and 1.">emissivity</dfn> $\varepsilon \in [0,1]$ measures how close to ideal it is. Kirchhoff's law states that in thermal equilibrium a body's emissivity at a given wavelength equals its absorptivity there: a good absorber is a good emitter. This is why we can later describe a layer of air by a single number $\varepsilon$ and have it govern both how much infrared the layer soaks up and how much it gives off. For most natural surfaces — water, soil, vegetation, snow — $\varepsilon$ in the infrared is close to $0.95$, so treating the ground as a blackbody costs little.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Two spectra, barely overlapping</h2>
+
+      <p>Because the Sun is hot and the Earth is cool, their Planck curves sit in different places, and that lets us treat solar and terrestrial radiation as two nearly separate problems. Meteorologists name the two bands accordingly. <strong>Shortwave</strong> radiation is everything coming from the Sun — wavelengths roughly $0.2$ to $4\ \mu\mathrm{m}$, dominated by visible light. <strong>Longwave</strong> radiation is the thermal infrared the Earth and its atmosphere emit — roughly $4$ to $100\ \mu\mathrm{m}$. The crossover near $4\ \mu\mathrm{m}$ is where the two curves fall to negligible overlap.</p>
+
+      <p>The split is more than tidy bookkeeping. The atmosphere behaves completely differently toward the two bands. The bulk gases — nitrogen and oxygen, ninety-nine percent of the air — are nearly transparent to both. But the trace gases are not: water vapour, carbon dioxide, methane, and ozone absorb strongly in the longwave while leaving most of the shortwave alone. So sunlight streams down to the surface largely unimpeded, while the infrared trying to escape runs a gauntlet of absorbers. Sunlight in through an open window; infrared out through a sieve. That asymmetry <em>is</em> the greenhouse mechanism, and the rest of the chapter quantifies it.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>"Greenhouse" is a misleading name kept for history's sake. A garden greenhouse warms mostly by suppressing convection — the glass stops warm air from mixing away. The atmospheric effect is genuinely radiative: it works by absorbing and re-emitting infrared, not by trapping air. The name stuck; the mechanism is different.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The planet's emission temperature</h2>
+
+      <p>Forget the atmosphere for a moment and ask the simplest possible question: at what temperature must the whole Earth radiate to balance the sunlight it absorbs? This single number, the <dfn title="The blackbody temperature at which the planet radiates exactly the solar power it absorbs.">emission temperature</dfn> $T_e$, anchors everything.</p>
+
+      <p>The energy <em>in</em>: the Sun delivers a flux $S_0$, the <strong>solar constant</strong>, to any surface squarely facing it at Earth's orbit. But the Earth does not present a sphere to the Sun — it intercepts sunlight as a flat disk of area $\pi a^2$, where $a$ is the planet's radius. Of that, a fraction $\alpha_p$ (the <strong>planetary albedo</strong>) is reflected straight back to space and never absorbed. So</p>
+
+      <div class="equation-block">
+        $$ \text{power absorbed} = S_0\,(1-\alpha_p)\,\pi a^2. $$
+      </div>
+
+      <p>The energy <em>out</em>: the planet radiates from its entire surface, a sphere of area $4\pi a^2$. If it radiates as a blackbody at temperature $T_e$,</p>
+
+      <div class="equation-block">
+        $$ \text{power emitted} = \sigma T_e^4 \cdot 4\pi a^2. $$
+      </div>
+
+      <p>Set absorbed equal to emitted. The planet's radius $a$ cancels — the answer does not depend on the size of the planet, only on its distance from the Sun and its reflectivity:</p>
+
+      <div class="equation-block">
+        $$ \sigma T_e^4 \,(4\pi a^2) = S_0\,(1-\alpha_p)\,(\pi a^2) \;\;\Longrightarrow\;\; \sigma T_e^4 = \frac{S_0\,(1-\alpha_p)}{4}. $$
+      </div>
+
+      <p>Solving for the temperature,</p>
+
+      <div class="equation-block">
+        $$ T_e = \left[\frac{S_0\,(1-\alpha_p)}{4\,\sigma}\right]^{1/4} \approx 255\ \mathrm{K}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$T_e$</dt><dd>The emission (or effective) temperature — a scalar, in kelvin. The temperature a thermometer in space would assign the planet from its infrared glow.</dd>
+          <dt>$S_0$</dt><dd>The solar constant, $1361\ \mathrm{W\,m^{-2}}$ — the solar flux on a Sun-facing surface at Earth's orbit. A constant (it varies under $0.1\%$ over a solar cycle).</dd>
+          <dt>$\alpha_p$</dt><dd>The planetary albedo, $\approx 0.30$ for Earth — the dimensionless fraction of incoming sunlight reflected, mostly by clouds, ice, and bright land.</dd>
+          <dt>$a$</dt><dd>The planet's radius, $6.371\times10^{6}\ \mathrm{m}$ — a constant that cancels out of the balance.</dd>
+          <dt>the factor $4$</dt><dd>The ratio of the emitting area ($4\pi a^2$, the whole sphere) to the intercepting area ($\pi a^2$, the shadow disk). It spreads one disk of sunlight over four disks of surface.</dd>
+        </dl>
+      </aside>
+
+      <p>The factor of $4$ deserves a sentence of its own, because it is the single most-mistaken number in this chapter. Sunlight arrives as a parallel beam and is caught on the planet's circular shadow, area $\pi a^2$. But the planet radiates outward from every point of its full spherical surface, area $4\pi a^2$. The ratio of those two areas is exactly $4$: each square metre of surface, on average over a day and over the globe, receives one quarter of the beam flux. So the mean absorbed flux is $S_0(1-\alpha_p)/4 \approx 238\ \mathrm{W\,m^{-2}}$, and that is what $\sigma T_e^4$ must match.</p>
+
+      <p>The verdict is stark. With no atmosphere, the planet's radiating temperature is $255\,\mathrm{K}$, or $-18\,\degC$ — well below freezing, an ice ball. Yet the observed global-mean <em>surface</em> temperature is about $288\,\mathrm{K}$, or $+15\,\degC$. The surface is $33$ degrees warmer than the temperature at which the planet sheds heat to space. Something between the surface and space is keeping the difference. That something is the atmosphere, and the rest of the chapter is the explanation.</p>
+
+      <aside class="jargon">
+        <h4>WHERE DOES $T_e = 255\,\mathrm{K}$ LIVE?</h4>
+        <p>The emission temperature is not the temperature of any single place — it is the temperature space "sees." Because greenhouse gases make the lower atmosphere opaque to infrared, the radiation that actually escapes to space comes mostly from the cold upper troposphere, near $5$ km up, where the temperature is indeed around $255\,\mathrm{K}$. The surface, lying below the absorbing layers, runs hotter. The greenhouse effect, in this language, is the gap between the temperature of the surface and the temperature of the level from which the planet radiates.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Absorption: Beer–Lambert and optical depth</h2>
+
+      <p>To go further we need to know how radiation is attenuated as it passes through air. Picture a beam of infrared with intensity $I$ heading upward. In a thin slab of thickness $\dd z$ the beam loses a fraction of its energy to absorption, and that fraction is proportional to how much absorbing gas the slab contains. Writing it out:</p>
+
+      <div class="equation-block">
+        $$ \dd I = -\,\rho\,k_\lambda\,I\,\dd z. $$
+      </div>
+
+      <p>It is cleaner to absorb the messy factors into a single dimensionless coordinate, the <strong>optical depth</strong> $\tau$, defined by</p>
+
+      <div class="equation-block">
+        $$ \dd\tau = -\,\rho\,k_\lambda\,\dd z, $$
+      </div>
+
+      <p>with $\tau$ measured downward from the top of the atmosphere (so $\tau$ grows as you descend into denser, more absorbing air). Then the attenuation equation integrates immediately to the <strong>Beer–Lambert law</strong>:</p>
+
+      <div class="equation-block">
+        $$ I = I_0\,e^{-\tau}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$I$</dt><dd>The radiation intensity along the beam — a scalar flux-like quantity, $\mathrm{W\,m^{-2}}$ (per unit solid angle for a true radiance). What is left after passing through optical depth $\tau$.</dd>
+          <dt>$I_0$</dt><dd>The intensity entering the slab, at $\tau = 0$ — a scalar.</dd>
+          <dt>$\rho$</dt><dd>Density of the absorbing gas — a field, $\mathrm{kg\,m^{-3}}$. More gas, more absorption.</dd>
+          <dt>$k_\lambda$</dt><dd>The mass absorption coefficient at wavelength $\lambda$ — $\mathrm{m^2\,kg^{-1}}$, the cross-section per unit mass. Varies by orders of magnitude across the spectrum; large inside absorption bands, near zero in "window" regions.</dd>
+          <dt>$\tau$</dt><dd>Optical depth — a dimensionless field. The number of e-foldings of attenuation. $\tau=1$ leaves a fraction $e^{-1}\approx0.37$; $\tau=3$ leaves about $5\%$; $\tau \gg 1$ means opaque.</dd>
+        </dl>
+      </aside>
+
+      <p>Optical depth is the natural ruler for radiation. A slab with $\tau \ll 1$ is nearly transparent — the beam barely notices it. A slab with $\tau \gg 1$ is effectively opaque — radiation cannot pass through, and whatever emerges from its far side was emitted by the slab itself, not transmitted from beyond. The whole atmosphere has an infrared optical depth somewhere around $1$ to a few, depending sharply on wavelength: nearly transparent in the $8$–$12\,\mu\mathrm{m}$ "window" where the surface radiates straight to space, and almost opaque inside the strong $\mathrm{CO_2}$ and water-vapour bands.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The Schwarzschild equation</h2>
+
+      <p>Beer–Lambert describes a beam that only loses energy. But a slab of warm air does not merely absorb — it also <em>emits</em> its own thermal radiation, by Kirchhoff's law, in proportion to its temperature. Radiative transfer is the accounting of both at once. Along a path measured in optical depth, the intensity changes as</p>
+
+      <div class="equation-block">
+        $$ \frac{\dd I_\lambda}{\dd\tau_\lambda} = -\,I_\lambda + B_\lambda(T). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$I_\lambda$</dt><dd>The monochromatic intensity along the beam at wavelength $\lambda$ — a field. What we are solving for.</dd>
+          <dt>$\tau_\lambda$</dt><dd>Optical depth at wavelength $\lambda$, measured along the beam — the independent variable. Wavelength-specific because $k_\lambda$ is.</dd>
+          <dt>$-\,I_\lambda$</dt><dd>The loss term — absorption removes a fraction of the beam per unit optical depth. This alone gives back Beer–Lambert.</dd>
+          <dt>$+\,B_\lambda(T)$</dt><dd>The source term — the slab adds its own Planck emission at the local temperature $T$. This is what Beer–Lambert left out.</dd>
+        </dl>
+      </aside>
+
+      <p>This is the <strong>Schwarzschild equation</strong>, and it is the master equation of radiative transfer. Read it as a tug of war: the beam is pulled toward the local blackbody value $B_\lambda(T)$ and away from whatever it carried in. The geometry is illuminating. Where the air is optically thin ($\dd\tau$ small), the right-hand side has little time to act and the beam passes nearly unchanged. Where the air is optically thick, the $-I_\lambda$ term dominates until $I_\lambda$ relaxes to $B_\lambda(T)$ — the radiation forgets where it came from and simply reports the local temperature. This is why deep inside a cloud, or deep inside a strong absorption band, the outgoing radiation looks like a blackbody at the temperature of the level where $\tau \approx 1$ as seen from space. That level, the "emission level," is the one whose temperature the planet broadcasts outward.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>Set $B_\lambda = 0$ — a cold, non-emitting slab — and the Schwarzschild equation collapses to $\dd I_\lambda/\dd\tau_\lambda = -I_\lambda$, whose solution is Beer–Lambert's $I_\lambda = I_0\,e^{-\tau_\lambda}$. The emission term is the only thing the simpler law omits, and it is exactly the term that warms the surface below.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The gray greenhouse, derived</h2>
+
+      <p>Solving Schwarzschild's equation at every wavelength is the work of a radiation code. To see the physics by hand we make one bold simplification: pretend the atmosphere absorbs every infrared wavelength equally, with a single absorptivity. This is the <dfn title="An atmosphere modelled with one absorptivity for all infrared wavelengths.">gray</dfn> approximation. It throws away the spectral detail but keeps the energetics, and it delivers the greenhouse effect as a few lines of bookkeeping.</p>
+
+      <h3>One opaque layer</h3>
+
+      <p>Take the crudest version first: a single atmospheric layer that is perfectly transparent to sunlight and perfectly opaque (a blackbody, emissivity $1$) in the infrared. Call the surface temperature $T_s$ and the layer's temperature $T_a$. Let $S \equiv S_0(1-\alpha_p)/4 = \sigma T_e^4$ be the absorbed solar flux per unit area — by the definition of $T_e$ from §3.</p>
+
+      <p>There are two surfaces and so two energy balances. Track the flux crossing each one.</p>
+
+      <p><strong>The layer.</strong> It absorbs all the infrared radiated up from the ground, an amount $\sigma T_s^4$. It emits as a blackbody from <em>both</em> its faces — $\sigma T_a^4$ upward to space and $\sigma T_a^4$ downward to the surface — so it loses $2\,\sigma T_a^4$. In balance:</p>
+
+      <div class="equation-block">
+        $$ \sigma T_s^4 = 2\,\sigma T_a^4 \;\;\Longrightarrow\;\; T_a^4 = \tfrac{1}{2}\,T_s^4. $$
+      </div>
+
+      <p><strong>The surface.</strong> It absorbs the sunlight $S$ <em>plus</em> the infrared raining back down from the layer, $\sigma T_a^4$. It emits $\sigma T_s^4$. In balance:</p>
+
+      <div class="equation-block">
+        $$ \sigma T_s^4 = S + \sigma T_a^4. $$
+      </div>
+
+      <p>Substitute $\sigma T_a^4 = \tfrac12\,\sigma T_s^4$ from the layer balance into the surface balance:</p>
+
+      <div class="equation-block">
+        $$ \sigma T_s^4 = S + \tfrac{1}{2}\,\sigma T_s^4 \;\;\Longrightarrow\;\; \tfrac{1}{2}\,\sigma T_s^4 = S = \sigma T_e^4 \;\;\Longrightarrow\;\; T_s^4 = 2\,T_e^4. $$
+      </div>
+
+      <p>So the surface temperature of a planet wrapped in one infrared-opaque layer is</p>
+
+      <div class="equation-block">
+        $$ T_s = 2^{1/4}\,T_e \approx 1.19 \times 255\ \mathrm{K} \approx 303\ \mathrm{K}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$T_s$</dt><dd>Surface temperature — a scalar, kelvin. What we want.</dd>
+          <dt>$T_a$</dt><dd>The opaque layer's temperature — a scalar. It comes out at $T_a = 2^{-1/4}T_s = T_e$: the single opaque layer sits at exactly the emission temperature, since it is what radiates to space.</dd>
+          <dt>$S = \sigma T_e^4$</dt><dd>The absorbed solar flux per unit area, $\approx 238\ \mathrm{W\,m^{-2}}$ — the driver, fixed by §3.</dd>
+          <dt>$2^{1/4}$</dt><dd>The warming factor, $\approx 1.189$. One opaque layer multiplies the bare emission temperature by this much.</dd>
+        </dl>
+      </aside>
+
+      <p>The number to hold onto is $T_s = 2^{1/4}T_e \approx 303\,\mathrm{K}$. That is the load-bearing result of the chapter, and it is worth seeing what made it work. The layer emits in <em>both</em> directions; the downward half is energy that would have escaped to space but is instead returned to the surface. The surface must therefore radiate more — and so run hotter — to push the same net flux out the top. <em>That</em> is the greenhouse effect, stripped to its bones: not "trapped heat," but a layer that intercepts the outgoing infrared and sends half of it back down, forcing the surface to warm until balance is restored at the top of the atmosphere.</p>
+
+      <p>One sanity check confirms the picture. What does space see? The layer is opaque, so the only infrared reaching space is the layer's own upward emission, $\sigma T_a^4 = \sigma T_e^4 = S$. The planet radiates to space exactly the sunlight it absorbs. The books balance at the top, as they must — but the surface beneath sits a comfortable $48$ degrees warmer than $T_e$.</p>
+
+      <h3>A partly absorbing layer</h3>
+
+      <p>A real layer is not perfectly opaque. Give it an infrared emissivity $\varepsilon$ between $0$ and $1$: it absorbs a fraction $\varepsilon$ of the upwelling infrared and emits $\varepsilon\,\sigma T_a^4$ from each face. Redoing the same two balances (now the surface also radiates a fraction $1-\varepsilon$ straight through to space) gives the general single-layer result:</p>
+
+      <div class="equation-block">
+        $$ T_s = T_e\left(1 - \frac{\varepsilon}{2}\right)^{-1/4} = T_e\left(\frac{2}{2-\varepsilon}\right)^{1/4}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\varepsilon$</dt><dd>The layer's infrared emissivity (= absorptivity, by Kirchhoff) — a dimensionless number in $[0,1]$. $\varepsilon = 0$ is a transparent atmosphere; $\varepsilon = 1$ recovers the opaque case.</dd>
+          <dt>$\left(1-\tfrac{\varepsilon}{2}\right)^{-1/4}$</dt><dd>The warming factor. At $\varepsilon=0$ it is $1$ (so $T_s=T_e$, no greenhouse); at $\varepsilon=1$ it is $2^{1/4}$ (the opaque result above).</dd>
+        </dl>
+      </aside>
+
+      <p>This formula does real work. It tells us how strong the absorption has to be to explain the observed warming. Set $T_s = 288\,\mathrm{K}$ and $T_e = 255\,\mathrm{K}$ and solve: $\varepsilon \approx 0.78$. An atmosphere that intercepts about three-quarters of the outgoing infrared reproduces Earth's $33$-degree greenhouse — a satisfying match for a model this crude, and one the widget below lets you dial in directly.</p>
+
+      <h3>$N$ opaque layers</h3>
+
+      <p>Stacking opaque layers strengthens the effect. Suppose $N$ identical layers, each transparent to sunlight and opaque in the infrared, each exchanging radiation only with its neighbours above and below. Writing the energy balance for every layer produces a tidy ladder of temperatures, and the surface ends up at</p>
+
+      <div class="equation-block">
+        $$ T_s = (N+1)^{1/4}\,T_e. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$N$</dt><dd>The number of opaque layers — a non-negative integer. $N=0$ gives the bare planet ($T_s = T_e$); $N=1$ recovers $2^{1/4}T_e$; each added layer raises $T_s^4$ by one unit of $T_e^4$.</dd>
+          <dt>$(N+1)^{1/4}$</dt><dd>The warming factor. The fourth-power dependence means returns diminish: the second layer adds less than the first, the third less than the second.</dd>
+        </dl>
+      </aside>
+
+      <p>The pattern is clean: each opaque layer adds one more $T_e^4$ to $T_s^4$, because each contributes one more downward stream of infrared to the surface's energy budget. The $\tfrac14$ power means the warming saturates — going from $N=1$ to $N=2$ lifts the surface from $303$ K to $335$ K, but you need ever more layers for each additional increment. A thicker atmosphere is a warmer surface, but with sharply diminishing returns, and you cannot reach arbitrarily high temperatures just by piling on opacity.</p>
+
+      <section class="interactive" data-widget="gray-greenhouse" aria-label="Gray radiative-equilibrium greenhouse model">
+        <header>
+          <h4>Interactive · The gray greenhouse as energy balance</h4>
+          <span class="hint">drag emissivity · switch to layers · adjust sun</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">A gray radiative-equilibrium model computed from the §6 balances. In emissivity mode the surface obeys $T_s = T_e\,(1-\varepsilon/2)^{-1/4}$ for a single layer of absorptivity $\varepsilon$; in layer mode it obeys $T_s = (N+1)^{1/4}T_e$ for $N$ opaque layers. The schematic shows the upward and downward longwave fluxes (in $\mathrm{W\,m^{-2}}$) that close the budget at the surface and at the top of the atmosphere. Watch $T_s$ climb from the bare $T_e \approx 255\,\mathrm{K}$ toward the observed $288\,\mathrm{K}$ and beyond — this curve <em>is</em> the greenhouse effect, written as energy balance.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Why the troposphere has a lapse rate</h2>
+
+      <p>The gray model gets the surface temperature roughly right, but if you ask it for the temperature <em>profile</em> — how $T$ varies with height in pure radiative equilibrium — it gives an answer that is wrong in an instructive way. Radiative equilibrium predicts a surface much hotter than the air just above it, and a temperature that falls with height faster than the atmosphere can tolerate. The reason is that radiation is an inefficient way to move heat upward through an absorbing gas, so a steep gradient builds up.</p>
+
+      <p>But Chapter II already told us what happens to an atmosphere whose temperature falls too steeply with height: it becomes unstable to <dfn title="Heat transport by the bulk vertical motion of air parcels, rather than by radiation.">convection</dfn>. Recall the <strong>lapse rate</strong>, the rate at which temperature drops with altitude,</p>
+
+      <div class="equation-block">
+        $$ \Gamma \equiv -\,\frac{\dd T}{\dd z}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Gamma$</dt><dd>The environmental lapse rate — a scalar, $\mathrm{K\,km^{-1}}$. Positive when the air gets colder with height, as it usually does in the troposphere.</dd>
+          <dt>$\dd T/\dd z$</dt><dd>The vertical temperature gradient. Its negative is $\Gamma$, by the convention used throughout the book.</dd>
+        </dl>
+      </aside>
+
+      <p>When the radiatively-imposed $\Gamma$ exceeds the dry adiabatic value (about $9.8\ \mathrm{K\,km^{-1}}$ from Chapter II), warm parcels at the bottom are buoyant and rise, cool parcels sink, and the resulting overturning carries heat upward far more efficiently than radiation can. Convection switches on and stirs the profile back down toward the adiabat — it cannot quite reach the steep radiative profile, because the moment it would, convection erases the excess. The lower atmosphere therefore settles not into radiative equilibrium but into <strong>radiative–convective equilibrium</strong>: convection sets the lapse rate of the troposphere (near the moist adiabat, $\sim 6.5\ \mathrm{K\,km^{-1}}$ on average), while radiation governs the overall energy level and takes sole charge higher up.</p>
+
+      <p>This is why a lapse rate exists at all. The troposphere — Greek <em>tropos</em>, "turning" — is precisely the convecting layer, the part of the atmosphere that overturns. Above it, in the stratosphere, convection dies away because the air is heated from within (by ozone absorbing ultraviolet) rather than from below, the profile is stable, and radiative equilibrium reigns. The boundary between them, the tropopause, marks where convection gives up. The gray greenhouse of §6 explains the planet's <em>temperature</em>; radiative–convective equilibrium explains its <em>structure</em> — and that structure, the troposphere's roughly $6.5\ \mathrm{K\,km^{-1}}$ decline, is the stage on which all the dynamics of the coming chapters play out.</p>
+
+      <p>With the energy supply now accounted for — sunlight in, infrared out, the surface warmed above its bare emission temperature, the troposphere stirred to its lapse rate — we have the thermodynamic engine. The next chapter sets it in motion, writing down the equations that govern how a heated, rotating fluid actually flows.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">R. T. Pierrehumbert.</span> <em>Principles of Planetary Climate</em>, Cambridge University Press 2010 — the definitive modern treatment; the gray atmosphere, the Schwarzschild equation, and radiative–convective equilibrium are developed in Chapters 3–4.</li>
+          <li><span class="src-title">J. M. Wallace and P. V. Hobbs.</span> <em>Atmospheric Science: An Introductory Survey</em>, 2nd ed., Academic Press 2006 — Chapter 4 covers blackbody radiation, Beer–Lambert absorption, and radiative transfer at an accessible level.</li>
+          <li><span class="src-title">J. Marshall and R. A. Plumb.</span> <em>Atmosphere, Ocean and Climate Dynamics</em>, Elsevier 2008 — Chapter 2 derives the emission temperature (the factor of $4$) and the one-layer greenhouse model used here.</li>
+          <li><span class="src-title">G. W. Petty.</span> <em>A First Course in Atmospheric Radiation</em>, 2nd ed., Sundog Publishing 2006 — a thorough, equation-by-equation account of the Planck function, optical depth, and the Schwarzschild equation.</li>
+          <li><span class="src-title">D. L. Hartmann.</span> <em>Global Physical Climatology</em>, 2nd ed., Elsevier 2016 — Chapter 2 places the planetary energy balance and greenhouse effect in their observational climate context.</li>
+          <li><span class="src-title">K. N. Liou.</span> <em>An Introduction to Atmospheric Radiation</em>, 2nd ed., Academic Press 2002 — the standard graduate reference for radiative transfer, gaseous absorption, and the gray-atmosphere solution.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="02-thermodynamics.html"><span class="label">← Previous</span>II · Atmospheric Thermodynamics</a>
+      <a class="next" href="04-equations-of-motion.html"><span class="label">Next chapter</span>IV · The Equations of Motion →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/gray-greenhouse.js"></script>
+</body>
+</html>

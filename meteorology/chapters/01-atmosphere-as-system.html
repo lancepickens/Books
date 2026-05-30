@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter I · The Atmosphere as a System — Meteorology: The Atmosphere in Motion</title>
+  <meta name="description" content="Chapter 1: the atmosphere as a thin compressible shell — composition and layers, the ideal gas law for air, hydrostatic balance, scale height and the exponential atmosphere, the hypsometric equation, geopotential, and the standard atmosphere." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter I of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter I</p>
+      <h1 class="chapter-title">The Atmosphere as a System</h1>
+      <p class="lede">A film of gas no thicker, in proportion, than the skin on an apple — and yet every storm, every cloud, every breath of wind lives inside it.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>The atmosphere is a shallow ocean of air, pressed against the planet by gravity and squeezed thinner near the surface, where its own weight bears down hardest. Before we can talk about wind or weather, we have to pin down its <em>resting state</em>: how temperature, pressure, and density are arranged from the ground upward when nothing is moving. Remarkably, that vertical arrangement is fixed by just two ideas — the ideal gas law, which relates the three quantities, and hydrostatic balance, the statement that each thin layer of air is held up by the pressure difference across it. Put them together and pressure falls off exponentially with height, halving every five kilometers or so.</p>
+          <p>This chapter sets the stage for the whole book. Every later chapter computes, balances, samples, or predicts some piece of this fluid's state and motion, and every one of them assumes the vertical structure worked out here. We will also meet the layered thermal architecture — troposphere, stratosphere, and above — and a tidy reference profile, the <em>standard atmosphere</em>, that aircraft, instruments, and models all calibrate against. The widget lets you fly an altimeter up through that profile and watch the three quantities trade off.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Pressure</dt><dd>Force per unit area exerted by the air; at any height it equals the weight of all the air above. Quoted in hectopascals (hPa); sea level averages about 1013 hPa.</dd>
+          <dt>Hectopascal (hPa)</dt><dd>The SI pressure unit used in meteorology, equal to 100 pascals and identical to the older millibar (mbar).</dd>
+          <dt>Density</dt><dd>Mass of air per unit volume, written $\rho$. About $1.2\ \mathrm{kg\,m^{-3}}$ at sea level — roughly a thousandth of water.</dd>
+          <dt>Ideal gas law</dt><dd>The equation tying pressure, density, and temperature together for a gas; air obeys it to excellent accuracy.</dd>
+          <dt>Hydrostatic balance</dt><dd>The condition that the upward pressure force on a layer of air exactly supports its weight — true to high accuracy for the atmosphere at rest.</dd>
+          <dt>Parcel</dt><dd>An imagined small blob of air, large enough to have a temperature and pressure but small enough to move as a unit. The basic bookkeeping object of meteorology.</dd>
+          <dt>Scale height</dt><dd>The vertical distance over which pressure falls by a factor of $e \approx 2.718$; about $7$–$8\ \mathrm{km}$ for Earth's air.</dd>
+          <dt>Lapse rate</dt><dd>How fast temperature falls with height, $\Gamma \equiv -\dd T/\dd z$. Positive when air cools upward, as it usually does in the lowest layer.</dd>
+          <dt>Troposphere</dt><dd>The lowest layer, where temperature falls with height and essentially all weather happens; roughly the bottom $8$–$16\ \mathrm{km}$.</dd>
+          <dt>Tropopause</dt><dd>The lid on the troposphere where the temperature stops falling — the boundary with the stratosphere.</dd>
+          <dt>Stratosphere</dt><dd>The stable layer above the troposphere where temperature holds steady and then rises with height, warmed by ozone absorbing ultraviolet light.</dd>
+          <dt>Mesosphere</dt><dd>The layer above the stratosphere where temperature falls again with height, reaching the coldest temperatures in the atmosphere.</dd>
+          <dt>Thermosphere</dt><dd>The very thin outermost layer where temperature soars with height as the sparse gas absorbs extreme ultraviolet from the Sun.</dd>
+          <dt>Well-mixed gas</dt><dd>A constituent (like nitrogen or oxygen) whose proportion is nearly constant throughout the lower atmosphere because turbulence stirs it faster than anything removes it.</dd>
+          <dt>Variable gas</dt><dd>A constituent (above all water vapor) whose abundance changes sharply in space and time as it is created and destroyed.</dd>
+          <dt>Mixing ratio</dt><dd>The mass of water vapor per unit mass of dry air, written $w$; a convenient bookkeeping measure of moisture.</dd>
+          <dt>Virtual temperature</dt><dd>The temperature dry air would need to match the density of a given sample of moist air — a trick that lets the dry gas law handle humidity.</dd>
+          <dt>Specific gas constant</dt><dd>The gas constant per unit mass for a particular gas; for dry air, $R_d = 287\ \mathrm{J\,kg^{-1}K^{-1}}$.</dd>
+          <dt>Geopotential</dt><dd>The work against gravity to lift unit mass from sea level to height $z$, written $\Phi$. It measures "energetic height."</dd>
+          <dt>Geopotential height</dt><dd>Geopotential divided by a standard gravity, $Z = \Phi/g_0$. Nearly equal to geometric height but the natural vertical coordinate for the atmosphere's energetics.</dd>
+          <dt>Thickness</dt><dd>The vertical distance between two pressure levels; set by the mean temperature of the air in between — warm layers are fat, cold layers are thin.</dd>
+          <dt>Hypsometric equation</dt><dd>The formula giving that thickness from the layer's mean (virtual) temperature.</dd>
+          <dt>Standard atmosphere</dt><dd>An agreed-upon reference profile of temperature, pressure, and density versus height, used to calibrate altimeters and compare instruments.</dd>
+          <dt>Hydrostatic vs. geometric height</dt><dd>Two nearly identical notions of "up." Geometric height is distance; geopotential height weights by gravity, which weakens slightly with altitude.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>A thin shell of gas, in layers</h2>
+
+      <p>Stand at sea level and the whole atmosphere is above you, yet most of it is startlingly close. Half the mass of the air lies below about $5.5\ \mathrm{km}$ — lower than the summit of Kilimanjaro. Ninety percent lies below $16\ \mathrm{km}$, the cruising altitude of a long-haul jet. The planet's radius is $6371\ \mathrm{km}$; the weather-bearing layer is a hundredth of that. Drawn to scale, the atmosphere is the varnish on a globe.</p>
+
+      <p>What is in it? Away from the ground, dry air is a remarkably uniform mixture. By volume it is about 78% molecular nitrogen ($\mathrm{N_2}$), 21% oxygen ($\mathrm{O_2}$), and just under 1% argon, with carbon dioxide a few hundredths of a percent and trace gases beyond. These are the <dfn title="A constituent whose proportion stays nearly constant because mixing outpaces sources and sinks.">well-mixed gases</dfn>: turbulent stirring shuffles the lower atmosphere far faster than chemistry or settling can change the proportions, so their ratios are nearly constant up to about $100\ \mathrm{km}$. That uniformity is what lets us treat air as a single gas with one effective molecular weight.</p>
+
+      <p>The crucial exception is water vapor — the archetypal <dfn title="A constituent whose abundance varies strongly in space and time because it is actively created and destroyed.">variable gas</dfn>. It ranges from a few parts per million in cold dry air to several percent in a tropical boundary layer, because it is constantly evaporating, condensing, and raining out. Ozone is another: scarce overall but concentrated in a stratospheric layer where it governs the absorption of ultraviolet light. The variable gases carry most of the atmosphere's interesting physics — latent heat, clouds, the greenhouse effect — which is exactly why we track them separately.</p>
+
+      <p>Vertically, the atmosphere is organized into layers defined by how temperature changes with height. From the ground up:</p>
+
+      <ul>
+        <li>The <strong>troposphere</strong> — temperature falls with height, on average about $6.5\ \mathrm{K}$ per kilometer. Stirred by convection and weather, it holds roughly 80% of the mass and essentially all the water. Its top, the <strong>tropopause</strong>, sits near $8\ \mathrm{km}$ over the poles and $16\ \mathrm{km}$ over the tropics.</li>
+        <li>The <strong>stratosphere</strong> — temperature is steady, then <em>rises</em> with height to about $50\ \mathrm{km}$, warmed from within as ozone soaks up solar ultraviolet. Warm-over-cold is a stable arrangement, which is why this layer is calm and why jets cruise just beneath it.</li>
+        <li>The <strong>mesosphere</strong> — temperature falls again to roughly $85\ \mathrm{km}$, where it reaches the coldest values anywhere in the atmosphere, below $-90\,\degC$.</li>
+        <li>The <strong>thermosphere</strong> — temperature climbs steeply as the extremely thin gas absorbs extreme-ultraviolet and X-ray radiation. "Temperature" here describes very fast-moving molecules that are so sparse they would feel cold to the touch.</li>
+      </ul>
+
+      <p>For the rest of this book, the troposphere and lower stratosphere are home. But the same two physical laws govern the entire column, and it is to those we now turn.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The ideal gas law for air</h2>
+
+      <p>A gas has three state variables that interest us — pressure $p$, density $\rho$, and temperature $T$ — and for any gas dilute enough that its molecules mostly fly free between brief collisions, they are not independent. They obey the <dfn title="The relation p = rho R T for a dilute gas, with R the specific gas constant.">ideal gas law</dfn>. Written per unit mass, for dry air,</p>
+
+      <div class="equation-block">
+        $$ p = \rho\, \Rd\, T. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$p$</dt><dd>Pressure — a scalar field, in pascals ($\mathrm{Pa}$); meteorology quotes it in hectopascals, $1\ \mathrm{hPa}=100\ \mathrm{Pa}$. Physically, the weight of all air above per unit area.</dd>
+          <dt>$\rho$</dt><dd>Density — a scalar field, mass per unit volume in $\mathrm{kg\,m^{-3}}$; about $1.2\ \mathrm{kg\,m^{-3}}$ at sea level.</dd>
+          <dt>$T$</dt><dd>Absolute temperature — a scalar field in kelvin ($\mathrm{K}$). Always absolute, never Celsius, inside the gas law.</dd>
+          <dt>$\Rd$</dt><dd>Specific gas constant for dry air — a constant, $\Rd = 287\ \mathrm{J\,kg^{-1}K^{-1}}$. It is the universal gas constant $R^{*}=8.314\ \mathrm{J\,mol^{-1}K^{-1}}$ divided by the mean molar mass of dry air, $M_d \approx 28.97\ \mathrm{g\,mol^{-1}}$.</dd>
+        </dl>
+      </aside>
+
+      <p>The "specific" in <dfn title="The universal gas constant divided by the gas's mean molar mass.">specific gas constant</dfn> means "per unit mass," and it is what lets us write the law in terms of density rather than counting moles. Because dry air is so uniformly mixed, a single $\Rd$ works everywhere; the well-mixed gases earn their keep here.</p>
+
+      <p>Moisture complicates this slightly. Water vapor is lighter than dry air — $\mathrm{H_2O}$ has molar mass $18\ \mathrm{g\,mol^{-1}}$ against air's $29$ — so moist air is, surprisingly, <em>less</em> dense than dry air at the same pressure and temperature. Rather than carry a humidity-dependent gas constant, meteorologists keep $\Rd$ fixed and absorb the moisture into the temperature. Define the <dfn title="The temperature dry air would need to have the same density as a given moist sample at the same pressure.">virtual temperature</dfn> $T_v$ as the temperature dry air would require to match the density of the moist sample:</p>
+
+      <div class="equation-block">
+        $$ p = \rho\, \Rd\, T_v, \qquad T_v \approx T\,(1 + 0.61\, w). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$T_v$</dt><dd>Virtual temperature — a scalar field in $\mathrm{K}$. Always slightly above the actual temperature for moist air; the moister the air, the larger the boost.</dd>
+          <dt>$w$</dt><dd>Water-vapor mixing ratio — a scalar field, the mass of vapor per unit mass of dry air (dimensionless, often quoted in $\mathrm{g\,kg^{-1}}$). Ranges from near zero to about $0.03$ in the warmest, wettest air.</dd>
+          <dt>$0.61$</dt><dd>A constant, equal to $\Rv/\Rd - 1 = M_d/M_v - 1$, with $\Rv = 461\ \mathrm{J\,kg^{-1}K^{-1}}$ the gas constant for water vapor. It encodes how much lighter vapor is than dry air.</dd>
+        </dl>
+      </aside>
+
+      <p>The virtual temperature is a small correction — at most a few kelvin — but it is the honest way to make the dry gas law describe moist air. We will see in §5 that it controls how thick a humid layer of atmosphere is.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>The factor $0.61$ follows from the mixing-ratio definition of $w$ and a linearization for $w \ll 1$. Different texts write the virtual-temperature correction with slightly different constituent measures (specific humidity instead of mixing ratio); the form $T_v = T(1+0.61\,w)$ with $w$ the mixing ratio is the standard one in Wallace &amp; Hobbs and Holton &amp; Hakim.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Hydrostatic balance: why pressure falls with height</h2>
+
+      <p>Now the second law. Imagine a thin horizontal slab of air, of unit horizontal area and thickness $\dd z$, sitting at height $z$. Three things act on it vertically: gravity pulling down, the pressure of the air below pushing up on its bottom face, and the pressure of the air above pushing down on its top face. If the slab is not accelerating — the atmosphere at rest, or close to it — these must sum to zero.</p>
+
+      <p>The slab's mass is $\rho\,\dd z$ (density times volume, per unit area), so its weight is $\rho g\,\dd z$. The net upward pressure force is the bottom pressure minus the top pressure, $p(z) - p(z+\dd z) = -\dd p$. Setting the upward force equal to the weight, $-\dd p = \rho g\,\dd z$, gives the <dfn title="The balance in which the vertical pressure gradient exactly supports the weight of the air.">hydrostatic balance</dfn>:</p>
+
+      <div class="equation-block">
+        $$ \frac{\dd p}{\dd z} = -\rho\, g. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\dfrac{\dd p}{\dd z}$</dt><dd>The vertical rate of change of pressure — negative, because pressure falls as you go up. Its magnitude near the surface is about $12\ \mathrm{Pa\,m^{-1}}$, or $0.12\ \mathrm{hPa}$ per meter.</dd>
+          <dt>$g$</dt><dd>Gravitational acceleration — a constant, $g = 9.81\ \mathrm{m\,s^{-2}}$, taken uniform through the depth of the weather layer. (It weakens by about $0.3\%$ at the tropopause; §6 handles that bookkeeping.)</dd>
+          <dt>$\rho\,g$</dt><dd>The weight per unit volume of air — what the pressure gradient must support.</dd>
+        </dl>
+      </aside>
+
+      <p>Read geometrically, the equation says the pressure drop across any layer equals the weight of air in it. That is why pressure at a point literally <em>is</em> the weight of the column above: integrate $-\dd p = \rho g\,\dd z$ from the top of the atmosphere ($p \to 0$) down to height $z$, and you recover the total weight overhead. An aneroid barometer is, at heart, a scale that weighs the sky.</p>
+
+      <p>Two remarks before we use it. First, hydrostatic balance is astonishingly accurate for large-scale flow: vertical accelerations in ordinary weather are millions of times smaller than $g$, so the balance holds to better than one part in a million on the synoptic scale. It fails only in violent, narrow updrafts — thunderstorm cores — where vertical acceleration matters, and we will flag those cases when we reach them. Second, because $\dd p/\dd z$ is strictly negative, pressure decreases <em>monotonically</em> with height: every height has a unique pressure and vice versa. That one-to-one correspondence is the license, used throughout dynamics, to swap height for pressure as the vertical coordinate. In this chapter we keep height $z$; later chapters switch to pressure $p$ and the geopotential $\Phi$ of §6, and will say so.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Scale height and the exponential atmosphere</h2>
+
+      <p>The two laws are more powerful together. The gas law gives $\rho = p/(\Rd T)$; substitute it into hydrostatic balance to eliminate density:</p>
+
+      <div class="equation-block">
+        $$ \frac{\dd p}{\dd z} = -\frac{p\, g}{\Rd\, T}. $$
+      </div>
+
+      <p>This is a first-order differential equation for $p(z)$. If the temperature were constant — an <dfn title="An idealized atmosphere at a single uniform temperature, used to expose the exponential structure.">isothermal atmosphere</dfn>, $T = \mathrm{const}$ — the right side is just a constant times $p$, and the solution is a pure exponential. Separating variables, $\dd p / p = -(g/\Rd T)\,\dd z$, and integrating from the surface upward:</p>
+
+      <div class="equation-block">
+        $$ p(z) = p_0\, e^{-z/H}, \qquad H = \frac{\Rd\, T}{g}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$p_0$</dt><dd>Surface pressure — the reference value at $z=0$, about $1013\ \mathrm{hPa}$ at sea level.</dd>
+          <dt>$H$</dt><dd>Scale height — a length, the vertical distance over which pressure falls by a factor of $e$. With $\Rd = 287$, $g = 9.81$, and $T$ in the range $250$–$290\ \mathrm{K}$, $H = \Rd T/g$ runs from about $7.3\ \mathrm{km}$ (cold) to $8.5\ \mathrm{km}$ (warm) — call it $7$–$8\ \mathrm{km}$.</dd>
+          <dt>$e$</dt><dd>Euler's number, $\approx 2.718$. Pressure drops to $1/e \approx 37\%$ of its surface value one scale height up.</dd>
+        </dl>
+      </aside>
+
+      <p>Here is the whole thinness of the atmosphere in one number. Pressure falls by a factor of $e$ every $\sim\!8\ \mathrm{km}$ — that is, it roughly halves every $5.5\ \mathrm{km}$, since $H\ln 2 \approx 5.5\ \mathrm{km}$. Climb three scale heights, about $24\ \mathrm{km}$, and you are above 95% of the mass. The exponential is steep: the atmosphere does not end at a sharp edge, it just fades, and most of it crowds into the lowest few kilometers because the air below is being compressed by everything above.</p>
+
+      <p>The real atmosphere is not isothermal, so $H$ varies with height as $T$ does, and the decay is only approximately exponential. But the scale height remains the single most useful summary of vertical structure: it is the natural ruler for the atmosphere, the length that says "this is how tall the air is." Density follows the same law — since $\rho = p/(\Rd T)$ and $T$ is roughly steady, $\rho(z) \approx \rho_0\, e^{-z/H}$ as well.</p>
+
+      <aside class="jargon">
+        <h4>WHY EXPONENTIAL, NOT LINEAR</h4>
+        <p>A common first guess is that pressure should fall in a straight line until it hits zero, the way the weight of a stack of identical bricks decreases as you remove them from the top. The difference is that air is <em>compressible</em>: the layers near the ground are squeezed denser by the weight above, so they contribute more pressure per meter than the rarefied layers up high. Each layer's contribution is proportional to how much air is there, which is proportional to the local pressure — and a quantity whose rate of decrease is proportional to itself decays exponentially. Compressibility is the whole reason the atmosphere has a scale height instead of a definite top.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The hypsometric equation: thickness is temperature</h2>
+
+      <p>Turn the exponential around. Instead of asking what pressure sits at a given height, ask: given two pressure levels, how far apart are they? Integrate the combined equation $\dd p/p = -(g/\Rd T)\,\dd z$ between a lower level (pressure $p_1$, height $Z_1$) and an upper level (pressure $p_2 < p_1$, height $Z_2$), allowing temperature to vary and replacing $T$ by the virtual temperature $T_v$ to handle moisture. The result is the <dfn title="The formula giving the geopotential thickness of a layer from its mean virtual temperature.">hypsometric equation</dfn>:</p>
+
+      <div class="equation-block">
+        $$ Z_2 - Z_1 = \frac{\Rd\, \overline{T_v}}{g}\, \ln\!\frac{p_1}{p_2}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$Z_2 - Z_1$</dt><dd>The <dfn title="The vertical distance between two pressure surfaces.">thickness</dfn> of the layer between two pressure levels — a length, in meters. It is the headline quantity on a forecaster's chart.</dd>
+          <dt>$\overline{T_v}$</dt><dd>The mean virtual temperature of the layer — a scalar, the pressure-weighted average of $T_v$ between $p_1$ and $p_2$. The single number that sets the thickness.</dd>
+          <dt>$p_1,\, p_2$</dt><dd>Pressures at the bottom and top of the layer, with $p_1 > p_2$, so the logarithm is positive and the thickness comes out positive.</dd>
+          <dt>$\ln(p_1/p_2)$</dt><dd>The natural log of the pressure ratio — the same exponential structure of §4, now read as "how many scale heights of pressure drop the layer spans."</dd>
+        </dl>
+      </aside>
+
+      <p>The physics is worth dwelling on: the vertical distance between two pressure surfaces depends only on the average temperature of the air sandwiched between them. Warm air is less dense, so it takes a taller column to accumulate a given pressure drop — warm layers are <em>thick</em>, cold layers are <em>thin</em>. This is not a minor effect. The standard "1000–500 hPa thickness," the depth of the lower half of the atmosphere by mass, runs near $5400\ \mathrm{m}$ in cold polar air and $5800\ \mathrm{m}$ in warm tropical air; the $5400\text{-}\mathrm{m}$ contour is a classic rule-of-thumb dividing rain from snow.</p>
+
+      <p>Notice that virtual temperature has done real work here: because moist air is warmer in the virtual sense, a humid layer is slightly thicker than a dry layer at the same actual temperature. The same arithmetic that corrected the gas law in §2 now nudges the thickness up.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Geopotential and geopotential height</h2>
+
+      <p>One subtlety has been quietly suppressed: gravity is not perfectly constant. It weakens with altitude (and varies a little with latitude), so a meter of height near the tropopause costs slightly less energy to climb than a meter near the ground. For energetic bookkeeping it is cleaner to measure "up" by the work done against gravity rather than by geometric distance. Define the <dfn title="The work per unit mass to raise a parcel from sea level to height z.">geopotential</dfn>:</p>
+
+      <div class="equation-block">
+        $$ \Phi(z) = \int_0^z g\, \dd z'. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Phi$</dt><dd>Geopotential — the potential energy per unit mass at height $z$, in $\mathrm{J\,kg^{-1}}$ (equivalently $\mathrm{m^2\,s^{-2}}$). Surfaces of constant $\Phi$ are the true "levels" along which no work is needed to move.</dd>
+          <dt>$g\,\dd z'$</dt><dd>The work per unit mass to climb the increment $\dd z'$ against gravity. If $g$ were exactly constant, $\Phi = g z$ and geopotential would just be a rescaled height.</dd>
+        </dl>
+      </aside>
+
+      <p>Dividing by a fixed reference gravity converts this energy back into a length, the <dfn title="Geopotential divided by standard gravity; the natural vertical coordinate for the atmosphere's energetics.">geopotential height</dfn>:</p>
+
+      <div class="equation-block">
+        $$ Z = \frac{\Phi}{g_0}, \qquad g_0 = 9.80665\ \mathrm{m\,s^{-2}}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$Z$</dt><dd>Geopotential height — a length, in meters (often "geopotential meters," $\mathrm{gpm}$). What weather charts label as the height of a pressure surface; the $Z$ in §5's hypsometric equation.</dd>
+          <dt>$g_0$</dt><dd>Standard gravity — a defined constant, $9.80665\ \mathrm{m\,s^{-2}}$, the conventional sea-level value used to normalize $\Phi$.</dd>
+        </dl>
+      </aside>
+
+      <p>The distinction is deliberately small: at the tropopause, geopotential height and geometric height differ by only tens of meters, and at the surface they coincide by construction. But the geopotential is the physically right coordinate — it is what hydrostatic balance integrates to ($\dd\Phi = g\,\dd z = -\dd p/\rho$), and it is what makes the hypsometric equation exact rather than approximate. From here on, when a chart says "the height of the $500\ \mathrm{hPa}$ surface," it means geopotential height $Z$.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>The lapse rate and the standard atmosphere</h2>
+
+      <p>Everything so far needs a temperature profile $T(z)$ to be quantitative. The rate at which temperature falls with height has a name and a symbol — the <dfn title="The rate of decrease of temperature with height, Gamma = -dT/dz.">lapse rate</dfn>:</p>
+
+      <div class="equation-block">
+        $$ \Gamma \equiv -\frac{\dd T}{\dd z}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Gamma$</dt><dd>Environmental lapse rate — a scalar field, in $\mathrm{K\,km^{-1}}$. The minus sign makes it <em>positive</em> when temperature falls with height, which is the usual tropospheric case.</dd>
+        </dl>
+      </aside>
+
+      <p>This is the <em>environmental</em> lapse rate — the actual measured profile of the air around you, distinct from the rate a rising parcel would cool on its own (the adiabatic lapse rate, which is the subject of the next chapter, and which decides whether the air is stable). For now $\Gamma$ is simply the shape of the background.</p>
+
+      <p>To make calculations reproducible — to give altimeters, aircraft performance tables, and atmospheric models a common yardstick — meteorologists agree on a <dfn title="An internationally agreed reference profile of temperature, pressure, and density versus height.">standard atmosphere</dfn>: a fixed, idealized $T(z)$ from which $p(z)$ and $\rho(z)$ follow by exactly the integration of §4. The internationally standard version (ICAO; the U.S. Standard Atmosphere 1976) starts at sea level with $T_0 = 288.15\ \mathrm{K}$ ($15\,\degC$) and $p_0 = 1013.25\ \mathrm{hPa}$, and stacks piecewise-linear layers:</p>
+
+      <ul>
+        <li><strong>Troposphere</strong>, $0$ to $11\ \mathrm{km}$: $\Gamma = 6.5\ \mathrm{K\,km^{-1}}$, cooling to $216.65\ \mathrm{K}$ ($-56.5\,\degC$) at the tropopause.</li>
+        <li><strong>Lower stratosphere</strong>, $11$ to $20\ \mathrm{km}$: isothermal, holding $216.65\ \mathrm{K}$.</li>
+        <li><strong>Mid-stratosphere</strong>, $20$ to $32\ \mathrm{km}$: temperature <em>rises</em> at $1.0\ \mathrm{K\,km^{-1}}$.</li>
+        <li><strong>Upper stratosphere</strong>, $32$ to $47\ \mathrm{km}$: rising faster, $2.8\ \mathrm{K\,km^{-1}}$, up toward the warm stratopause.</li>
+      </ul>
+
+      <p>Within each layer the pressure integral has a closed form, which is exactly what the widget below evaluates. For a layer of constant nonzero lapse $L = \dd T/\dd z$ (so $L = -\Gamma$), separating variables in $\dd p/p = -(g/\Rd T)\,\dd z$ with $T$ linear in $z$ gives a power law; for an isothermal layer it gives the exponential of §4:</p>
+
+      <div class="equation-block">
+        $$ p = p_b \left(\frac{T}{T_b}\right)^{-g/(\Rd L)} \quad (L \ne 0), \qquad p = p_b\, e^{-g(z - z_b)/(\Rd T)} \quad (L = 0). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$p_b,\, T_b,\, z_b$</dt><dd>Pressure, temperature, and height at the <em>base</em> of a layer — the starting values handed up from the layer below.</dd>
+          <dt>$L = \dd T/\dd z$</dt><dd>The (signed) lapse of the layer, in $\mathrm{K\,m^{-1}}$; $L = -\Gamma$. Negative in the troposphere (cooling up), zero in the isothermal layer, positive in the mid-stratosphere.</dd>
+          <dt>$T$</dt><dd>Temperature at the height of interest, $T = T_b + L\,(z - z_b)$. With $\rho = p/(\Rd T)$, every density follows from $p$ and $T$.</dd>
+        </dl>
+      </aside>
+
+      <p>Stack the layers and you get a clean reference column: temperature kinks at each boundary, pressure and density gliding smoothly downward through the kinks. It is worth stepping through it by hand once — and then by slider.</p>
+
+      <section class="interactive" data-widget="standard-atmosphere" aria-label="The standard atmosphere: temperature, pressure, and density versus height">
+        <header>
+          <h4>Interactive · The Standard Atmosphere, integrated</h4>
+          <span class="hint">drag altitude · shift surface temperature</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The three curves are the U.S. Standard Atmosphere 1976: temperature $T$ kinks at each layer boundary, while pressure $p$ (on a log scale) and density $\rho$ fall smoothly. They are not drawn from a table — the code integrates hydrostatic balance $\dd p/\dd z = -\rho g$ exactly within each constant-lapse or isothermal layer, then sets $\rho = p/(\Rd T)$ from the ideal gas law. Drag the marker to read off all three at any altitude (and the local scale height $H = \Rd T/g$); shift the surface temperature to watch the whole column expand or contract as the hypsometric relation demands.</p>
+      </section>
+
+      <p>Run the marker up the column and the chapter's whole argument is on one screen: pressure plunging exponentially, density tracking it, temperature folding through its layered structure, and the scale height — that $7$–$8\ \mathrm{km}$ ruler — quietly setting the steepness of it all. This resting, layered, exponentially thinning fluid is the canvas. Everything in the chapters that follow is what happens when the Sun heats it unevenly and the planet underneath it spins.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">J. M. Wallace and P. V. Hobbs.</span> <em>Atmospheric Science: An Introductory Survey</em>, 2nd ed., Academic Press 2006 — Chapter 1 (composition, layers) and Chapter 3 (ideal gas law, hydrostatic balance, hypsometric equation, geopotential); the standard undergraduate reference for this chapter.</li>
+          <li><span class="src-title">J. R. Holton and G. J. Hakim.</span> <em>An Introduction to Dynamic Meteorology</em>, 5th ed., Academic Press 2013 — §1.1 on the gas law and hydrostatic balance, and the geopotential and pressure-coordinate machinery used in later chapters.</li>
+          <li><span class="src-title">J. Marshall and R. A. Plumb.</span> <em>Atmosphere, Ocean and Climate Dynamics: An Introductory Text</em>, Academic Press 2008 — Chapter 3 (the vertical structure of the atmosphere: hydrostatic balance, scale height, and the layered profile), with unusually clear physical reasoning.</li>
+          <li><span class="src-title">M. L. Salby.</span> <em>Physics of the Atmosphere and Climate</em>, 2nd ed., Cambridge University Press 2012 — Chapter 1 on atmospheric composition, the well-mixed and variable gases, and the thermal layering.</li>
+          <li><span class="src-title">NOAA, NASA, and U.S. Air Force.</span> <em>U.S. Standard Atmosphere, 1976</em>, U.S. Government Printing Office 1976 (NOAA-S/T 76-1562) — the official defining document for the layer base temperatures, lapse rates, and reference constants used in the widget.</li>
+          <li><span class="src-title">D. G. Andrews.</span> <em>An Introduction to Atmospheric Physics</em>, 2nd ed., Cambridge University Press 2010 — Chapter 1 and Chapter 2, a compact derivation of hydrostatic balance and the exponential atmosphere for the mathematically minded reader.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="../index.html"><span class="label">←</span> Contents</a>
+      <a class="next" href="02-thermodynamics.html"><span class="label">Next chapter</span>II · Atmospheric Thermodynamics →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/standard-atmosphere.js"></script>
+</body>
+</html>

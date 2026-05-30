@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter V · Balanced Flow and Vorticity — Meteorology: The Atmosphere in Motion</title>
+  <meta name="description" content="Chapter 5: geostrophic and gradient wind, the thermal wind, vorticity, Ertel's potential vorticity, and the Rossby waves that PV conservation makes possible — the balanced large-scale flow." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter V of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter V</p>
+      <h1 class="chapter-title">Balanced Flow and Vorticity</h1>
+      <p class="lede">Away from the ground the wind does not blow from high pressure to low — it blows along the lines of equal pressure, held there by a standoff between two forces that very nearly cancel.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>Common sense says wind should rush straight from high pressure toward low, the way air hisses out of a tire. On the scale of a weather map it does almost the opposite. Because the Earth turns, a moving parcel feels the Coriolis deflection (Chapter IV), and above the friction of the surface this deflection grows until it almost exactly balances the push of the pressure gradient. The leftover is a wind that runs <em>parallel</em> to the isobars — counterclockwise around a low, clockwise around a high in the Northern Hemisphere. This near-cancellation is called <strong>balance</strong>, and it is why a forecaster can read the wind straight off a pressure map.</p>
+          <p>This chapter builds the balanced wind in stages — straight (geostrophic), curved (gradient), and tilted with height by temperature (thermal wind) — and then turns to the spin of the flow itself. The spin, measured by <strong>vorticity</strong>, combines with the planet's own rotation into a quantity, <strong>potential vorticity</strong>, that air carries with it like a conserved cargo. That conservation law organizes the large-scale weather and gives the atmosphere its grandest waves, the planetary Rossby waves that steer every storm.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Isobar</dt><dd>A line of constant pressure on a map. On a constant-pressure chart the analogous lines are contours of constant geopotential height.</dd>
+          <dt>Pressure-gradient force</dt><dd>The push on a parcel from high pressure toward low, per unit mass. In pressure coordinates it is written with the geopotential gradient.</dd>
+          <dt>Coriolis force</dt><dd>The apparent sideways deflection felt in the rotating frame of the Earth — to the right of motion in the Northern Hemisphere.</dd>
+          <dt>Geostrophic balance</dt><dd>The exact standoff between the pressure-gradient force and the Coriolis force, leaving a wind along the isobars.</dd>
+          <dt>Geostrophic wind</dt><dd>The wind that would blow if that standoff were perfect: it points along the isobars with low pressure to its left (NH).</dd>
+          <dt>Geopotential</dt><dd>The work needed to lift a unit mass to a height — the gravitational potential. On a pressure surface its gradient replaces the pressure gradient.</dd>
+          <dt>Pressure coordinates</dt><dd>Using pressure as the vertical coordinate instead of height. Legal because pressure falls monotonically with height (hydrostatic balance).</dd>
+          <dt>Gradient wind</dt><dd>The balanced wind once the curvature of the flow is included — the centripetal acceleration joins the force balance.</dd>
+          <dt>Cyclonic / anticyclonic</dt><dd>Turning the same way the planet does (counterclockwise in the NH, around a low) / the opposite way (clockwise, around a high).</dd>
+          <dt>Subgeostrophic / supergeostrophic</dt><dd>Slower than / faster than the geostrophic wind for the same pressure gradient — the curvature correction around lows and highs.</dd>
+          <dt>Natural coordinates</dt><dd>A coordinate frame that follows the flow: one axis along the wind, one across it to the left, with the path's radius of curvature carrying a sign.</dd>
+          <dt>Thermal wind</dt><dd>Not a wind but a shear: the change in the geostrophic wind from one height to another, set by the horizontal temperature gradient.</dd>
+          <dt>Veering / backing</dt><dd>Wind turning clockwise with height (veering) or counterclockwise (backing). Veering signals warm-air advection.</dd>
+          <dt>Advection</dt><dd>Transport of a property (heat, moisture, spin) by the wind that carries it.</dd>
+          <dt>Vorticity</dt><dd>The local spin of the flow — twice the angular velocity of a tiny paddle wheel set in the fluid.</dd>
+          <dt>Relative vorticity</dt><dd>The spin measured in the rotating frame of the Earth, denoted $\zeta$.</dd>
+          <dt>Planetary vorticity</dt><dd>The spin a parcel has merely by sitting on the turning planet — the Coriolis parameter $f$.</dd>
+          <dt>Absolute vorticity</dt><dd>The total spin, $\zeta + f$, as seen from space.</dd>
+          <dt>Potential vorticity (PV)</dt><dd>Absolute vorticity divided by the depth (or by the stratification) of the air column — conserved when there is no friction or heating.</dd>
+          <dt>Shallow-water model</dt><dd>A single layer of fluid of varying depth — the simplest setting in which PV conservation can be seen whole.</dd>
+          <dt>Ertel PV</dt><dd>The full stratified version of potential vorticity, built from absolute vorticity and the gradient of potential temperature.</dd>
+          <dt>Stretching / squashing</dt><dd>A column getting taller or shorter; by PV conservation it spins up or spins down, like a skater pulling in their arms.</dd>
+          <dt>Beta plane</dt><dd>A patch of the sphere where the Coriolis parameter is allowed to vary linearly with latitude, $f = f_0 + \beta y$.</dd>
+          <dt>Rossby wave</dt><dd>A slow, large-scale wave that exists because $f$ grows poleward — its restoring force is the conservation of PV. It steers the weather.</dd>
+          <dt>Streamfunction</dt><dd>A single scalar $\psi$ whose contours are the streamlines of a non-divergent flow; the wind is got by differentiating it.</dd>
+          <dt>Phase speed</dt><dd>The speed at which a wave's crests travel. Rossby crests move westward relative to the mean wind.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>Geostrophic balance and the geostrophic wind</h2>
+
+      <p>In Chapter IV the horizontal momentum equation, after scale analysis, reduced for large, slow, mid-latitude flow to a contest between just two terms — the pressure-gradient force and the Coriolis force. We now read off its consequence. From here on the vertical coordinate is <strong>pressure</strong> $p$ rather than height $z$. The switch is allowed because hydrostatic balance makes $p$ fall monotonically with height, so each pressure value labels a unique surface; its payoff is that the pressure-gradient force loses its troublesome density factor. On a surface of constant pressure the horizontal force per unit mass is simply $-\grad_p\Phi$, the gradient of the <dfn title="The gravitational potential energy per unit mass, Φ = gz; its contours on a pressure surface are the height contours of a weather chart.">geopotential</dfn> $\Phi$ taken along that surface.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>In height coordinates the same force carries a density factor: the eastward pressure-gradient force per unit mass is $-\tfrac{1}{\rho}\,\pd p/\pd x$, so the geostrophic relation reads $u_g = -\tfrac{1}{f\rho}\,\pd p/\pd y$. Switching to pressure coordinates trades $-\tfrac{1}{\rho}\grad_p p$ for the cleaner $-\grad_p\Phi$, which is why nearly all synoptic dynamics is done on pressure surfaces.</p>
+      </aside>
+
+      <p>Setting the Coriolis force against the geopotential gradient defines the <strong>geostrophic wind</strong> $\vV_g$ — the wind for which the balance is exact:</p>
+
+      <div class="equation-block">
+        $$ f\,u_g = -\frac{\pd\Phi}{\pd y}, \qquad f\,v_g = \frac{\pd\Phi}{\pd x}, \qquad \vV_g = \frac{1}{f}\,\vk\times\grad_p\Phi. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$u_g,\,v_g$</dt><dd>Eastward and northward components of the geostrophic wind — scalars, units $\unit{m\,s^{-1}}$.</dd>
+          <dt>$\vV_g$</dt><dd>The geostrophic wind — a horizontal vector field, the vector with components $(u_g, v_g)$.</dd>
+          <dt>$\Phi$</dt><dd>Geopotential, $\Phi = gz$ — a scalar field on the pressure surface, units $\unit{m^2\,s^{-2}}$. Its horizontal gradient is the force per unit mass.</dd>
+          <dt>$f$</dt><dd>Coriolis parameter, $f = 2\Omega\sin\phi$ — a scalar that varies with latitude $\phi$; units $\unit{s^{-1}}$, positive in the Northern Hemisphere ($\Omega = 7.292\times10^{-5}\ \unit{s^{-1}}$).</dd>
+          <dt>$\vk$</dt><dd>The vertical unit vector (pointing up) — used to rotate the gradient by $90^\circ$ via the cross product.</dd>
+          <dt>$\grad_p$</dt><dd>The horizontal gradient operator taken <em>along a surface of constant pressure</em>; the subscript $p$ is the reminder that $p$ is held fixed.</dd>
+        </dl>
+      </aside>
+
+      <p>The cross product $\vk\times\grad_p\Phi$ rotates the geopotential gradient ninety degrees counterclockwise. So the geostrophic wind blows neither up nor down the gradient but <em>across</em> it — exactly along the geopotential contours, the isobars of the pressure surface. In the Northern Hemisphere, with $f>0$, low geopotential lies to the left of the wind. That single rule — <strong>stand with your back to the wind and low pressure is on your left</strong> — is the Buys Ballot law, and it is geostrophy made portable.</p>
+
+      <p>Geostrophy is a <em>diagnostic</em> balance, not a law of motion: it does not predict how the wind evolves, it merely says what the wind is given the pressure field. Its quality is measured by the <dfn title="The ratio of the acceleration term to the Coriolis term, U/(fL); small Rossby number means rotation dominates and the flow is nearly geostrophic.">Rossby number</dfn> $\Ro = U/(fL)$, the ratio of the parcel's acceleration to the Coriolis force it feels. For a synoptic system $U\sim 10\ \unit{m\,s^{-1}}$, $f\sim10^{-4}\ \unit{s^{-1}}$, $L\sim10^{6}\ \unit{m}$, giving $\Ro\sim0.1$: the geostrophic wind is right to about ten percent. That ten percent — the small imbalance geostrophy throws away — is the part that actually makes weather happen, and Chapter VII is devoted to recovering it.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Natural coordinates and the gradient wind</h2>
+
+      <p>Geostrophy assumed the parcel was not accelerating. But air flowing around the tight curve of a low or a high <em>is</em> accelerating — it is turning, and turning is a centripetal acceleration even at constant speed. To include it, switch to <strong>natural coordinates</strong>: at each point put one axis $\hat{\mathbf{t}}$ along the flow (in the direction of motion) and one axis $\hat{\mathbf{n}}$ across it, ninety degrees to the <em>left</em>. We let the radius of curvature $R$ carry a sign — positive when the flow curves cyclonically (counterclockwise, center of curvature to the left, on the $+\hat{\mathbf{n}}$ side), negative when it curves anticyclonically. With this convention the centripetal acceleration of a parcel moving at speed $V$ has the component $V^2/R$ along $\hat{\mathbf{n}}$, carrying its own sign.</p>
+
+      <p>Balancing that acceleration against the cross-stream pressure-gradient and Coriolis forces gives the <strong>gradient-wind equation</strong>:</p>
+
+      <div class="equation-block">
+        $$ \frac{V^2}{R} + f\,V = -\frac{\pd\Phi}{\pd n}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$V$</dt><dd>The wind speed along the flow — a scalar, $\geq 0$, units $\unit{m\,s^{-1}}$.</dd>
+          <dt>$R$</dt><dd>The radius of curvature of the path — a signed scalar, units $\unit{m}$; positive for cyclonic (counterclockwise) turning, negative for anticyclonic.</dd>
+          <dt>$n$</dt><dd>The cross-stream coordinate, increasing to the left of the flow (along $+\hat{\mathbf{n}}$); $-\pd\Phi/\pd n$ is the cross-stream pressure-gradient force per unit mass.</dd>
+          <dt>$V^2/R$</dt><dd>The centripetal acceleration — the new term geostrophy ignored. When $R\to\infty$ (straight flow) it vanishes and the equation collapses to $fV = -\pd\Phi/\pd n$, i.e. geostrophy.</dd>
+        </dl>
+      </aside>
+
+      <p>The geostrophic wind is the same balance with the curvature term deleted: $f V_g = -\pd\Phi/\pd n$. Comparing the two equations for the <em>same</em> geopotential gradient shows how curvature corrects geostrophy.</p>
+
+      <p>Around a <strong>low</strong> the flow curves cyclonically, $R>0$. The centripetal term $V^2/R$ is positive, so it adds to the Coriolis term on the left; to keep the right-hand side fixed the wind must be <em>slower</em> than geostrophic. Air circling a low is therefore <dfn title="Slower than the geostrophic wind for the same pressure gradient.">subgeostrophic</dfn>. Around a <strong>high</strong> the flow curves anticyclonically, $R<0$; the centripetal term subtracts from the Coriolis term, and the wind must be <em>faster</em> than geostrophic — <dfn title="Faster than the geostrophic wind for the same pressure gradient.">supergeostrophic</dfn>.</p>
+
+      <aside class="jargon">
+        <h4>Why highs are gentle and lows are not</h4>
+        <p>Solving the gradient-wind equation for an anticyclone exposes a limit. The admissible root is real only when $\left|\pd\Phi/\pd n\right| \le f^2|R|/4$ — there is a ceiling on how steep the pressure gradient around a high can be, and hence on how strong the wind. Lows have no such ceiling: the cyclonic root stays real for any pressure gradient. This asymmetry is why the deepest storms are lows with ferocious winds and tight gradients, while highs are broad, flat, and slack. The atmosphere can pile pressure up against a low without limit, but a high relaxes itself before the gradient gets dangerous.</p>
+      </aside>
+
+      <section class="interactive" data-widget="geostrophic-wind" aria-label="Geostrophic and gradient wind around a pressure center">
+        <header>
+          <h4>Interactive · The wind around a low and a high</h4>
+          <span class="hint">drag gradient · latitude · radius · toggle low/high</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">Concentric contours are the geopotential isobars around a pressure center. The dark arrow is the geostrophic wind, $V_g = |\pd\Phi/\pd n|/f$; the orange arrow is the gradient wind from $V^2/R + fV = -\pd\Phi/\pd n$. Around a low the gradient wind is subgeostrophic ($V/V_g<1$); around a high it is supergeostrophic ($V/V_g>1$) — and pushing the gradient past $f^2|R|/4$ around a high leaves no balanced solution at all. Raising the latitude raises $f$ and slows the wind for the same gradient.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The thermal wind</h2>
+
+      <p>The geostrophic wind depends on the geopotential gradient, and that gradient changes with height because warm air columns are thicker than cold ones. The link between them is the <strong>thermal wind</strong>. It is not an actual wind that blows; it is the vector <em>difference</em> between the geostrophic winds at two pressure levels — the vertical shear of the geostrophic wind. And it is set entirely by the horizontal temperature gradient.</p>
+
+      <p>To see why, recall the hydrostatic balance in pressure coordinates, $\pd\Phi/\pd p = -\Rd T/p$, or equivalently $\pd\Phi/\pd\ln p = -\Rd T$. Differentiate the geostrophic wind $\vV_g = \tfrac{1}{f}\vk\times\grad_p\Phi$ with respect to $\ln p$ and swap the order of the two derivatives:</p>
+
+      <div class="equation-block">
+        $$ \frac{\pd \vV_g}{\pd \ln p} = \frac{1}{f}\,\vk\times\grad_p\!\left(\frac{\pd\Phi}{\pd\ln p}\right) = -\frac{\Rd}{f}\,\vk\times\grad_p T. $$
+      </div>
+
+      <p>Integrating this through a layer from a lower pressure $p_0$ to an upper pressure $p_1$ (with $p_1<p_0$, so the upper level sits higher) gives the layer form — the thermal wind vector $\vV_T$, the wind difference across the layer:</p>
+
+      <div class="equation-block">
+        $$ \vV_T = \vV_g(p_1) - \vV_g(p_0) = \frac{\Rd}{f}\,\ln\!\frac{p_0}{p_1}\,\vk\times\grad_p\overline{T}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\vV_T$</dt><dd>The thermal wind — a horizontal vector, the geostrophic-wind difference $\vV_g(p_1)-\vV_g(p_0)$ across the layer, units $\unit{m\,s^{-1}}$.</dd>
+          <dt>$p_0,\,p_1$</dt><dd>The lower (larger) and upper (smaller) pressures bounding the layer — scalars, units $\unit{hPa}$; $p_1<p_0$.</dd>
+          <dt>$\overline{T}$</dt><dd>The layer-mean temperature — a scalar field on the surface, units $\unit{K}$. Its horizontal gradient $\grad_p\overline{T}$ drives the shear.</dd>
+          <dt>$\Rd$</dt><dd>Gas constant for dry air, $\Rd = 287\ \unit{J\,kg^{-1}\,K^{-1}}$ — a constant.</dd>
+          <dt>$\ln(p_0/p_1)$</dt><dd>The logarithmic thickness of the layer — a positive scalar, larger for deeper layers.</dd>
+        </dl>
+      </aside>
+
+      <p>The cross product $\vk\times\grad_p\overline{T}$ again rotates the temperature gradient ninety degrees counterclockwise, so the thermal wind blows along the isotherms with <strong>warm air to its right</strong> (Northern Hemisphere). Geometrically, the geostrophic wind aloft equals the geostrophic wind below plus a vector that runs parallel to the mean isotherms. This is the engine of the jet stream: the largest temperature contrast on the planet is the equator-to-pole gradient, with cold air to the north; the thermal wind it produces is a strong <em>eastward</em> shear, so the westerly wind grows with height and peaks at the tropopause as the jet.</p>
+
+      <aside class="jargon">
+        <h4>Veering means warm advection</h4>
+        <p>Because warm air lies to the right of the thermal wind, the way the geostrophic wind <em>turns with height</em> reports the temperature advection at that spot. If the wind <strong>veers</strong> (turns clockwise as you go up — say from southerly at the surface to westerly aloft), the thermal wind points so that warm air is being carried in: <strong>warm-air advection</strong>. If the wind <strong>backs</strong> (turns counterclockwise with height), it is cold-air advection. A single wind profile from one radiosonde, read for veering or backing, thus tells a forecaster whether the column is warming or cooling — without a second observation. This is one of the most-used tricks in operational meteorology.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Vorticity: relative, planetary, absolute</h2>
+
+      <p>Balance describes the wind from the pressure field. To describe how the flow <em>spins</em> — and spin is what cyclones and anticyclones are made of — we need vorticity. The <strong>relative vorticity</strong> $\zeta$ is the vertical component of the curl of the horizontal wind, the local rotation rate of the fluid as seen in the rotating frame of the Earth:</p>
+
+      <div class="equation-block">
+        $$ \zeta = \frac{\pd v}{\pd x} - \frac{\pd u}{\pd y}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\zeta$</dt><dd>Relative vorticity — a scalar field, units $\unit{s^{-1}}$. Positive (cyclonic) means counterclockwise spin in the NH; negative (anticyclonic) means clockwise.</dd>
+          <dt>$u,\,v$</dt><dd>Eastward and northward wind components — scalar fields, units $\unit{m\,s^{-1}}$.</dd>
+          <dt>$\pd v/\pd x - \pd u/\pd y$</dt><dd>The vertical component of $\grad\times\vu$ — measures both the shear of the flow and its curvature; either can spin a paddle wheel.</dd>
+        </dl>
+      </aside>
+
+      <p>Think of a tiny paddle wheel dropped into the flow: $\zeta$ is twice the angular velocity it would acquire. Two distinct things make it turn — <em>shear</em> (faster flow on one side than the other, as on the flanks of a jet) and <em>curvature</em> (the flow bending, as around a low). A cyclone is a region of large positive $\zeta$; an anticyclone, large negative $\zeta$.</p>
+
+      <p>But a paddle wheel sitting still on the ground is already turning, because the ground beneath it is turning with the planet. That contribution is the <strong>planetary vorticity</strong>, and it equals the Coriolis parameter $f$ — the vertical component of the Earth's rotation at that latitude. The total spin seen by an observer in space is the <strong>absolute vorticity</strong>:</p>
+
+      <div class="equation-block">
+        $$ \eta = \zeta + f. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\eta$</dt><dd>Absolute vorticity — a scalar field, units $\unit{s^{-1}}$: the spin in the fixed frame of space.</dd>
+          <dt>$f$</dt><dd>Planetary vorticity $=2\Omega\sin\phi$ — the spin a parcel has just by riding the rotating Earth. At mid-latitudes $f\sim10^{-4}\ \unit{s^{-1}}$, often comparable to or larger than $\zeta$.</dd>
+        </dl>
+      </aside>
+
+      <p>The split matters because the two pieces can trade between themselves. A parcel can spin up its relative vorticity $\zeta$ by moving to a latitude where $f$ is different, or by being stretched. The bookkeeping for those trades is potential vorticity.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Potential vorticity</h2>
+
+      <p>Absolute vorticity is not conserved on its own — a spinning column can speed up or slow down as it is stretched or squashed, exactly as a figure skater spins faster when she pulls in her arms. Potential vorticity is the combination that <em>is</em> conserved, because it folds the stretching into the spin.</p>
+
+      <p>The cleanest setting is the <strong>shallow-water model</strong>: a single layer of fluid of depth $h$, like the ocean or a vertically uniform slab of atmosphere. For this layer the conserved quantity is the absolute vorticity divided by the depth:</p>
+
+      <div class="equation-block">
+        $$ \frac{D}{Dt}\!\left(\frac{\zeta + f}{h}\right) = 0. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$D/Dt$</dt><dd>The material derivative (Chapter IV) — the rate of change following a parcel as the flow carries it.</dd>
+          <dt>$h$</dt><dd>The depth of the fluid column — a scalar field, units $\unit{m}$. A column gaining depth is being <em>stretched</em>; losing depth, <em>squashed</em>.</dd>
+          <dt>$(\zeta+f)/h$</dt><dd>The shallow-water potential vorticity — a scalar carried unchanged by each parcel, units $\unit{m^{-1}\,s^{-1}}$.</dd>
+        </dl>
+      </aside>
+
+      <p>Read this geometrically. If a column is stretched so $h$ grows, then $\zeta + f$ must grow to keep the ratio fixed — the column spins up cyclonically. If $f$ barely changes (small north–south excursion), the whole increase goes into $\zeta$: the stretched column becomes a cyclone. Squash the column and it spins down or goes anticyclonic. This single statement explains lee cyclogenesis (air columns stretching as they descend the lee of a mountain spin up into lows), the spin-up of developing storms, and the response of the flow to topography.</p>
+
+      <p>The stratified atmosphere is not a single slab, so the depth $h$ is replaced by the spacing between surfaces of constant potential temperature $\theta$ — and $\theta$ surfaces are the right ones because, for adiabatic motion, a parcel stays on its own $\theta$ surface (Chapter II). The general conserved quantity is <strong>Ertel's potential vorticity</strong>:</p>
+
+      <div class="equation-block">
+        $$ q = \frac{1}{\rho}\,\bigl(2\vOmega + \grad\times\vu\bigr)\cdot\grad\theta. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$q$</dt><dd>Ertel potential vorticity — a scalar field carried unchanged by each parcel in adiabatic, frictionless flow. Conventionally quoted in PV units, $1\ \mathrm{PVU} = 10^{-6}\ \unit{m^2\,s^{-1}\,K\,kg^{-1}}$.</dd>
+          <dt>$\rho$</dt><dd>Air density — a scalar field, units $\unit{kg\,m^{-3}}$.</dd>
+          <dt>$2\vOmega$</dt><dd>Twice the Earth's angular-velocity vector — the planetary vorticity in full three-dimensional form, units $\unit{s^{-1}}$.</dd>
+          <dt>$\grad\times\vu$</dt><dd>The three-dimensional relative-vorticity vector (the curl of the wind); its vertical component is the $\zeta$ of §4.</dd>
+          <dt>$\grad\theta$</dt><dd>The gradient of potential temperature — points across the $\theta$ surfaces; its magnitude measures the stratification (the $\theta$ surfaces' spacing).</dd>
+        </dl>
+      </aside>
+
+      <p>The dot product projects the absolute-vorticity vector onto the stratification: it is the spin <em>about the local $\theta$ surfaces</em>, weighted by how tightly those surfaces are stacked. When motion is adiabatic and frictionless, $q$ is materially conserved, $Dq/Dt = 0$. Because $\theta$ surfaces also move with the parcel in adiabatic flow, the two ingredients deform together and their combination stays fixed — the stratified statement of the skater law. This is the quantity that, in the hands of Hoskins, McIntyre and Robertson, became "PV thinking": map the PV on a $\theta$ surface and you have, to a very good approximation, mapped the dynamics, because the balanced wind and temperature fields can be recovered (inverted) from the PV distribution alone.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Rossby waves from PV conservation</h2>
+
+      <p>PV conservation does more than spin up storms; it gives the atmosphere its largest waves. The key fact is that planetary vorticity $f$ <em>grows toward the pole</em>. On a <strong>beta plane</strong> we keep that variation to lowest order, writing $f = f_0 + \beta y$ with</p>
+
+      <div class="equation-block">
+        $$ \beta = \frac{\dd f}{\dd y} = \frac{2\Omega\cos\phi}{a}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\beta$</dt><dd>The northward rate of change of $f$ — a constant on the beta plane, units $\unit{m^{-1}\,s^{-1}}$; about $1.6\times10^{-11}\ \unit{m^{-1}\,s^{-1}}$ at mid-latitudes.</dd>
+          <dt>$y$</dt><dd>The northward coordinate, units $\unit{m}$.</dd>
+          <dt>$a$</dt><dd>Earth's radius, $a = 6.371\times10^{6}\ \unit{m}$ — a constant.</dd>
+        </dl>
+      </aside>
+
+      <p>Take the simplest fluid that can support the wave: a single layer of constant depth, so absolute vorticity itself is conserved, $D(\zeta+f)/Dt=0$. With constant depth the flow is non-divergent and can be written from a single <dfn title="A scalar whose contours are streamlines; for non-divergent flow u = -∂ψ/∂y and v = ∂ψ/∂x, so ζ = ∇²ψ.">streamfunction</dfn> $\psi$, with $\zeta=\grad^2\psi$. Linearizing about a uniform westerly wind $U$ gives the barotropic Rossby-wave equation:</p>
+
+      <div class="equation-block">
+        $$ \left(\frac{\pd}{\pd t} + U\,\frac{\pd}{\pd x}\right)\grad^2\psi + \beta\,\frac{\pd\psi}{\pd x} = 0. $$
+      </div>
+
+      <p>The first parenthesis is the material derivative carried by the mean flow $U$; the $\beta$ term is the planetary-vorticity gradient the parcels feel as they wander north and south. Look for a plane wave $\psi \propto \exp[\,i(kx + ly - \omega t)\,]$ riding on that mean flow. Substituting and solving for the frequency $\omega$ gives the <strong>Rossby dispersion relation</strong>, and dividing by $k$ gives the zonal phase speed $c$:</p>
+
+      <div class="equation-block">
+        $$ \omega = U k - \frac{\beta k}{k^2 + l^2}, \qquad c = \frac{\omega}{k} = U - \frac{\beta}{K^2}, \qquad K^2 = k^2 + l^2. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\psi$</dt><dd>The streamfunction — a scalar field; the wind is $u=-\pd\psi/\pd y$, $v=\pd\psi/\pd x$, and $\zeta = \grad^2\psi$.</dd>
+          <dt>$k,\,l$</dt><dd>Zonal (east–west) and meridional (north–south) wavenumbers — scalars, units $\unit{m^{-1}}$; large wavenumber means short wavelength.</dd>
+          <dt>$K^2 = k^2+l^2$</dt><dd>The squared total wavenumber — a scalar setting the wave's overall size.</dd>
+          <dt>$\omega$</dt><dd>The wave frequency — a scalar, units $\unit{s^{-1}}$.</dd>
+          <dt>$U$</dt><dd>The uniform background westerly wind the wave rides on — a scalar, units $\unit{m\,s^{-1}}$.</dd>
+          <dt>$c$</dt><dd>The zonal phase speed — the speed of the wave crests; units $\unit{m\,s^{-1}}$.</dd>
+        </dl>
+      </aside>
+
+      <p>The second term in $c$ is the heart of the matter: the crests travel <strong>westward relative to the mean flow</strong>, always, with a speed $\beta/K^2$. The mechanism is pure PV conservation. Push a chain of air parcels into a wavy pattern; a parcel displaced poleward arrives where $f$ is larger, so to keep $\zeta+f$ fixed its relative vorticity $\zeta$ must drop — it acquires anticyclonic spin, which pushes its neighbors. The induced velocities nudge the whole pattern westward. Long waves (small $K$) propagate westward fast and can even hold still or retreat against the westerlies; short waves (large $K$) are nearly swept along with the flow. This selective speed is why the long planetary waves form the slow, quasi-stationary ridges and troughs that anchor the weather for days, while the short waves race through them as the individual storms.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Why balance matters: the wind from the map</h2>
+
+      <p>Step back and take in what balance has bought. We began with the full, intractable equations of motion. Scale analysis showed that for large, slow, mid-latitude flow two forces dominate, and their standoff is geostrophy — the wind read directly off the geopotential contours. Curvature refined it to the gradient wind, sorting lows (subgeostrophic, no limit) from highs (supergeostrophic, with a ceiling). The thermal wind tied the vertical shear of that wind to the horizontal temperature gradient, explaining the jet stream and letting a single sounding diagnose warming or cooling from whether the wind veers.</p>
+
+      <p>Then we turned the flow's own spin into a conserved cargo. Vorticity measures the spin; absolute vorticity adds the planet's; potential vorticity — shallow-water or Ertel — is the combination a parcel carries unchanged when nothing heats or rubs it. That conservation law spins up cyclones from stretching, and, through the poleward increase of $f$, gives the westward-propagating Rossby waves that organize the hemispheric flow.</p>
+
+      <p>The thread is that the large-scale atmosphere is, to leading order, <em>balanced and slow</em>: it does not slosh freely but sits close to an equilibrium between rotation and pressure, drifting between balanced states. That is why a forecaster can look at a pressure map and see the wind, and why the next chapter can ask the sharper question — what, exactly, lives in the small departures from balance? Those departures, governed by the quasi-geostrophic equations, are where storms are born.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">J. R. Holton and G. J. Hakim.</span> <em>An Introduction to Dynamic Meteorology</em>, 5th ed., Academic Press 2012 — Chapter 3 (geostrophic balance, gradient wind, thermal wind) and Chapter 4 (vorticity, circulation, potential vorticity). The thermal-wind signs of §3 follow §3.4.</li>
+          <li><span class="src-title">G. K. Vallis.</span> <em>Atmospheric and Oceanic Fluid Dynamics</em>, 2nd ed., Cambridge 2017 — Chapters 3–4 for geostrophic and thermal-wind balance and the full derivation of Ertel and shallow-water potential vorticity.</li>
+          <li><span class="src-title">B. J. Hoskins, M. E. McIntyre, A. W. Robertson.</span> "On the use and significance of isentropic potential vorticity maps." <em>Quarterly Journal of the Royal Meteorological Society</em> 111, 877–946 (1985) — the founding paper of "PV thinking" and invertibility.</li>
+          <li><span class="src-title">J. M. Wallace and P. V. Hobbs.</span> <em>Atmospheric Science: An Introductory Survey</em>, 2nd ed., Academic Press 2006 — Chapter 7 for a physically motivated, less formal route to geostrophy, the gradient wind, and vorticity.</li>
+          <li><span class="src-title">J. Marshall and R. A. Plumb.</span> <em>Atmosphere, Ocean and Climate Dynamics: An Introductory Text</em>, Academic Press 2008 — Chapter 7 for balanced flow and the thermal wind, with the geostrophic adjustment perspective.</li>
+          <li><span class="src-title">C.-G. Rossby and collaborators.</span> "Relation between variations in the intensity of the zonal circulation of the atmosphere and the displacements of the semi-permanent centers of action." <em>Journal of Marine Research</em> 2, 38–55 (1939) — the original derivation of the Rossby wave phase speed used in §6.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="04-equations-of-motion.html"><span class="label">← Previous</span>IV · The Equations of Motion</a>
+      <a class="next" href="06-boundary-layer-turbulence.html"><span class="label">Next chapter</span>VI · The Boundary Layer and Turbulence →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/geostrophic-wind.js"></script>
+</body>
+</html>

@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter VIII · Moist Convection and Mesoscale Storms — Meteorology: The Atmosphere in Motion</title>
+  <meta name="description" content="Chapter 8: buoyancy and the parcel's vertical equation, CAPE and CIN as fuel, why wind shear sorts storms into single cells, supercells, and squall lines, storm-relative helicity read off a hodograph, the bulk Richardson number, mesoscale convective systems and cold pools, and the hurricane as a Carnot heat engine with a potential intensity." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter VIII of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter VIII</p>
+      <h1 class="chapter-title">Moist Convection and Mesoscale Storms</h1>
+      <p class="lede">A thunderstorm is a parcel of moist air that found a way to keep falling upward — and the wind it grew up in decides whether it lives ten minutes or three hours and spawns a tornado.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>Until now we have zoomed out — to fronts a thousand kilometres long and waves that circle the planet. This chapter zooms all the way in, to the scale of a single storm a few kilometres across. The physics changes character. A warm, humid parcel of air, if it can be nudged high enough, becomes lighter than its surroundings and accelerates upward on its own; as its water vapour condenses it releases latent heat, which keeps it warmer than the air around it and feeds the climb. That runaway is <em>convection</em>, and a thunderstorm is convection organised into a machine.</p>
+          <p>Two numbers govern the show. The first, <strong>CAPE</strong>, measures how much fuel the atmosphere holds — the total buoyant energy a rising parcel can cash in. The second, <strong>wind shear</strong> — how the wind changes with height — decides what the storm <em>becomes</em>: a single short-lived cell, a long-lived rotating supercell that can drop a tornado, or a marching line of storms. We will learn to read both off the day's weather balloon, meet the rotating heart of a supercell, and finish at the largest moist storm of all: the hurricane, which turns out to be a heat engine running between a warm ocean and the cold upper air, with a top speed you can calculate.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Convection</dt><dd>Vertical motion driven by buoyancy — warm light air rising, cool dense air sinking. Moist convection is this with condensation added.</dd>
+          <dt>Parcel</dt><dd>An imagined small blob of air we track as it moves, assuming it does not mix with its surroundings. The basic unit of convective reasoning.</dd>
+          <dt>Buoyancy</dt><dd>The upward (or downward) acceleration a parcel feels because it is lighter (or heavier) than the air it displaces.</dd>
+          <dt>Latent heat</dt><dd>Heat released when water vapour condenses into cloud droplets — the energy that powers a storm from the inside.</dd>
+          <dt>Virtual temperature</dt><dd>The temperature dry air would need to have the same density as a given moist parcel. Humid air is lighter, so it gets a small temperature bonus.</dd>
+          <dt>Sounding</dt><dd>A vertical profile of temperature, humidity, and wind measured by a weather balloon (radiosonde). The day's raw material for convection.</dd>
+          <dt>LCL</dt><dd>Lifting condensation level — the height a lifted parcel first becomes saturated and a cloud base forms.</dd>
+          <dt>LFC</dt><dd>Level of free convection — the height above which a lifted parcel is finally warmer than its surroundings and rises on its own.</dd>
+          <dt>EL</dt><dd>Equilibrium level — the height where the rising parcel cools back to the temperature of its surroundings and stops accelerating; roughly the anvil top.</dd>
+          <dt>CAPE</dt><dd>Convective available potential energy — the buoyant energy stored for a rising parcel, the area on a sounding between the parcel and the environment from LFC to EL.</dd>
+          <dt>CIN</dt><dd>Convective inhibition — the energy that must be spent to push a parcel up to its LFC through a stable layer; the lid on convection.</dd>
+          <dt>Updraft</dt><dd>The rising current at a storm's core. Downdraft is its sinking, rain-cooled counterpart.</dd>
+          <dt>Wind shear</dt><dd>The change of the wind vector with height — both its speed and its direction. The single most important control on storm type.</dd>
+          <dt>Hodograph</dt><dd>A plot of the wind vector at each height, drawn tip-to-tip as a curve. Shear and rotation are read straight off its shape.</dd>
+          <dt>Storm-relative wind</dt><dd>The wind as felt by someone riding along with the moving storm — the environmental wind minus the storm's own motion.</dd>
+          <dt>Storm-relative helicity (SRH)</dt><dd>A measure of how much the storm-relative wind spirals with height; high values favour rotating, tornadic storms.</dd>
+          <dt>Single cell</dt><dd>A lone short-lived thunderstorm in weak shear, killed within an hour by its own rain-cooled downdraft.</dd>
+          <dt>Multicell</dt><dd>A cluster of cells in moderate shear, each triggering the next along a gust front, so the group outlives any single cell.</dd>
+          <dt>Supercell</dt><dd>A long-lived storm with a single deep rotating updraft, the most dangerous mode for tornadoes and giant hail.</dd>
+          <dt>Mesocyclone</dt><dd>The rotating updraft at the heart of a supercell, a few kilometres wide.</dd>
+          <dt>Squall line</dt><dd>A long, narrow line of thunderstorms, often with a continuous gust front and a trailing region of rain.</dd>
+          <dt>MCS</dt><dd>Mesoscale convective system — any organised storm complex larger than a single cell, including squall lines and the round overnight systems of the Plains.</dd>
+          <dt>Cold pool</dt><dd>The dome of cool, dense, rain-chilled air spreading out beneath a storm; its leading edge is the gust front that triggers new cells.</dd>
+          <dt>Bulk Richardson number</dt><dd>The ratio of CAPE to shear energy; a rough dial that sorts storms into single-cell, supercell, and multicell modes.</dd>
+          <dt>Potential intensity</dt><dd>The theoretical maximum wind speed a hurricane could reach given the ocean and atmosphere it sits in, derived by treating it as a heat engine.</dd>
+          <dt>Carnot engine</dt><dd>The idealised heat engine of thermodynamics, taking in heat at a hot temperature and rejecting it at a cold one; the right analogy for a hurricane.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>Buoyancy and the parcel's vertical equation</h2>
+
+      <p>Start with a single parcel of air and ask the only question that matters for convection: will it rise on its own? Newton's second law in the vertical, per unit mass, balances the downward pull of gravity against the upward push of the pressure that decreases with height. For the surrounding environment, those two cancel exactly — that is <dfn title="The balance in which the upward pressure-gradient force exactly offsets gravity, so there is no net vertical acceleration.">hydrostatic balance</dfn>, the subject of Chapter I. A parcel feels the same environmental pressure field, but it has its own density. Subtract the hydrostatic environment and what is left over is the <strong>buoyancy</strong>:</p>
+
+      <div class="equation-block">
+        $$ \DDt{w} \;=\; -\frac{1}{\rho_p}\frac{\pd p}{\pd z} - g \;=\; g\,\frac{\rho_e - \rho_p}{\rho_p} \;\equiv\; b. $$
+      </div>
+
+      <p>The pressure inside the parcel matches its surroundings, so by the ideal-gas law the density difference becomes a temperature difference. Because humid air is lighter than dry air at the same temperature — water's molecular weight, 18, is less than air's 29 — we book the humidity correction into the <strong>virtual temperature</strong> and write the buoyancy cleanly as a fractional temperature excess:</p>
+
+      <div class="equation-block">
+        $$ b \;=\; g\,\frac{T_{v,\mathrm{parcel}} - T_{v,\mathrm{env}}}{T_{v,\mathrm{env}}}, \qquad \DDt{w} = b. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$b$</dt><dd>Buoyancy — a scalar acceleration in $\unit{m\,s^{-2}}$. Positive means the parcel accelerates upward. A $1\unit{K}$ virtual-temperature excess gives only $b \approx g/T_v \approx 0.03\unit{m\,s^{-2}}$; the several-kelvin excesses in a vigorous updraft reach a few tenths of $\unit{m\,s^{-2}}$.</dd>
+          <dt>$w$</dt><dd>The vertical velocity of the parcel (scalar, $\unit{m\,s^{-1}}$). $\DDt{w}$ is its acceleration following the parcel — see the material derivative of Chapter IV.</dd>
+          <dt>$\rho_p,\ \rho_e$</dt><dd>Densities of the parcel and the environment ($\unit{kg\,m^{-3}}$). The parcel rises when it is the lighter of the two.</dd>
+          <dt>$T_{v,\mathrm{parcel}},\ T_{v,\mathrm{env}}$</dt><dd>Virtual temperatures (K) of the parcel and its surroundings. The <em>virtual</em> temperature $T_v \approx T(1 + 0.61\,q)$ is the temperature dry air would need to match the moist parcel's density, with $q$ the water-vapour mixing ratio.</dd>
+          <dt>$g$</dt><dd>Gravitational acceleration, the constant $9.81\unit{m\,s^{-2}}$.</dd>
+          <dt>$p,\ \rho$</dt><dd>Pressure (Pa) and density; $\pd p/\pd z$ is the vertical pressure gradient that, in the environment, balances gravity.</dd>
+        </dl>
+      </aside>
+
+      <p>This is the engine of the whole chapter. Buoyancy is a <em>fractional</em> temperature difference: a parcel only one or two degrees warmer than its surroundings accelerates upward, and if it stays warmer over several kilometres those small accelerations integrate into a fierce updraft. The vertical coordinate here is height $z$, the natural choice when we follow a parcel up through the storm.</p>
+
+      <aside class="jargon">
+        <h4>Why virtual temperature, not just temperature</h4>
+        <p>Replacing $T$ with $T_v$ looks like bookkeeping, but it is the honest comparison of densities. At a fixed pressure, moist air is less dense than dry air, so a humid parcel rising into drier surroundings gets a real buoyancy boost — the "virtual temperature effect." In heavy-rain environments it can add the equivalent of a degree or more of warmth, enough to change whether a marginal sounding produces storms. We carry $T_v$ everywhere buoyancy is computed and drop the subscript only when the air is dry.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>CAPE and CIN: the fuel and the lid</h2>
+
+      <p>To get the parcel's speed we integrate its acceleration. Since $\DDt{w} = w\,\pd w/\pd z$ for steady ascent, integrating $b$ over height converts buoyant <em>force</em> into kinetic <em>energy</em>. The total positive area a parcel can collect between the level where it starts rising freely and the level where it runs out of buoyancy is the <strong>convective available potential energy</strong>, and the work–energy theorem turns it directly into a speed limit on the updraft:</p>
+
+      <div class="equation-block">
+        $$ \CAPE \;=\; \int_{\mathrm{LFC}}^{\mathrm{EL}} b\,\dd z \;=\; \int_{\mathrm{LFC}}^{\mathrm{EL}} g\,\frac{T_{v,\mathrm{parcel}} - T_{v,\mathrm{env}}}{T_{v,\mathrm{env}}}\,\dd z, \qquad w_{\max} \;=\; \sqrt{2\,\CAPE}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\CAPE$</dt><dd>Convective available potential energy — a scalar with units of $\unit{J\,kg^{-1}}$ (equivalently $\unit{m^2\,s^{-2}}$). Weak storms: a few hundred; severe-weather days: $2000$–$4000$; extreme tropical environments can exceed $5000$.</dd>
+          <dt>LFC</dt><dd>Level of free convection — the height where the lifted parcel first becomes warmer than its environment, so $b$ turns positive and the integral begins.</dd>
+          <dt>EL</dt><dd>Equilibrium level — the height where the parcel cools back to the environmental temperature, $b$ returns to zero, and the integral ends. It marks the anvil top.</dd>
+          <dt>$w_{\max}$</dt><dd>The theoretical maximum updraft speed ($\unit{m\,s^{-1}}$) a parcel reaches if it cashes in all the CAPE as kinetic energy: $\half w_{\max}^2 = \CAPE$.</dd>
+        </dl>
+      </aside>
+
+      <p>Geometrically, CAPE is the <em>area between two curves on the sounding</em>: the parcel's temperature as it rises (following a moist adiabat above cloud base) and the environment's temperature, wherever the parcel is the warmer of the two. On a Skew-T diagram — the meteorologist's working chart, introduced in Chapter II — it is the slim positive sliver between the parcel path and the environmental trace, from LFC up to EL. The bigger that area, the more fuel.</p>
+
+      <p>The bound $w_{\max} = \sqrt{2\,\CAPE}$ is generous: $2500\unit{J\,kg^{-1}}$ of CAPE gives $w_{\max} = 70\unit{m\,s^{-1}}$, far faster than the $30$–$50\unit{m\,s^{-1}}$ updrafts measured in real storms. Reality falls short because the rising parcel mixes with drier surrounding air (<dfn title="The dilution of a rising updraft by entrainment of cooler, drier environmental air, which erodes buoyancy.">entrainment</dfn>), because the weight of condensed water and ice drags on the parcel, and because the parcel must push the air above it out of the way. Still, more CAPE means a stronger storm; the undilute bound is the right scaling.</p>
+
+      <p>Before a parcel can reach its LFC it usually has to be shoved up through a stable layer where it is <em>colder</em> than its surroundings — a region of negative buoyancy. The energy that lifting costs is the <strong>convective inhibition</strong>:</p>
+
+      <div class="equation-block">
+        $$ \CIN \;=\; -\int_{z_0}^{\mathrm{LFC}} b\,\dd z \;=\; \int_{z_0}^{\mathrm{LFC}} g\,\frac{T_{v,\mathrm{env}} - T_{v,\mathrm{parcel}}}{T_{v,\mathrm{env}}}\,\dd z. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\CIN$</dt><dd>Convective inhibition — a scalar in $\unit{J\,kg^{-1}}$, defined positive, equal to the negative-buoyancy area below the LFC. The energy a parcel must be given (by surface heating, a front, or terrain) to reach free convection.</dd>
+          <dt>$z_0$</dt><dd>The parcel's starting height — usually the surface or the top of the well-mixed boundary layer.</dd>
+        </dl>
+      </aside>
+
+      <p>CIN is the lid, often called the "cap." A capped sounding with large CAPE is a loaded gun: the inhibition stores energy by preventing premature, scattered convection, and when a trigger finally breaks the cap — an afternoon's heating, a passing front, a mountain — the released parcels are explosive. This is why the most violent storms often fire late in the day along a sharp boundary, not at noon over the whole region.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Why shear decides the storm's fate</h2>
+
+      <p>CAPE tells you how strong an updraft can be; it does not tell you how <em>long</em> the storm will live or what shape it takes. That is the job of <strong>wind shear</strong> — the change of the horizontal wind vector with height. Shear sorts storms into three modes, and the sorting comes from a single competition: between the storm's own rain-cooled downdraft and the updraft that feeds it.</p>
+
+      <p>A storm rains. The rain falls into the inflow, evaporates, chills the air, and makes a pool of dense air that sinks and spreads out along the ground — the <strong>cold pool</strong>. Its leading edge is a miniature cold front, the <dfn title="The advancing edge of a storm's cold pool, where outflow undercuts the inflow and can lift new parcels to their LFC.">gust front</dfn>.</p>
+
+      <ul>
+        <li><strong>No shear (single cell).</strong> The wind is the same at every height, so the updraft rises straight up and the downdraft falls straight back into it. The cold pool spreads out symmetrically and chokes off the inflow from below. The storm cuts its own throat and dies in 30–60 minutes. These are the "air-mass" or "pulse" storms of a humid summer afternoon.</li>
+        <li><strong>Moderate shear (multicell).</strong> Now the wind aloft carries the rain and the anvil downstream, away from the updraft, so the downdraft no longer falls back on its source. The spreading cold pool still kills the parent cell, but its gust front lifts fresh parcels at the leading edge to their LFC, triggering a <em>new</em> cell that then matures and triggers another. The cluster propagates and outlives any single cell — a multicell storm.</li>
+        <li><strong>Strong shear (supercell).</strong> With strong, often turning, shear the updraft becomes steady, tilted, and — crucially — <em>rotating</em>. Updraft and downdraft settle into separate, persistent regions that coexist instead of one strangling the other. A single rotating updraft can last hours. This is the supercell, and it deserves §4 and §5 to itself.</li>
+      </ul>
+
+      <p>The natural measure of shear over the storm's depth is the <strong>bulk shear vector</strong>: simply the wind aloft minus the wind near the ground.</p>
+
+      <div class="equation-block">
+        $$ \Delta\vV \;=\; \vV(6\,\mathrm{km}) - \vV(0). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Delta\vV$</dt><dd>The bulk wind-shear vector (a horizontal vector, $\unit{m\,s^{-1}}$) across the lowest $6\unit{km}$ — the layer that roughly spans a storm's depth.</dd>
+          <dt>$\vV(z)$</dt><dd>The horizontal wind vector $(u, v)$ at height $z$, with $u$ eastward and $v$ northward.</dd>
+          <dt>$\abs{\Delta\vV}$</dt><dd>Its magnitude, the "$0$–$6\unit{km}$ bulk shear." Rough guide: below $\sim 10\unit{m\,s^{-1}}$ favours single cells; $15$–$20$ favours multicells; above $\sim 20\unit{m\,s^{-1}}$ supports supercells.</dd>
+        </dl>
+      </aside>
+
+      <p>Notice that $\Delta\vV$ keeps the <em>direction</em> of the change, not just its size. A wind that merely strengthens with height gives shear pointing one way; a wind that <em>turns</em> with height — say from southeasterly at the surface to westerly aloft — gives a shear vector that itself rotates through the layers. That turning is what the hodograph of §4 makes visible, and it is the seed of storm rotation.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The hodograph: shear and storm-relative helicity</h2>
+
+      <p>Plot the wind vector at each height as a point on a $u$–$v$ plane, with the tail of every vector at the origin, and connect the tips in order of increasing height. The curve you get is the <strong>hodograph</strong>. It is the single most useful picture in severe-weather forecasting, because two storm-defining quantities are geometric features of it.</p>
+
+      <p>The <strong>bulk shear</strong> of §3 is just the straight-line vector from the hodograph point at the ground to the point at 6 km. And the turning of the wind with height — the curvature of the hodograph — encodes rotation. To extract rotation we first switch into the storm's own frame. The wind a storm actually ingests is not the ground-relative wind but the <strong>storm-relative wind</strong>, $\vV - \mathbf{c}$, where $\mathbf{c}$ is the storm's motion. On the hodograph, that means measuring vectors from the storm-motion point $\mathbf{c}$ instead of from the origin.</p>
+
+      <p>A storm-relative wind that turns clockwise with height, sweeping out area as it goes, carries <dfn title="The tendency of the storm-relative inflow to spin about a horizontal axis, which a tilting updraft converts into vertical rotation.">streamwise vorticity</dfn> — horizontal spin aligned with the inflow that a tilting updraft stands up into vertical rotation. The integral that measures it is the <strong>storm-relative helicity</strong>:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{SRH} \;=\; -\int_0^h \vk\cdot\!\left[(\vV-\mathbf{c})\times\frac{\pd\vV}{\pd z}\right]\dd z \;=\; \int_0^h (\vV-\mathbf{c})\cdot\!\left(\vk\times\frac{\pd\vV}{\pd z}\right)\dd z. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathrm{SRH}$</dt><dd>Storm-relative helicity — a scalar with units $\unit{m^2\,s^{-2}}$, integrated over a chosen layer (commonly $0$–$1\unit{km}$ or $0$–$3\unit{km}$). In the Northern Hemisphere, positive SRH means clockwise-turning, rotation-favouring inflow.</dd>
+          <dt>$\vV - \mathbf{c}$</dt><dd>The storm-relative wind (horizontal vector, $\unit{m\,s^{-1}}$): the environmental wind $\vV$ minus the storm motion $\mathbf{c}$.</dd>
+          <dt>$\mathbf{c}$</dt><dd>The storm-motion vector — how fast and in which direction the storm itself travels. For supercells it is offset from the mean wind (see the Note).</dd>
+          <dt>$\pd\vV/\pd z$</dt><dd>The vertical shear vector — the local rate of change of the horizontal wind with height; its horizontal curl is the environmental horizontal vorticity.</dd>
+          <dt>$\vk$</dt><dd>The vertical unit vector. $\vk\times\pd\vV/\pd z$ rotates the shear $90^\circ$, giving the horizontal vorticity vector the inflow is projected onto.</dd>
+          <dt>$h$</dt><dd>The depth of the inflow layer (m) over which helicity is accumulated — the lowest 1 or 3 km of the atmosphere.</dd>
+        </dl>
+      </aside>
+
+      <p>The two forms are identical: the scalar triple product can be cycled, $\vk\cdot[(\vV-\mathbf{c})\times\pd_z\vV] = -(\vV-\mathbf{c})\cdot(\vk\times\pd_z\vV)$, which absorbs the leading minus sign. The second form is the one to hold in your head: it is the storm-relative wind dotted into the (rotated) shear, summed up the inflow layer.</p>
+
+      <p>And here is the gift of the hodograph. That integral has a <em>geometric</em> reading: <strong>SRH equals minus twice the signed area swept out</strong> between the storm-motion point $\mathbf{c}$ and the hodograph curve, as you trace the curve from the ground up to height $h$. A hodograph that loops clockwise and far from $\mathbf{c}$ encloses a large area and a large positive helicity; a straight hodograph, or one passing through $\mathbf{c}$, sweeps no area and gives near-zero SRH. You can therefore eyeball a sounding's tornado potential without computing a single integral — which is exactly what the widget below lets you do.</p>
+
+      <aside class="note">
+        <h4>Note · where does the storm move?</h4>
+        <p>SRH depends on $\mathbf{c}$, so storm motion is not a detail. Ordinary storms drift with the mean wind through their depth. Supercells deviate: their rotation drives a vertical pressure pattern that pushes the updraft off the mean wind, splitting an initial cell into a <em>right-mover</em> (which deviates rightward in the Northern Hemisphere and ingests more positive helicity) and a weaker <em>left-mover</em>. The widely used Bunkers estimate places the right-mover about $7.5\unit{m\,s^{-1}}$ to the right of the $0$–$6\unit{km}$ mean wind, perpendicular to the shear. The widget defaults to this estimate but lets you drag $\mathbf{c}$ to see how the storm's own motion changes the helicity it feels.</p>
+      </aside>
+
+      <section class="interactive" data-widget="storm-hodograph" aria-label="Interactive hodograph: bulk shear, storm-relative helicity, and storm mode">
+        <header>
+          <h4>Interactive · Read a hodograph</h4>
+          <span class="hint">drag the storm dot · adjust low-level curvature</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The curve is a wind profile from the ground (warm dot) to 6 km, with the low levels turning clockwise. The blue dot is the storm motion $\mathbf{c}$; drag it, or snap it to the Bunkers right-mover. The shaded fan between $\mathbf{c}$ and the 0–3 km curve is the swept area whose negative double is the storm-relative helicity — so a hodograph that loops away from $\mathbf{c}$ yields large $\mathrm{SRH}$. The readout gives the 0–6 km bulk shear $\abs{\Delta\vV}$ and the 0–3 km $\mathrm{SRH}$ computed from the actual integral, and classifies the likely storm mode by their thresholds.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Supercells, mesocyclones, and the bulk Richardson number</h2>
+
+      <p>The supercell is convection's apex predator: a single, deep, rotating updraft that can persist for hours, produce hail the size of fruit, and spin up the most violent tornadoes on Earth. Its defining feature is the <strong>mesocyclone</strong> — a column of rotation a few kilometres across, coincident with the main updraft.</p>
+
+      <p>Where does the rotation come from? Not, at first, from the spin of the planet — a thunderstorm is too small and too fast for the Coriolis effect to matter. It comes from <em>tilting</em>. A sheared environment is full of horizontal vorticity: picture the lowest few kilometres as a deck of cards sliding over one another, a horizontal axis of spin lying across the wind. The updraft tilts that horizontal spin into the vertical, the way lifting one end of a rolling pencil stands it spinning on its tip. When the storm-relative inflow is <em>streamwise</em> — its horizontal vorticity pointing along the flow, which is precisely what high SRH measures — the tilted rotation lands right inside the updraft, and the updraft itself begins to spin. That is the mesocyclone.</p>
+
+      <p>Rotation, in turn, makes the supercell robust. Spinning air has lower pressure at its centre, so a mesocyclone hangs a region of low pressure in the mid-levels that <em>sucks</em> air up into the updraft, reinforcing it independently of surface buoyancy. The storm becomes partly self-sustaining — which is why supercells outlast everything else.</p>
+
+      <p>Whether a given day produces supercells depends on getting the <em>balance</em> of CAPE and shear right, and a single dimensionless number captures that balance: the <strong>bulk Richardson number</strong>.</p>
+
+      <div class="equation-block">
+        $$ R_b \;=\; \frac{\CAPE}{\tfrac12\,\abs{\Delta\vV}^2}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$R_b$</dt><dd>Bulk Richardson number — a dimensionless ratio of buoyant energy to shear kinetic energy. Both numerator and denominator carry units of $\unit{J\,kg^{-1}}$, so the ratio is a pure number.</dd>
+          <dt>$\CAPE$</dt><dd>The buoyant energy of §2 — the "fuel" in the numerator.</dd>
+          <dt>$\tfrac12\abs{\Delta\vV}^2$</dt><dd>The kinetic energy of the shear flow, built from the $0$–$6\unit{km}$ bulk-shear vector $\Delta\vV$ of §3; the "organisation" in the denominator. (The original Weisman–Klemp form measures $\Delta\vV$ between a mid-level mean and a near-surface mean, but the simple endpoint difference behaves the same way.)</dd>
+        </dl>
+      </aside>
+
+      <p>The number reads as a tug-of-war. Large $R_b$ (above roughly 50) means lots of CAPE but feeble shear — single cells and pulse storms. Small $R_b$ (below about 10) means shear overwhelms the buoyancy, tearing nascent updrafts apart before they organise. In the sweet spot in between — Weisman and Klemp's classic simulations place it at $R_b \approx 10$–$50$ — buoyancy and shear are matched, and the result is a supercell. It is a blunt instrument (it ignores how the shear is distributed with height, which the hodograph captures), but as a first cut at the day's storm mode it is remarkably serviceable.</p>
+
+      <p>When the mesocyclone tightens near the ground — by stretching the rotating column vertically, which spins it up the way a skater pulls in her arms — it can concentrate into a <dfn title="A violently rotating column of air in contact with the ground and a cloud base, the most intense vortex in the atmosphere.">tornado</dfn>. The full chain from mesocyclone to tornado involves the cold pool, near-ground baroclinic generation of fresh vorticity along the storm's rain-cooled boundaries, and a great deal that is still actively researched; high 0–1 km SRH is the best environmental predictor we have for whether a supercell will get there.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Mesoscale convective systems and cold pools</h2>
+
+      <p>Not every organised storm is a supercell. When many cells aggregate into a single weather system tens to hundreds of kilometres across, we call the whole thing a <strong>mesoscale convective system</strong> (MCS). The most familiar is the <strong>squall line</strong>: a long, narrow rope of thunderstorms, often hundreds of kilometres end to end, that sweeps across the landscape behind a continuous gust front, with heavy rain in the line and a broad shield of lighter "stratiform" rain trailing behind.</p>
+
+      <p>The organising principle of a squall line is its <strong>cold pool</strong>. Where a single cell's cold pool kills it, a line's cold pools merge into one continuous dome of dense, rain-chilled air. Its leading edge plows forward like a density current, and along that edge it lifts the warm, moist inflow to its LFC, continuously regenerating the line. The system becomes a self-propagating wall of convection that can outlive any of its constituent cells by many hours and travel for a thousand kilometres overnight.</p>
+
+      <p>There is a clean piece of physics here, called <dfn title="The principle that long-lived squall lines are favoured when the cold pool's circulation balances the low-level shear's, keeping the gust front updraft vertical and deep.">RKW theory</dfn> after Rotunno, Klemp, and Weisman (1988). The cold pool generates its own horizontal vorticity at the gust front — its dense leading edge tends to roll the air backward, tilting updrafts back over the cold air. The low-level environmental shear generates horizontal vorticity of the opposite sign, tending to tilt updrafts forward. When the two roughly balance, the lifting at the gust front is deepest and most upright, and the line is strongest and longest-lived. A line is "optimal" when the cold pool's strength is matched to the low-level shear — the squall-line cousin of the CAPE-versus-shear balance behind supercells.</p>
+
+      <aside class="jargon">
+        <h4>The cold pool as a density current</h4>
+        <p>A cold pool spreading under warmer air is the atmosphere's version of dense fluid sliding along a floor — the same physics as a dam break or salt water creeping under fresh. Its propagation speed scales as $c \sim \sqrt{g\,\Delta\rho/\rho\,\cdot h}$, with $\Delta\rho/\rho$ the fractional density deficit of the cold air and $h$ the depth of the pool. A colder, deeper pool runs out faster and lifts inflow harder. This single scaling sets the speed of a squall line's gust front and the strength of the lifting that keeps the line alive — and it is why the gusty "outflow" you feel minutes before a summer storm arrives is genuinely a small cold front, sharp-edged and a few degrees cooler.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>The hurricane as a Carnot engine</h2>
+
+      <p>Zoom out one last time, to the largest moist storm on the planet. A hurricane — a tropical cyclone — is a vast rotating system hundreds of kilometres across, but its physics is, beautifully, the physics of a heat engine. Kerry Emanuel's insight was that a mature hurricane runs a thermodynamic cycle that maps almost exactly onto the Carnot cycle you met in introductory thermodynamics.</p>
+
+      <p>Trace the cycle. Air spirals inward along the sea surface, and as it accelerates toward the eyewall its pressure drops; that low pressure lets the warm ocean evaporate sea water into the inflowing air, loading it with latent heat at the high temperature $T_s$ of the sea surface — the engine's <em>hot</em> heat intake. The charged air then turns sharply upward in the eyewall and ascends, releasing that latent heat as it condenses into the towering cloud wall. At the top, near 15 km, it flows outward and radiates heat to space at the cold temperature $T_o$ of the outflow — the engine's <em>cold</em> exhaust. The work the cycle extracts goes into the swirling winds. The fraction of heat intake that becomes work is, as for any heat engine, the Carnot efficiency $(T_s - T_o)/T_s$, and with $T_s \approx 300\unit{K}$ and $T_o \approx 200\unit{K}$ that is about a third — generous, as heat engines go.</p>
+
+      <p>Setting the power the ocean delivers against the power friction dissipates at the surface gives the storm's top speed, the <strong>potential intensity</strong>. One subtlety raises the ceiling: the kinetic energy the storm dissipates against the sea is itself converted back into heat right at the warm end of the cycle and recycled — the "dissipative heating" that Bister and Emanuel (1998) identified. Accounting for it replaces $T_s$ by $T_o$ in the efficiency denominator, turning the bare Carnot $(T_s-T_o)/T_s$ into the slightly larger $(T_s-T_o)/T_o$ that appears below:</p>
+
+      <div class="equation-block">
+        $$ V_{\mathrm{pot}}^2 \;=\; \frac{C_k}{C_D}\,\frac{T_s - T_o}{T_o}\,\bigl(k_0^{*} - k\bigr). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$V_{\mathrm{pot}}$</dt><dd>Potential intensity — the maximum sustained surface wind speed ($\unit{m\,s^{-1}}$) the environment can support. Warm tropical oceans give $V_{\mathrm{pot}}$ of $70$–$90\unit{m\,s^{-1}}$, an upper bound the strongest real hurricanes approach.</dd>
+          <dt>$T_s,\ T_o$</dt><dd>Sea-surface temperature and outflow temperature (K). The factor $(T_s - T_o)/T_o$ is the Carnot efficiency $(T_s-T_o)/T_s$ enhanced by dissipative heating — the engine runs hotter, and stronger, the warmer the ocean and the colder the high-level outflow.</dd>
+          <dt>$k_0^{*} - k$</dt><dd>The air–sea enthalpy disequilibrium ($\unit{J\,kg^{-1}}$): the difference between the saturation enthalpy $k_0^{*}$ of air at the sea-surface temperature and the actual enthalpy $k$ of the near-surface air. It is the thermodynamic "fuel" the ocean offers — large when the sea is warm and the air above it is relatively dry.</dd>
+          <dt>$C_k,\ C_D$</dt><dd>The dimensionless surface exchange coefficients for enthalpy and for momentum (drag). The ratio $C_k/C_D$ — how efficiently the sea surface gives up heat compared with how hard it brakes the wind — is order one and is, frustratingly, one of the least certain quantities in the theory.</dd>
+        </dl>
+      </aside>
+
+      <p>Every factor tells a physical story. The efficiency $(T_s - T_o)/T_o$ is the (dissipative-heating-enhanced) Carnot prefactor: warmer seas and colder outflow make a more efficient engine. The disequilibrium $k_0^{*} - k$ is how much energy the ocean can actually hand over per kilogram of air — the fuel supply. And $C_k/C_D$ is the gearing between drawing heat in and losing momentum to friction. Multiply them and you get the square of a wind speed, because at peak intensity the rate at which the engine generates kinetic energy exactly balances the rate at which surface drag, $\propto C_D V^3$, dissipates it.</p>
+
+      <p>This is why hurricanes need warm water — roughly $26\degC$ at the surface and through a deep enough layer — and why they weaken at landfall the instant the ocean fuel is cut off. It is also why a warming ocean raises the ceiling on how intense the strongest storms can become: $V_{\mathrm{pot}}$ rises with sea-surface temperature. The same equation that bounds today's hurricanes is one of the cleaner threads connecting climate change to storm severity.</p>
+
+      <aside class="note">
+        <h4>Note · a ceiling, not a forecast</h4>
+        <p>Potential intensity is an <em>upper bound</em>, the most a hurricane could achieve in a given environment. Most storms never reach it: dry air entrained from outside, the cold wake a hurricane stirs up from the deep ocean beneath itself, vertical wind shear that ventilates the warm core, and a storm's own internal disorganisation all hold real intensity below the ceiling. $V_{\mathrm{pot}}$ is to a hurricane what $w_{\max} = \sqrt{2\,\CAPE}$ is to a thunderstorm — the clean theoretical limit that reality, with all its leaks and losses, falls short of but is genuinely governed by.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <p>Two numbers, then, have carried this chapter across nine orders of magnitude in storm size. CAPE — the buoyant area on a sounding — sets how hard air can rise, from a single summer cell to the eyewall of a hurricane. Shear, read as the shape of a hodograph, decides what that rising air organises into. And at both the smallest scale and the largest, the deepest description is thermodynamic: a thunderstorm is latent heat converting buoyancy into vertical motion, and a hurricane is that same conversion run as a steady Carnot engine between a warm sea and the cold sky. The next chapter pulls back to the planetary scale, where the heat these storms move is one term in the global circulation that sets climate itself.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">P. Markowski and Y. Richardson.</span> <em>Mesoscale Meteorology in Midlatitudes</em>, Wiley-Blackwell 2010 — the standard modern text; buoyancy and CAPE (Ch. 2), storm-relative helicity and the hodograph (Ch. 8), supercells and the bulk Richardson number (Ch. 8), MCSs and cold pools (Ch. 9).</li>
+          <li><span class="src-title">K. A. Emanuel.</span> <em>Atmospheric Convection</em>, Oxford University Press 1994 — the definitive treatment of moist convection: parcel theory and stability (Ch. 6), CAPE and graphical techniques (Ch. 5–6), and the dynamics of precipitating convection (Ch. 11). The Carnot-engine view of the tropical cyclone is developed in Emanuel's 1986 paper below.</li>
+          <li><span class="src-title">K. A. Emanuel.</span> "An Air–Sea Interaction Theory for Tropical Cyclones. Part I." <em>Journal of the Atmospheric Sciences</em> 43(6), 585–604 (1986) — the original derivation of potential intensity from the Carnot-cycle argument.</li>
+          <li><span class="src-title">M. Bister and K. A. Emanuel.</span> "Dissipative heating and hurricane intensity." <em>Meteorology and Atmospheric Physics</em> 65, 233–240 (1998) — the now-standard closed form of the potential-intensity equation used in §7.</li>
+          <li><span class="src-title">H. B. Bluestein.</span> <em>Synoptic–Dynamic Meteorology in Midlatitudes, Vol. II: Observations and Theory of Weather Systems</em>, Oxford University Press 1993 — thorough coverage of convective storms, squall lines, and mesoscale organisation.</li>
+          <li><span class="src-title">R. Rotunno, J. B. Klemp, and M. L. Weisman.</span> "A theory for strong, long-lived squall lines." <em>Journal of the Atmospheric Sciences</em> 45(3), 463–485 (1988) — the cold-pool-versus-shear balance (RKW theory) behind §6.</li>
+          <li><span class="src-title">R. Davies-Jones, D. Burgess, and M. Foster.</span> "Test of helicity as a tornado forecast parameter." <em>Preprints, 16th Conf. on Severe Local Storms</em>, AMS, 588–592 (1990) — the storm-relative helicity diagnostic and its geometric reading on the hodograph.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="07-midlatitude-systems.html"><span class="label">← Previous</span>VII · Mid-latitude Weather Systems</a>
+      <a class="next" href="09-general-circulation-climate.html"><span class="label">Next chapter</span>IX · The General Circulation and Climate →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/storm-hodograph.js"></script>
+</body>
+</html>

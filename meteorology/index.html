@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Meteorology: The Atmosphere in Motion</title>
+  <meta name="description" content="A 10-chapter introduction to meteorology — the atmosphere as a moist, compressible fluid on a rotating planet, from hydrostatic balance and thermodynamics through balanced flow, baroclinic storms, the general circulation, and machine-learning weather prediction." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../">← Books</a>
+      <span class="crumb-section">The Atmosphere in Motion</span>
+    </header>
+
+    <article>
+      <p class="cover-eyebrow">An Introduction</p>
+      <h1 class="cover-title">Meteorology</h1>
+      <p class="cover-subtitle">Ten chapters on the atmosphere as a moist, compressible fluid on a rotating planet — from hydrostatic balance to baroclinic storms to machine-learning forecasts. With something to play with in every chapter.</p>
+      <p class="cover-meta"><strong>10 chapters</strong> · in browser · self-contained</p>
+
+      <hr class="section-rule" />
+
+      <div class="toc-wrap">
+        <ol class="toc">
+          <li>
+            <a href="chapters/01-atmosphere-as-system.html">
+              <span class="toc-num">I</span>
+              <span>
+                <span class="toc-title">The Atmosphere as a System</span>
+                <span class="toc-desc">Composition, the vertical structure of the layers, the ideal-gas and hydrostatic balance that fix pressure with height, and the scale height that sets the atmosphere's thinness.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/02-thermodynamics.html">
+              <span class="toc-num">II</span>
+              <span>
+                <span class="toc-title">Atmospheric Thermodynamics</span>
+                <span class="toc-desc">The first law for a moving parcel, potential temperature, dry and moist adiabats, the Clausius–Clapeyron law, and the stability that decides whether air rises — read off a Skew-T.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/03-radiation-energy-balance.html">
+              <span class="toc-num">III</span>
+              <span>
+                <span class="toc-title">Radiation and the Energy Balance</span>
+                <span class="toc-desc">Blackbody emission, the Stefan–Boltzmann and Schwarzschild laws, the emission temperature of the planet, and how a gray absorbing atmosphere warms the surface — the greenhouse effect, derived.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/04-equations-of-motion.html">
+              <span class="toc-num">IV</span>
+              <span>
+                <span class="toc-title">The Equations of Motion</span>
+                <span class="toc-desc">The material derivative, Newton's second law in a rotating frame, the Coriolis and centrifugal forces, continuity, and the scale analysis that turns the full equations into the ones forecasters use.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/05-balanced-flow.html">
+              <span class="toc-num">V</span>
+              <span>
+                <span class="toc-title">Balanced Flow and Vorticity</span>
+                <span class="toc-desc">Geostrophic and gradient wind, the thermal wind that ties wind shear to temperature gradients, vorticity and Ertel's potential vorticity, and the Rossby waves PV makes possible.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/06-boundary-layer-turbulence.html">
+              <span class="toc-num">VI</span>
+              <span>
+                <span class="toc-title">The Boundary Layer and Turbulence</span>
+                <span class="toc-desc">Reynolds averaging and turbulent fluxes, the Ekman spiral that turns the wind toward low pressure near the ground, the logarithmic surface layer, and Monin–Obukhov similarity.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/07-midlatitude-systems.html">
+              <span class="toc-num">VII</span>
+              <span>
+                <span class="toc-title">Mid-latitude Weather Systems</span>
+                <span class="toc-desc">Quasi-geostrophic theory, the omega equation and Q-vectors, baroclinic instability through the Eady model, and how growing waves become the cyclones and fronts of the daily map.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/08-moist-convection-mesoscale.html">
+              <span class="toc-num">VIII</span>
+              <span>
+                <span class="toc-title">Moist Convection and Mesoscale Storms</span>
+                <span class="toc-desc">Buoyancy and CAPE, the role of wind shear, ordinary cells versus supercells and squall lines, storm-relative helicity, and the hurricane read as a Carnot heat engine.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/09-general-circulation-climate.html">
+              <span class="toc-num">IX</span>
+              <span>
+                <span class="toc-title">The General Circulation and Climate</span>
+                <span class="toc-desc">Hadley, Ferrel, and polar cells, the angular-momentum budget that builds the jet, eddy transports, ENSO and monsoons, and a one-dimensional energy-balance model with ice–albedo feedback.</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="chapters/10-numerical-prediction-frontier.html">
+              <span class="toc-num">X</span>
+              <span>
+                <span class="toc-title">Numerical Prediction and the Frontier</span>
+                <span class="toc-desc">Discretizing the primitive equations, the CFL condition, data assimilation, chaos and the Lorenz attractor, ensemble forecasting, and the machine-learning models now rivaling the great physics codes.</span>
+              </span>
+            </a>
+          </li>
+        </ol>
+      </div>
+
+      <hr class="ornament" />
+
+      <p style="font-family: var(--sans); font-size: 0.85rem; color: var(--text-muted); text-align: center; max-width: 38rem;">
+        Conventions used throughout: SI units, with pressure quoted in hectopascals (hPa, equal to millibars). Vectors in bold ($\mathbf{u}$, $\mathbf{V}$). Height $z$ is the vertical coordinate in Chapters I–III and VI; pressure $p$ with geopotential $\Phi$ is the vertical coordinate for the large-scale dynamics of Chapters V, VII, and IX, with the switch flagged where it happens. Reference constants: $g = 9.81\ \mathrm{m\,s^{-2}}$, $R_d = 287\ \mathrm{J\,kg^{-1}K^{-1}}$, $c_p = 1004\ \mathrm{J\,kg^{-1}K^{-1}}$, $\Omega = 7.292\times10^{-5}\ \mathrm{s^{-1}}$, $\sigma = 5.67\times10^{-8}\ \mathrm{W\,m^{-2}K^{-4}}$, reference pressure $p_0 = 1000\ \mathrm{hPa}$. The rotating-frame conventions are Northern Hemisphere, Coriolis parameter $f > 0$. Sources cited inline are real and verifiable — textbook section or arXiv ID given where appropriate. The audience is assumed comfortable with multivariable calculus and introductory physics.
+      </p>
+    </article>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="book.js"></script>
+</body>
+</html>
