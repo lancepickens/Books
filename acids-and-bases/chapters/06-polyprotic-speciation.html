@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter VI · Polyprotic Acids and Speciation — Acids and Bases: A Primer</title>
+  <meta name="description" content="Chapter 6: stepwise dissociation of polyprotic acids, distribution (alpha) functions, log-concentration (Sillén) diagrams, the carbonate system, and phosphate buffering." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter VI of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter VI</p>
+      <h1 class="chapter-title">Polyprotic Acids and Speciation</h1>
+      <p class="lede">An acid with several protons does not surrender them all at once; it lets them go one at a time, and at any pH the solution holds a definite blend of forms whose recipe is fixed by the acid constants alone.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>Carbonic, phosphoric, sulfuric, citric — many of the most consequential acids carry more than one ionizable proton. Each proton has its own dissociation constant, and they come off in a strict order, the first far more easily than the second, the second more easily than the third. The practical question is no longer "is it dissociated?" but "which of its several forms am I looking at, and in what proportions?" The answer is a set of fractions that depend on nothing but the pH and the acid's $\mathrm{p}K_{\mathrm{a}}$ values.</p>
+          <p>This chapter turns that observation into two pictures. The first, a <em>distribution diagram</em>, plots the fraction of each species against pH; the second, a <em>log-concentration (Sillén) diagram</em>, plots the same information on a logarithmic axis where every curve becomes a set of straight lines meeting at the $\mathrm{p}K_{\mathrm{a}}$ values. Armed with both, we read off the carbonate system that buffers the ocean and the blood, and the phosphate system that buffers the inside of every cell.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Polyprotic acid</dt><dd>An acid with more than one ionizable proton (diprotic, triprotic, …).</dd>
+          <dt>Diprotic acid</dt><dd>An acid with two ionizable protons, e.g. $\mathrm{H_2CO_3}$.</dd>
+          <dt>Triprotic acid</dt><dd>An acid with three, e.g. $\mathrm{H_3PO_4}$.</dd>
+          <dt>Stepwise dissociation</dt><dd>The loss of protons one at a time, each step with its own constant.</dd>
+          <dt>$K_{\mathrm{a}1},\,K_{\mathrm{a}2},\,K_{\mathrm{a}3}$</dt><dd>The successive acid dissociation constants, in the order the protons leave.</dd>
+          <dt>Speciation</dt><dd>The distribution of total dissolved matter among its several chemical forms.</dd>
+          <dt>Species</dt><dd>A single defined chemical form, e.g. $\mathrm{HCO_3^-}$, as distinct from total carbonate.</dd>
+          <dt>Distribution function</dt><dd>The fraction $\alpha_j$ of total acid present as species $j$ at a given pH.</dd>
+          <dt>$\alpha_j$ (alpha)</dt><dd>The mole fraction of species $j$; all the $\alpha_j$ sum to 1.</dd>
+          <dt>Formal concentration</dt><dd>The total concentration of acid added, summed over all its forms, $C$.</dd>
+          <dt>Amphiprotic species</dt><dd>An intermediate form able to act as both acid and base, e.g. $\mathrm{HCO_3^-}$.</dd>
+          <dt>Distribution diagram</dt><dd>A plot of every $\alpha_j$ against pH.</dd>
+          <dt>Sillén diagram</dt><dd>A plot of $\log_{10}$ of each concentration against pH; curves become straight-line segments.</dd>
+          <dt>Crossover point</dt><dd>A pH where two species are equally abundant; it falls at a $\mathrm{p}K_{\mathrm{a}}$.</dd>
+          <dt>Carbonate system</dt><dd>The coupled equilibria of $\mathrm{CO_2}$, $\mathrm{H_2CO_3^*}$, $\mathrm{HCO_3^-}$, and $\mathrm{CO_3^{2-}}$.</dd>
+          <dt>$\mathrm{H_2CO_3^*}$</dt><dd>The lumped sum of dissolved $\mathrm{CO_2(aq)}$ and true $\mathrm{H_2CO_3}$, treated as one species.</dd>
+          <dt>Henry's law</dt><dd>The proportionality between a dissolved gas's concentration and its partial pressure.</dd>
+          <dt>$K_{\mathrm{H}}$</dt><dd>Henry's-law solubility constant, here for $\mathrm{CO_2}$ in water (M·atm⁻¹).</dd>
+          <dt>Open system</dt><dd>One in equilibrium with a fixed gas reservoir (the atmosphere); $p_{\mathrm{CO_2}}$ is held constant.</dd>
+          <dt>Closed system</dt><dd>One sealed from the atmosphere; total carbonate is held constant instead.</dd>
+          <dt>Alkalinity</dt><dd>The acid-neutralizing capacity of a water, dominated by $\mathrm{HCO_3^-}$ and $\mathrm{CO_3^{2-}}$.</dd>
+          <dt>Ocean acidification</dt><dd>The fall in seawater pH as rising atmospheric $\mathrm{CO_2}$ adds carbonic acid.</dd>
+          <dt>Buffer region</dt><dd>The pH band around a $\mathrm{p}K_{\mathrm{a}}$ where a conjugate pair resists pH change.</dd>
+          <dt>Isoelectric point</dt><dd>The pH at which an amphiprotic species is at its maximum fraction.</dd>
+          <dt>Mass balance</dt><dd>The bookkeeping statement that the species fractions account for all the acid.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>Protons leave one at a time, and the first leaves most easily</h2>
+
+      <p>A <dfn title="An acid with more than one ionizable proton.">polyprotic acid</dfn> dissociates in steps. For a <dfn title="An acid with two ionizable protons.">diprotic acid</dfn> $\mathrm{H_2A}$ there are two equilibria, each with its own constant:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{H_2A} \;\eqm\; \mathrm{HA^-} + \Hp \quad(K_{\mathrm{a}1}), \qquad \mathrm{HA^-} \;\eqm\; \mathrm{A^{2-}} + \Hp \quad(K_{\mathrm{a}2}). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathrm{H_2A}$</dt><dd>The fully protonated acid — both protons still attached.</dd>
+          <dt>$\mathrm{HA^-}$</dt><dd>The singly deprotonated intermediate; the conjugate base of $\mathrm{H_2A}$ and the conjugate acid of $\mathrm{A^{2-}}$.</dd>
+          <dt>$\mathrm{A^{2-}}$</dt><dd>The fully deprotonated form, bearing both negative charges.</dd>
+          <dt>$K_{\mathrm{a}1},\,K_{\mathrm{a}2}$</dt><dd>The first and second dissociation constants, $K_{\mathrm{a}1}=\conc{HA^-}\conc{H^+}/\conc{H_2A}$ and $K_{\mathrm{a}2}=\conc{A^{2-}}\conc{H^+}/\conc{HA^-}$.</dd>
+        </dl>
+      </aside>
+
+      <p>Without exception, $K_{\mathrm{a}1} \gg K_{\mathrm{a}2}$ — successive constants fall by several powers of ten (for carbonic acid, $\mathrm{p}K_{\mathrm{a}}$ jumps from $6.35$ to $10.33$, a factor of $\sim\!10^4$). The reason is electrostatic and entirely intuitive: pulling a positively charged proton away from a neutral molecule is easier than pulling it away from an ion that is already negative. After the first proton leaves, the residual negative charge tugs the next proton back, so it clings far more tightly. Each successive ionization fights a larger accumulated charge, so $K_{\mathrm{a}1} > K_{\mathrm{a}2} > K_{\mathrm{a}3} > \cdots$ always holds.</p>
+
+      <aside class="jargon">
+        <h4>How big is the gap?</h4>
+        <p>A useful rule of thumb: for an acid where the ionizing groups are far apart and don't talk electronically, successive $\mathrm{p}K_{\mathrm{a}}$ values differ by roughly $4$–$5$ units (the carbonic and phosphoric systems both show this). When the groups sit close together — adjacent carbons, as in oxalic acid — the gap shrinks because the charge is more keenly felt; when a single statistical correction dominates, it can be as small as $\log_{10}4\approx0.6$. The widening gap is the fingerprint of charge repulsion, not of any change in the bond itself.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Distribution functions for a diprotic acid</h2>
+
+      <p>Suppose we add a total, or <dfn title="The total concentration of acid summed over all its protonation states.">formal</dfn>, concentration $C$ of the acid. It is now spread across three forms, and <dfn title="The statement that the species fractions account for all the acid added.">mass balance</dfn> says they must add up:</p>
+
+      <div class="equation-block">
+        $$ C = \conc{H_2A} + \conc{HA^-} + \conc{A^{2-}}. $$
+      </div>
+
+      <p>We want the <dfn title="The fraction of total acid present as a given species at a given pH.">distribution function</dfn> $\alpha_j$ — the fraction of $C$ present as each species. Using the two equilibrium expressions to write $\conc{HA^-}$ and $\conc{A^{2-}}$ in terms of $\conc{H_2A}$ and $\conc{H^+}$, a common denominator $D$ emerges:</p>
+
+      <div class="equation-block">
+        $$ D = \conc{H^+}^2 + K_{\mathrm{a}1}\conc{H^+} + K_{\mathrm{a}1}K_{\mathrm{a}2}. $$
+      </div>
+
+      <p>and the three fractions are</p>
+
+      <div class="equation-block">
+        $$ \alpha_0 = \frac{\conc{H^+}^2}{D}, \qquad \alpha_1 = \frac{K_{\mathrm{a}1}\conc{H^+}}{D}, \qquad \alpha_2 = \frac{K_{\mathrm{a}1}K_{\mathrm{a}2}}{D}, $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\alpha_0$</dt><dd>Fraction present as the fully protonated $\mathrm{H_2A}$ — the subscript counts protons <em>lost</em>, so $\alpha_0$ is "zero lost".</dd>
+          <dt>$\alpha_1$</dt><dd>Fraction present as the intermediate $\mathrm{HA^-}$ (one proton lost).</dd>
+          <dt>$\alpha_2$</dt><dd>Fraction present as the fully deprotonated $\mathrm{A^{2-}}$ (two lost).</dd>
+          <dt>$D$</dt><dd>The shared denominator — a sum of one term per species, built from powers of $\conc{H^+}$ and the cumulative products of the $\Ka$.</dd>
+        </dl>
+      </aside>
+
+      <p>Each numerator is just the denominator's matching term, so by construction</p>
+
+      <div class="equation-block">
+        $$ \alpha_0 + \alpha_1 + \alpha_2 = \frac{D}{D} = 1. $$
+      </div>
+
+      <p>These functions depend only on $\conc{H^+}$ (hence pH) and the constants — not on $C$. Dilute the solution tenfold and the <em>fractions</em> are unchanged; only the absolute concentrations $\conc{H_2A}=\alpha_0 C$ and so on scale down. That independence is what makes the distribution diagram a property of the acid, plotted once and read forever.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The general $n$-protic pattern and where each species reigns</h2>
+
+      <p>The structure generalizes cleanly. For a <dfn title="An acid with three ionizable protons.">triprotic acid</dfn> $\mathrm{H_3A}$ the denominator gains a cubic term and a triple product,</p>
+
+      <div class="equation-block">
+        $$ D = \conc{H^+}^3 + K_{\mathrm{a}1}\conc{H^+}^2 + K_{\mathrm{a}1}K_{\mathrm{a}2}\conc{H^+} + K_{\mathrm{a}1}K_{\mathrm{a}2}K_{\mathrm{a}3}, $$
+      </div>
+
+      <p>and the four fractions are the four terms, each over $D$:</p>
+
+      <div class="equation-block">
+        $$ \alpha_0 = \frac{\conc{H^+}^3}{D},\quad \alpha_1 = \frac{K_{\mathrm{a}1}\conc{H^+}^2}{D},\quad \alpha_2 = \frac{K_{\mathrm{a}1}K_{\mathrm{a}2}\conc{H^+}}{D},\quad \alpha_3 = \frac{K_{\mathrm{a}1}K_{\mathrm{a}2}K_{\mathrm{a}3}}{D}. $$
+      </div>
+
+      <p>The recipe is always the same: the term for the species that has lost $j$ protons is $\big(\prod_{i\le j}K_{\mathrm{a}i}\big)\conc{H^+}^{\,n-j}$, and $\alpha_j$ is that term over the sum of all of them. The widget below builds $D$ exactly this way from the cumulative products of the $\Ka$.</p>
+
+      <p>The pattern also tells us instantly where the curves cross. At the pH where two neighbouring species are equally abundant, their two $D$-terms are equal. For the diprotic case, $\alpha_0=\alpha_1$ requires $\conc{H^+}^2 = K_{\mathrm{a}1}\conc{H^+}$, i.e. $\conc{H^+}=K_{\mathrm{a}1}$, so</p>
+
+      <div class="equation-block">
+        $$ \alpha_0 = \alpha_1 \;\text{ at }\; \pH = \mathrm{p}K_{\mathrm{a}1}, \qquad \alpha_1 = \alpha_2 \;\text{ at }\; \pH = \mathrm{p}K_{\mathrm{a}2}. $$
+      </div>
+
+      <p>Each <dfn title="A pH where two species are equally abundant; it lies at a pKa.">crossover</dfn> sits exactly on a $\mathrm{p}K_{\mathrm{a}}$. Between two crossovers a single species dominates: below $\mathrm{p}K_{\mathrm{a1}}$ the fully protonated form wins, above $\mathrm{p}K_{\mathrm{an}}$ the fully deprotonated form wins, and each intermediate has a window of dominance between two consecutive $\mathrm{p}K_{\mathrm{a}}$ values. This is the same "above its $\mathrm{p}K_{\mathrm{a}}$, the acid is deprotonated" rule of Chapter II, applied one rung at a time.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The amphiprotic intermediate</h2>
+
+      <p>The middle species of a diprotic acid, $\mathrm{HA^-}$, is curious: it is the conjugate base of $\mathrm{H_2A}$ <em>and</em> the conjugate acid of $\mathrm{A^{2-}}$. It is <dfn title="Able to act as either acid or base depending on its partner.">amphiprotic</dfn>, like water. Where is it most abundant, and what pH does a solution of it alone produce? Its fraction $\alpha_1$ peaks where $\alpha_0=\alpha_2$, and a short calculation from the equilibrium expressions gives a clean answer for the pH of a pure intermediate solution:</p>
+
+      <div class="equation-block">
+        $$ \pH \approx \half\big(\mathrm{p}K_{\mathrm{a}1} + \mathrm{p}K_{\mathrm{a}2}\big). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathrm{p}K_{\mathrm{a}1},\,\mathrm{p}K_{\mathrm{a}2}$</dt><dd>The $\mathrm{p}K_{\mathrm{a}}$ values bracketing the intermediate — the steps that make it and that consume it.</dd>
+          <dt>$\approx$</dt><dd>The result is exact in the limit that the intermediate's own concentration dwarfs $\conc{H^+}$, $\conc{OH^-}$, and $K_{\mathrm{a}1}$; it is an excellent approximation for moderately concentrated solutions.</dd>
+        </dl>
+      </aside>
+
+      <p>The intermediate sets a pH halfway between its flanking constants because it is being consumed equally by its acid and its base reactions; the geometric mean of the two constants is the balance point. For sodium bicarbonate, $\tfrac12(6.35+10.33)=8.34$, which is why a spoon of baking soda in water lands near pH $8.3$. The same logic explains why the amino acid <dfn title="The pH at which an amphiprotic species sits at maximum fraction and zero net charge.">isoelectric point</dfn> falls midway between the two relevant $\mathrm{p}K_{\mathrm{a}}$ values.</p>
+
+      <aside class="note">
+        <h4>Why the intermediate never reaches 100%</h4>
+        <p>Unlike the end species, the amphiprotic form has a ceiling below 1. Its maximum fraction is $\alpha_1^{\max} = 1/\!\big(1 + 2\sqrt{K_{\mathrm{a}2}/K_{\mathrm{a}1}}\big)$, reached at $\pH=\tfrac12(\mathrm{p}K_{\mathrm{a}1}+\mathrm{p}K_{\mathrm{a}2})$. The wider the gap between the two constants, the closer this gets to 1: for carbonic acid ($\Delta\mathrm{p}K_{\mathrm{a}}=3.98$) the bicarbonate peak reaches about $98\%$, so over a broad mid-pH band the solution is essentially all $\mathrm{HCO_3^-}$. For an acid whose constants are close, the intermediate never dominates cleanly.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Log-concentration (Sillén) diagrams</h2>
+
+      <p>The distribution diagram answers "what fraction?"; for "what concentration?" across many orders of magnitude, the <dfn title="A plot of log10 concentration of each species against pH, due to L. G. Sillén.">Sillén diagram</dfn> is the master tool. Plot $\log_{10}\conc{\text{species}}$ on the vertical axis against pH on the horizontal. Because $\conc{H_2A}=\alpha_0 C$ and the $\alpha$'s are ratios of $\conc{H^+}$ powers, each species' curve becomes a chain of straight-line segments.</p>
+
+      <p>Consider $\mathrm{HA^-}$ far below $\mathrm{p}K_{\mathrm{a1}}$, where $\conc{H_2A}\approx C$ dominates. Then $\conc{HA^-}=K_{\mathrm{a}1} C/\conc{H^+}$, so</p>
+
+      <div class="equation-block">
+        $$ \log_{10}\conc{HA^-} = \log_{10}(K_{\mathrm{a}1} C) + \pH \quad\Longrightarrow\quad \text{slope} = +1. $$
+      </div>
+
+      <p>The slope of a species' log-concentration line is simply the difference between its number of lost protons and the number lost by the dominant species at that pH. As pH climbs past each $\mathrm{p}K_{\mathrm{a}}$, the dominant species changes and every slope shifts by one. The result is a fan of lines of slope $0,\ \pm1,\ \pm2$ that hinge at the $\mathrm{p}K_{\mathrm{a}}$ points:</p>
+
+      <div class="equation-block">
+        $$ \text{slope of }\log_{10}\conc{\text{species }j} = (\text{protons lost by the dominant form}) - j. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>slope $0$</dt><dd>The currently dominant species, whose concentration is flat at $\approx \log_{10}C$.</dd>
+          <dt>slope $\pm1,\pm2$</dt><dd>Minor species; each unit of slope is one proton's difference from the dominant form. Crossings happen at the $\mathrm{p}K_{\mathrm{a}}$, where two lines meet $\log_{10}(C/2)$ below the plateau.</dd>
+        </dl>
+      </aside>
+
+      <p>Sillén's insight, from the 1950s, was that one can <em>sketch</em> these systems by hand: draw the horizontal $\log C$ line, mark the $\mathrm{p}K_{\mathrm{a}}$ points on it, drop the $\log\Kw$ lines for $\mathrm{H^+}$ and $\mathrm{OH^-}$, and connect straight segments of integer slope. The equilibrium pH of any mixture is found graphically as the pH where a proton-balance condition is met — a charge or proton-condition line crosses the relevant species curve. The widget plots the rigorous $\alpha$ curves; mentally replacing them with straight log-segments is the Sillén shortcut.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The carbonate system: ocean and blood</h2>
+
+      <p>The most important polyprotic system on Earth's surface is carbonic acid. Dissolved $\mathrm{CO_2}$ hydrates to a little true carbonic acid; because the two are hard to separate experimentally, they are lumped into a single species $\mathrm{H_2CO_3^*}$ that then dissociates twice:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{H_2CO_3^*} \;\eqm\; \mathrm{HCO_3^-} + \Hp \;(\mathrm{p}K_{\mathrm{a}1} = 6.35), \qquad \mathrm{HCO_3^-} \;\eqm\; \mathrm{CO_3^{2-}} + \Hp \;(\mathrm{p}K_{\mathrm{a}2} = 10.33). $$
+      </div>
+
+      <p>In an <dfn title="A solution kept in equilibrium with a fixed atmospheric gas reservoir.">open system</dfn> — water in contact with the air — the dissolved $\mathrm{CO_2}$ is fixed by <dfn title="The proportionality between dissolved gas concentration and its partial pressure.">Henry's law</dfn>:</p>
+
+      <div class="equation-block">
+        $$ \conc{H_2CO_3^*} = K_{\mathrm{H}}\,p_{\mathrm{CO_2}}, \qquad K_{\mathrm{H}} \approx 0.034\,\mathrm{M\,atm^{-1}} \;(25\,\degC). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$K_{\mathrm{H}}$</dt><dd>Henry's-law solubility constant for $\mathrm{CO_2}$ in water, $\approx0.034\,\mathrm{M\,atm^{-1}}$ (reported values $3.1$–$3.4\times10^{-2}$).</dd>
+          <dt>$p_{\mathrm{CO_2}}$</dt><dd>Partial pressure of $\mathrm{CO_2}$ in the gas above the water, in atm (today $\approx4\times10^{-4}$ atm).</dd>
+          <dt>$\mathrm{H_2CO_3^*}$</dt><dd>The lumped sum of $\mathrm{CO_2(aq)}$ and true $\mathrm{H_2CO_3}$; the $\mathrm{p}K_{\mathrm{a}1}$ quoted is for this lumped species.</dd>
+        </dl>
+      </aside>
+
+      <p>At blood pH, $7.4$, the diprotic $\alpha$ functions with these constants give a striking partition: bicarbonate overwhelmingly dominates. Plugging $\conc{H^+}=10^{-7.4}$ into $D$ yields</p>
+
+      <div class="equation-block">
+        $$ \alpha(\mathrm{H_2CO_3^*}) \approx 0.08, \qquad \alpha(\mathrm{HCO_3^-}) \approx 0.92, \qquad \alpha(\mathrm{CO_3^{2-}}) \approx 0.001 \quad (\pH = 7.4). $$
+      </div>
+
+      <p>So blood's carbonate pool is about $92\%$ $\mathrm{HCO_3^-}$, $8\%$ $\mathrm{H_2CO_3^*}$, and a negligible trace of $\mathrm{CO_3^{2-}}$ — exactly the conjugate pair that makes bicarbonate the body's principal blood buffer (the lungs control $\conc{H_2CO_3^*}$ via $p_{\mathrm{CO_2}}$, the kidneys control $\conc{HCO_3^-}$). At the lower crossover, $\pH=\mathrm{p}K_{\mathrm{a}1}=6.35$, the first two are equal, $\conc{H_2CO_3^*}=\conc{HCO_3^-}$, with $\mathrm{CO_3^{2-}}$ down near $5\times10^{-5}$ of the total; at $\pH=\mathrm{p}K_{\mathrm{a}2}=10.33$ the upper pair are equal, $\conc{HCO_3^-}=\conc{CO_3^{2-}}$.</p>
+
+      <aside class="note">
+        <h4>Ocean acidification, in one equation</h4>
+        <p>Surface seawater is an open system at $\pH\approx8.1$, so it sits in the bicarbonate plateau, with $\mathrm{CO_3^{2-}}$ a minor but biologically vital component (shell-builders need it). Raising atmospheric $p_{\mathrm{CO_2}}$ raises $\conc{H_2CO_3^*}$ through Henry's law; the added carbonic acid releases $\mathrm{H^+}$, the pH falls, and — by Le Châtelier on the second step — the extra $\mathrm{H^+}$ converts $\mathrm{CO_3^{2-}}$ back to $\mathrm{HCO_3^-}$. Since pre-industrial times surface-ocean pH has fallen about $0.1$ unit (a $\sim\!30\%$ rise in $\conc{H^+}$), and carbonate ion has dropped accordingly. The chemistry is nothing more than this chapter's $\alpha$ functions driven by a rising $p_{\mathrm{CO_2}}$.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Phosphate buffering inside the cell</h2>
+
+      <p>Phosphoric acid is triprotic, with constants spread to span the whole biological range:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{H_3PO_4} \xrightarrow{\;\mathrm{p}K_{\mathrm{a}1}=2.15\;} \mathrm{H_2PO_4^-} \xrightarrow{\;\mathrm{p}K_{\mathrm{a}2}=7.20\;} \mathrm{HPO_4^{2-}} \xrightarrow{\;\mathrm{p}K_{\mathrm{a}3}=12.35\;} \mathrm{PO_4^{3-}}. $$
+      </div>
+
+      <p>The middle constant, $\mathrm{p}K_{\mathrm{a}2} = 7.20$, sits almost exactly at physiological pH, which is no accident of convenience — it is why phosphate is the dominant <em>intracellular</em> buffer. Around pH $7.2$ the relevant conjugate pair is $\mathrm{H_2PO_4^-}/\mathrm{HPO_4^{2-}}$, and the buffer is most effective precisely where their fractions cross. Evaluating the triprotic $\alpha$'s at blood pH $7.4$:</p>
+
+      <div class="equation-block">
+        $$ \alpha(\mathrm{H_2PO_4^-}) \approx 0.39, \qquad \alpha(\mathrm{HPO_4^{2-}}) \approx 0.61 \quad (\pH = 7.4), $$
+      </div>
+
+      <p>with $\mathrm{H_3PO_4}$ and $\mathrm{PO_4^{3-}}$ both at the parts-per-million level — the outer species are simply too far from their $\mathrm{p}K_{\mathrm{a}}$ to matter. A buffer made from this pair holds the cytoplasm steady; the same chemistry underlies the phosphate buffers of the laboratory bench (PBS) and the energy currency of life, since the phosphoanhydride bonds of ATP are dissociated to a definite charge state set by exactly these constants. The widget lets you select carbonic, phosphoric, or citric acid and watch each species rise and fall as you sweep the pH line.</p>
+
+      <section class="interactive" data-widget="speciation-diagram" aria-label="Interactive speciation (distribution) diagram for polyprotic acids">
+        <header>
+          <h4>Interactive · Speciation diagram</h4>
+          <span class="hint">pick an acid, drag the pH line</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">Distribution curves $\alpha_j(\mathrm{pH})$ for a chosen polyprotic acid, built from the exact denominator $D=\sum_j\big(\prod_{i\le j}K_{\mathrm{a}i}\big)[\mathrm{H}^+]^{\,n-j}$. The vertical line is the solution pH; its readout gives every $\alpha_j$ (they sum to 1) and names the dominant species. Curves cross at the $\mathrm{p}K_{\mathrm{a}}$ values — for carbonic acid at pH 6.35 the $\mathrm{H_2CO_3^*}$ and $\mathrm{HCO_3^-}$ curves meet at $\alpha=0.5$, and at pH 10.33 the $\mathrm{HCO_3^-}$ and $\mathrm{CO_3^{2-}}$ curves meet.</p>
+      </section>
+
+      <p>Speciation closes the loop opened in Chapter II: a single $\mathrm{p}K_{\mathrm{a}}$ told us which side of one equilibrium wins; a list of $\mathrm{p}K_{\mathrm{a}}$ values, fed through the $\alpha$ functions, tells us the full composition at any pH. The next chapter leaves the macroscopic ledger behind and asks <em>why</em> a given molecule has the $\mathrm{p}K_{\mathrm{a}}$ it does — the molecular origins of acidity.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Daniel C. Harris.</span> <em>Quantitative Chemical Analysis</em>, 9th ed., W. H. Freeman, 2016 — Chapter 11 develops polyprotic acid–base equilibria, the distribution ($\alpha$) functions, and the intermediate-form result $\mathrm{pH}\approx\tfrac12(\mathrm{p}K_{\mathrm{a1}}+\mathrm{p}K_{\mathrm{a2}})$ in exactly this notation.</li>
+          <li><span class="src-title">Werner Stumm and James J. Morgan.</span> <em>Aquatic Chemistry: Chemical Equilibria and Rates in Natural Waters</em>, 3rd ed., Wiley, 1996 — the definitive treatment of the carbonate system, open versus closed systems, alkalinity, and log-concentration diagrams.</li>
+          <li><span class="src-title">James N. Butler.</span> <em>Carbon Dioxide Equilibria and Their Applications.</em> Lewis Publishers, 1991 — a focused account of the $\mathrm{H_2CO_3^*}/\mathrm{HCO_3^-}/\mathrm{CO_3^{2-}}$ system, Henry's-law coupling, and ocean/freshwater applications.</li>
+          <li><span class="src-title">Lars Gunnar Sillén.</span> "Graphical presentation of equilibrium data," in <em>Treatise on Analytical Chemistry</em> (Kolthoff &amp; Elving, eds.), Part I, Vol. 1, Interscience, 1959 — the origin of the straight-line log-concentration ("Sillén") diagram.</li>
+          <li><span class="src-title">Douglas A. Skoog, Donald M. West, F. James Holler, Stanley R. Crouch.</span> <em>Fundamentals of Analytical Chemistry</em>, 9th ed., Brooks/Cole, 2014 — Chapters 15–16 for stepwise dissociation, $\alpha$ values, and worked polyprotic and buffer calculations.</li>
+          <li><span class="src-title">R. Sander.</span> "Compilation of Henry's law constants (version 4.0) for water as solvent." <em>Atmos. Chem. Phys.</em> 15, 4399–4981 (2015) — the source for the $\mathrm{CO_2}$ solubility constant $K_{\mathrm{H}}$ used in §6.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="05-titrations.html"><span class="label">← Previous</span>V · Titrations and Indicators</a>
+      <a class="next" href="07-molecular-origins.html"><span class="label">Next chapter</span>VII · The Molecular Origins of Acidity →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/speciation-diagram.js"></script>
+</body>
+</html>

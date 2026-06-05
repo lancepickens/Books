@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter IV · Buffers — Acids and Bases: A Primer</title>
+  <meta name="description" content="Chapter 4: how a conjugate acid–base pair resists pH change, the Henderson–Hasselbalch equation, buffer capacity and its maximum at pH = pKa, the useful range pKa±1, preparing a buffer, and the bicarbonate buffer that holds blood at pH 7.4." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter IV of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter IV</p>
+      <h1 class="chapter-title">Buffers</h1>
+      <p class="lede">Mix a weak acid with its conjugate base and you build a chemical shock absorber: a solution whose pH barely flinches when acid or base is poured in.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>A buffer is a solution that holds its pH nearly steady when you add a strong acid or a strong base. The trick is to keep two species on hand at once — a weak acid and its conjugate base — so that whatever you throw in is quietly absorbed by one partner or the other. The acid mops up added hydroxide; the base mops up added hydronium. Because both reservoirs are large compared with the small jolt you add, the ratio between them — and therefore the pH — hardly moves.</p>
+          <p>This chapter turns that picture into a single working formula, the Henderson–Hasselbalch equation, and then asks the quantitative question behind it: <em>how much</em> resistance does a buffer provide, and where is it strongest? The answer is buffer capacity, a quantity that peaks exactly when the acid is half neutralized — when pH equals $\mathrm{p}K_{\mathrm{a}}$. We finish with the buffer your own blood runs on, the bicarbonate system, which keeps arterial pH pinned near 7.4 by venting one of its components as a gas.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Buffer</dt><dd>A solution that resists pH change, made of a weak acid and its conjugate base in comparable amounts.</dd>
+          <dt>Conjugate pair</dt><dd>A weak acid $\mathrm{HA}$ and the base $\mathrm{A^-}$ it becomes on losing a proton; the two reservoirs of a buffer.</dd>
+          <dt>Henderson–Hasselbalch</dt><dd>The equation $\mathrm{pH}=\mathrm{p}K_{\mathrm{a}}+\log_{10}([\mathrm{A^-}]/[\mathrm{HA}])$ relating pH to the buffer ratio.</dd>
+          <dt>Buffer ratio</dt><dd>The ratio $[\mathrm{A^-}]/[\mathrm{HA}]$ of conjugate base to acid; what the pH actually tracks.</dd>
+          <dt>Half-neutralization</dt><dd>The point where $[\mathrm{A^-}]=[\mathrm{HA}]$, so the buffer ratio is 1 and $\mathrm{pH}=\mathrm{p}K_{\mathrm{a}}$.</dd>
+          <dt>$K_{\mathrm{a}}$</dt><dd>The acid dissociation constant of the buffer's weak acid (Chapter II).</dd>
+          <dt>$\mathrm{p}K_{\mathrm{a}}$</dt><dd>$-\log_{10}K_{\mathrm{a}}$; the pH at which the buffer is centred and strongest.</dd>
+          <dt>Buffer capacity</dt><dd>$\beta$, the moles of strong base per litre needed to raise the pH by one unit; a measure of resistance.</dd>
+          <dt>Total buffer concentration</dt><dd>$C_{\mathrm{tot}}=[\mathrm{HA}]+[\mathrm{A^-}]$, the sum of both reservoirs.</dd>
+          <dt>Buffer range</dt><dd>The pH interval $\mathrm{p}K_{\mathrm{a}}\pm1$ over which a buffer works usefully.</dd>
+          <dt>Strong acid/base</dt><dd>One that dissociates completely; what a buffer is designed to absorb.</dd>
+          <dt>Neutralization</dt><dd>The reaction of $\mathrm{H^+}$ with $\mathrm{OH^-}$ (or with a base) to form a weaker product.</dd>
+          <dt>Mole bookkeeping</dt><dd>Tracking moles of each species before and after a stoichiometric reaction goes to completion.</dd>
+          <dt>Stoichiometric reaction</dt><dd>A reaction that runs essentially to completion, consumed in whole-number ratios.</dd>
+          <dt>Dilution</dt><dd>Adding solvent; it changes $C_{\mathrm{tot}}$ but, to first order, not the buffer ratio or pH.</dd>
+          <dt>Ionic strength</dt><dd>The charge-weighted ion concentration that shifts activity coefficients and hence the apparent $\mathrm{p}K_{\mathrm{a}}$.</dd>
+          <dt>Apparent (conditional) $\mathrm{p}K_{\mathrm{a}}$</dt><dd>The $\mathrm{p}K_{\mathrm{a}}$ corrected for ionic strength, written $\mathrm{p}K_{\mathrm{a}}'$, used in real media like blood.</dd>
+          <dt>Bicarbonate buffer</dt><dd>The $\mathrm{CO_2}/\mathrm{HCO_3^-}$ system that buffers blood.</dd>
+          <dt>Open buffer</dt><dd>One whose acid form ($\mathrm{CO_2}$) exchanges with a reservoir (the lungs), giving extra capacity.</dd>
+          <dt>Carbonic acid</dt><dd>$\mathrm{H_2CO_3}$, formed when dissolved $\mathrm{CO_2}$ hydrates; the acid limb of the blood buffer.</dd>
+          <dt>$p_{\mathrm{CO_2}}$</dt><dd>The partial pressure of carbon dioxide, which fixes the dissolved-$\mathrm{CO_2}$ concentration.</dd>
+          <dt>Polyprotic acid</dt><dd>An acid with more than one ionizable proton, hence more than one $\mathrm{p}K_{\mathrm{a}}$ and buffer region.</dd>
+          <dt>Acidosis / alkalosis</dt><dd>Blood pH below / above the normal range; what the bicarbonate buffer fights.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>What a buffer is</h2>
+
+      <p>Add a drop of strong acid to pure water and the pH plummets; water has nothing to catch the incoming protons. A <dfn title="A solution of a weak acid and its conjugate base that resists pH change.">buffer</dfn> fixes this by keeping two species in the bottle at once: a weak acid $\mathrm{HA}$ and a generous supply of its conjugate base $\mathrm{A^-}$. The pair sits in the equilibrium of Chapter II,</p>
+
+      <div class="equation-block">
+        $$ \mathrm{HA} + \mathrm{H_2O} \;\eqm\; \mathrm{A^-} + \mathrm{H_3O^+}, \qquad \Ka = \frac{\conc{A^-}\,\conc{H^+}}{\conc{HA}}. $$
+      </div>
+
+      <p>Now the solution has a defence in both directions. Pour in strong base and its $\mathrm{OH^-}$ is consumed by the acid reservoir, $\mathrm{HA}+\mathrm{OH^-}\to\mathrm{A^-}+\mathrm{H_2O}$. Pour in strong acid and its $\mathrm{H^+}$ is consumed by the base reservoir, $\mathrm{A^-}+\mathrm{H^+}\to\mathrm{HA}$. In each case the intruder is converted into one of the species already present; what changes is only the <em>ratio</em> of the two reservoirs, not their identity. As we are about to see, pH depends on that ratio through a logarithm, so even a sizeable change in the ratio nudges the pH only slightly.</p>
+
+      <aside class="jargon">
+        <h4>Concentrated is not the same as buffered</h4>
+        <p>A solution of acetic acid alone is not a buffer, however concentrated — it has no base reservoir to absorb added acid. A solution of acetate alone is not a buffer either — no acid reservoir to absorb added base. You need <em>both</em>, in comparable amounts. The defining feature is the pair, not the strength or the concentration of either partner on its own.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The Henderson–Hasselbalch equation</h2>
+
+      <p>Start from the equilibrium expression and solve for $\conc{H^+}$:</p>
+
+      <div class="equation-block">
+        $$ \conc{H^+} = \Ka\,\frac{\conc{HA}}{\conc{A^-}}. $$
+      </div>
+
+      <p>Take $-\log_{10}$ of both sides. The left side becomes $\pH$; the right splits into $-\log_{10}\Ka = \pKa$ and the logarithm of the ratio. Flipping the ratio absorbs the minus sign, giving the <dfn title="pH = pKa + log10([A-]/[HA]); the working equation of every buffer.">Henderson–Hasselbalch equation</dfn>:</p>
+
+      <div class="equation-block">
+        $$ \pH = \pKa + \log_{10}\frac{\conc{A^-}}{\conc{HA}}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\pH$</dt><dd>The pH of the buffered solution, $-\log_{10}\conc{H^+}$.</dd>
+          <dt>$\pKa$</dt><dd>The acid dissociation constant of $\mathrm{HA}$ on a log scale; sets where the buffer is centred.</dd>
+          <dt>$\conc{A^-}$</dt><dd>Equilibrium concentration of the conjugate base — the "salt" reservoir.</dd>
+          <dt>$\conc{HA}$</dt><dd>Equilibrium concentration of the undissociated weak acid.</dd>
+        </dl>
+      </aside>
+
+      <p>The equation says the pH is the acid's $\pKa$ shifted up or down by the logarithm of the buffer ratio. One special value dominates everything that follows. When the two reservoirs are equal, $\conc{A^-}=\conc{HA}$, the ratio is 1, its logarithm is 0, and</p>
+
+      <div class="equation-block">
+        $$ \conc{A^-} = \conc{HA} \quad\Longrightarrow\quad \pH = \pKa. $$
+      </div>
+
+      <p>This is <dfn title="The state where half the acid has been converted to its conjugate base, so [A-] = [HA].">half-neutralization</dfn>: the point at which exactly half the acid has been turned into its conjugate base. A buffer is centred here, and — as §4 proves — this is where it resists change most strongly. For a base $\mathrm{B}$ with conjugate acid $\mathrm{BH^+}$ the same algebra in the pOH world reads</p>
+
+      <div class="equation-block">
+        $$ \pOH = \pKb + \log_{10}\frac{\conc{BH^+}}{\conc{B}}, $$
+      </div>
+
+      <p>which, using $\pH+\pOH=\pKw$ and $\pKa+\pKb=\pKw$ from Chapter II, is just the same statement viewed from the other side.</p>
+
+      <aside class="note">
+        <h4>A formula with hidden approximations</h4>
+        <p>Henderson–Hasselbalch silently replaces <em>equilibrium</em> concentrations with the <em>formal</em> amounts you weighed out. That is excellent when both reservoirs are well stocked and far from extreme pH, but it fails for very dilute buffers or ratios far from 1, where the small contributions of $\conc{H^+}$ and $\conc{OH^-}$ themselves matter. Po and Senozan trace a century of confusion on exactly this point; Chapter III's exact mass- and charge-balance treatment is the honest fallback when the approximation breaks.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Absorbing a shock: mole bookkeeping</h2>
+
+      <p>Let us watch a buffer do its job. Take one litre of a buffer that is $0.10\Msol$ in acetic acid and $0.10\Msol$ in acetate, with $\pKa = 4.76$. Equal reservoirs mean the buffer ratio is 1, so the starting pH is exactly</p>
+
+      <div class="equation-block">
+        $$ \pH = 4.76 + \log_{10}\frac{0.10}{0.10} = 4.76. $$
+      </div>
+
+      <p>Now add $0.010$ mol of solid $\mathrm{NaOH}$. The hydroxide reacts essentially to completion with the acid reservoir, converting $0.010$ mol of $\mathrm{HA}$ into $0.010$ mol of $\mathrm{A^-}$. We track moles in a small ledger:</p>
+
+      <div class="equation-block">
+        $$ \begin{array}{lccc}
+        & \conc{HA} & \conc{A^-} & \text{ratio}\\[2pt]
+        \text{before} & 0.10 & 0.10 & 1.00\\
+        \text{add }0.010\text{ mol }\mathrm{OH^-} & 0.09 & 0.11 & 1.22
+        \end{array} $$
+      </div>
+
+      <p>Feeding the new amounts back into Henderson–Hasselbalch,</p>
+
+      <div class="equation-block">
+        $$ \pH = 4.76 + \log_{10}\frac{0.11}{0.09} = 4.76 + 0.087 = 4.85. $$
+      </div>
+
+      <p>The pH rose by less than one tenth of a unit. For contrast, dropping the same $0.010$ mol of $\mathrm{OH^-}$ into a litre of pure water would drive the pH from 7 to 12 — a jump of five units. The buffer absorbed almost the entire shock by trading a little acid for a little base. The defence is finite, though: pour in enough base to exhaust the $\mathrm{HA}$ reservoir and the buffer breaks, the pH lurching upward. How much it can take before that happens is what we quantify next.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Buffer capacity and its maximum</h2>
+
+      <p>The qualitative claim "resists change" deserves a number. Define the <dfn title="The moles of strong base per litre required to raise the pH by one unit.">buffer capacity</dfn> $\beta$ as the amount of strong base $\dd C_b$ (in moles per litre) needed to raise the pH by an amount $\dd\,\pH$:</p>
+
+      <div class="equation-block">
+        $$ \beta \;\equiv\; \frac{\dd C_b}{\dd\,\pH}. $$
+      </div>
+
+      <p>A large $\beta$ means a lot of base is needed to move the pH — a stiff, resistant buffer. Differentiating the full charge-balance expression for a buffer of total concentration $C_{\mathrm{tot}}=\conc{HA}+\conc{A^-}$ gives a closed form (Urbansky &amp; Schock; Harris):</p>
+
+      <div class="equation-block">
+        $$ \beta = 2.303\left(\conc{H^+} + \conc{OH^-} + C_{\mathrm{tot}}\,\frac{\Ka\conc{H^+}}{\bigl(\Ka+\conc{H^+}\bigr)^2}\right). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\beta$</dt><dd>Buffer capacity, in mol·L⁻¹ per pH unit. Always positive.</dd>
+          <dt>$2.303$</dt><dd>$\ln 10$ — it appears because $\beta$ is a derivative with respect to $\pH=-\log_{10}\conc{H^+}$, and $\dd\ln\conc{H^+}=2.303\,\dd\log_{10}\conc{H^+}$.</dd>
+          <dt>$C_{\mathrm{tot}}$</dt><dd>Total buffer concentration, $\conc{HA}+\conc{A^-}$ — the size of the two reservoirs together.</dd>
+          <dt>$\dfrac{\Ka\conc{H^+}}{(\Ka+\conc{H^+})^2}$</dt><dd>The buffer term: it peaks sharply when $\conc{H^+}=\Ka$ and falls off on either side.</dd>
+          <dt>$\conc{H^+},\,\conc{OH^-}$</dt><dd>The water terms — they make $\beta$ rise again at very low and very high pH, where water itself buffers.</dd>
+        </dl>
+      </aside>
+
+      <p>Away from the extremes the water terms are tiny and the buffer term rules. To find where $\beta$ is largest, maximize the fraction $f(\conc{H^+}) = \Ka\conc{H^+}/(\Ka+\conc{H^+})^2$. Setting $\dd f/\dd\conc{H^+}=0$ gives $\conc{H^+}=\Ka$ — that is, $\pH=\pKa$ — and at that point</p>
+
+      <div class="equation-block">
+        $$ \frac{\Ka\conc{H^+}}{(\Ka+\conc{H^+})^2}\bigg|_{\conc{H^+}=\Ka} = \frac{\Ka^2}{(2\Ka)^2} = \frac14. $$
+      </div>
+
+      <p>So the buffer is stiffest exactly at half-neutralization, and there its capacity (ignoring the small water terms) is</p>
+
+      <div class="equation-block">
+        $$ \beta_{\max} \approx 2.303\cdot\frac{C_{\mathrm{tot}}}{4} = 0.576\,C_{\mathrm{tot}}. $$
+      </div>
+
+      <p>Two lessons fall out at once. First, capacity scales with how much buffer you put in: doubling $C_{\mathrm{tot}}$ doubles $\beta_{\max}$. Second, the peak sits at $\pH=\pKa$, the same point Henderson–Hasselbalch flagged. For our acetate buffer with $C_{\mathrm{tot}}=0.20\Msol$, the maximum capacity is $0.576\times0.20 = 0.115\Msol$ per pH unit — meaning it takes about $0.115$ mol of strong base to shift a litre by a full pH unit when centred, consistent with the gentle response we saw in §3.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The useful range and choosing a buffer</h2>
+
+      <p>The buffer term in $\beta$ falls to a quarter of its peak when the buffer ratio reaches $10{:}1$ or $1{:}10$ — that is, one pH unit on either side of $\pKa$. Beyond that, one reservoir is nearly drained and the buffer is feeble. By convention the <dfn title="The interval pKa ± 1 over which a buffer holds usefully.">useful buffer range</dfn> is therefore</p>
+
+      <div class="equation-block">
+        $$ \pKa - 1 \;\le\; \pH \;\le\; \pKa + 1, $$
+      </div>
+
+      <p>a window of two pH units centred on $\pKa$. This is the single most important rule for choosing a buffer: <strong>pick a weak acid whose $\pKa$ is within one unit of your target pH.</strong> To hold pH 7.4 you would not reach for acetic acid ($\pKa=4.76$, useless there) but for a phosphate ($\pKa\approx7.2$) or a designed biological buffer such as HEPES ($\pKa\approx7.5$). The interactive panel below lets you slide $\pKa$ and watch the whole $\beta(\pH)$ curve march along with its shaded range.</p>
+
+      <aside class="note">
+        <h4>Dilution and ionic strength: two caveats</h4>
+        <p>Henderson–Hasselbalch suggests pH depends only on the <em>ratio</em>, so dilution — which scales both reservoirs equally — should leave pH untouched. To first order it does, which is why a buffer's pH is robust to evaporation or top-up. But two second-order effects creep in. Diluting lowers $C_{\mathrm{tot}}$ and so lowers $\beta$: the pH holds, but the buffer becomes easier to overwhelm. And changing the <dfn title="The charge-weighted ion concentration that shifts activity coefficients.">ionic strength</dfn> shifts the activity coefficients of Chapter II, so the <dfn title="The pKa corrected for ionic strength, used in real media.">apparent</dfn> $\pKa'$ drifts — typically by a few tenths of a unit between pure water and physiological salt. Serious work measures or corrects $\pKa'$ at the working ionic strength rather than trusting the dilute-solution value.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Preparing a buffer in practice</h2>
+
+      <p>There are two equivalent routes to a buffer at a target pH, both starting from the rearranged Henderson–Hasselbalch equation</p>
+
+      <div class="equation-block">
+        $$ \frac{\conc{A^-}}{\conc{HA}} = 10^{\,\pH - \pKa}. $$
+      </div>
+
+      <p>The <strong>mix-two-stocks</strong> route: weigh out the weak acid and its salt (or a solution of each) in exactly the mole ratio the equation demands, dissolve, and top up to volume. To make a litre of acetate buffer at pH 5.0 with $C_{\mathrm{tot}}=0.10\Msol$, the ratio is $10^{5.0-4.76}=1.74$, so $\conc{A^-}=0.064\Msol$ and $\conc{HA}=0.036\Msol$ — dissolve $0.064$ mol sodium acetate and $0.036$ mol acetic acid.</p>
+
+      <p>The <strong>titrate-to-pH</strong> route, preferred in the lab: dissolve the full $C_{\mathrm{tot}}$ as the acid form alone, then add strong base while watching a pH meter until the reading hits the target. This route automatically compensates for the ionic-strength shift in $\pKa'$, because you are reading the real pH, not trusting a tabulated constant. In both cases prepare at the temperature and ionic strength of use — many buffers (Tris notoriously) have a $\pKa$ that swings markedly with temperature.</p>
+
+      <aside class="jargon">
+        <h4>Why the meter beats the recipe</h4>
+        <p>A calculated recipe assumes the tabulated $\pKa$, ideal activities, and a perfectly pure salt. A pH meter assumes none of these — it reports the quantity you actually care about. The recipe is for getting close; the meter is for getting right. Standard practice is to compute the recipe, then fine-tune with acid or base to the meter.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>The bicarbonate buffer and blood at pH 7.4</h2>
+
+      <p>Your blood is buffered near pH 7.4, and the dominant system that holds it there is the <dfn title="The CO2/HCO3- equilibrium that buffers blood.">bicarbonate buffer</dfn>. Dissolved carbon dioxide hydrates to carbonic acid, which then loses a proton:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{CO_2(aq)} + \mathrm{H_2O} \;\eqm\; \mathrm{H_2CO_3} \;\eqm\; \mathrm{H^+} + \mathrm{HCO_3^-}. $$
+      </div>
+
+      <p>Because the hydration step lies far to the left, physiology lumps $\mathrm{CO_2(aq)}$ and $\mathrm{H_2CO_3}$ together as one "acid" and uses an <em>apparent</em> first dissociation constant $\pKa' = 6.1$. The dissolved-$\mathrm{CO_2}$ concentration is fixed by Henry's law from the partial pressure $p_{\mathrm{CO_2}}$, with a solubility of $0.0301\ \mathrm{mmol\,L^{-1}\,mmHg^{-1}}$. Putting both into Henderson–Hasselbalch gives the clinical form</p>
+
+      <div class="equation-block">
+        $$ \pH = 6.1 + \log_{10}\frac{\conc{HCO_3^-}}{0.0301\,p_{\mathrm{CO_2}}}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$6.1$</dt><dd>The apparent $\pKa'$ of the $\mathrm{CO_2}/\mathrm{HCO_3^-}$ couple at body temperature and physiological ionic strength.</dd>
+          <dt>$\conc{HCO_3^-}$</dt><dd>Plasma bicarbonate, normally $\approx 24\ \mathrm{mM}$; regulated by the kidneys.</dd>
+          <dt>$p_{\mathrm{CO_2}}$</dt><dd>Partial pressure of $\mathrm{CO_2}$, normally $\approx 40\ \mathrm{mmHg}$; regulated by breathing.</dd>
+          <dt>$0.0301$</dt><dd>$\mathrm{CO_2}$ solubility, in $\mathrm{mmol\,L^{-1}\,mmHg^{-1}}$, converting $p_{\mathrm{CO_2}}$ to dissolved acid.</dd>
+        </dl>
+      </aside>
+
+      <p>Plug in the normal arterial values. The denominator is $0.0301\times40 = 1.2\ \mathrm{mM}$ of dissolved $\mathrm{CO_2}$, so the buffer ratio is $24/1.2 = 20$, and</p>
+
+      <div class="equation-block">
+        $$ \pH = 6.1 + \log_{10} 20 = 6.1 + 1.30 = 7.40. $$
+      </div>
+
+      <p>Notice the oddity: the buffer holds pH 7.4 even though its $\pKa'$ is 6.1, fully $1.3$ units away — well outside the $\pKa\pm1$ rule of §5. On its own chemistry this would be a poor buffer. What rescues it is that it is an <dfn title="A buffer whose acid form exchanges with an external reservoir.">open buffer</dfn>: the acid limb is a gas. The lungs continuously vent or retain $\mathrm{CO_2}$, so $p_{\mathrm{CO_2}}$ is held nearly fixed regardless of how much acid the body produces, while the kidneys adjust $\conc{HCO_3^-}$ over hours. With one component clamped by breathing and the other tuned by the kidney, the open system delivers far more capacity than its modest $\pKa'$ alone would allow — which is precisely why evolution built blood's pH defence on a gas.</p>
+
+      <section class="interactive" data-widget="buffer-capacity" aria-label="Buffer capacity versus pH for a chosen pKa and concentration">
+        <header>
+          <h4>Interactive · Buffer capacity $\beta(\mathrm{pH})$</h4>
+          <span class="hint">drag $\mathrm{p}K_{\mathrm{a}}$, concentration, and the pH cursor</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The exact capacity $\beta = 2.303\,([\mathrm{H}^+]+[\mathrm{OH}^-]+C_{\mathrm{tot}}\,K_{\mathrm{a}}[\mathrm{H}^+]/(K_{\mathrm{a}}+[\mathrm{H}^+])^2)$, plotted across pH 0–14. The peak sits at $\mathrm{pH}=\mathrm{p}K_{\mathrm{a}}$ with height $\beta_{\max}=0.576\,C_{\mathrm{tot}}$; the shaded band is the useful range $\mathrm{p}K_{\mathrm{a}}\pm1$. The curve turns upward at the far edges because water's own $[\mathrm{H}^+]$ and $[\mathrm{OH}^-]$ buffer the extremes. For $C_{\mathrm{tot}}=0.2\Msol$, $\mathrm{p}K_{\mathrm{a}}=4.76$ the peak is $0.115\Msol$ per pH unit.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <p>A buffer, then, is a conjugate pair acting as a two-sided sponge, its pH set by a ratio through Henderson–Hasselbalch and its resistance peaking at $\pH=\pKa$ with magnitude $0.576\,C_{\mathrm{tot}}$. Choose the $\pKa$ near your target, keep $C_{\mathrm{tot}}$ generous, and — if you can — leave one limb open to a reservoir, as your bloodstream does. The next chapter watches a buffer being deliberately destroyed, one drop at a time: the titration.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Daniel C. Harris.</span> <em>Quantitative Chemical Analysis</em>, 9th ed., W. H. Freeman, 2016 — Chapter 9 develops buffers, Henderson–Hasselbalch, buffer capacity, the $\mathrm{p}K_{\mathrm{a}}\pm1$ range, and how to prepare a buffer, in the notation used here.</li>
+          <li><span class="src-title">Edward T. Urbansky and Michael R. Schock.</span> "Understanding, Deriving, and Computing Buffer Capacity." <em>J. Chem. Educ.</em> 77, 1640–1644 (2000) — the careful derivation of the $\beta$ formula in §4, including the water terms and the polyprotic generalization.</li>
+          <li><span class="src-title">Henry N. Po and N. M. Senozan.</span> "The Henderson–Hasselbalch Equation: Its History and Limitations." <em>J. Chem. Educ.</em> 78, 1499–1503 (2001) — the origin of the equation and a clear account of where the approximation breaks down.</li>
+          <li><span class="src-title">Peter Atkins and Julio de Paula.</span> <em>Physical Chemistry</em>, 11th ed., Oxford, 2018 — Focus 6 places buffers and buffer capacity within the thermodynamics of proton-transfer equilibria.</li>
+          <li><span class="src-title">Walter F. Boron and Emile L. Boulpaep.</span> <em>Medical Physiology</em>, 3rd ed., Elsevier, 2017 — the acid–base chapter derives the clinical bicarbonate equation ($\mathrm{p}K_{\mathrm{a}}'=6.1$, solubility $0.0301$) and the open-system advantage used in §7.</li>
+          <li><span class="src-title">K. A. Hasselbalch.</span> "Die Berechnung der Wasserstoffzahl des Blutes…" <em>Biochem. Z.</em> 78, 112–144 (1917) — the original paper casting the blood buffer equation in logarithmic form.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="03-weak-acid-equilibria.html"><span class="label">← Previous</span>III · Equilibrium in Water</a>
+      <a class="next" href="05-titrations.html"><span class="label">Next chapter</span>V · Titrations and Indicators →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/buffer-capacity.js"></script>
+</body>
+</html>

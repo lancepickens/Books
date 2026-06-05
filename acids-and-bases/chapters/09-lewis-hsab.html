@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter IX · Lewis Acids, Hardness, and Catalysis — Acids and Bases: A Primer</title>
+  <meta name="description" content="Chapter 9: the Lewis definition, measuring Lewis acidity, Pearson's hard–soft acid–base principle, the conceptual-DFT basis (electronegativity, chemical potential, chemical hardness), charge transfer, and acid catalysis from zeolites to frustrated Lewis pairs." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter IX of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter IX</p>
+      <h1 class="chapter-title">Lewis Acids, Hardness, and Catalysis</h1>
+      <p class="lede">Step back from the proton and the picture widens: an acid is anything hungry for an electron pair, and the question of <em>which</em> base it prefers turns out to be answerable with two numbers per partner.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>For eight chapters the protagonist was the proton. Now we return to the broadest definition from Chapter I — a Lewis acid accepts an electron pair, a Lewis base donates one — and ask the questions that the proton-centred view could not. How do we put a <em>number</em> on Lewis acidity when there is no $\mathrm{p}K_{\mathrm{a}}$ to measure? Why does mercury reach for sulfur while aluminium reaches for oxygen and fluorine, even though both are "acids"? The answer is Pearson's hard–soft acid–base principle, and behind it sits a small piece of beautiful theory: two derivatives of the electronic energy that pin down how much an atom wants electrons and how stiffly it resists giving them up.</p>
+          <p>Those two derivatives — the chemical potential (minus the electronegativity) and the chemical hardness — come straight from density-functional theory, and from them we can predict the direction and amount of charge that flows when an acid meets a base. The same ideas explain catalysis: the Lewis-acid sites that crack petroleum inside zeolites, and the deliberately mismatched "frustrated" Lewis pairs that split $\mathrm{H_2}$ with no metal at all. Throughout, the hardness and electronegativity numbers are quoted in electronvolts — the natural unit for ionization energies and electron affinities — while reaction energies stay in kJ/mol as elsewhere in the book; everything is at $25\,\degC$.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Lewis acid</dt><dd>An electron-pair acceptor — it has an empty, low-lying orbital.</dd>
+          <dt>Lewis base</dt><dd>An electron-pair donor — it has an accessible lone pair.</dd>
+          <dt>Adduct</dt><dd>The product of a Lewis acid and base joined by a shared electron pair, e.g. $\mathrm{F_3B{-}NH_3}$.</dd>
+          <dt>Dative bond</dt><dd>A covalent bond in which both electrons come from one atom (the base).</dd>
+          <dt>Aquo ion</dt><dd>A metal cation surrounded by water ligands bound through oxygen lone pairs.</dd>
+          <dt>Acceptor number</dt><dd>Gutmann's empirical scale of Lewis acidity from an NMR probe in the acid.</dd>
+          <dt>Fluoride ion affinity</dt><dd>The energy released when a Lewis acid binds $\mathrm{F^-}$; a gas-phase acidity scale.</dd>
+          <dt>Childs scale</dt><dd>A Lewis-acidity scale from the NMR shift induced in crotonaldehyde.</dd>
+          <dt>Hard acid/base</dt><dd>Small, weakly polarizable, high-charge-density species; charge-controlled bonding.</dd>
+          <dt>Soft acid/base</dt><dd>Large, polarizable, low-charge-density species; orbital-controlled (covalent) bonding.</dd>
+          <dt>Polarizability</dt><dd>How easily an electron cloud distorts in a field; large for soft species.</dd>
+          <dt>HSAB principle</dt><dd>Pearson's rule that hard acids prefer hard bases and soft acids prefer soft bases.</dd>
+          <dt>Thiophilic</dt><dd>"Sulfur-loving" — characteristic of soft acids such as $\mathrm{Hg^{2+}}$.</dd>
+          <dt>Electronegativity</dt><dd>$\chi$ — an atom's pull on shared electrons; here defined absolutely as $\tfrac{I+A}{2}$.</dd>
+          <dt>Chemical potential</dt><dd>$\mu=-\chi$ — the slope of energy with electron number; equalizes when species bond.</dd>
+          <dt>Chemical hardness</dt><dd>$\eta$ — resistance to change in electron number, $\tfrac{I-A}{2}$.</dd>
+          <dt>Softness</dt><dd>$s=1/\eta$ — the reciprocal of hardness.</dd>
+          <dt>Ionization energy</dt><dd>$I$ — energy to remove an electron from the neutral species (eV here).</dd>
+          <dt>Electron affinity</dt><dd>$A$ — energy released when the species gains an electron (eV here).</dd>
+          <dt>Frontier orbitals</dt><dd>The HOMO and LUMO — the highest filled and lowest empty molecular orbitals.</dd>
+          <dt>Conceptual DFT</dt><dd>The reading of reactivity indices ($\chi$, $\eta$…) as energy derivatives in density-functional theory.</dd>
+          <dt>Charge transfer</dt><dd>$\Delta N$ — the fractional electron count that flows from base to acid on contact.</dd>
+          <dt>Zeolite</dt><dd>A microporous aluminosilicate framework carrying acidic sites in its channels.</dd>
+          <dt>Brønsted site</dt><dd>A framework $\mathrm{Si{-}OH{-}Al}$ proton — a true proton donor inside a solid.</dd>
+          <dt>Lewis site</dt><dd>A coordinatively unsaturated metal centre that accepts an electron pair.</dd>
+          <dt>Frustrated Lewis pair</dt><dd>A bulky acid and base too hindered to combine, left free to act together on a substrate.</dd>
+          <dt>Heterolytic cleavage</dt><dd>Breaking a bond so both electrons go to one fragment, e.g. $\mathrm{H_2}\to\mathrm{H^+}+\mathrm{H^-}$.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>The widest circle, revisited</h2>
+
+      <p>Chapter I drew three nested definitions and promised to return to the widest. Here we are. A <dfn title="An electron-pair acceptor.">Lewis acid</dfn> accepts an electron pair; a <dfn title="An electron-pair donor.">Lewis base</dfn> donates one; together they form a new bond and the joined product is an <dfn title="The combined product of a Lewis acid and base.">adduct</dfn>. Because both shared electrons originate on the base, the link is a <dfn title="A covalent bond whose pair of electrons comes from a single atom.">dative bond</dfn> (a coordinate bond). The proton is merely the simplest Lewis acid — an empty $1s$ orbital — so the entire Brønsted world of Chapters II–VIII is a special case sitting inside this one.</p>
+
+      <div class="equation-block">
+        $$ \mathrm{BF_3} + \;:\!\mathrm{NH_3} \;\longrightarrow\; \mathrm{F_3B{-}NH_3}. $$
+      </div>
+
+      <p>Boron in $\mathrm{BF_3}$ has only six valence electrons and an empty $2p$ orbital; the nitrogen lone pair of ammonia fills it. No proton moves at all. The same logic captures metal cations in water: a <dfn title="A metal cation bound to water ligands through oxygen lone pairs.">metal aquo ion</dfn> such as $\mathrm{[Al(H_2O)_6]^{3+}}$ is a Lewis acid (the cation) saturated with six Lewis bases (the water oxygens). That this aquo ion is also a respectable Brønsted acid — Chapter VII's hydrolysis — is no coincidence: pulling electron density toward the metal weakens the $\mathrm{O{-}H}$ bonds, so Lewis acidity at the metal breeds Brønsted acidity at the ligand.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Putting a number on Lewis acidity</h2>
+
+      <p>There is no single $\mathrm{p}K_{\mathrm{a}}$ for a Lewis acid, because "strength" now depends on the partner. Chemists therefore use several operational scales, each fixing the base and measuring the response. Gutmann's <dfn title="Gutmann's empirical Lewis-acidity scale from the 31P NMR shift of triethylphosphine oxide dissolved in the acid.">acceptor number</dfn> (AN) reads the $^{31}\mathrm{P}$ NMR shift of triethylphosphine oxide dissolved in the acid; the more the acid pulls on the phosphoryl oxygen, the larger the AN (hexane $\approx 0$, water $\approx 55$, $\mathrm{SbF_5}\approx 100$ on the normalized scale). The <dfn title="The NMR-shift Lewis-acidity scale of Childs, based on the proton shift induced in coordinated crotonaldehyde.">Childs scale</dfn> does the analogous job with the $^1\mathrm{H}$ shift induced in crotonaldehyde.</p>
+
+      <p>For a thermodynamic measure, the <dfn title="The energy released when a gas-phase Lewis acid binds a fluoride ion.">fluoride ion affinity</dfn> (FIA) — and its sibling the hydride ion affinity — quantify how strongly an acid $\mathrm{A}$ grabs the small, hard $\mathrm{F^-}$ in the gas phase:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{A} + \mathrm{F^-} \;\longrightarrow\; \mathrm{AF^-}, \qquad \mathrm{FIA} = -\Delta H. $$
+      </div>
+
+      <p>On the FIA scale $\mathrm{SbF_5}$ is one of the strongest neutral Lewis acids known (which is why the superacids of Chapter VIII lean on it), and the antimony–fluorine adduct $\mathrm{SbF_6^-}$ is correspondingly inert. The lesson of having several scales at all is the deeper point: a Lewis acid does not have one strength but a <em>preference</em>. Ranking against $\mathrm{F^-}$ gives one order; ranking against a soft base like $\mathrm{R_3P}$ gives another. Explaining that reordering is exactly what the next sections do.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Hard and soft: Pearson's classification</h2>
+
+      <p>In 1963 Ralph Pearson noticed that Lewis acids and bases sort cleanly into two families by the company they keep. He called them <dfn title="Small, weakly polarizable, high-charge-density acids or bases that bond mainly through electrostatics.">hard</dfn> and <dfn title="Large, polarizable, low-charge-density acids or bases that bond mainly through orbital overlap.">soft</dfn>. Hard species are small, of high charge, and barely <dfn title="The ease with which an electron cloud distorts under an electric field.">polarizable</dfn>: their bonding is dominated by electrostatics. Soft species are large, of low charge, and easily polarized: their bonding is dominated by orbital overlap, i.e. covalency.</p>
+
+      <aside class="jargon">
+        <h4>A rough census</h4>
+        <p>Hard acids: $\mathrm{H^+}$, $\mathrm{Li^+}$, $\mathrm{Na^+}$, $\mathrm{Mg^{2+}}$, $\mathrm{Al^{3+}}$, $\mathrm{Fe^{3+}}$, $\mathrm{BF_3}$. Soft acids: $\mathrm{Cu^+}$, $\mathrm{Ag^+}$, $\mathrm{Au^+}$, $\mathrm{Hg^{2+}}$, $\mathrm{Pd^{2+}}$, $\mathrm{Pt^{2+}}$. Hard bases: $\mathrm{F^-}$, $\mathrm{OH^-}$, $\mathrm{H_2O}$, $\mathrm{NH_3}$, $\mathrm{NO_3^-}$, $\mathrm{O}$-donors generally. Soft bases: $\mathrm{I^-}$, $\mathrm{CN^-}$, $\mathrm{CO}$, $\mathrm{R_3P}$, $\mathrm{R_2S}$, and $\mathrm{S}$-donors generally. Many species ($\mathrm{Fe^{2+}}$, $\mathrm{Pb^{2+}}$, $\mathrm{Br^-}$, $\mathrm{N_3^-}$) sit in between and are called borderline.</p>
+      </aside>
+
+      <p>The empirical rule is disarmingly simple, and Pearson stated it as a maxim:</p>
+
+      <div class="equation-block">
+        $$ \boxed{\;\text{hard acids prefer hard bases,}\quad\text{soft acids prefer soft bases.}\;} $$
+      </div>
+
+      <p>It is not that a soft–soft bond is always the strongest absolutely — a bare proton (hard) binds almost anything fiercely. The principle is about <em>selectivity</em>: given a choice, each acid binds its own kind more strongly than a mismatched partner, and a matched pair is extra-stabilized beyond what charge or size alone would predict. The next sections turn "its own kind" into a measured quantity.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Consequences you can see</h2>
+
+      <p>HSAB is one of those principles whose reach you only appreciate by counting what it explains. <strong>Mineralogy:</strong> hard cations ($\mathrm{Mg^{2+}}$, $\mathrm{Al^{3+}}$, $\mathrm{Ca^{2+}}$) occur as oxides, carbonates, and silicates — bound to hard $\mathrm{O}$-donors — while soft cations ($\mathrm{Cu^+}$, $\mathrm{Ag^+}$, $\mathrm{Hg^{2+}}$, $\mathrm{Pb^{2+}}$) occur as sulfide ores (chalcocite $\mathrm{Cu_2S}$, cinnabar $\mathrm{HgS}$, galena $\mathrm{PbS}$). The earth has been doing HSAB sorting for four billion years.</p>
+
+      <p><strong>Solubility and stability:</strong> the soft $\mathrm{Ag^+}$ binds the soft halides $\mathrm{Br^-}$ and $\mathrm{I^-}$ far more strongly than the hard $\mathrm{F^-}$ — silver fluoride is freely soluble, silver iodide vanishingly so — exactly the reverse of the hard $\mathrm{Ca^{2+}}$, whose fluoride (fluorite) is the insoluble one. <strong>Biochemistry:</strong> the soft, <dfn title="Sulfur-loving; the affinity of soft acids such as Hg2+ for sulfur donors.">thiophilic</dfn> $\mathrm{Hg^{2+}}$ ignores the hard oxygen ligands that abound in a cell and seeks out the soft sulfur of cysteine thiol groups, jamming the proteins that depend on them — the molecular basis of mercury's toxicity, and the reason chelation antidotes (BAL, dimercaprol) present soft $\mathrm{S}$-donors to lure the metal away.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The conceptual-DFT basis: $\chi$, $\mu$, and $\eta$</h2>
+
+      <p>Why two families? The frontier-orbital reading is that hard species have a large HOMO–LUMO gap (electrons held tight, charge-controlled bonding) and soft species a small gap (electrons easily shuffled, orbital-controlled bonding). Parr and Pearson made this exact in 1983 by reading reactivity off the curve of electronic energy $E$ versus electron number $N$. The first derivative is the <dfn title="The slope of electronic energy with respect to electron number; equals minus the electronegativity.">chemical potential</dfn> $\mu$, equal to minus the absolute <dfn title="An atom or molecule's pull on electrons; here Mulliken's absolute definition (I+A)/2.">electronegativity</dfn> $\chi$. Approximating the curve by a finite difference through the cation, neutral, and anion gives Mulliken's formula:</p>
+
+      <div class="equation-block">
+        $$ \chi=\frac{I+A}{2}, \qquad \mu=-\chi=-\frac{I+A}{2}=\left(\frac{\partial E}{\partial N}\right)_{v}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$I$</dt><dd>Ionization energy — energy to remove an electron from the neutral species, in eV here.</dd>
+          <dt>$A$</dt><dd>Electron affinity — energy released when the species gains an electron, in eV.</dd>
+          <dt>$\chi$</dt><dd>Absolute (Mulliken) electronegativity; large $\chi$ means a strong pull on electrons.</dd>
+          <dt>$\mu$</dt><dd>Electronic chemical potential, $=-\chi$; the slope of $E(N)$ at fixed external potential $v$ (the nuclei).</dd>
+        </dl>
+      </aside>
+
+      <p>The second derivative measures how stiffly the energy curves — how hard it is to push or pull electrons. That is the <dfn title="The curvature of energy with electron number; resistance to change in electron count.">chemical hardness</dfn> $\eta$:</p>
+
+      <div class="equation-block">
+        $$ \eta=\frac{I-A}{2}=\half\left(\frac{\partial^2 E}{\partial N^2}\right)_{v}, \qquad s=\frac{1}{\eta}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\eta$</dt><dd>Chemical hardness, in eV. A wide gap between $I$ and $A$ (a wide HOMO–LUMO gap) means a large $\eta$ — a hard species.</dd>
+          <dt>$s$</dt><dd>Softness, the reciprocal $1/\eta$. (Some authors use $\sigma=1/(2\eta)$; we adopt $s=1/\eta$ throughout.)</dd>
+        </dl>
+      </aside>
+
+      <p>So "hard" and "soft" stop being adjectives and become a measured number: a large $\eta$ is hard, a small $\eta$ is soft. Pearson's 1988 compilation gives, in eV, $\eta(\mathrm{Al^{3+}})\approx 45.8$, $\eta(\mathrm{Li^{+}})\approx 35.1$, $\eta(\mathrm{Mg^{2+}})\approx 32.5$, $\eta(\mathrm{Na^{+}})\approx 21.1$ for the hard acids, falling to $\eta(\mathrm{Zn^{2+}})\approx 10.8$, $\eta(\mathrm{Hg^{2+}})\approx 7.7$, $\eta(\mathrm{Ag^{+}})\approx 6.9$, $\eta(\mathrm{Cu^{+}})\approx 6.3$, $\eta(\mathrm{Au^{+}})\approx 5.7$ for the soft ones; and for the halide bases $\eta(\mathrm{F^-})\approx 7.0$ down to $\eta(\mathrm{I^-})\approx 3.7$. The proton is the limiting hard acid: it has no electrons, so $I-A$ is unbounded and $\eta(\mathrm{H^+})=\infty$.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Charge transfer on contact</h2>
+
+      <p>When acid $\mathrm{A}$ and base $\mathrm{B}$ touch, electrons flow from the species of higher chemical potential (lower $\chi$, the base) to the one of lower chemical potential (higher $\chi$, the acid) until the two chemical potentials equalize — Sanderson's electronegativity-equalization idea, made quantitative. Expanding each energy to second order and equalizing $\mu$ gives the fractional charge that transfers:</p>
+
+      <div class="equation-block">
+        $$ \Delta N=\frac{\chi_A-\chi_B}{2(\eta_A+\eta_B)}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Delta N$</dt><dd>The fractional number of electrons transferred from base to acid on contact (positive when the acid is the more electronegative).</dd>
+          <dt>$\chi_A,\chi_B$</dt><dd>Absolute electronegativities of acid and base; their difference is the driving force.</dd>
+          <dt>$\eta_A,\eta_B$</dt><dd>The two hardnesses; their <em>sum</em> in the denominator is the resistance to the flow.</dd>
+        </dl>
+      </aside>
+
+      <p>Read the formula as Ohm's law for electrons: a potential difference ($\chi_A-\chi_B$) divided by a resistance (the summed hardness). Two soft partners have small $\eta$ values, so a small sum, so a <em>large</em> $\Delta N$ even when their electronegativities differ little — soft–soft pairings move a lot of charge, the hallmark of covalent bonding. Two hard partners barely transfer charge; they bind electrostatically instead, by point-charge attraction. This is why the matched pairings of §3 are favored, and it dovetails with the <dfn title="The tendency of a chemical system at fixed chemical potential to evolve toward the state of maximum hardness.">maximum-hardness principle</dfn>: systems tend to arrange themselves to be as hard (as stable, large-gap) as possible, and a matched pair gets there.</p>
+
+      <p>An optional but useful complement is the empirical Drago–Wayland equation, which splits the adduct enthalpy into an electrostatic and a covalent term — the quantitative cousin of "hard = ionic, soft = covalent":</p>
+
+      <div class="equation-block">
+        $$ -\Delta H = E_A E_B + C_A C_B. $$
+      </div>
+
+      <p>Here $E$ measures electrostatic (hard) bonding capacity and $C$ measures covalent (soft) capacity, each acid and base carrying its own pair of parameters; a large product $C_A C_B$ flags a soft–soft match.</p>
+
+      <section class="interactive" data-widget="hsab" aria-label="Interactive hard–soft acid–base pairing and charge transfer">
+        <header>
+          <h4>Interactive · Hardness, softness, and charge transfer</h4>
+          <span class="hint">pick an acid and a base</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">Each species carries a tabulated absolute electronegativity $\chi=\tfrac{I+A}{2}$ and hardness $\eta=\tfrac{I-A}{2}$ (eV; Pearson 1988). Choose one acid and one base: the widget plots both on a hardness axis, classifies the pairing as hard–hard, soft–soft, or mismatched, and computes the charge transfer $\Delta N=(\chi_A-\chi_B)/[\,2(\eta_A+\eta_B)\,]$. Note how a soft–soft pair like $\mathrm{Ag^+}/\mathrm{I^-}$ moves more charge than a hard–soft mismatch with the same $\chi$ gap — the small hardness sum in the denominator does the work. The proton is handled specially: $\eta(\mathrm{H^+})=\infty$.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Acid catalysis: from zeolites to frustrated pairs</h2>
+
+      <p>Lewis acidity is not a curiosity; it is how a vast slice of the chemical industry works. <strong>Solid acids.</strong> A <dfn title="A microporous crystalline aluminosilicate whose channels host acidic sites.">zeolite</dfn> is an aluminosilicate framework in which substituting $\mathrm{Al^{3+}}$ for $\mathrm{Si^{4+}}$ leaves a net negative charge balanced by a proton bridging the framework oxygens. That bridging $\mathrm{Si{-}OH{-}Al}$ is a strong <dfn title="A framework hydroxyl that donates a proton; the Brønsted acid site of a zeolite.">Brønsted site</dfn> — it is how zeolites crack and isomerize hydrocarbons in fluid catalytic cracking, the largest applied use of acid catalysis on earth. Dehydrate the framework, or leave a coordinatively unsaturated $\mathrm{Al}$ exposed, and you instead create a <dfn title="A coordinatively unsaturated metal centre that accepts an electron pair; the Lewis acid site of an oxide.">Lewis site</dfn> that accepts electron density from the substrate. Most working oxide catalysts (alumina, silica–alumina, zeolites) carry both, and their interplay tunes selectivity. The HSAB ideas of §3–§6 are exactly what a chemist uses to match a hard or soft reactant to the right kind of site.</p>
+
+      <p><strong>Frustrated Lewis pairs.</strong> The most striking modern twist deliberately <em>prevents</em> the adduct of §1 from forming. Take a very bulky Lewis acid (a fluorinated borane, $\mathrm{B(C_6F_5)_3}$) and a very bulky Lewis base (a hindered phosphine, $\mathrm{R_3P}$). Steric clash keeps them from quenching each other into a dative bond, so both remain reactive: a <dfn title="A bulky Lewis acid and base prevented by steric bulk from forming an adduct, so each stays available to react.">frustrated Lewis pair</dfn> (FLP). Stephan and co-workers showed in 2006 that such a pair splits dihydrogen with no metal at all — the base grabs one proton and the acid the hydride in a <dfn title="Bond cleavage that sends both electrons to one fragment.">heterolytic cleavage</dfn>:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{R_3P} + \mathrm{H_2} + \mathrm{B(C_6F_5)_3} \;\longrightarrow\; \mathrm{R_3PH^+} + \mathrm{HB(C_6F_5)_3^-}. $$
+      </div>
+
+      <p>The phosphine takes $\mathrm{H^+}$, the borane takes $\mathrm{H^-}$, and the once-inert $\mathrm{H{-}H}$ bond is broken across the frustrated pair — a feat long thought to require a transition metal. The reaction can be reversible, releasing $\mathrm{H_2}$ on warming, which turned FLPs into a platform for metal-free catalytic hydrogenation of imines, enamines, and more. It is a fitting place to end the Lewis story: the broadest definition of all, the same electron-pair handshake of Chapter I, now choreographed so precisely that two molecules which refuse to bond to <em>each other</em> instead tear apart the most stubborn bond in chemistry.</p>
+
+      <p>One chapter remains. We have measured acidity by titration, by $\mathrm{p}K_{\mathrm{a}}$, by acceptor number and fluoride affinity, and by two derivatives of the energy. Chapter X asks how, given a structure and a computer, we can predict a $\mathrm{p}K_{\mathrm{a}}$ before ever touching a flask.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Ralph G. Pearson.</span> "Hard and Soft Acids and Bases." <em>J. Am. Chem. Soc.</em> 85, 3533–3539 (1963) — the original classification and the "hard prefers hard, soft prefers soft" rule of §3.</li>
+          <li><span class="src-title">Robert G. Parr and Ralph G. Pearson.</span> "Absolute Hardness: Companion Parameter to Absolute Electronegativity." <em>J. Am. Chem. Soc.</em> 105, 7512–7516 (1983) — the energy-derivative definitions of $\mu$, $\chi$, and $\eta$ and the charge-transfer expression of §5–§6.</li>
+          <li><span class="src-title">Ralph G. Pearson.</span> "Absolute Electronegativity and Hardness: Application to Inorganic Chemistry." <em>Inorg. Chem.</em> 27, 734–740 (1988) — the table of absolute hardness values (in eV) adopted in §5 and the widget.</li>
+          <li><span class="src-title">Robert G. Parr and Weitao Yang.</span> <em>Density-Functional Theory of Atoms and Molecules.</em> Oxford University Press, 1989 — Chapters 4–5 for the conceptual-DFT reading of $\chi$, $\mu$, $\eta$, and electronegativity equalization.</li>
+          <li><span class="src-title">Douglas W. Stephan and Gerhard Erker.</span> "Frustrated Lewis Pairs: Metal-Free Hydrogen Activation and More." <em>Angew. Chem. Int. Ed.</em> 49, 46–76 (2010) — the FLP review behind §7, including the $\mathrm{H_2}$-splitting mechanism.</li>
+          <li><span class="src-title">Catherine Housecroft and Alan Sharpe.</span> <em>Inorganic Chemistry</em>, 5th ed., Pearson, 2018 — §7 for the Lewis definition, adducts, the HSAB principle, and Lewis-acidity scales used throughout the chapter.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="08-beyond-water.html"><span class="label">← Previous</span>VIII · Beyond Water: Solvents and Superacids</a>
+      <a class="next" href="10-computing-pka.html"><span class="label">Next chapter</span>X · Computing pKa →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/hsab.js"></script>
+</body>
+</html>

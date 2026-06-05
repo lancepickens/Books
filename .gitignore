@@ -2,3 +2,8 @@
 .claude/*
 !.claude/skills/
 .DS_Store
+
+# Validation harness dependencies (installed locally, never committed).
+.claude/skills/new-book/scripts/node_modules/
+.claude/skills/new-book/scripts/package.json
+.claude/skills/new-book/scripts/package-lock.json

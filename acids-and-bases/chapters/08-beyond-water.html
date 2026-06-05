@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter VIII · Beyond Water: Solvents and Superacids — Acids and Bases: A Primer</title>
+  <meta name="description" content="Chapter 8: autoprotolysis in non-aqueous solvents, the acid/base window, leveling versus differentiating solvents, the Hammett acidity function H0, and the superacids." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter VIII of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter VIII</p>
+      <h1 class="chapter-title">Beyond Water: Solvents and Superacids</h1>
+      <p class="lede">Drop the assumption that the solvent is water and the pH scale itself becomes provincial: every solvent draws its own acidity window, and past the right edge of every one of them lie media a billion-billion times more acidic than concentrated sulfuric acid.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>For seven chapters water has been the silent backdrop. Its autoionization fixed $\Kw$, its leveling effect (Chapter II) capped the strongest acid we could express at $\Hthree$, and pH measured everything against it. But water is just one amphiprotic solvent among many. Methanol, acetic acid, liquid ammonia, dimethyl sulfoxide, even sulfuric acid itself all play the same self-protonation game — each with its own equilibrium constant and therefore its own range of accessible acidity. The leveling effect, far from being a nuisance, becomes a design tool: choose a weakly basic solvent and acids that water flattens into a single "strong" become rankable again.</p>
+          <p>Then we go further still. Past the acidic edge of water's window — past even pure $\mathrm{H_2SO_4}$ — sit the <em>superacids</em>, media so proton-hungry that pH and $\pKa$ lose meaning. To measure them we need a different instrument, the Hammett acidity function $\Hzero$, and to understand them we need the lesson of the conjugate seesaw pushed to its extreme: an acid is strong precisely when nothing wants its proton back. These media protonate the unprotonatable — alkanes, even carbon monoxide — and earned George Olah a Nobel Prize. This chapter is the bridge from the tame aqueous world to that frontier.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Amphiprotic solvent</dt><dd>A solvent that can both donate and accept a proton, so it reacts with itself.</dd>
+          <dt>Autoprotolysis</dt><dd>A solvent's self-ionization, $2\,\mathrm{SH}\eqm\mathrm{SH_2^+}+\mathrm{S^-}$; the general case of water's autoionization.</dd>
+          <dt>$K_s$</dt><dd>The autoprotolysis (self-ionization) constant of a solvent; for water $K_s=\Kw$.</dd>
+          <dt>Lyonium ion</dt><dd>The protonated solvent $\mathrm{SH_2^+}$ — the strongest acid the solvent can hold (e.g. $\Hthree$ in water).</dd>
+          <dt>Lyate ion</dt><dd>The deprotonated solvent $\mathrm{S^-}$ — the strongest base the solvent can hold (e.g. $\OHm$ in water).</dd>
+          <dt>Acidity window</dt><dd>The span of acidity a solvent can express, from its lyonium to its lyate ion; its width is $\mathrm{p}K_s$.</dd>
+          <dt>Leveling solvent</dt><dd>One basic enough to convert several strong acids entirely to its lyonium ion, hiding their differences.</dd>
+          <dt>Differentiating solvent</dt><dd>One weakly basic enough that acids leveled by water can be ranked apart.</dd>
+          <dt>Glacial acetic acid</dt><dd>Pure, water-free acetic acid — a classic differentiating solvent for strong acids.</dd>
+          <dt>Hammett acidity function</dt><dd>$\Hzero$, an indicator-based acidity scale that extends past pH into concentrated and superacidic media.</dd>
+          <dt>Indicator base</dt><dd>A weak base $\mathrm{B}$ whose protonation $\mathrm{B}\to\mathrm{BH^+}$ is monitored spectroscopically to read $\Hzero$.</dd>
+          <dt>Superacid</dt><dd>A medium more acidic than pure (100%) sulfuric acid, i.e. $\Hzero\le-12$ (Gillespie's definition).</dd>
+          <dt>Oleum</dt><dd>Fuming sulfuric acid — $\mathrm{H_2SO_4}$ with dissolved $\mathrm{SO_3}$; more acidic than the 100% acid.</dd>
+          <dt>Fluorosulfuric acid</dt><dd>$\mathrm{HSO_3F}$, a strong Brønsted superacid, $\Hzero\approx-15$.</dd>
+          <dt>Magic acid</dt><dd>The 1:1 mixture $\mathrm{HSO_3F\cdot SbF_5}$; $\Hzero$ near $-23$.</dd>
+          <dt>Fluoroantimonic acid</dt><dd>$\mathrm{HF\cdot SbF_5}$, the strongest known acid, $\Hzero$ down to roughly $-28$.</dd>
+          <dt>Conjugate-base stabilization</dt><dd>The delocalization of negative charge ($\mathrm{SbF_6^-}$, $\mathrm{Sb_2F_{11}^-}$) that makes a superacid's anion a vanishingly weak base.</dd>
+          <dt>Carbocation</dt><dd>A positively charged carbon species; superacids make many of them persistent and observable.</dd>
+          <dt>Persistent ion</dt><dd>A reactive species (here a carbocation) stable enough to study at leisure, because nothing in the medium will react with it.</dd>
+          <dt>Superbase</dt><dd>The basic-side counterpart: a base far stronger than hydroxide, living past the left edge of water's window.</dd>
+          <dt>Mineral acid</dt><dd>A strong inorganic acid such as $\mathrm{HCl}$, $\mathrm{HBr}$, $\mathrm{HClO_4}$.</dd>
+          <dt>Activity</dt><dd>Effective concentration; the quantity the rigorous $K_s$ and $\Hzero$ definitions are built from.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>Every solvent ionizes itself</h2>
+
+      <p>Water's autoionization was never special in kind, only familiar. Any <dfn title="A solvent that can both donate and accept a proton.">amphiprotic solvent</dfn> $\mathrm{SH}$ does the same thing: one molecule hands a proton to another, producing a protonated <dfn title="The protonated solvent SH2+, the strongest acid a solvent can hold.">lyonium ion</dfn> $\mathrm{SH_2^+}$ and a deprotonated <dfn title="The deprotonated solvent S-, the strongest base a solvent can hold.">lyate ion</dfn> $\mathrm{S^-}$. This self-reaction is <dfn title="A solvent's self-ionization, the general case of water's autoionization.">autoprotolysis</dfn>:</p>
+
+      <div class="equation-block">
+        $$ 2\,\mathrm{SH}\eqm\mathrm{SH_2^+}+\mathrm{S^-},\qquad K_s=a_{\mathrm{SH_2^+}}\,a_{\mathrm{S^-}}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathrm{SH}$</dt><dd>The neutral solvent molecule (e.g. $\mathrm{H_2O}$, $\mathrm{CH_3OH}$, $\mathrm{CH_3COOH}$, $\mathrm{NH_3}$).</dd>
+          <dt>$\mathrm{SH_2^+}$</dt><dd>The lyonium ion — solvent carrying an extra proton (e.g. $\Hthree$, $\mathrm{CH_3OH_2^+}$, $\mathrm{NH_4^+}$).</dd>
+          <dt>$\mathrm{S^-}$</dt><dd>The lyate ion — solvent missing a proton (e.g. $\OHm$, $\mathrm{CH_3O^-}$, $\mathrm{NH_2^-}$).</dd>
+          <dt>$K_s$</dt><dd>The autoprotolysis constant; as with $\Kw$ the pure-solvent activity is taken as 1 and drops out. For water $K_s=\Kw=10^{-14}$.</dd>
+        </dl>
+      </aside>
+
+      <p>Just as in water, the lyonium ion is the strongest acid the solvent permits and the lyate ion the strongest base. Taking $-\log_{10}$ gives the solvent's own neutral point and the total span it can express. The width of the accessible <dfn title="The span of acidity a solvent can express, from lyonium to lyate ion.">acidity window</dfn> is exactly $\mathrm{p}K_s$: a solvent with a larger $\mathrm{p}K_s$ self-ionizes less and offers a wider stage for chemistry. Water's window is $14$ units wide; methanol's is wider still; sulfuric acid's, as we will see, is almost comically narrow.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>A gallery of windows</h2>
+
+      <p>Collecting measured (and, for the most aggressive solvents, approximate) autoprotolysis constants gives a table of windows. The values carry real uncertainty — autoprotolysis is hard to measure in poorly conducting or chemically aggressive media — so treat the trailing digit as indicative, not exact.</p>
+
+      <div class="equation-block">
+        $$
+        \begin{array}{lcl}
+        \textbf{Solvent} & \mathbf{p}K_s\ (25\,\degC) & \textbf{lyonium} / \textbf{lyate} \\[2pt]
+        \mathrm{H_2SO_4}\ (100\%) & \approx 3.4\text{–}3.9 & \mathrm{H_3SO_4^+}\,/\,\mathrm{HSO_4^-} \\
+        \mathrm{CH_3COOH}\ (\text{glacial}) & \approx 12.6\text{–}14.5 & \mathrm{CH_3COOH_2^+}\,/\,\mathrm{CH_3COO^-} \\
+        \mathrm{H_2O} & 14.0 & \mathrm{H_3O^+}\,/\,\mathrm{OH^-} \\
+        \mathrm{CH_3OH} & \approx 16.7 & \mathrm{CH_3OH_2^+}\,/\,\mathrm{CH_3O^-} \\
+        \mathrm{C_2H_5OH} & \approx 18.9 & \mathrm{C_2H_5OH_2^+}\,/\,\mathrm{C_2H_5O^-} \\
+        \mathrm{NH_3}\ (\text{liq.}) & \approx 27\text{–}33 & \mathrm{NH_4^+}\,/\,\mathrm{NH_2^-} \\
+        \mathrm{DMSO} & \approx 33\text{–}35 & \text{(DMSO)}\mathrm{H^+}\,/\,\mathrm{CH_3SOCH_2^-}
+        \end{array}
+        $$
+      </div>
+
+      <aside class="note">
+        <h4>On the spread of these numbers</h4>
+        <p>Liquid ammonia's $\mathrm{p}K_s$ is quoted anywhere from $\approx 27$ to $\approx 33$ depending on temperature (ammonia is studied well below $0\,\degC$) and on the activity conventions used; we list the range rather than a false-precise single value. Glacial acetic acid likewise appears as $\approx 12.6$ in some compilations and $\approx 14.5$ in others. The point of the table is the <em>ordering and the widths</em>, not the third significant figure.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Leveling versus differentiating</h2>
+
+      <p>Recall the leveling effect from Chapter II: water cannot tell $\mathrm{HCl}$, $\mathrm{HBr}$, and $\mathrm{HClO_4}$ apart, because each is a far stronger proton donor than $\Hthree$ and so dumps its proton onto water completely. All three become, in effect, the same acid — solvated $\Hthree$. Water is a <dfn title="A solvent basic enough to convert several strong acids entirely to its lyonium ion.">leveling solvent</dfn> for them.</p>
+
+      <p>The cure is to switch to a less basic solvent. <dfn title="Pure, water-free acetic acid.">Glacial acetic acid</dfn> is itself an acid, so it is a very reluctant proton acceptor; its lyonium ion $\mathrm{CH_3COOH_2^+}$ is much more willing to give a proton back than $\Hthree$ is. An incoming strong acid therefore no longer dissociates completely, and the residual differences in dissociation re-emerge. In glacial acetic acid the perchloric–hydrochloric family separates into the experimentally established order</p>
+
+      <div class="equation-block">
+        $$ \mathrm{HClO_4} \;>\; \mathrm{HBr} \;>\; \mathrm{H_2SO_4} \;>\; \mathrm{HCl} \;>\; \mathrm{HNO_3}, $$
+      </div>
+
+      <p>an order water flattens into "all strong." A solvent that recovers such distinctions is a <dfn title="A solvent weakly basic enough that acids leveled by water can be ranked.">differentiating solvent</dfn>. The general rule is simple: a solvent levels every acid stronger than its own lyonium ion and differentiates the rest. Push the solvent's basicity down far enough — to glacial acetic acid, or all the way to pure sulfuric acid — and even the classic strong acids become measurably, rankably weak.</p>
+
+      <aside class="jargon">
+        <h4>The same trick on the basic side</h4>
+        <p>Leveling cuts both ways. Water levels every base stronger than $\OHm$: dissolve the amide ion $\mathrm{NH_2^-}$ or a carbanion in water and it simply rips a proton off $\mathrm{H_2O}$ to make $\OHm$. To rank superbases you move to a solvent whose lyate ion is itself very basic — liquid ammonia (lyate $\mathrm{NH_2^-}$) or DMSO (lyate $\mathrm{CH_3SOCH_2^-}$, the dimsyl ion). This is exactly why the celebrated "DMSO $\pKa$ scale" of carbon acids — Bordwell's tables — is measured in DMSO and not water.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Measuring acidity past pH: the function $\Hzero$</h2>
+
+      <p>In concentrated and superacidic media the very ideas behind pH break down: activities are nowhere near concentrations, the "solvent" may be the acid itself, and there is no dilute regime in which $\conc{H^+}$ is meaningful. Hammett and Deyrup (1932) supplied the replacement. Pick a weak <dfn title="A weak base whose protonation is monitored to read H0.">indicator base</dfn> $\mathrm{B}$ of known $\mathrm{p}K_{\mathrm{BH^+}}$, dissolve a trace of it, and measure spectroscopically the ratio of its protonated to unprotonated forms. The medium's acidity is then read off as the <dfn title="An indicator-based acidity scale extending past pH into concentrated and superacidic media.">Hammett acidity function</dfn>:</p>
+
+      <div class="equation-block">
+        $$ \Hzero=\mathrm{p}K_{\mathrm{BH^+}}-\log_{10}\frac{\conc{BH^+}}{\conc{B}}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Hzero$</dt><dd>The Hammett acidity function — a generalized "pH" for any medium, defined operationally through indicators.</dd>
+          <dt>$\mathrm{p}K_{\mathrm{BH^+}}$</dt><dd>The $\pKa$ of the protonated indicator $\mathrm{BH^+}$, measured for that indicator.</dd>
+          <dt>$\conc{BH^+}/\conc{B}$</dt><dd>The measured ratio of protonated to neutral indicator — read from a UV–visible or NMR spectrum.</dd>
+        </dl>
+      </aside>
+
+      <p>A chain of overlapping indicators, each weaker than the last, lets the scale march into ever more acidic territory: when one indicator is fully protonated and useless, a still weaker one takes over, calibrated against it. Crucially, in dilute aqueous solution $\Hzero\to\pH$ — the function is built to coincide with the familiar scale where the familiar scale works, then to extend smoothly past it. As with pH, <strong>a more negative $\Hzero$ means a more acidic medium, and each unit is a factor of ten</strong> in proton-donating power.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The superacids</h2>
+
+      <p>R. J. Gillespie proposed the line in the sand still used today: a <dfn title="A medium more acidic than 100% sulfuric acid.">superacid</dfn> is any medium more acidic than pure (100%) sulfuric acid, which sits at $\Hzero\approx-12$. Everything below that threshold is "super." The classic systems, in order of increasing ferocity, are:</p>
+
+      <div class="equation-block">
+        $$
+        \begin{array}{lcl}
+        \textbf{Superacid} & \mathbf{H_0}\ (\text{approx.}) & \textbf{conjugate base} \\[2pt]
+        \mathrm{H_2SO_4}\ (100\%) & \approx -12 & \mathrm{HSO_4^-} \\
+        \text{oleum (fuming }\mathrm{H_2SO_4}) & \text{more negative than }-12 & \mathrm{HS_2O_7^-} \\
+        \mathrm{HSO_3F}\ (\text{fluorosulfuric}) & \approx -15 & \mathrm{SO_3F^-} \\
+        \mathrm{HSO_3F\cdot SbF_5}\ (\text{“magic acid”}) & \approx -23\ (\text{reported}\ {-19}\,\text{to}\,{-23}) & \mathrm{SbF_5(SO_3F)^-} \\
+        \mathrm{HF\cdot SbF_5}\ (\text{fluoroantimonic}) & \text{to}\ \approx -28\ (\text{from}\ {-21}) & \mathrm{SbF_6^-},\ \mathrm{Sb_2F_{11}^-}
+        \end{array}
+        $$
+      </div>
+
+      <aside class="note">
+        <h4>Approximate, and composition-dependent</h4>
+        <p>These $\Hzero$ values are not constants of nature; they shift with the proportion of $\mathrm{SbF_5}$ added and with temperature, and different groups report different numbers. Fluoroantimonic acid is often summarized as reaching about $-28$, with some reports more extreme still; magic acid is commonly cited near $-19$ to $-23$. We follow Olah's <em>Superacid Chemistry</em> in treating them as approximate and stating the spread rather than a single decimal. The robust facts are the ordering and the staggering scale: fluoroantimonic acid is on the order of $10^{16}$ times more acidic than 100% $\mathrm{H_2SO_4}$.</p>
+      </aside>
+
+      <p>The name "<dfn title="The 1:1 mixture HSO3F·SbF5.">magic acid</dfn>" is literal in origin: a researcher in Olah's lab dunked a Christmas-party candle into the $\mathrm{HSO_3F\cdot SbF_5}$ mixture and watched the paraffin wax dissolve and ionize. The medium that protonates candle wax earned its nickname on the spot.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Why they are so acidic: the indifferent conjugate base</h2>
+
+      <p>The conjugate seesaw of Chapter II, taken to its limit, explains everything. An acid is strong exactly insofar as its conjugate base does not want the proton back. To build the strongest possible acid, then, engineer the most stable, least basic conjugate anion you can — one that spreads its negative charge so thinly over so many electronegative atoms that it has essentially no appetite to re-bind a proton.</p>
+
+      <p>That is precisely what $\mathrm{SbF_5}$ accomplishes. Antimony pentafluoride is a powerful <em>Lewis</em> acid (Chapter IX): it seizes a fluoride or fluorosulfate from the Brønsted acid and assembles a large, octahedral, charge-delocalized anion such as $\mathrm{SbF_6^-}$ or the bridged $\mathrm{Sb_2F_{11}^-}$. Schematically, for fluoroantimonic acid,</p>
+
+      <div class="equation-block">
+        $$ \mathrm{2\,HF} + \mathrm{SbF_5} \;\eqm\; \mathrm{H_2F^+} + \mathrm{SbF_6^-}, $$
+      </div>
+
+      <p>where the proton is left clinging to $\mathrm{H_2F^+}$ — a spectacularly poor place for a proton to be — because the only alternative, returning to the inert $\mathrm{SbF_6^-}$, is even worse. The acid is strong not because the proton is held tightly anywhere, but because <dfn title="Delocalization of charge that makes a superacid's anion a vanishingly weak base.">nothing in the medium will take it</dfn>. This is the same principle that, in milder form, makes triflic acid ($\mathrm{CF_3SO_3H}$) and the icosahedral carborane acids ($\mathrm{H(CHB_{11}Cl_{11})}$ and relatives) so strong: a conjugate base over which the charge is hopelessly smeared out.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>What superacids do — and a word on superbases</h2>
+
+      <p>With a proton that desperate and a medium with no nucleophile to interfere, superacids protonate molecules that are, in water, utterly unbasic. They protonate carbon monoxide; they protonate the carbon–hydrogen and even carbon–carbon bonds of saturated alkanes, generating <dfn title="A positively charged carbon species.">carbocations</dfn> from feedstocks as inert as methane and isobutane. Most importantly, because nothing in the medium will react with the cation once formed, these carbocations are <dfn title="Stable enough to study at leisure.">persistent</dfn>: they can be cooled, crystallized, and recorded by NMR at leisure.</p>
+
+      <p>This was George Olah's life's work. Before superacids, carbocations were fleeting intermediates inferred only from kinetics; Olah's superacid media made them stable, observable species — including the long-disputed "nonclassical" 2-norbornyl cation — and let their structures be settled directly. The achievement won him the 1994 Nobel Prize in Chemistry. The practical payoff is large too: superacid catalysis underlies the isomerization and alkylation steps that upgrade petroleum into high-octane fuel.</p>
+
+      <aside class="jargon">
+        <h4>The mirror image: superbases</h4>
+        <p>By exact symmetry there are <dfn title="A base far stronger than hydroxide.">superbases</dfn> — species far more basic than $\OHm$, living past the <em>left</em> edge of water's window. Organolithium and Grignard reagents, metal amides like $\mathrm{NaNH_2}$, the dimsyl anion in DMSO, and designed neutral organic superbases (amidines and phosphazenes such as DBU and the Schwesinger $\mathrm{P}_n$ bases) all qualify. They deprotonate carbon acids that water cannot touch, and like superacids they must be handled in solvents — ethers, liquid ammonia, DMSO — whose lyate ion is basic enough not to level them. The acidity ruler below shows both frontiers at once.</p>
+      </aside>
+
+      <section class="interactive" data-widget="acidity-window" aria-label="Acidity ruler from superbasic to superacidic, with solvent windows and superacid markers">
+        <header>
+          <h4>Interactive · The acidity ruler</h4>
+          <span class="hint">pick a solvent</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">One axis from superbasic (left) to superacidic (right), carrying both the aqueous pH/$\pKa$ region and the Hammett $\Hzero$ region. Each colored bar is a solvent's accessible window, drawn between its lyonium and lyate limits; its width equals $\mathrm{p}K_s$. Select a solvent to highlight it and read which listed strong acids it would <em>level</em> — any acid whose $\pKa$ lies below the solvent's acidic edge collapses to the lyonium ion. Markers below show the superacids at their (approximate, composition-dependent) $\Hzero$, with $100\%\ \mathrm{H_2SO_4}$ at $\Hzero\approx-12$ as Gillespie's threshold. Values are indicative; see §5.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <p>We have left water behind, learned to read acidity where pH cannot follow, and met the most acidic media ever made. The thread running through it all is the conjugate seesaw: strength is the unwillingness of the conjugate partner to take the proton back. The next chapter abandons the proton as protagonist entirely and returns to the widest lens of all — the Lewis picture — where acidity becomes a question of empty orbitals, hardness, and the catalysts that exploit them.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">George A. Olah, G. K. Surya Prakash, Árpád Molnár, and Jean Sommer.</span> <em>Superacid Chemistry</em>, 2nd ed., Wiley, 2009 — the definitive monograph: Gillespie's definition, the $\Hzero$ values of all the systems tabulated here (with their spread), conjugate-anion stabilization, and the protonation of alkanes and CO.</li>
+          <li><span class="src-title">Catherine Housecroft and Alan Sharpe.</span> <em>Inorganic Chemistry</em>, 5th ed., Pearson, 2018 — the chapter on non-aqueous solvents develops autoprotolysis constants, leveling versus differentiating solvents, and acidity functions in the framework used here.</li>
+          <li><span class="src-title">Louis P. Hammett and Alden J. Deyrup.</span> "A Series of Simple Basic Indicators." <em>J. Am. Chem. Soc.</em> 54, 2721–2739 (1932) — the original definition of the acidity function $\Hzero$ via overlapping indicator bases.</li>
+          <li><span class="src-title">R. J. Gillespie and T. E. Peel.</span> "Hammett Acidity Function for Some Superacid Systems." <em>J. Am. Chem. Soc.</em> 95, 5173–5178 (1973) — the measurements that established the $\Hzero$ scale for the fluorosulfuric/$\mathrm{SbF_5}$ superacids and fixed the $\Hzero\le-12$ threshold.</li>
+          <li><span class="src-title">George A. Olah.</span> "My Search for Carbocations and Their Role in Chemistry" — Nobel Lecture, 1994 (<em>Angew. Chem. Int. Ed.</em> 34, 1393–1405, 1995) — persistent carbocations, "magic acid," and the superacid protonation of saturated hydrocarbons, in the discoverer's own account.</li>
+          <li><span class="src-title">Frederick G. Bordwell.</span> "Equilibrium acidities in dimethyl sulfoxide solution." <em>Acc. Chem. Res.</em> 21, 456–463 (1988) — the DMSO $\pKa$ scale, the practical face of choosing a differentiating, weakly leveling solvent.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="07-molecular-origins.html"><span class="label">← Previous</span>VII · The Molecular Origins of Acidity</a>
+      <a class="next" href="09-lewis-hsab.html"><span class="label">Next chapter</span>IX · Lewis Acids, Hardness, and Catalysis →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/acidity-window.js"></script>
+</body>
+</html>

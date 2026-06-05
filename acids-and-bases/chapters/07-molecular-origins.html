@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter VII · The Molecular Origins of Acidity — Acids and Bases: A Primer</title>
+  <meta name="description" content="Chapter 7: pKa as a free energy of deprotonation; periodic trends, inductive and field effects, resonance, hybridization, and solvation; and the Hammett equation as the first linear free-energy relationship." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter VII of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter VII</p>
+      <h1 class="chapter-title">The Molecular Origins of Acidity</h1>
+      <p class="lede">Why does one molecule have a $\mathrm{p}K_{\mathrm{a}}$ near $0$ and another near $50$? The answer is never the proton — it is always how well the molecule can live without it.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>The previous chapters took $\mathrm{p}K_{\mathrm{a}}$ values as given — numbers read off a table, arranged on a ladder, fed into Henderson–Hasselbalch. This chapter asks where those numbers come from. The key move is to recognize that $\mathrm{p}K_{\mathrm{a}}$ is a free energy in disguise: the free energy required to pull the proton off. Anything that lowers that cost — anything that makes the conjugate base more comfortable bearing its new negative charge — strengthens the acid. So the question "why is this acid strong?" always becomes "why is <em>its conjugate base</em> stable?"</p>
+          <p>With that single principle we can walk through the whole toolkit of structural reasoning: where the acidic atom sits in the periodic table, whether electron-withdrawing groups pull charge away from the conjugate base, whether resonance can spread the charge over several atoms, what orbital the lone pair ends up in, and how the solvent dresses the resulting ion. We end with the first quantitative version of all this reasoning — the Hammett equation — which turns "electron-withdrawing" into a number you can add up.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Deprotonation</dt><dd>Removal of a proton from an acid to give its conjugate base.</dd>
+          <dt>$\Delta G^{\circ}$</dt><dd>Standard Gibbs free-energy change of a reaction; sets the equilibrium constant through $\Delta G^{\circ}=-RT\ln K$.</dd>
+          <dt>Conjugate base stability</dt><dd>How low in energy the species left behind, $\mathrm{A^-}$, sits — the master control on acid strength.</dd>
+          <dt>Electronegativity</dt><dd>An atom's pull on shared electrons; rises across a period, falls down a group.</dd>
+          <dt>Bond dissociation</dt><dd>The energy cost of breaking a bond; for $\mathrm{H{-}A}$ it weakens as $\mathrm{A}$ gets larger down a group.</dd>
+          <dt>Inductive effect</dt><dd>Electron density pulled through $\sigma$ bonds by an electronegative group, falling off sharply with distance.</dd>
+          <dt>Field effect</dt><dd>The same charge stabilization acting through space rather than through bonds.</dd>
+          <dt>Resonance</dt><dd>Delocalization of charge or electrons over several atoms, lowering energy.</dd>
+          <dt>Carboxylate</dt><dd>$\mathrm{RCOO^-}$, the conjugate base of a carboxylic acid, stabilized by two equivalent resonance forms.</dd>
+          <dt>Phenoxide</dt><dd>$\mathrm{C_6H_5O^-}$, the conjugate base of phenol, stabilized by delocalization into the ring.</dd>
+          <dt>Alkoxide</dt><dd>$\mathrm{RO^-}$, the conjugate base of an alcohol; no resonance, hence weakly acidic parent.</dd>
+          <dt>Hybridization</dt><dd>The $s$/$p$ mix of an orbital; more $s$ character holds a lone pair closer to the nucleus.</dd>
+          <dt>$s$ character</dt><dd>The fraction of $s$ orbital in a hybrid: $25\%$ for $sp^3$, $33\%$ for $sp^2$, $50\%$ for $sp$.</dd>
+          <dt>Carbanion</dt><dd>A carbon bearing a lone pair and a negative charge — the conjugate base of a C–H acid.</dd>
+          <dt>Carbon acid</dt><dd>An acid whose acidic proton sits on carbon; usually very weak.</dd>
+          <dt>Solvation</dt><dd>The stabilizing embrace of solvent around an ion; often the dominant term in water.</dd>
+          <dt>Gas-phase acidity</dt><dd>Acidity measured with no solvent — exposes intrinsic molecular effects.</dd>
+          <dt>Linear free-energy relationship</dt><dd>A straight-line link between $\log K$ (or $\log k$) and a structural parameter.</dd>
+          <dt>Hammett equation</dt><dd>$\log_{10}(K/K_0)=\rho\,\sigma$; the founding LFER for substituted benzene derivatives.</dd>
+          <dt>$\sigma$ (sigma)</dt><dd>A substituent constant: how strongly a group withdraws or donates electrons.</dd>
+          <dt>$\rho$ (rho)</dt><dd>A reaction constant: how sensitive a given reaction is to substituents.</dd>
+          <dt>Substituent</dt><dd>A group replacing a hydrogen on a parent skeleton (here, on benzoic acid).</dd>
+          <dt>Meta / para</dt><dd>Ring positions relative to the reacting group: $1{,}3$ (meta) and $1{,}4$ (para).</dd>
+          <dt>Polarizability</dt><dd>How easily an electron cloud distorts; large, soft ions spread charge and are stabilized in the gas phase.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>$\mathrm{p}K_{\mathrm{a}}$ is a free energy</h2>
+
+      <p>Strip away the logarithms and a $\mathrm{p}K_{\mathrm{a}}$ is just an energy. The dissociation $\mathrm{HA}\eqm\mathrm{A^-}+\mathrm{H^+}$ has an equilibrium constant $K_{\mathrm{a}}$, and any equilibrium constant is fixed by the standard free-energy change of its reaction, $\Delta G^{\circ}=-RT\ln K_{\mathrm{a}}$. Converting from the natural logarithm to base ten introduces a factor of $\ln 10 = 2.303$, and the result is the equation that underlies the entire chapter:</p>
+
+      <div class="equation-block">
+        $$ \pKa = \frac{\Delta G^{\circ}_{\mathrm{deprot}}}{2.303\,RT} = \frac{\Delta G^{\circ}_{\mathrm{deprot}}}{5.71\ \mathrm{kJ\,mol^{-1}}} \quad (298\,\mathrm{K}). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Delta G^{\circ}_{\mathrm{deprot}}$</dt><dd>The standard free energy to remove the proton, in $\mathrm{kJ\,mol^{-1}}$. Positive for weak acids (deprotonation is uphill).</dd>
+          <dt>$R$</dt><dd>The gas constant, $8.314\,\mathrm{J\,mol^{-1}\,K^{-1}}$.</dd>
+          <dt>$T$</dt><dd>Absolute temperature; $298\,\mathrm{K}$ throughout this book.</dd>
+          <dt>$2.303\,RT$</dt><dd>At $298\,\mathrm{K}$ this equals $5.71\ \mathrm{kJ\,mol^{-1}}$ ($=1.364\ \mathrm{kcal\,mol^{-1}}$): the free-energy cost of one $\mathrm{p}K_{\mathrm{a}}$ unit.</dd>
+        </dl>
+      </aside>
+
+      <p>The number to commit to memory is that <strong>each $\mathrm{p}K_{\mathrm{a}}$ unit is worth $5.71\ \mathrm{kJ\,mol^{-1}}$ of free energy.</strong> The fifty-unit span from a strong mineral acid to ethane is therefore about $285\ \mathrm{kJ\,mol^{-1}}$ — a chemical bond's worth of energy separating the easiest deprotonations from the hardest. Because the proton $\mathrm{H^+}$ is the same featureless particle in every reaction, it contributes a constant offset and drops out of any <em>comparison</em>. What is left, and what moves $\mathrm{p}K_{\mathrm{a}}$ around, is the difference in stability between $\mathrm{HA}$ and $\mathrm{A^-}$. Since the neutral acids differ far less than their charged conjugate bases, the rule of thumb is blunt and reliable: <em>a strong acid is one with a stable conjugate base.</em> Every section below is one mechanism for stabilizing $\mathrm{A^-}$.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Periodic trends: across and down</h2>
+
+      <p>Start with the simplest binary acids $\mathrm{H{-}A}$ and ask how acidity tracks the position of $\mathrm{A}$ in the periodic table. Two trends pull in apparently opposite directions, and resolving them is the first real test of the conjugate-base principle.</p>
+
+      <p><strong>Across a period</strong>, acidity follows <dfn title="An atom's pull on the electrons it shares in a bond.">electronegativity</dfn>. Compare $\mathrm{CH_4}$, $\mathrm{NH_3}$, $\mathrm{H_2O}$, $\mathrm{HF}$: their $\mathrm{p}K_{\mathrm{a}}$ values fall from roughly $50$ to $36$ to $15.7$ to $3.2$. The conjugate bases are $\mathrm{CH_3^-}$, $\mathrm{NH_2^-}$, $\mathrm{OH^-}$, $\mathrm{F^-}$, and fluorine — the most electronegative of the four — is far the happiest atom to carry the lone pair and the negative charge. More electronegative central atom, more stable anion, stronger acid.</p>
+
+      <p><strong>Down a group</strong>, the trend flips: $\mathrm{HF}\;(3.2) < \mathrm{HCl}\;(\!-6) < \mathrm{HBr}\;(\!-9) < \mathrm{HI}\;(\!-10)$ in acid strength, even though fluorine is the most electronegative. Here electronegativity is overruled by size. The $\mathrm{H{-}I}$ bond is long and weak — its <dfn title="The energy required to break a bond homolytically.">bond dissociation</dfn> energy is far below that of $\mathrm{H{-}F}$ — and the large, polarizable iodide ion spreads its charge over a big volume, lowering its energy. Both factors favor losing the proton.</p>
+
+      <aside class="jargon">
+        <h4>Which effect wins where</h4>
+        <p>Across a period the atoms are nearly the same size, so bond strength barely changes and electronegativity decides. Down a group the atomic radius changes enormously, so the bond-strength/size term swamps the modest change in electronegativity. The lesson is not that one factor is "right" — it is that you must ask which difference is largest along the axis you are walking.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Inductive and field effects</h2>
+
+      <p>Hang an electronegative group near the acidic site and it siphons electron density away through the $\sigma$-bond framework — the <dfn title="Electron density pulled through sigma bonds toward an electronegative group.">inductive effect</dfn> — and through space — the <dfn title="Charge stabilization transmitted through space rather than through bonds.">field effect</dfn>. Both stabilize the negative charge of the conjugate base, and both strengthen the acid. The cleanest demonstration is the chloroacetic acid series:</p>
+
+      <div class="equation-block">
+        $$
+        \begin{array}{lcc}
+        \text{acid} & & \pKa \\[2pt]
+        \mathrm{CH_3COOH} & \text{(acetic)} & 4.76 \\
+        \mathrm{ClCH_2COOH} & \text{(chloroacetic)} & 2.86 \\
+        \mathrm{Cl_2CHCOOH} & \text{(dichloroacetic)} & 1.29 \\
+        \mathrm{Cl_3CCOOH} & \text{(trichloroacetic)} & 0.66
+        \end{array}
+        $$
+      </div>
+
+      <p>Each chlorine added drops the $\mathrm{p}K_{\mathrm{a}}$, by progressively diminishing amounts, as the carboxylate is stabilized by the electron-withdrawing chlorines pulling charge away from the $\mathrm{-COO^-}$ group. Going from acetic to trichloroacetic is a $4.1$-unit swing — more than $23\ \mathrm{kJ\,mol^{-1}}$ — produced entirely by three chlorine atoms that never touch the acidic proton.</p>
+
+      <p>The effect falls off steeply with distance, the fingerprint of an inductive/field interaction. In the butanoic acid isomers, a chlorine on the carbon next to the carboxyl ($\alpha$) lowers $\mathrm{p}K_{\mathrm{a}}$ to about $2.8$; move it one carbon further ($\beta$) and the $\mathrm{p}K_{\mathrm{a}}$ rises back to about $4.0$; another carbon out ($\gamma$) and it is near $4.5$, almost back to the unsubstituted $4.82$. Proximity is everything.</p>
+
+      <aside class="note">
+        <h4>Inductive vs. field — a genuine ambiguity</h4>
+        <p>Disentangling charge transmitted "through the bonds" from charge transmitted "through space" is notoriously hard; carefully designed bicyclic systems (where the through-bond path and through-space path point in different directions) suggest the <em>field</em> component usually dominates. For predicting trends it rarely matters which you invoke — both say the same thing: electron-withdrawing groups near the charge make stronger acids.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Resonance: spreading the charge</h2>
+
+      <p>The most powerful stabilizer of a conjugate base is <dfn title="Delocalization of charge or bonding over several atoms.">resonance</dfn> — letting the negative charge be shared over several atoms rather than localized on one. The textbook contrast is the carboxylic acids against the alcohols. Acetic acid has $\mathrm{p}K_{\mathrm{a}}\,4.76$; ethanol has $\mathrm{p}K_{\mathrm{a}}\approx 16$. They differ by more than eleven units — over $60\ \mathrm{kJ\,mol^{-1}}$ — almost entirely because the <dfn title="RCOO-, the conjugate base of a carboxylic acid.">carboxylate</dfn> anion delocalizes its charge across two equivalent oxygens:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{CH_3CO_2^-} \;\longleftrightarrow\; \mathrm{{}^-O_2CCH_3} \qquad\text{(two equivalent resonance forms)}. $$
+      </div>
+
+      <p>In the <dfn title="RO-, the conjugate base of an alcohol; charge stuck on one oxygen.">alkoxide</dfn> $\mathrm{CH_3CH_2O^-}$ the charge has nowhere to go — it is pinned on a single oxygen — so the parent alcohol is a far weaker acid. The same logic explains why phenol is so much more acidic than a saturated alcohol:</p>
+
+      <div class="equation-block">
+        $$ \pKa(\text{phenol}) = 10.0, \qquad \pKa(\text{cyclohexanol}) \approx 16. $$
+      </div>
+
+      <p>Phenol's conjugate base, <dfn title="C6H5O-, the conjugate base of phenol.">phenoxide</dfn>, delocalizes the oxygen's negative charge into the aromatic ring (onto the ortho and para carbons), a luxury the saturated cyclohexoxide cannot share. Six orders of magnitude of acidity come from a ring that the proton never visits.</p>
+
+      <aside class="jargon">
+        <h4>Resonance beats induction</h4>
+        <p>Both phenol's ring and a chlorine's electronegativity stabilize an anion, but resonance is usually the larger effect because it actually moves charge density onto new atoms, rather than merely polarizing existing bonds. When a substituent can do both — like a nitro group, which is electron-withdrawing by induction <em>and</em> accepts charge by resonance — its influence is especially strong. That dual capacity is exactly what the Hammett $\sigma$ of §6 quantifies in one number.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Hybridization: where the lone pair sits</h2>
+
+      <p>Even with the same element and no neighboring groups, acidity depends on the <dfn title="The s/p mix of the orbital holding the lone pair.">hybridization</dfn> of the orbital that ends up holding the lone pair. The carbon acids make the point starkly. As the carbon's hybridization changes from $sp^3$ to $sp^2$ to $sp$, its C–H acidity climbs by twenty-five orders of magnitude:</p>
+
+      <div class="equation-block">
+        $$
+        \begin{array}{lccc}
+        & \text{hybrid} & s\text{ character} & \pKa\;(\text{approx.}) \\[2pt]
+        \mathrm{CH_3{-}CH_3}\ (\text{ethane}) & sp^3 & 25\% & \sim 50 \\
+        \mathrm{CH_2{=}CH_2}\ (\text{ethene}) & sp^2 & 33\% & \sim 44 \\
+        \mathrm{CH{\equiv}CH}\ (\text{ethyne}) & sp & 50\% & \sim 25
+        \end{array}
+        $$
+      </div>
+
+      <p>An $s$ orbital is spherical and held close to the nucleus; a $p$ orbital sticks out. The more <dfn title="The percentage of s orbital in a hybrid.">$s$ character</dfn> a hybrid has, the closer it holds its electrons to the positively charged nucleus, and the lower the energy of a lone pair placed in it. The conjugate base of ethyne, the acetylide <dfn title="A carbon bearing a lone pair and negative charge.">carbanion</dfn> $\mathrm{HC{\equiv}C^-}$, parks its lone pair in an $sp$ orbital ($50\%$ $s$) and is therefore far better stabilized than the $sp^3$ ethyl anion ($25\%$ $s$). Ethyne, with $\mathrm{p}K_{\mathrm{a}}\sim 25$, is acidic enough to be deprotonated by amide bases — something no ordinary alkane will tolerate.</p>
+
+      <aside class="note">
+        <h4>These pKa values are bracketed estimates</h4>
+        <p>The acidity of $\mathrm{p}K_{\mathrm{a}}\sim 50$ acids cannot be measured directly — no solvent has the basicity to deprotonate ethane to a detectable extent. Values for very weak carbon acids are <em>estimated</em> by extrapolation, by kinetic methods, and by anchoring to DMSO acidity scales (Bordwell's work, cited below). Treat "$\sim 50$", "$\sim 44$", and "$\sim 25$" as well-supported brackets, not as four-figure measurements. The <em>order</em> and the $\approx 25$-unit total span are robust; the individual numbers carry an uncertainty of a few units.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The Hammett equation: making "electron-withdrawing" a number</h2>
+
+      <p>Everything so far has been qualitative — "more electronegative," "better delocalized." In 1937 Louis Hammett turned the talk into arithmetic, founding the field of <dfn title="A straight-line relation between log K (or log k) and a structural parameter.">linear free-energy relationships</dfn>. His insight: if a substituent stabilizes a charge by a fixed free energy, then its effect on $\log K$ should be the same constant from one reaction to the next, scaled only by how charge-sensitive each reaction is. He defined two numbers — one for the substituent, one for the reaction:</p>
+
+      <div class="equation-block">
+        $$ \log_{10}\frac{K}{K_0} = \rho\,\sigma, \qquad \log_{10}\frac{k}{k_0} = \rho\,\sigma. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\sigma$</dt><dd>The <dfn title="A number measuring a substituent's electron-withdrawing (+) or donating (−) power.">substituent constant</dfn>: positive for electron-withdrawing groups, negative for electron-donating, zero for $\mathrm{H}$. A property of the group and its ring position only.</dd>
+          <dt>$\rho$</dt><dd>The <dfn title="A number measuring how sensitive a reaction is to substituents.">reaction constant</dfn>: how strongly this particular reaction responds to substituents. A property of the reaction.</dd>
+          <dt>$K_0,\,k_0$</dt><dd>The equilibrium (or rate) constant for the unsubstituted parent — substituent $=\mathrm{H}$.</dd>
+        </dl>
+      </aside>
+
+      <p>The scale needs an origin and a unit. Hammett fixed both with one choice: the ionization of substituted <strong>benzoic acids in water at $25\,^{\circ}\mathrm{C}$</strong> defines $\rho = 1$ exactly, and the unsubstituted benzoic acid ($\mathrm{p}K_{\mathrm{a}}^{0}=4.20$) is the reference $K_0$. Because $\log_{10}(K/K_0)=\mathrm{p}K_{\mathrm{a}}^{0}-\mathrm{p}K_{\mathrm{a}}$, the equation for any substituted benzoic acid reads</p>
+
+      <div class="equation-block">
+        $$ \pKa = \pKa^{0} - \rho\,\sigma, \qquad \pKa^{0}(\text{benzoic}) = 4.20. $$
+      </div>
+
+      <p>With $\rho = 1$ for this defining reaction, a substituent's $\sigma$ <em>is</em> the drop it produces in $\mathrm{p}K_{\mathrm{a}}$. The constants come from the survey of Hansch, Leo, and Taft (1991):</p>
+
+      <div class="equation-block">
+        $$
+        \begin{array}{lccc}
+        \text{substituent} & \sigma & \pKa\;(=4.20-\sigma) \\[2pt]
+        p\text{-NH}_2 & -0.66 & 4.86 \\
+        p\text{-OCH}_3 & -0.27 & 4.47 \\
+        p\text{-CH}_3 & -0.17 & 4.37 \\
+        \mathrm{H} & \;\;\;0.00 & 4.20 \\
+        p\text{-Cl},\ p\text{-Br} & +0.23 & 3.97 \\
+        m\text{-Cl} & +0.37 & 3.83 \\
+        m\text{-NO}_2 & +0.71 & 3.49 \\
+        p\text{-NO}_2 & +0.78 & 3.42
+        \end{array}
+        $$
+      </div>
+
+      <p>Electron-withdrawing groups ($\sigma &gt; 0$) lower $\mathrm{p}K_{\mathrm{a}}$ — they stabilize the carboxylate, strengthening the acid. Electron-donating groups ($\sigma &lt; 0$) raise it. Two details reward attention. First, $p$-nitro ($+0.78$) exceeds $m$-nitro ($+0.71$): from the para position the nitro group can withdraw by resonance <em>and</em> induction, but from the meta position only the field/inductive path is open. Second, $p$-amino ($-0.66$) is strongly donating because the nitrogen lone pair pushes electron density into the ring by resonance — the opposite of nitro. The single $\sigma$ value packages both inductive and resonance contributions of §3 and §4 into one experimentally fitted number.</p>
+
+      <p>The power of the relationship is that the <em>same</em> $\sigma$ values predict other reactions once you measure that reaction's $\rho$. A reaction with large positive $\rho$ builds up negative charge near the ring in its rate-determining step (and so is accelerated by electron-withdrawing groups); a negative $\rho$ signals positive charge developing there. In this way $\rho$ became a mechanistic probe — a way to read off, from a slope, what charge a transition state carries. The widget below builds the founding plot: the benzoic acids themselves, scattered along the line of slope $\rho = 1$.</p>
+
+      <section class="interactive" data-widget="hammett-plot" aria-label="Interactive Hammett plot for substituted benzoic acids">
+        <header>
+          <h4>Interactive · The Hammett plot</h4>
+          <span class="hint">select substituents · drag σ</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">Hammett plot for the ionization of substituted benzoic acids in water. The horizontal axis is the substituent constant $\sigma$; the vertical axis is $\log_{10}(K/K_0)=\mathrm{p}K_{\mathrm{a}}^{0}-\mathrm{p}K_{\mathrm{a}}$. The line has slope $\rho = 1.00$ through the origin — the definition of this reference reaction. At $\sigma = +0.78$ ($p$-NO$_2$) the line predicts $\mathrm{p}K_{\mathrm{a}}\approx 3.42$; at $\sigma = 0$ it returns the parent value $4.20$. Toggle substituents to see how tightly the real points hug the line, and drag the slider to read off the predicted $\mathrm{p}K_{\mathrm{a}}$ for any $\sigma$.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Solvation and the gas-phase reversal</h2>
+
+      <p>One stabilizer of the conjugate base has been lurking behind every number above: the solvent. An anion in water is wrapped in oriented water molecules, and that <dfn title="The stabilizing embrace of solvent around a dissolved ion.">solvation</dfn> can be worth hundreds of $\mathrm{kJ\,mol^{-1}}$ — often more than every intramolecular effect combined. Because small, charge-concentrated ions are solvated far more strongly than large, diffuse ones (the Born picture: solvation energy scales inversely with ionic radius), the solvent does not merely shift acidities uniformly. It can <em>reorder</em> them.</p>
+
+      <p>The classic case is the aliphatic alcohols. In water their acidity runs</p>
+
+      <div class="equation-block">
+        $$ \text{water:}\qquad \mathrm{CH_3OH} \;&gt;\; \mathrm{CH_3CH_2OH} \;&gt;\; (\mathrm{CH_3})_3\mathrm{COH}, $$
+      </div>
+
+      <p>methanol the most acidic, <em>tert</em>-butanol the least. Strip away the solvent and the order inverts completely:</p>
+
+      <div class="equation-block">
+        $$ \text{gas phase:}\qquad (\mathrm{CH_3})_3\mathrm{COH} \;&gt;\; \mathrm{CH_3CH_2OH} \;&gt;\; \mathrm{CH_3OH}. $$
+      </div>
+
+      <p>Brauman and Blair reported this reversal in 1968. In the gas phase the larger, more <dfn title="How easily an electron cloud distorts to spread charge.">polarizable</dfn> alkyl groups of <em>tert</em>-butoxide spread the anion's charge over a bigger volume, lowering its energy — so the bulkier alcohol is the stronger acid. In water that intrinsic ordering is overwhelmed by solvation: the small, naked methoxide is hydrated tightly, the bulky <em>tert</em>-butoxide is shielded from water by its alkyl shell and hydrated poorly, and the solvation difference flips the ranking. The "electron-donating alkyl group" story once told to explain the aqueous order is, it turns out, an artifact of the solvent, not a property of the molecule.</p>
+
+      <aside class="note">
+        <h4>Why the aqueous tables still work</h4>
+        <p>If solvent can invert orderings, why trust aqueous $\mathrm{p}K_{\mathrm{a}}$ tables at all? Because we use them <em>in water</em>, to predict aqueous behavior, where the solvation term is present in both the table and the application — it cancels. The gas-phase reversal is a warning, not a refutation: a $\mathrm{p}K_{\mathrm{a}}$ measured in water is a property of the molecule <em>and its solvent together</em>. Move to DMSO (Chapter VIII) and the numbers change, sometimes dramatically, precisely because the solvation term changes.</p>
+      </aside>
+
+      <p>The same caution applies to comparing chemistry "on paper." Toluene's methyl C–H ($\mathrm{p}K_{\mathrm{a}}\sim 43$) and water ($15.7$) differ by twenty-seven units in water, but the gap would be different again in the gas phase or in DMSO, because each anion is solvated differently. Acidity, in the end, is never a property of a lone molecule; it is the free-energy difference between a proton-bound state and a proton-free state, both dressed by their surroundings. With the molecular origins of $\mathrm{p}K_{\mathrm{a}}$ in hand, the next chapter leaves water entirely — to the differentiating solvents and the superacids that live beyond its leveling window.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Eric V. Anslyn and Dennis A. Dougherty.</span> <em>Modern Physical Organic Chemistry.</em> University Science Books, 2006 — Chapter 1 connects $\mathrm{p}K_{\mathrm{a}}$ to free energy and surveys inductive, resonance, hybridization, and solvation effects; Chapter 5 develops linear free-energy relationships and the Hammett treatment in full.</li>
+          <li><span class="src-title">Louis P. Hammett.</span> "The Effect of Structure upon the Reactions of Organic Compounds. Benzene Derivatives." <em>J. Am. Chem. Soc.</em> 59, 96–103 (1937) — the founding paper defining $\sigma$ and $\rho$ from benzoic-acid ionization.</li>
+          <li><span class="src-title">Corwin Hansch, Albert Leo, and R. W. Taft.</span> "A Survey of Hammett Substituent Constants and Resonance and Field Parameters." <em>Chem. Rev.</em> 91, 165–195 (1991) — the standard tabulation of $\sigma$ values used in §6 and the widget.</li>
+          <li><span class="src-title">F. G. Bordwell.</span> "Equilibrium Acidities in Dimethyl Sulfoxide Solution." <em>Acc. Chem. Res.</em> 21, 456–463 (1988) — the DMSO acidity scale that anchors the very weak carbon-acid $\mathrm{p}K_{\mathrm{a}}$ values bracketed in §5.</li>
+          <li><span class="src-title">John I. Brauman and Larry K. Blair.</span> "Gas-Phase Acidities of Alcohols." <em>J. Am. Chem. Soc.</em> 90, 6561–6562 (1968), with the fuller account in <em>J. Am. Chem. Soc.</em> 92, 5986 (1970) — the gas-phase reversal of alcohol acidity behind §7.</li>
+          <li><span class="src-title">Michael B. Smith.</span> <em>March's Advanced Organic Chemistry</em>, 8th ed., Wiley, 2020 — Chapter 8 collects the periodic, inductive, resonance, and hybridization trends in acidity with extensive $\mathrm{p}K_{\mathrm{a}}$ tables.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="06-polyprotic-speciation.html"><span class="label">← Previous</span>VI · Polyprotic Acids and Speciation</a>
+      <a class="next" href="08-beyond-water.html"><span class="label">Next chapter</span>VIII · Beyond Water: Solvents and Superacids →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/hammett-plot.js"></script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter III · Equilibrium in Water — Acids and Bases: A Primer</title>
+  <meta name="description" content="Chapter 3: exact pH from mass balance, charge balance, and the proton condition; the weak-acid cubic; the approximation hierarchy and the 5% rule; very dilute acids; hydrolysis of salts; and amphiprotic salts." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter III of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter III</p>
+      <h1 class="chapter-title">Equilibrium in Water</h1>
+      <p class="lede">Every pH problem is the same question — where do all the charges and all the atoms have to balance? — and the famous shortcuts are just that question answered lazily.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>In Chapter II we estimated the pH of a weak acid with a single tidy formula, $[\mathrm{H}^+]\approx\sqrt{K_{\mathrm{a}}C}$. That formula is a guess that happens to be good most of the time. This chapter explains where it comes from, exactly how good it is, and — more usefully — when it quietly fails. The trick is to stop reaching for a memorized formula and instead write down two statements that are always true: atoms are conserved (mass balance) and charge is conserved (charge balance). Combine them with the equilibrium constants and the answer falls out, with no approximation at all.</p>
+          <p>Done honestly, that combination gives a cubic equation for the hydrogen-ion concentration. We will derive it, solve it numerically in the widget, and then peel away terms one at a time to recover the simple shortcuts — seeing precisely which term you are allowed to drop, and when. Along the way the awkward cases that break the shortcut announce themselves: solutions so dilute or so weak that water's own ions matter, salts that make water basic or acidic on their own, and the strange "in-between" salts whose pH does not depend on how much you dissolve at all.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Mass balance</dt><dd>The bookkeeping rule that every atom of a substance put in must still be present, distributed among its species.</dd>
+          <dt>Material balance</dt><dd>Another name for mass balance.</dd>
+          <dt>Charge balance</dt><dd>The rule that total positive charge equals total negative charge in any solution (electroneutrality).</dd>
+          <dt>Electroneutrality</dt><dd>The physical fact behind charge balance: bulk solution carries no net charge.</dd>
+          <dt>Proton condition</dt><dd>A balance counting protons gained and lost relative to a chosen reference level.</dd>
+          <dt>Proton balance</dt><dd>Another name for the proton condition.</dd>
+          <dt>Reference level</dt><dd>The set of species, present in known amount, against which proton gain and loss are tallied.</dd>
+          <dt>Analytical concentration</dt><dd>The total amount of a substance added per litre, $C$, summed over all its forms.</dd>
+          <dt>Formal concentration</dt><dd>Another name for analytical concentration.</dd>
+          <dt>Species</dt><dd>A distinct chemical form present in solution, e.g. $\mathrm{HA}$, $\mathrm{A}^-$, $\mathrm{H}^+$, $\mathrm{OH}^-$.</dd>
+          <dt>Monoprotic acid</dt><dd>An acid with a single donatable proton.</dd>
+          <dt>Spectator ion</dt><dd>An ion (e.g. $\mathrm{Na^+}$) that takes no part in proton transfer but still counts in charge balance.</dd>
+          <dt>Hydrolysis</dt><dd>The reaction of a salt's ion with water that shifts the pH — a weak base or weak acid generated in situ.</dd>
+          <dt>Amphiprotic</dt><dd>Able to act as both acid and base; here, an ion like $\mathrm{HCO_3^-}$ that can donate or accept a proton.</dd>
+          <dt>Fraction dissociated</dt><dd>$\alpha$, the fraction of the acid present as $\mathrm{A}^-$ at equilibrium.</dd>
+          <dt>5% rule</dt><dd>A rule of thumb: an approximation that drops a quantity is acceptable if that quantity is under 5% of what it is compared to.</dd>
+          <dt>Successive approximation</dt><dd>Solving by guessing, substituting, and re-solving until the answer stops changing.</dd>
+          <dt>Cubic equation</dt><dd>A polynomial of degree three; the exact monoprotic-acid pH equation is one.</dd>
+          <dt>Quadratic equation</dt><dd>A degree-two polynomial; the next approximation up from the simple square-root formula.</dd>
+          <dt>Bisection</dt><dd>A robust root-finding method that repeatedly halves an interval known to bracket the root.</dd>
+          <dt>$K_{\mathrm{a}}$</dt><dd>Acid dissociation constant of $\mathrm{HA}$.</dd>
+          <dt>$K_{\mathrm{b}}$</dt><dd>Base constant of a conjugate base; $K_{\mathrm{b}}=K_{\mathrm{w}}/K_{\mathrm{a}}$.</dd>
+          <dt>$K_{\mathrm{w}}$</dt><dd>Ion product of water, $1.0\times10^{-14}$ at $25\,^{\circ}\mathrm{C}$.</dd>
+          <dt>Conjugate base</dt><dd>$\mathrm{A}^-$, what $\mathrm{HA}$ becomes after losing its proton.</dd>
+          <dt>Weak base</dt><dd>A species that takes a proton from water only partially.</dd>
+          <dt>Salt of a weak acid</dt><dd>An ionic compound (e.g. sodium acetate) whose anion is a weak base.</dd>
+          <dt>Neutral pH</dt><dd>Where $[\mathrm{H}^+]=[\mathrm{OH}^-]$; pH 7 only at $25\,^{\circ}\mathrm{C}$.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>The systematic approach: mass and charge balance</h2>
+
+      <p>A solution of a weak acid is not just $\mathrm{HA}$ and $\mathrm{A}^-$. It also contains $\mathrm{H}^+$ and $\mathrm{OH}^-$ from the water, and whatever cations came with the acid. To find the pH exactly we need as many independent equations as there are unknown concentrations. Two of them are not chemistry at all — they are bookkeeping that must hold in <em>every</em> aqueous solution.</p>
+
+      <p>The first is <dfn title="Every atom of a substance added must still be present, distributed among its chemical forms.">mass balance</dfn> (or material balance): the total amount of the acid you dissolved, the <dfn title="The total moles of a substance added per litre, summed over all its species.">analytical concentration</dfn> $C$, is still there, just split between its two forms.</p>
+
+      <div class="equation-block">
+        $$ C = \conc{HA} + \conc{A^-}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$C$</dt><dd>Analytical (formal) concentration of the acid in $\mathrm{mol\,L^{-1}}$ — a known input, fixed when you weigh out the acid.</dd>
+          <dt>$\conc{HA}$</dt><dd>Equilibrium concentration of the undissociated acid (an unknown).</dd>
+          <dt>$\conc{A^-}$</dt><dd>Equilibrium concentration of the conjugate base (an unknown).</dd>
+        </dl>
+      </aside>
+
+      <p>The second is <dfn title="In any solution the total positive charge equals the total negative charge.">charge balance</dfn>, the statement that the solution carries no net charge. Summing every cation against every anion (each weighted by the magnitude of its charge) for a pure weak acid in water gives</p>
+
+      <div class="equation-block">
+        $$ \conc{H^+} = \conc{A^-} + \conc{OH^-}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\conc{H^+}$</dt><dd>Hydrogen-ion (hydronium) concentration — the only cation present, and the quantity we ultimately want.</dd>
+          <dt>$\conc{A^-}$</dt><dd>The acid's anion.</dd>
+          <dt>$\conc{OH^-}$</dt><dd>Hydroxide, always present from the water.</dd>
+        </dl>
+      </aside>
+
+      <p>If a spectator cation is present — say sodium, from sodium acetate — it joins the left side. For a salt $\mathrm{MA}$ dissolving alongside the acid,</p>
+
+      <div class="equation-block">
+        $$ \conc{H^+} + \conc{M^+} = \conc{A^-} + \conc{OH^-}, $$
+      </div>
+
+      <p>and $\conc{M^+}$ is known (it equals the salt's formal concentration, since a <dfn title="An ion that does not transfer protons but still counts toward electroneutrality.">spectator ion</dfn> does not react). Mass balance, charge balance, the equilibrium $K_{\mathrm{a}}$, and $K_{\mathrm{w}}$ together give four equations in the four unknowns $\conc{HA}$, $\conc{A^-}$, $\conc{H^+}$, $\conc{OH^-}$. The system is closed; everything else in this chapter is algebra.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The proton condition</h2>
+
+      <p>Charge balance and mass balance can be combined into a single, especially intuitive statement called the <dfn title="A balance equating protons released and protons consumed, relative to a chosen reference set of species.">proton condition</dfn> (or proton balance). The idea: pick a <dfn title="The species, present in known amount, against which proton gains and losses are counted.">reference level</dfn> — the species you actually put in the beaker, in the form you put them in — and then tally everything that has <em>gained</em> a proton against everything that has <em>lost</em> one. Because protons are only shuffled around, never created, the two tallies must match.</p>
+
+      <p>For a weak acid the reference level is $\mathrm{HA}$ and $\mathrm{H_2O}$ — the things present before any reaction. Relative to that level, $\mathrm{H_3O^+}$ is water that has <em>gained</em> a proton, while $\mathrm{A}^-$ is $\mathrm{HA}$ that has <em>lost</em> one and $\mathrm{OH}^-$ is water that has lost one. Proton gains equal proton losses:</p>
+
+      <div class="equation-block">
+        $$ \conc{H^+} = \conc{A^-} + \conc{OH^-}. $$
+      </div>
+
+      <p>This is identical to the charge balance above — which is no accident, and a good sanity check. For this simple system the two routes coincide; in messier systems (salts, ampholytes) the proton condition is often the quickest way to the right equation, because it sidesteps the spectator ions entirely.</p>
+
+      <aside class="jargon">
+        <h4>Why the reference level matters</h4>
+        <p>The proton condition for a <em>salt</em> of the acid, say sodium acetate, uses a different reference level: $\mathrm{A}^-$ and $\mathrm{H_2O}$, because acetate is what you dissolved. Now $\mathrm{HA}$ is acetate that has <em>gained</em> a proton, so the balance reads $\conc{HA}+\conc{H^+}=\conc{OH^-}$. Same solution chemistry, different starting form, different proton condition — and it correctly predicts a basic solution, since the right side must exceed $\conc{H^+}$.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The exact equation for a weak monoprotic acid</h2>
+
+      <p>Now we turn the four equations into one. Start from the charge (proton) balance and replace each species using the equilibria. From $K_{\mathrm{a}} = \conc{H^+}\conc{A^-}/\conc{HA}$ and the mass balance $\conc{HA}=C-\conc{A^-}$ we get $\conc{A^-} = K_{\mathrm{a}}\conc{HA}/h$ with $h\equiv\conc{H^+}$, and from $K_{\mathrm{w}}$ we get $\conc{OH^-}=K_{\mathrm{w}}/h$. Substituting into $h = \conc{A^-}+\conc{OH^-}$ and clearing denominators yields a cubic in $h$:</p>
+
+      <div class="equation-block">
+        $$ h^3 + \Ka\,h^2 - (\Ka C + \Kw)\,h - \Ka \Kw = 0. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$h$</dt><dd>$\equiv\conc{H^+}$, the single unknown; the physically meaningful root is the unique positive one.</dd>
+          <dt>$\Ka$</dt><dd>Acid dissociation constant (dimensionless, standard state $1\,\mathrm{M}$).</dd>
+          <dt>$C$</dt><dd>Analytical concentration of the acid.</dd>
+          <dt>$\Kw$</dt><dd>Ion product of water, $1.0\times10^{-14}$.</dd>
+        </dl>
+      </aside>
+
+      <p>This is the exact answer for any monoprotic weak acid at any concentration: nothing has been dropped. (The same cubic, with the leading and trailing terms inspected, also covers strong acids in the limit $K_{\mathrm{a}}\to\infty$ and very dilute solutions where $K_{\mathrm{w}}$ matters.) A cubic has no convenient closed form worth memorizing, so we solve it numerically — by <dfn title="A root-finder that repeatedly halves an interval bracketing the root.">bisection</dfn>, exactly as the widget does. The point of writing the cubic is not to solve it by hand; it is to know what the shortcuts are approximating.</p>
+
+      <aside class="note">
+        <h4>One positive root</h4>
+        <p>Because $h$ is a concentration it must be positive, and Descartes' rule of signs (one sign change in the coefficients $+,+,-,-$) guarantees exactly one positive root. So "solve the cubic" really means "find the one root between $0$ and roughly $C$" — a job bisection does flawlessly.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The approximation hierarchy</h2>
+
+      <p>Now peel the cubic apart. The two terms with $K_{\mathrm{w}}$ are the contribution of water's own ions. In any solution that is even mildly acidic, $\conc{OH^-}=K_{\mathrm{w}}/h$ is tiny compared with $\conc{A^-}$, so dropping the $K_{\mathrm{w}}$ terms is the first and safest simplification. The proton balance collapses to $\conc{H^+}=\conc{A^-}$, and the cubic becomes a quadratic:</p>
+
+      <div class="equation-block">
+        $$ \conc{H^+} = \sqrt{\Ka\,(C - \conc{H^+})} \quad\Rightarrow\quad \conc{H^+} = \frac{-\Ka + \sqrt{\Ka^2 + 4\,\Ka C}}{2}. $$
+      </div>
+
+      <p>The square-root inside keeps the $-\conc{H^+}$ correction: it acknowledges that the acid you have left, $C-\conc{H^+}$, is a little less than $C$ because some has dissociated. Keeping that term is necessary whenever the acid is appreciably dissociated.</p>
+
+      <p>The final, most aggressive step assumes dissociation is slight, $\conc{H^+}\ll C$, so $C-\conc{H^+}\approx C$. That recovers the Chapter II shortcut:</p>
+
+      <div class="equation-block">
+        $$ \conc{H^+} \approx \sqrt{\Ka C}, \qquad \pH \approx \half\!\left(\pKa - \log_{10} C\right). $$
+      </div>
+
+      <p>When is that last leap legitimate? The discarded quantity is $\conc{H^+}$ relative to $C$. The convention is the <dfn title="Accept an approximation that drops a term only if that term is below 5% of the quantity it is subtracted from.">5% rule</dfn>: the approximation is acceptable if the <dfn title="The fraction of the acid present as its conjugate base at equilibrium.">fraction dissociated</dfn></p>
+
+      <div class="equation-block">
+        $$ \alpha = \frac{\conc{A^-}}{C} = \frac{\Ka}{\Ka + \conc{H^+}} \;\le\; 0.05. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\alpha$</dt><dd>Fraction of the acid that has dissociated; runs from $0$ (no dissociation) to $1$ (complete).</dd>
+          <dt>$\Ka,\,\conc{H^+}$</dt><dd>As above; note $\alpha$ rises as the solution is diluted, because $\conc{H^+}$ falls while $\Ka$ stays fixed.</dd>
+        </dl>
+      </aside>
+
+      <p>For $0.10\,\mathrm{M}$ acetic acid ($\pKa = 4.76$, $\Ka = 1.75\times10^{-5}$), the simple formula gives $\conc{H^+}=\sqrt{1.75\times10^{-5}\times0.10}=1.32\times10^{-3}\,\mathrm{M}$, i.e. $\pH\approx 2.88$, and $\alpha\approx 1.3\%$ — comfortably under 5%, so the shortcut is excellent. The quadratic gives $\conc{H^+}=1.31\times10^{-3}\,\mathrm{M}$, a difference in the fourth figure. But dilute the same acid to $1\times10^{-4}\,\mathrm{M}$ and $\alpha$ climbs past 30%: now the $-\conc{H^+}$ term is mandatory, and soon even the quadratic is not enough.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Very dilute or very weak acids: water fights back</h2>
+
+      <p>The quadratic still assumed water's ions were negligible. That assumption fails when the acid is so dilute or so weak that the $\mathrm{H}^+$ it supplies is comparable to the $10^{-7}\,\mathrm{M}$ that water supplies on its own. Then you cannot drop the $K_{\mathrm{w}}$ terms, and the pH bends back toward 7 — a weak acid can never push the pH <em>above</em> neutral.</p>
+
+      <p>The cleanest illustration is a <em>strong</em> acid at vanishing concentration, where $\mathrm{HA}$ is fully dissociated so $\conc{A^-}=C$ exactly and the only equilibrium left is water's. Charge balance $\conc{H^+}=C+\conc{OH^-}=C+K_{\mathrm{w}}/h$ becomes</p>
+
+      <div class="equation-block">
+        $$ h^2 - C\,h - \Kw = 0 \quad\Rightarrow\quad h = \frac{C + \sqrt{C^2 + 4\Kw}}{2}. $$
+      </div>
+
+      <p>Put in $C = 1\times10^{-7}\,\mathrm{M}$ of $\mathrm{HCl}$: $h = \big(10^{-7} + \sqrt{10^{-14}+4\times10^{-14}}\big)/2 = 1.62\times10^{-7}\,\mathrm{M}$, so $\pH = 6.79$ — distinctly acidic, but <em>not</em> the pH $7.00$ the naive $-\log_{10}C$ would (absurdly) give, and certainly not the pH $7$ you would get by forgetting the acid entirely. Water's own $\mathrm{H}^+$ adds to the acid's. The widget lets you sweep $C$ downward and watch any acid's curve peel away from the straight $\half(\pKa-\log_{10}C)$ line and level off near 7.</p>
+
+      <aside class="note">
+        <h4>The pH-8 trap</h4>
+        <p>If a careless calculation ever returns a pH above 7 for an <em>acid</em> (or below 7 for a base), the $K_{\mathrm{w}}$ terms were dropped illegitimately. The exact equation never makes that mistake: as $C\to 0$ its positive root approaches $\sqrt{K_{\mathrm{w}}}=10^{-7}\,\mathrm{M}$, pH 7, from the acidic side.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Weak bases and salts of weak acids</h2>
+
+      <p>Dissolve sodium acetate and the solution turns basic. The sodium is a spectator; the acetate is the conjugate base of a weak acid, and it takes a proton from water — the reaction called <dfn title="An ion reacting with water to shift the pH, generating a weak acid or base in situ.">hydrolysis</dfn>:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{A^-} + \mathrm{H_2O} \;\eqm\; \mathrm{HA} + \mathrm{OH^-}, \qquad \Kb = \frac{\Kw}{\Ka}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Kb$</dt><dd>Base constant of $\mathrm{A}^-$, fixed by the conjugate relationship $K_{\mathrm{a}}K_{\mathrm{b}}=K_{\mathrm{w}}$ from Chapter II.</dd>
+          <dt>$\conc{OH^-}$</dt><dd>Hydroxide produced by hydrolysis — now the dominant ion.</dd>
+        </dl>
+      </aside>
+
+      <p>The algebra mirrors the weak acid exactly, with $\mathrm{OH}^-$ playing the role $\mathrm{H}^+$ played before. The analogous shortcut, valid under the same 5% condition, is</p>
+
+      <div class="equation-block">
+        $$ \conc{OH^-} \approx \sqrt{\Kb\,C}, \qquad \pOH \approx \half\!\left(\pKb - \log_{10} C\right), \qquad \pH = \pKw - \pOH. $$
+      </div>
+
+      <p>For $0.10\,\mathrm{M}$ sodium acetate: $\Kb = K_{\mathrm{w}}/K_{\mathrm{a}} = 10^{-14}/1.75\times10^{-5} = 5.7\times10^{-10}$, so $\conc{OH^-} = \sqrt{5.7\times10^{-10}\times0.10} = 7.5\times10^{-6}\,\mathrm{M}$, giving $\pOH = 5.12$ and $\pH = 8.88$ — mildly basic, as the conjugate base of a weak acid should be. The mirror case is a salt like ammonium chloride: $\mathrm{NH_4^+}$ is the conjugate acid of the weak base ammonia, so it hydrolyses to give an <em>acidic</em> solution, $\conc{H^+}\approx\sqrt{K_{\mathrm{a}}C}$ with $K_{\mathrm{a}}=K_{\mathrm{w}}/K_{\mathrm{b}}$. In the widget, choosing "weak base" solves the same exact balance for $\mathrm{OH}^-$ and reports the pH.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Amphiprotic salts</h2>
+
+      <p>The most surprising case is an <dfn title="An ion that can both donate and accept a proton, such as bicarbonate or dihydrogen phosphate.">amphiprotic</dfn> salt — the middle species of a diprotic system, such as sodium bicarbonate ($\mathrm{HCO_3^-}$) or sodium dihydrogen phosphate ($\mathrm{H_2PO_4^-}$). Bicarbonate can lose a proton (acting as the acid of the pair $\mathrm{HCO_3^-}/\mathrm{CO_3^{2-}}$, constant $K_{\mathrm{a2}}$) or gain one (acting as the base of the pair $\mathrm{H_2CO_3}/\mathrm{HCO_3^-}$, constant $K_{\mathrm{a1}}$). Writing the proton condition with $\mathrm{HCO_3^-}$ as the reference level and applying the usual simplifications, the two competing tendencies nearly cancel and the result is remarkably clean:</p>
+
+      <div class="equation-block">
+        $$ \conc{H^+} \approx \sqrt{K_{\mathrm{a}1} K_{\mathrm{a}2}} \quad\Rightarrow\quad \pH \approx \half\!\left(\mathrm{p}K_{\mathrm{a}1} + \mathrm{p}K_{\mathrm{a}2}\right). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$K_{\mathrm{a}1},\,K_{\mathrm{a}2}$</dt><dd>The first and second dissociation constants of the parent diprotic acid; the amphiprotic ion sits between them.</dd>
+          <dt>$\mathrm{p}K_{\mathrm{a}1},\,\mathrm{p}K_{\mathrm{a}2}$</dt><dd>Their negative logs; their average is the pH.</dd>
+        </dl>
+      </aside>
+
+      <p>The astonishing feature is that $C$ has dropped out: to this approximation the pH of an amphiprotic salt does not depend on its concentration. For sodium bicarbonate, with $\mathrm{p}K_{\mathrm{a}1} = 6.35$ and $\mathrm{p}K_{\mathrm{a}2} = 10.33$ for carbonic acid, $\pH \approx \half(6.35 + 10.33) = 8.34$ — close to the value measured for a baking-soda solution across a wide range of concentrations. (The exact treatment restores a weak concentration dependence and corrections from $K_{\mathrm{w}}$ and $K_{\mathrm{a1}}$; the formula above is the standard first approximation, and it is the one to reach for.)</p>
+
+      <aside class="jargon">
+        <h4>Where the formula comes from</h4>
+        <p>For the ampholyte $\mathrm{HA}^-$ the full result is $\conc{H^+}=\sqrt{\dfrac{K_{\mathrm{a1}}(K_{\mathrm{a2}}C + K_{\mathrm{w}})}{K_{\mathrm{a1}}+C}}$. When $C\gg K_{\mathrm{a1}}$ and $K_{\mathrm{a2}}C\gg K_{\mathrm{w}}$ — usually true — the $C$'s cancel and the $K_{\mathrm{w}}$ drops, leaving $\conc{H^+}\approx\sqrt{K_{\mathrm{a1}}K_{\mathrm{a2}}}$. The cancellation of $C$ is exactly the surprising concentration-independence.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <section class="interactive" data-widget="exact-ph-solver" aria-label="Exact versus approximate pH for weak acids, weak bases, and strong acids">
+        <header>
+          <h4>Interactive · Exact pH versus the shortcut</h4>
+          <span class="hint">choose a system, drag $\pKa$ and $C$</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The solver finds $\conc{H^+}$ by bisecting the exact charge balance — the cubic of §3 for an acid, and the strong-acid quadratic $h^2-Ch-K_{\mathrm{w}}=0$ when $K_{\mathrm{a}}\to\infty$ — then compares it with the shortcut $\sqrt{K_{\mathrm{a}}C}$. Watch the percent error: it is invisible for $0.10\,\mathrm{M}$ acetic acid ($\pKa\,4.76\to\pH\,2.88$) but blows up as you slide $C$ toward $10^{-6}\,\mathrm{M}$, where the exact curve bends toward 7 and a strong acid at $10^{-7}\,\mathrm{M}$ reads $\pH\,6.79$, not 7. The fraction dissociated $\alpha$ rises as you dilute.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Daniel C. Harris.</span> <em>Quantitative Chemical Analysis</em>, 9th ed., W. H. Freeman, 2016 — Chapters 8–9 develop mass balance, charge balance, the systematic treatment of equilibrium, and the weak-acid and weak-base shortcuts with their 5% checks.</li>
+          <li><span class="src-title">James N. Butler.</span> <em>Ionic Equilibrium: Solubility and pH Calculations</em>, Wiley, 1998 — the definitive reference on proton conditions, the exact monoprotic equation, and dilute-solution corrections.</li>
+          <li><span class="src-title">Robert de Levie.</span> <em>Aqueous Acid–Base Equilibria and Titrations</em>, Oxford Chemistry Primer 80, Oxford, 1999 — a compact, rigorous account of proton balances and progressive approximations.</li>
+          <li><span class="src-title">Douglas A. Skoog, Donald M. West, F. James Holler, and Stanley R. Crouch.</span> <em>Fundamentals of Analytical Chemistry</em>, 9th ed., Brooks/Cole, 2014 — worked weak-acid, salt-hydrolysis, and amphiprotic-salt calculations in the same notation.</li>
+          <li><span class="src-title">Peter Atkins and Julio de Paula.</span> <em>Physical Chemistry</em>, 11th ed., Oxford, 2018 — Focus 6 frames proton transfer thermodynamically and derives the dilution dependence of $\alpha$.</li>
+          <li><span class="src-title">Stephen K. Lower.</span> <em>Chem1 Virtual Textbook: Acid–Base Equilibria</em>, §13.7 "Exact Calculations and Approximations" — the source confirming the cubic $h^3+K_{\mathrm{a}}h^2-(K_{\mathrm{a}}C+K_{\mathrm{w}})h-K_{\mathrm{a}}K_{\mathrm{w}}=0$ used in §3.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="02-ph-and-strength.html"><span class="label">← Previous</span>II · The pH Scale and the Strength of Acids</a>
+      <a class="next" href="04-buffers.html"><span class="label">Next chapter</span>IV · Buffers →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/exact-ph-solver.js"></script>
+</body>
+</html>

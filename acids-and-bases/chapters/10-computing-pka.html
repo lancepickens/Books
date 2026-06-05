@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter X · Computing pKa — Acids and Bases: A Primer</title>
+  <meta name="description" content="Chapter 10: predicting pKa from first principles — the thermodynamic cycle, gas-phase deprotonation, the proton's solvation free energy, implicit solvent models (PCM/COSMO/SMD), relative and isodesmic cycles, and machine-learned pKa." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter X of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter X</p>
+      <h1 class="chapter-title">Computing pKa</h1>
+      <p class="lede">Predicting a pKa from the laws of physics is among the hardest routine tasks in chemistry — not because the equations are mysterious, but because one pKa unit is only 1.36 kcal/mol, and almost nothing computes a free energy that well.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>Every pKa in this book has so far been a measured number. This final chapter asks whether we can instead <em>predict</em> it — hand a molecule's structure to a computer and get its acidity back. The thread that makes this possible is the one we have used all along: a pKa is just a free energy in disguise, $\pKa = \Delta G^{\circ}_{\mathrm{aq}}/(2.303RT)$. If we can compute the free energy of pulling a proton off in water, we have the pKa. The trouble is that this aqueous free energy is the small difference of several enormous energies — gas-phase bond breaking near $+340$ kcal/mol, ion solvation near $-300$ — and the answer we want lives in the last decimal place.</p>
+          <p>We build the bridge in stages. First a <dfn title="A closed loop of states whose free-energy changes must sum to zero, letting an unknown leg be found from the others.">thermodynamic cycle</dfn> that routes the deprotonation through the gas phase and back, paying solvation free energies along the way — including the proton's, a notoriously awkward number. Then the implicit-solvent models (PCM, COSMO, SMD) that estimate those solvation terms. Then the trick that rescues the whole enterprise: relative cycles that let large systematic errors cancel. We end where the field is heading — empirical and machine-learned predictors that skip the physics and learn pKa directly from data.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>First principles</dt><dd>A calculation built from quantum mechanics and statistical thermodynamics, with no fitted acidity data.</dd>
+          <dt>Thermodynamic cycle</dt><dd>A closed loop of states; because $\Delta G$ is a state function, the legs sum to zero.</dd>
+          <dt>Gas-phase deprotonation</dt><dd>$\mathrm{HA}\to\mathrm{A^-}+\mathrm{H^+}$ with no solvent; its free energy is the gas-phase acidity.</dd>
+          <dt>Solvation free energy</dt><dd>$\Delta G^{*}_{\mathrm{solv}}$, the free energy of moving a species from gas into solution.</dd>
+          <dt>Proton solvation</dt><dd>$\Delta G^{*}_{\mathrm{solv}}(\mathrm{H^+})$, the free energy of hydrating a bare proton; about $-265.9$ kcal/mol.</dd>
+          <dt>Standard state</dt><dd>The reference condition; gas tables use 1 atm, solution uses 1 M, and converting between them costs energy.</dd>
+          <dt>Implicit solvent</dt><dd>A model that replaces solvent molecules with a structureless dielectric continuum.</dd>
+          <dt>Explicit solvent</dt><dd>Treating individual solvent molecules atom by atom.</dd>
+          <dt>Dielectric continuum</dt><dd>A polarizable medium characterized only by its dielectric constant $\varepsilon$.</dd>
+          <dt>Cavity</dt><dd>The molecule-shaped hole carved in the continuum to hold the solute.</dd>
+          <dt>PCM</dt><dd>Polarizable Continuum Model — the solute sits in a cavity, polarizing surrounding dielectric.</dd>
+          <dt>COSMO</dt><dd>Conductor-like Screening Model — solves the electrostatics as if the medium were a conductor, then scales.</dd>
+          <dt>COSMO-RS</dt><dd>COSMO for Real Solvents — adds statistical thermodynamics of surface-charge contacts.</dd>
+          <dt>SMD</dt><dd>A universal model using the full solute electron density plus atomic surface tensions.</dd>
+          <dt>Absolute (direct) method</dt><dd>Computing pKa straight from the cycle, using the proton's tabulated free energies.</dd>
+          <dt>Relative method</dt><dd>Computing pKa against a reference acid of known pKa, so common errors cancel.</dd>
+          <dt>Isodesmic reaction</dt><dd>A balanced reaction conserving bond types, so systematic errors largely cancel.</dd>
+          <dt>Proton exchange</dt><dd>An isodesmic cycle $\mathrm{HA}+\mathrm{Ref^-}\eqm\mathrm{A^-}+\mathrm{HRef}$ in which the proton never appears free.</dd>
+          <dt>LFER</dt><dd>Linear free-energy relationship — pKa as a linear function of substituent parameters.</dd>
+          <dt>Hammett $\sub$</dt><dd>A substituent constant measuring electron donation or withdrawal (Chapter VII).</dd>
+          <dt>Group contribution</dt><dd>Estimating a property by summing additive fragment increments.</dd>
+          <dt>Graph neural network</dt><dd>A model that learns directly on the molecular graph of atoms and bonds.</dd>
+          <dt>Micro-pKa</dt><dd>The pKa of one specific ionizable site, before combining sites into the observed macro-pKa.</dd>
+          <dt>Mean absolute deviation</dt><dd>The average size of prediction error, the usual scorecard for a pKa method.</dd>
+          <dt>Error amplification</dt><dd>The brutal fact that a $1.36$ kcal/mol energy error becomes a full pKa unit.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>A pKa is a free energy</h2>
+
+      <p>Chapter II gave the pKa as $-\log_{10}\Ka$. Thermodynamics gives the same constant a second face. For any equilibrium $\Delta G^{\circ} = -RT\ln K$, so applying it to the deprotonation $\mathrm{HA}\eqm\mathrm{A^-}+\mathrm{H^+}$ and converting the natural log to base ten ($\ln 10 = 2.303$) yields the master equation of this chapter:</p>
+
+      <div class="equation-block">
+        $$ \pKa = \frac{\Delta G^{\circ}_{\mathrm{aq,deprot}}}{2.303\,RT} = \frac{\Delta G^{\circ}_{\mathrm{aq,deprot}}}{1.364\ \mathrm{kcal\,mol^{-1}}} \quad (298\,\mathrm{K}). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Delta G^{\circ}_{\mathrm{aq,deprot}}$</dt><dd>Standard free energy of deprotonating $\mathrm{HA}$ in water, the quantity a calculation must deliver.</dd>
+          <dt>$RT$</dt><dd>Gas constant times temperature; at $298\,\mathrm{K}$, $RT = 0.593\ \mathrm{kcal\,mol^{-1}}$ ($2.479\ \mathrm{kJ\,mol^{-1}}$).</dd>
+          <dt>$2.303\,RT$</dt><dd>The conversion factor, $1.364\ \mathrm{kcal\,mol^{-1}} = 5.71\ \mathrm{kJ\,mol^{-1}}$ at $298\,\mathrm{K}$.</dd>
+        </dl>
+      </aside>
+
+      <p>The factor $1.364\ \mathrm{kcal\,mol^{-1}}$ per pKa unit ($5.71\ \mathrm{kJ\,mol^{-1}}$, equivalently $1.364\ \mathrm{kcal\,mol^{-1}}$) is the chapter's recurring villain. Run it the other way: acetic acid's measured $\pKa = 4.76$ implies a deprotonation free energy of $4.76 \times 1.364 = 6.49\ \mathrm{kcal\,mol^{-1}}$ ($27.2\ \mathrm{kJ\,mol^{-1}}$). That is a tiny, delicate number. Worse, the relationship runs both ways: an error of $1.364\ \mathrm{kcal\,mol^{-1}}$ in a computed $\Delta G$ — well below "chemical accuracy" of $1\ \mathrm{kcal\,mol^{-1}}$ for many methods — moves the predicted pKa by a full unit, a tenfold error in $\Ka$. This <dfn title="The conversion of a small free-energy error into a large pKa error: 1.364 kcal/mol per unit.">error amplification</dfn> is why pKa prediction is hard out of all proportion to its apparent simplicity.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The direct thermodynamic cycle</h2>
+
+      <p>We cannot easily compute $\Delta G^{\circ}_{\mathrm{aq}}$ in one shot, because pulling a charged proton off a molecule embedded in solvent is a brutal calculation. So we take a detour through the gas phase, where quantum chemistry is at its most reliable. The <dfn title="A loop connecting aqueous and gas-phase deprotonation through the solvation free energies of each species.">thermodynamic cycle</dfn> says: lift $\mathrm{HA}$ out of water into vacuum, break it there, then drop the fragments $\mathrm{A^-}$ and $\mathrm{H^+}$ back into water. Because free energy is a state function, the aqueous leg equals the sum around the loop:</p>
+
+      <div class="equation-block">
+        $$ \Delta G^{*}_{\mathrm{aq}} = \Delta G^{\circ}_{\mathrm{gas}} + \Delta G^{*}_{\mathrm{solv}}(\mathrm{A^-}) + \Delta G^{*}_{\mathrm{solv}}(\mathrm{H^+}) - \Delta G^{*}_{\mathrm{solv}}(\mathrm{HA}), $$
+      </div>
+
+      <p>where the gas-phase deprotonation free energy is itself a difference of three electronic-structure free energies,</p>
+
+      <div class="equation-block">
+        $$ \Delta G^{\circ}_{\mathrm{gas}} = G_{\mathrm{gas}}(\mathrm{A^-}) + G_{\mathrm{gas}}(\mathrm{H^+}) - G_{\mathrm{gas}}(\mathrm{HA}). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Delta G^{*}_{\mathrm{aq}}$</dt><dd>Aqueous deprotonation free energy (the asterisk marks the $1\,\mathrm{M}$ solution standard state).</dd>
+          <dt>$\Delta G^{\circ}_{\mathrm{gas}}$</dt><dd>Gas-phase deprotonation free energy, the <dfn title="The free energy to remove a proton from a molecule in vacuum.">gas-phase acidity</dfn>; typically $320$–$360\ \mathrm{kcal\,mol^{-1}}$ for neutral acids.</dd>
+          <dt>$\Delta G^{*}_{\mathrm{solv}}(X)$</dt><dd>Free energy of transferring species $X$ from gas (1 M) into solution (1 M).</dd>
+          <dt>$G_{\mathrm{gas}}(X)$</dt><dd>The gas-phase free energy of $X$ from quantum chemistry plus thermal/vibrational corrections.</dd>
+        </dl>
+      </aside>
+
+      <p>The structure of the problem is now visible. The gas-phase term is large and positive (it costs a lot to tear a proton off in vacuum, with no solvent to stabilize the resulting ions). The anion solvation term is large and negative (water embraces $\mathrm{A^-}$ eagerly). The neutral $\mathrm{HA}$ is only weakly solvated. And the proton's solvation term is enormous and negative. The pKa we want is the small residue left after these giants nearly cancel — which is exactly why the calculation is so sensitive.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The proton's awkward numbers</h2>
+
+      <p>The proton enters every absolute cycle, and it carries two numbers that are hard to pin down. The first is its <em>gas-phase</em> free energy. A bare proton has no electrons, hence no electronic energy and no vibrations; its free energy is purely translational. Its enthalpy is $H = \tfrac52 RT$ (three translational degrees of freedom plus the $PV$ term), and its entropy follows from the Sackur–Tetrode equation. At $298\,\mathrm{K}$ and $1\,\mathrm{atm}$,</p>
+
+      <div class="equation-block">
+        $$ G_{\mathrm{gas}}(\mathrm{H^+}) = H - TS = \tfrac52 RT - TS = 1.48 - 7.76 = -6.28\ \mathrm{kcal\,mol^{-1}}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\tfrac52 RT$</dt><dd>The proton's gas-phase enthalpy, $1.48\ \mathrm{kcal\,mol^{-1}}$ ($6.20\ \mathrm{kJ\,mol^{-1}}$) at $298\,\mathrm{K}$.</dd>
+          <dt>$TS$</dt><dd>$7.76\ \mathrm{kcal\,mol^{-1}}$ ($32.5\ \mathrm{kJ\,mol^{-1}}$), the entropy term from the Sackur–Tetrode equation at $298\,\mathrm{K}$, $1\,\mathrm{atm}$.</dd>
+        </dl>
+      </aside>
+
+      <p>The second number is far larger and far more contested: the proton's <dfn title="The free energy of moving a bare proton from gas into water; the most negative single-ion solvation free energy.">aqueous solvation free energy</dfn>. A bare proton plunged into water is stabilized colossally. It cannot be measured directly — single-ion solvation free energies require an extra-thermodynamic assumption — but Tissandier and co-workers extracted it cleanly from cluster-ion data, giving</p>
+
+      <div class="equation-block">
+        $$ \Delta G^{*}_{\mathrm{solv}}(\mathrm{H^+}) \approx -265.9\ \mathrm{kcal\,mol^{-1}} \quad (\approx -1112\ \mathrm{kJ\,mol^{-1}}). $$
+      </div>
+
+      <p>Independent analyses by Camaioni and Schwerdtfeger place it between $-264$ and $-266\ \mathrm{kcal\,mol^{-1}}$. A spread of $2\ \mathrm{kcal\,mol^{-1}}$ may sound small against a number that large, but recall §1: it is $1.5$ pKa units of uncertainty baked in before the molecule of interest is even considered.</p>
+
+      <aside class="note">
+        <h4>The 1 atm → 1 M standard-state correction</h4>
+        <p>Gas-phase quantum-chemistry tables use a $1\,\mathrm{atm}$ reference, but aqueous equilibria use $1\,\mathrm{M}$. Compressing one mole of ideal gas from $1\,\mathrm{atm}$ (a molar volume of $24.46\,\mathrm{L}$ at $298\,\mathrm{K}$) to $1\,\mathrm{M}$ costs $\Delta G = RT\ln(24.46) = 1.89\ \mathrm{kcal\,mol^{-1}}$ ($7.91\ \mathrm{kJ\,mol^{-1}}$). This $+1.89$ term must be added for each species that changes phase reference; for the proton specifically the conventions are a notorious source of bookkeeping errors. Get the standard states wrong and you can be off by several pKa units for no chemical reason at all.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Implicit solvation models</h2>
+
+      <p>The solvation free energies $\Delta G^{*}_{\mathrm{solv}}(\mathrm{HA})$ and $\Delta G^{*}_{\mathrm{solv}}(\mathrm{A^-})$ are where most of the modeling effort goes. Treating every water molecule explicitly is expensive and requires extensive sampling, so the workhorse approach is <dfn title="Replacing discrete solvent molecules by a structureless polarizable medium.">implicit solvation</dfn>: replace the water with a featureless <dfn title="A polarizable medium described only by its dielectric constant.">dielectric continuum</dfn> of dielectric constant $\varepsilon = 78.4$ for water. The solute is placed in a molecule-shaped <dfn title="The cavity carved in the continuum to hold the solute.">cavity</dfn>; its charge distribution polarizes the surrounding medium, which polarizes the solute back, and the self-consistent electrostatic stabilization is the dominant part of $\Delta G^{*}_{\mathrm{solv}}$.</p>
+
+      <p>Three families dominate. The <dfn title="Polarizable Continuum Model — solute in a cavity polarizing a dielectric described by its true permittivity.">Polarizable Continuum Model</dfn> (PCM) solves the dielectric boundary problem directly on the cavity surface. The <dfn title="Conductor-like Screening Model — solves the electrostatics for an ideal conductor, then scales to finite dielectric.">Conductor-like Screening Model</dfn> (COSMO) of Klamt and Schüürmann simplifies the math by first solving the easier conductor problem ($\varepsilon \to \infty$) and then scaling by a factor $f(\varepsilon) = (\varepsilon - 1)/(\varepsilon + \tfrac12)$; its extension <dfn title="COSMO for Real Solvents — adds a statistical-thermodynamic treatment of surface-charge contacts.">COSMO-RS</dfn> adds a statistical-thermodynamic treatment of how molecular surface patches interact, sidestepping the single-dielectric assumption. The <dfn title="Solvation Model based on Density — full solute electron density plus parameterized atomic surface tensions.">SMD model</dfn> of Marenich, Cramer, and Truhlar uses the solute's full electron density for the electrostatics and adds parameterized atomic surface tensions to capture cavitation, dispersion, and first-shell structure — the non-electrostatic pieces a pure dielectric misses.</p>
+
+      <p>Schematically, all three split the solvation free energy the same way:</p>
+
+      <div class="equation-block">
+        $$ \Delta G^{*}_{\mathrm{solv}} = \underbrace{\Delta G_{\mathrm{elec}}}_{\text{dielectric polarization}} + \underbrace{\Delta G_{\mathrm{cav}} + \Delta G_{\mathrm{disp}} + \Delta G_{\mathrm{rep}}}_{\text{non-electrostatic (surface terms)}}. $$
+      </div>
+
+      <aside class="jargon">
+        <h4>Why anions are the weak point</h4>
+        <p>Continuum models are tuned mostly on neutral molecules and small ions. A delocalized or strongly hydrogen-bonding anion $\mathrm{A^-}$ — a carboxylate, an alkoxide — interacts with the first water shell in ways a smooth dielectric cannot capture. Errors of several $\mathrm{kcal\,mol^{-1}}$ in $\Delta G^{*}_{\mathrm{solv}}(\mathrm{A^-})$ are common, and since the anion is the species whose solvation matters most for acidity, these errors translate almost directly into pKa errors. Hybrid <dfn title="Surrounding the ion with a few explicit waters, then embedding that cluster in the continuum.">cluster-continuum</dfn> schemes, which add one or two explicit waters to the cavity, are the standard remedy.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Why absolute pKa is hard</h2>
+
+      <p>Now assemble the error budget. The absolute cycle adds up: the gas-phase acidity (good electronic-structure methods reach $1$–$2\ \mathrm{kcal\,mol^{-1}}$), the neutral and anion solvation free energies (continuum models, $\sim 3$–$5\ \mathrm{kcal\,mol^{-1}}$ for ions), the proton solvation free energy ($\pm 2\ \mathrm{kcal\,mol^{-1}}$), and the standard-state corrections (exact if done carefully, a multi-pKa blunder if not). These errors are partly independent and add roughly in quadrature, but even optimistically the residual is several $\mathrm{kcal\,mol^{-1}}$.</p>
+
+      <p>Translate that with §1. An error of $5\ \mathrm{kcal\,mol^{-1}}$ ($20.9\ \mathrm{kJ\,mol^{-1}}$) — entirely plausible for the absolute method on an anion — becomes</p>
+
+      <div class="equation-block">
+        $$ \Delta(\pKa) = \frac{5\ \mathrm{kcal\,mol^{-1}}}{1.364\ \mathrm{kcal\,mol^{-1}}} = 3.7\ \text{pKa units}. $$
+      </div>
+
+      <p>A predicted pKa good only to $\pm 3.7$ units is nearly useless: it cannot tell a moderate acid from a weak one. The careful benchmark by Ho and Coote bears this out — the direct (absolute) method delivers mean absolute deviations above $3$ pKa units for general acids, salvageable only within narrow, well-parameterized chemical classes. The absolute cycle is correct physics applied to a quantity too small to survive the propagation of its own ingredients' errors. The fix is not better physics but better <em>cancellation</em>.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Relative cycles: making errors cancel</h2>
+
+      <p>The systematic errors that wreck the absolute method are largely <em>shared</em> across similar acids: the proton's free energies, the standard-state corrections, the continuum model's bias for a given functional group. If we compute a pKa <em>relative</em> to a reference acid $\mathrm{HRef}$ of known pKa, those shared errors subtract out. The trick is to write the deprotonation as a <dfn title="A balanced reaction conserving the number and type of bonds, so systematic errors cancel.">proton-exchange (isodesmic) reaction</dfn> in which the free proton never appears:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{HA} + \mathrm{Ref^-} \;\eqm\; \mathrm{A^-} + \mathrm{HRef}. $$
+      </div>
+
+      <p>This is the difference of two deprotonations, so its free energy contains no $G_{\mathrm{gas}}(\mathrm{H^+})$ and — crucially — no $\Delta G^{*}_{\mathrm{solv}}(\mathrm{H^+})$; both cancel exactly. The pKa of the target follows by adding back the known reference:</p>
+
+      <div class="equation-block">
+        $$ \pKa(\mathrm{HA}) = \pKa(\mathrm{HRef}) + \frac{\Delta G^{*}_{\mathrm{exch}}}{2.303\,RT}, $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Delta G^{*}_{\mathrm{exch}}$</dt><dd>Aqueous free energy of the proton-exchange reaction — a difference of two solvation-corrected gas-phase energies.</dd>
+          <dt>$\pKa(\mathrm{HRef})$</dt><dd>The experimentally known pKa of the reference acid, ideally chemically similar to $\mathrm{HA}$.</dd>
+        </dl>
+      </aside>
+
+      <p>The closer $\mathrm{HRef}$ resembles $\mathrm{HA}$ — same functional group, similar charge type — the more the anion-solvation errors of $\mathrm{A^-}$ and $\mathrm{Ref^-}$ mirror each other and cancel too. With a well-chosen reference, Ho and Coote found the proton-exchange scheme reaching mean absolute deviations below $2$ pKa units, and within a homologous series often better than $1$. The price is honesty about scope: a relative method is only as good as its reference, and it quietly imports that reference's experimental pKa. It is not quite "first principles" anymore — but it works.</p>
+
+      <section class="interactive" data-widget="thermo-cycle" aria-label="Interactive thermodynamic-cycle pKa estimator">
+        <header>
+          <h4>Interactive · The thermodynamic cycle</h4>
+          <span class="hint">drag the energies</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The deprotonation cycle: gas-phase $\Delta G^{\circ}_{\mathrm{gas}}$ across the top, the three solvation legs down the sides ($\mathrm{H^+}$ fixed at $-265.9\ \mathrm{kcal\,mol^{-1}}$, the $+1.89$ standard-state term folded in), aqueous $\Delta G^{*}_{\mathrm{aq}}$ across the bottom, and the predicted $\pKa = \Delta G^{*}_{\mathrm{aq}}/1.364$. Drag $\Delta G_{\mathrm{gas}}$ and the differential anion solvation $\Delta\Delta G_{\mathrm{solv}}$ and watch the sensitivity readout: every $1.364\ \mathrm{kcal\,mol^{-1}}$ moves the predicted pKa by exactly one unit. The preset reproduces an acetic-acid-like $\pKa \approx 4.8$.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Empirical and machine-learned pKa</h2>
+
+      <p>If physics struggles to reach the accuracy that experiment routinely achieves, perhaps we should learn from experiment directly. The oldest version of this idea is the <dfn title="Linear free-energy relationship — a property expressed as a linear function of structural parameters.">linear free-energy relationship</dfn> (LFER) of Chapter VII. Hammett's equation expresses the pKa of a substituted acid as a linear shift from a parent value:</p>
+
+      <div class="equation-block">
+        $$ \pKa = \pKa^{0} - \rxn\,\sub. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\pKa^{0}$</dt><dd>The pKa of the unsubstituted parent acid (e.g. benzoic acid).</dd>
+          <dt>$\sub$</dt><dd>The Hammett substituent constant — positive for electron-withdrawing groups (Chapter VII).</dd>
+          <dt>$\rxn$</dt><dd>The reaction constant, the sensitivity of this particular equilibrium to substituent effects ($\rxn = 1$ by definition for benzoic acid ionization).</dd>
+        </dl>
+      </aside>
+
+      <p>This is supervised learning before the term existed: a one-parameter fit per reaction series, accurate to a few tenths of a pKa unit <em>within</em> its series. <dfn title="Estimating a property by summing additive contributions from molecular fragments.">Group-contribution</dfn> methods generalize the idea, summing tabulated fragment increments to estimate the pKa of arbitrary structures — fast, but blind to anything outside the training fragments.</p>
+
+      <p>The modern successor learns the features rather than hand-coding them. A <dfn title="A neural network that operates directly on the molecular graph of atoms (nodes) and bonds (edges).">graph neural network</dfn> (GNN) treats the molecule as a graph — atoms are nodes, bonds are edges — and passes messages between neighboring atoms so that each atom's representation absorbs its chemical environment. Trained on hundreds of thousands of measured (or high-quality computed) values, such models predict the <dfn title="The pKa of one specific ionizable site, before sites are combined into the observed value.">micro-pKa</dfn> of each ionizable site directly from structure. MolGpKa, a graph-convolutional model trained on over a million compounds, predicts site pKa in milliseconds with errors competitive with far slower quantum methods. The 2024 QupKake model goes hybrid, using a GNN to localize ionizable sites and then a quantum-chemistry correction for accuracy — a deliberate marriage of the two cultures of this chapter.</p>
+
+      <p>As of 2024–2025 the practical picture is layered. For high-throughput screening, machine-learned predictors are the default: instant, and accurate to roughly half a pKa unit on drug-like molecules near their training distribution. For novel scaffolds where data is thin, proton-exchange continuum calculations remain the trustworthy fallback. And for the cases that matter most — a single equilibrium controlling a drug's solubility or a catalyst's turnover — chemists still do what this book has done throughout: measure it. The computed number tells you where to look; the experiment tells you the truth. That tension, between the elegance of $\Delta G^{\circ} = -RT\ln K$ and the stubborn $1.364\ \mathrm{kcal\,mol^{-1}}$ that stands between a free energy and a pKa, is a fitting place to close.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Junming Ho and Michelle L. Coote.</span> "A universal approach for continuum solvent pKa calculations: are we there yet?" <em>Theoretical Chemistry Accounts</em> 125, 3–21 (2010) — the benchmark behind §5–§6: the direct versus proton-exchange methods, their error budgets, and the reference-acid strategy.</li>
+          <li><span class="src-title">Michael D. Tissandier <em>et al.</em></span> "The Proton's Absolute Aqueous Enthalpy and Gibbs Free Energy of Solvation from Cluster-Ion Solvation Data." <em>J. Phys. Chem. A</em> 102, 7787–7794 (1998) — the source of $\Delta G^{*}_{\mathrm{solv}}(\mathrm{H^+}) \approx -265.9\ \mathrm{kcal\,mol^{-1}}$ used in §3 and the widget.</li>
+          <li><span class="src-title">Donald M. Camaioni and C. A. Schwerdtfeger.</span> "Comment on 'Accurate Experimental Values for the Free Energies of Hydration of H⁺, OH⁻, and H₃O⁺'." <em>J. Phys. Chem. A</em> 109, 10795–10797 (2005) — derives $G_{\mathrm{gas}}(\mathrm{H^+}) = -6.28\ \mathrm{kcal\,mol^{-1}}$ and discusses the standard-state and proton-solvation conventions of §3.</li>
+          <li><span class="src-title">Aleksandr V. Marenich, Christopher J. Cramer, and Donald G. Truhlar.</span> "Universal Solvation Model Based on Solute Electron Density (SMD)." <em>J. Phys. Chem. B</em> 113, 6378–6396 (2009) — the SMD continuum model of §4.</li>
+          <li><span class="src-title">Andreas Klamt and Gerrit Schüürmann.</span> "COSMO: a new approach to dielectric screening in solvents." <em>J. Chem. Soc., Perkin Trans. 2</em> 799–805 (1993) — the conductor-like screening model and its $f(\varepsilon)$ scaling, §4.</li>
+          <li><span class="src-title">Xiaolin Pan <em>et al.</em></span> "MolGpKa: A Web Server for Small Molecule pKa Prediction Using a Graph-Convolutional Neural Network." <em>J. Chem. Inf. Model.</em> 61, 3159–3165 (2021) — the graph-neural-network predictor of §7.</li>
+          <li><span class="src-title">Omri D. Abarbanel and Geoffrey R. Hutchison.</span> "QupKake: Integrating Machine Learning and Quantum Chemistry for Micro-pKa Predictions." <em>J. Chem. Theory Comput.</em> 20, 6946–6956 (2024) — the 2024 hybrid GNN-plus-quantum approach closing §7.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="09-lewis-hsab.html"><span class="label">← Previous</span>IX · Lewis Acids, Hardness, and Catalysis</a>
+      <a class="next" href="../index.html"><span class="label">Back to</span>Contents →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/thermo-cycle.js"></script>
+</body>
+</html>

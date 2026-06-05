@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter I · Three Lenses on Acidity — Acids and Bases: A Primer</title>
+  <meta name="description" content="Chapter 1: the Arrhenius, Brønsted–Lowry, and Lewis definitions of acids and bases, conjugate pairs, the hydronium ion, and the autoionization of water." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter I of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter I</p>
+      <h1 class="chapter-title">Three Lenses on Acidity</h1>
+      <p class="lede">Almost every acid–base reaction is the same event told three ways: a single proton leaving one molecule and arriving on another.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>Acids and bases are among the oldest categories in chemistry — sour versus bitter, things that fizz versus things that feel slippery. Over a century the categories were sharpened three times, each definition wider than the last. This chapter introduces all three, and argues that for the chemistry of water they collapse into one simple picture: an acid is something that gives up a hydrogen ion, a base is something that takes one, and the reaction is the handoff of that ion from one to the other.</p>
+          <p>The single most important fact in the book is that water plays this game with itself. A tiny fraction of water molecules are always passing protons to their neighbors, and that background reaction fixes a constant — $K_{\mathrm{w}}$ — that ties together every acid and base dissolved in water. Get comfortable with $K_{\mathrm{w}}$ here; the remaining nine chapters lean on it constantly.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Proton</dt><dd>Here, a hydrogen ion $\mathrm{H}^+$ — a bare hydrogen nucleus, with no electron.</dd>
+          <dt>Acid</dt><dd>A proton donor (Brønsted) or, more generally, an electron-pair acceptor (Lewis).</dd>
+          <dt>Base</dt><dd>A proton acceptor (Brønsted) or an electron-pair donor (Lewis).</dd>
+          <dt>Arrhenius acid</dt><dd>A substance that increases $\mathrm{H}^+$ when dissolved in water.</dd>
+          <dt>Brønsted–Lowry</dt><dd>The definition in terms of proton transfer, independent of solvent.</dd>
+          <dt>Lewis acid/base</dt><dd>The most general definition, in terms of an electron pair forming a bond.</dd>
+          <dt>Conjugate pair</dt><dd>An acid and the base left behind when it loses its proton, differing by one $\mathrm{H}^+$.</dd>
+          <dt>Hydronium</dt><dd>$\mathrm{H_3O^+}$, water carrying an extra proton — the form a "free" proton actually takes in water.</dd>
+          <dt>Hydroxide</dt><dd>$\mathrm{OH^-}$, water having lost a proton.</dd>
+          <dt>Amphiprotic</dt><dd>Able to act as either acid or base, depending on its partner. Water is the prime example.</dd>
+          <dt>Autoionization</dt><dd>The reaction of a solvent with itself to make ions; for water, $2\,\mathrm{H_2O}\rightleftharpoons\mathrm{H_3O^+}+\mathrm{OH^-}$.</dd>
+          <dt>$K_{\mathrm{w}}$</dt><dd>The ion-product (autoionization) constant of water, $1.0\times10^{-14}$ at $25\,^{\circ}\mathrm{C}$.</dd>
+          <dt>pH</dt><dd>A logarithmic measure of proton activity, $-\log_{10}[\mathrm{H}^+]$.</dd>
+          <dt>Neutral</dt><dd>Equal concentrations of $\mathrm{H}^+$ and $\mathrm{OH}^-$ — not necessarily pH 7.</dd>
+          <dt>Equilibrium</dt><dd>The state where forward and reverse reaction rates match and concentrations stop changing.</dd>
+          <dt>Equilibrium constant</dt><dd>The fixed ratio of product to reactant activities at equilibrium.</dd>
+          <dt>Activity</dt><dd>The "effective concentration" that appears in equilibrium expressions; equals concentration in dilute solution.</dd>
+          <dt>Dissociation</dt><dd>The splitting of a molecule into ions in solution.</dd>
+          <dt>Strong acid</dt><dd>One that transfers its proton to water essentially completely.</dd>
+          <dt>Weak acid</dt><dd>One that transfers its proton only partially, settling at an equilibrium.</dd>
+          <dt>Proton affinity</dt><dd>The energy released when a base in the gas phase binds a proton.</dd>
+          <dt>Solvation</dt><dd>The stabilizing embrace of solvent molecules around a dissolved ion.</dd>
+          <dt>Lone pair</dt><dd>A valence electron pair not shared in a bond — the base's offering in the Lewis picture.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>The protagonist is a proton</h2>
+
+      <p>Strip the single electron from a hydrogen atom and what remains is a lone proton: a positive charge with essentially no size, about $10^5$ times smaller than any other ion. That smallness is the whole story. A bare proton cannot exist in solution — its charge density is so enormous that it buries itself instantly in the electron cloud of whatever is nearby. In water it grabs a lone pair on an oxygen and becomes <dfn title="The hydrated proton, water carrying an extra H+.">hydronium</dfn>, $\mathrm{H_3O^+}$.</p>
+
+      <p>Acid–base chemistry is the chemistry of where this proton goes. An <strong>acid</strong> is a molecule willing to let go of a proton; a <strong>base</strong> is a molecule with a lone pair willing to receive one. Every reaction in the first six chapters is some version of</p>
+
+      <div class="equation-block">
+        $$ \mathrm{HA} + \mathrm{B} \;\eqm\; \mathrm{A^-} + \mathrm{HB^+}, $$
+      </div>
+
+      <p>a proton hopping from a donor $\mathrm{HA}$ to an acceptor $\mathrm{B}$. The three historical definitions of "acid" differ only in how broadly they draw the circle around this event.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Arrhenius: ions in water</h2>
+
+      <p>The first quantitative definition came from Svante Arrhenius in 1884. An <dfn title="A substance that raises the H+ concentration when dissolved in water.">Arrhenius acid</dfn> is a substance that releases hydrogen ions in water; an Arrhenius base releases hydroxide ions. Hydrochloric acid and sodium hydroxide are the archetypes:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{HCl} \longrightarrow \mathrm{H^+} + \mathrm{Cl^-}, \qquad \mathrm{NaOH} \longrightarrow \mathrm{Na^+} + \mathrm{OH^-}. $$
+      </div>
+
+      <p>Neutralization, in this view, is the combination of those two ions back into water, $\mathrm{H^+} + \mathrm{OH^-} \to \mathrm{H_2O}$. The picture is correct as far as it goes, and it earned Arrhenius a Nobel Prize. But it is shackled to water and to hydroxide. It cannot explain why ammonia, $\mathrm{NH_3}$, which contains no $\mathrm{OH}$ at all, makes a solution basic; nor why a salt like sodium acetate does the same. We need a definition that talks about the proton itself, not about water.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Brønsted–Lowry: donors, acceptors, conjugate pairs</h2>
+
+      <p>In 1923 Johannes Brønsted and Thomas Lowry independently proposed the definition this book uses by default. A <dfn title="A proton donor.">Brønsted acid</dfn> is a proton donor; a <dfn title="A proton acceptor.">Brønsted base</dfn> is a proton acceptor. Nothing is said about water or about hydroxide, so the definition travels to any solvent and to the gas phase.</p>
+
+      <p>The deep idea hiding in this definition is the <dfn title="An acid and the base produced when it loses its proton, differing by exactly one H+.">conjugate pair</dfn>. When an acid $\mathrm{HA}$ gives up its proton, what is left, $\mathrm{A^-}$, is itself a base — it can take the proton back. The two are linked:</p>
+
+      <div class="equation-block">
+        $$ \underbrace{\mathrm{HA}}_{\text{acid}} \;\eqm\; \underbrace{\mathrm{A^-}}_{\text{conjugate base}} + \;\mathrm{H^+}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathrm{HA}$</dt><dd>A generic acid; $\mathrm{A}$ stands for whatever the proton was attached to (e.g. $\mathrm{Cl}$, $\mathrm{CH_3COO}$, $\mathrm{CN}$).</dd>
+          <dt>$\mathrm{A^-}$</dt><dd>Its conjugate base — the same fragment, now bearing the negative charge the departed proton left behind.</dd>
+          <dt>$\mathrm{H^+}$</dt><dd>The proton in transit. In water it never travels free; it is shorthand for the proton handed to a water molecule.</dd>
+        </dl>
+      </aside>
+
+      <p>Because a free proton is a fiction in solution, a real Brønsted reaction always couples <em>two</em> conjugate pairs — one donor pair and one acceptor pair. Dissolving acetic acid in water reads</p>
+
+      <div class="equation-block">
+        $$ \mathrm{CH_3COOH} + \mathrm{H_2O} \;\eqm\; \mathrm{CH_3COO^-} + \mathrm{H_3O^+}. $$
+      </div>
+
+      <p>Here acetic acid is the acid and water is the base; on the right, acetate ($\mathrm{CH_3COO^-}$) is the conjugate base of acetic acid, and hydronium is the conjugate acid of water. A strong acid sits far to the right (it nearly all dissociates); a <dfn title="An acid that transfers only a fraction of its protons at equilibrium.">weak acid</dfn> like acetic acid sits far to the left, only a percent or so dissociated. Quantifying exactly how far is the subject of Chapter II.</p>
+
+      <aside class="jargon">
+        <h4>Strong acid, weak conjugate base</h4>
+        <p>There is a seesaw built into the conjugate relationship: the stronger an acid, the weaker its conjugate base, and vice versa. Hydrochloric acid gives up its proton so eagerly that the chloride left behind has essentially no appetite to take it back — $\mathrm{Cl^-}$ is a vanishingly weak base. Conversely, the conjugate base of a very weak acid (say, the amide ion $\mathrm{NH_2^-}$, conjugate to ammonia) is a ferocious base. Chapter II makes this quantitative: $\mathrm{p}K_{\mathrm{a}} + \mathrm{p}K_{\mathrm{b}} = 14$ for a conjugate pair in water.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>What the proton actually does in water</h2>
+
+      <p>We write $\mathrm{H^+}$ for brevity, but the proton in water is a busy, delocalized object. It does not belong to one water molecule. Spectroscopy and simulation show it flickering between two limiting structures: the <dfn title="A hydronium ion symmetrically solvated by three waters, H9O4+.">Eigen cation</dfn> $\mathrm{H_9O_4^+}$ — a hydronium core hydrogen-bonded to three waters — and the <dfn title="A proton shared equally between two waters, H5O2+.">Zundel cation</dfn> $\mathrm{H_5O_2^+}$, a proton shared symmetrically between two waters.</p>
+
+      <p>This structural flicker is why acids conduct so well. Rather than a hydronium ion physically swimming across the solution, a proton can hop along a hydrogen-bonded chain — one $\mathrm{O\!-\!H}$ bond forms as another breaks — so charge moves far faster than any ion could diffuse. This relay is the <dfn title="Anomalously fast proton transport in water by sequential hopping along hydrogen bonds, rather than by bodily diffusion.">Grotthuss mechanism</dfn>, proposed (remarkably) in 1806. For our equilibrium bookkeeping we still write $\mathrm{H^+}$ or $\mathrm{H_3O^+}$ and treat it as a single species; just remember the symbol stands for this restless, hydrated, hopping entity.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Water turns on itself</h2>
+
+      <p>Water is <dfn title="Able to act as either a proton donor or a proton acceptor.">amphiprotic</dfn>: it can donate a proton (becoming $\mathrm{OH^-}$) or accept one (becoming $\mathrm{H_3O^+}$). With nothing else around, it does both at once, one water molecule protonating another. This is the <dfn title="The reaction of water with itself to form hydronium and hydroxide.">autoionization</dfn> of water:</p>
+
+      <div class="equation-block">
+        $$ 2\,\mathrm{H_2O} \;\eqm\; \mathrm{H_3O^+} + \mathrm{OH^-}. $$
+      </div>
+
+      <p>Its equilibrium constant is the most important number in the book. Because pure liquid water is the solvent, its activity is taken as 1 and drops out, leaving the <dfn title="The product of hydronium and hydroxide activities in water; 1.0e-14 at 25 °C.">ion-product constant of water</dfn>:</p>
+
+      <div class="equation-block">
+        $$ \Kw \;=\; \conc{H_3O^+}\,\conc{OH^-} \;=\; 1.0\times10^{-14} \quad (25\,\degC). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Kw$</dt><dd>The ion-product constant of water — a dimensionless number (concentrations measured relative to $1\,\mathrm{M}$). It depends only on temperature, not on what is dissolved.</dd>
+          <dt>$\conc{H_3O^+}$</dt><dd>Hydronium concentration in mol·L⁻¹. We often abbreviate it $\conc{H^+}$.</dd>
+          <dt>$\conc{OH^-}$</dt><dd>Hydroxide concentration in mol·L⁻¹.</dd>
+        </dl>
+      </aside>
+
+      <p>Taking $-\log_{10}$ of both sides and writing $\pH = -\log_{10}\conc{H^+}$ and $\pOH = -\log_{10}\conc{OH^-}$ gives the relation every chemist memorizes:</p>
+
+      <div class="equation-block">
+        $$ \pH + \pOH = \pKw = 14.00 \quad (25\,\degC). $$
+      </div>
+
+      <p>In pure water the two ions are made in equal numbers, so $\conc{H^+} = \conc{OH^-} = \sqrt{\Kw} = 1.0\times10^{-7}\,\mathrm{M}$ and the pH is $7.00$. A solution is <dfn title="Having equal hydronium and hydroxide concentrations.">neutral</dfn> when $\conc{H^+} = \conc{OH^-}$, <em>acidic</em> when hydronium wins, and <em>basic</em> when hydroxide wins.</p>
+
+      <aside class="note">
+        <h4>pH 7 is not sacred</h4>
+        <p>Neutrality means $\conc{H^+}=\conc{OH^-}$, which equals pH 7 <em>only at $25\,^{\circ}\mathrm{C}$</em>. Autoionization is endothermic, so warming water pushes the equilibrium right and raises $\Kw$. At $50\,^{\circ}\mathrm{C}$, $\mathrm{p}K_{\mathrm{w}}\approx 13.26$, so neutral water has pH $\approx 6.63$ — still neutral, just not 7. Pure water near body temperature is mildly below pH 7 and perfectly neutral. The widget below lets you watch this happen.</p>
+      </aside>
+
+      <section class="interactive" data-widget="water-autoionization" aria-label="Autoionization of water versus temperature">
+        <header>
+          <h4>Interactive · The water equilibrium</h4>
+          <span class="hint">drag temperature</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">Measured values of $\mathrm{p}K_{\mathrm{w}}$ from $0$ to $100\,^{\circ}\mathrm{C}$ (CRC / Bandura–Lvov data, interpolated). As temperature rises, the endothermic autoionization shifts right, $K_{\mathrm{w}}$ grows, and the <em>neutral</em> pH — defined by $[\mathrm{H}^+]=[\mathrm{OH}^-]=\sqrt{K_{\mathrm{w}}}$, hence $\tfrac12\mathrm{p}K_{\mathrm{w}}$ — slides below 7. The solution stays neutral throughout; only the number moves.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Lewis: the widest circle</h2>
+
+      <p>Also in 1923, G. N. Lewis offered the most general definition of all. A <dfn title="An electron-pair acceptor.">Lewis acid</dfn> is an electron-pair acceptor; a <dfn title="An electron-pair donor.">Lewis base</dfn> is an electron-pair donor. The base offers a <dfn title="A valence electron pair not used in bonding.">lone pair</dfn>; the acid has an empty orbital to receive it; together they form a new covalent bond. The textbook example involves no proton at all:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{BF_3} + \mathrm{NH_3} \;\longrightarrow\; \mathrm{F_3B{-}NH_3}, $$
+      </div>
+
+      <p>where boron trifluoride (electron-deficient boron, empty orbital) accepts the nitrogen lone pair of ammonia. The Brønsted picture is a special case: a proton is just a particularly simple Lewis acid, an empty $1s$ orbital looking for a pair, and a Brønsted base is simply a Lewis base whose lone pair happens to grab a proton. The Lewis lens takes in metal ions, electron-poor carbons, and the catalytic surfaces of Chapter IX — territory the proton-centered view cannot reach. We will spend most of the book in the Brønsted world, because aqueous chemistry lives there, and return to the Lewis view in earnest in Chapter IX.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Which lens, and when</h2>
+
+      <p>The three definitions are nested, not competing. Arrhenius is the narrowest (water, hydroxide); Brønsted–Lowry widens it to any proton transfer in any medium; Lewis widens it again to any electron-pair bond. For the quantitative aqueous chemistry of Chapters II–VIII — pH, titrations, buffers, speciation — the Brønsted picture is exactly the right tool, and we adopt it as the default. Keep the Lewis picture in your back pocket for when the proton is no longer the protagonist.</p>
+
+      <p>With water's self-reaction and $K_{\mathrm{w}}$ in hand, we have the stage and the lighting. The next chapter brings on the cast: how strong is a given acid, and how do we put a number on it?</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Daniel C. Harris.</span> <em>Quantitative Chemical Analysis</em>, 9th ed., W. H. Freeman, 2016 — Chapter 6 (chemical equilibrium) and §8 set up $K_{\mathrm{w}}$, Brønsted–Lowry conjugate pairs, and the pH scale in the notation used here.</li>
+          <li><span class="src-title">Peter Atkins and Julio de Paula.</span> <em>Physical Chemistry</em>, 11th ed., Oxford, 2018 — the chapter on acids and bases (Focus 6) develops autoionization, $K_{\mathrm{w}}$, and the thermodynamics of proton transfer.</li>
+          <li><span class="src-title">Catherine Housecroft and Alan Sharpe.</span> <em>Inorganic Chemistry</em>, 5th ed., Pearson, 2018 — §7 contrasts the Arrhenius, Brønsted, and Lewis definitions and introduces the Lewis acid–base concept used in Chapter IX.</li>
+          <li><span class="src-title">Noam Agmon.</span> "The Grotthuss mechanism." <em>Chemical Physics Letters</em> 244, 456–462 (1995) — the modern account of structural proton diffusion, the Eigen and Zundel cations, and why acids conduct anomalously well.</li>
+          <li><span class="src-title">A. V. Bandura and S. N. Lvov.</span> "The Ionization Constant of Water over Wide Ranges of Temperature and Density." <em>J. Phys. Chem. Ref. Data</em> 35, 15–30 (2006) — the source for $K_{\mathrm{w}}(T)$ behind the widget.</li>
+          <li><span class="src-title">William B. Jensen.</span> "The Lewis acid–base concepts: recent results." <em>Chem. Rev.</em> 78, 1–22 (1978) — a careful history and unification of the three definitions.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="../index.html"><span class="label">←</span> Contents</a>
+      <a class="next" href="02-ph-and-strength.html"><span class="label">Next chapter</span>II · The pH Scale and the Strength of Acids →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/water-autoionization.js"></script>
+</body>
+</html>
