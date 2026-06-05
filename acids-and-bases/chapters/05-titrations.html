@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter V · Titrations and Indicators — Acids and Bases: A Primer</title>
+  <meta name="description" content="Chapter 5: acid–base titration curves built from mole bookkeeping, the half-equivalence point pH = pKa, one exact master equation for the whole curve, indicators and their transition range, endpoint sharpness, and Gran plots." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter V of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter V</p>
+      <h1 class="chapter-title">Titrations and Indicators</h1>
+      <p class="lede">A titration is a controlled proton transfer watched in real time: add base drop by drop, follow the pH, and the shape of the resulting curve confesses both how much acid was present and how strong it was.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>To <em>titrate</em> is to find out how much acid is in a sample by adding base until exactly enough has gone in to neutralize it, and reading off the volume that took. The instrument that tells you "exactly enough" is the pH: as base is added, the pH climbs, slowly at first, then through a near-vertical jump at the moment of completion, then slowly again. Plotting pH against added volume gives a titration curve, and learning to read that curve is the practical heart of acid–base chemistry.</p>
+          <p>This chapter builds those curves from first principles. We start with the easiest case — a strong acid neutralized by a strong base, pure counting of moles — then take on a weak acid, whose curve has four distinct regions and a memorable landmark: at the halfway point the pH equals the acid's $\mathrm{p}K_{\mathrm{a}}$. Finally we collapse all the casework into a single exact equation that draws the entire curve, and we explain how indicators and Gran plots pin down the endpoint in the lab.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Titration</dt><dd>Adding a reagent of known concentration to a sample until reaction is just complete, to measure the sample.</dd>
+          <dt>Analyte</dt><dd>The substance being measured — here, the acid in the flask.</dd>
+          <dt>Titrant</dt><dd>The reagent added from the burette — here, standardized strong base.</dd>
+          <dt>Standardized</dt><dd>Of known concentration, established against a primary standard.</dd>
+          <dt>Equivalence point</dt><dd>The volume at which added titrant exactly matches the analyte, stoichiometrically.</dd>
+          <dt>Endpoint</dt><dd>The volume at which an indicator (or detector) signals you to stop — an estimate of the equivalence point.</dd>
+          <dt>Titration curve</dt><dd>A plot of pH against volume of titrant added.</dd>
+          <dt>Burette</dt><dd>The graduated tube that delivers and measures the titrant.</dd>
+          <dt>Buffer region</dt><dd>The flat stretch of a weak-acid curve where added base only slowly changes pH.</dd>
+          <dt>Half-equivalence point</dt><dd>Halfway to equivalence, where half the acid is deprotonated and $\mathrm{pH}=\mathrm{p}K_{\mathrm{a}}$.</dd>
+          <dt>Mole bookkeeping</dt><dd>Tracking moles of acid and base added to find what remains; the basis of the simple curve.</dd>
+          <dt>Proton condition</dt><dd>A balance of proton excess and deficit that yields one exact equation for the whole curve.</dd>
+          <dt>Master equation</dt><dd>A single formula giving titrant volume for any pH along the curve.</dd>
+          <dt>Indicator</dt><dd>A weak acid whose protonated and deprotonated forms differ in colour.</dd>
+          <dt>Transition range</dt><dd>The pH interval, about $\mathrm{p}K_{\mathrm{In}}\pm1$, over which an indicator visibly changes colour.</dd>
+          <dt>$\mathrm{p}K_{\mathrm{In}}$</dt><dd>The $\mathrm{p}K_{\mathrm{a}}$ of an indicator; its colour change is centred here.</dd>
+          <dt>Phenolphthalein</dt><dd>A common indicator, colourless to pink, transition $\approx 8.0$–$10.0$.</dd>
+          <dt>Methyl orange</dt><dd>A common indicator, red to yellow, transition $\approx 3.1$–$4.4$.</dd>
+          <dt>Strong acid</dt><dd>One that dissociates essentially completely; supplies $\mathrm{H^+}$ in proportion to its formal concentration.</dd>
+          <dt>Weak acid</dt><dd>One that reaches equilibrium with much undissociated acid remaining.</dd>
+          <dt>Gran plot</dt><dd>A linearizing transform of titration data whose straight line extrapolates to the equivalence volume.</dd>
+          <dt>Derivative method</dt><dd>Locating the endpoint as the peak of $\mathrm{d(pH)}/\mathrm{d}V$ or the zero of its second derivative.</dd>
+          <dt>Inflection point</dt><dd>The steepest point of the curve; for symmetric cases it sits at equivalence.</dd>
+          <dt>Formal concentration</dt><dd>The total analytical concentration of a species, dissociated or not.</dd>
+          <dt>Fraction deprotonated</dt><dd>$\alpha_{\mathrm{A^-}}$, the fraction of the acid present as conjugate base at a given pH.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>The titration experiment</h2>
+
+      <p>The setup is simple and old. A measured volume of the <dfn title="The substance being measured — the acid in the flask.">analyte</dfn> — say an acid of unknown concentration — sits in a flask. From a burette we deliver a <dfn title="The reagent of known concentration delivered from the burette.">titrant</dfn> of known concentration, here a strong base such as $\mathrm{NaOH}$, a little at a time, stirring and recording the pH after each addition. As base is added it consumes acid; when the moles of added base exactly equal the moles of acid originally present, the reaction is complete. That volume is the <dfn title="The volume at which added titrant stoichiometrically matches the analyte.">equivalence point</dfn>, $V_{\mathrm{eq}}$, and from it we compute the unknown:</p>
+
+      <div class="equation-block">
+        $$ C_b\,V_{\mathrm{eq}} = C_a\,V_a \qquad\Longrightarrow\qquad V_{\mathrm{eq}} = \frac{C_a\,V_a}{C_b}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$C_a$</dt><dd>Formal (total) concentration of the acid analyte, mol·L⁻¹.</dd>
+          <dt>$V_a$</dt><dd>Initial volume of analyte taken, in litres (or mL throughout, consistently).</dd>
+          <dt>$C_b$</dt><dd>Concentration of the strong-base titrant.</dd>
+          <dt>$V_{\mathrm{eq}}$</dt><dd>Volume of titrant at the equivalence point — the quantity the experiment measures.</dd>
+        </dl>
+      </aside>
+
+      <p>The equivalence point is a fact of stoichiometry; it is not something an instrument reads off directly. What the lab actually observes is the <dfn title="The volume at which the indicator signals you to stop — an estimate of the equivalence point.">endpoint</dfn>: the moment a colour-changing indicator flips, or the moment a pH probe traces out its steepest rise. A good titration is one in which the endpoint and the equivalence point coincide to within the precision you need. Most of this chapter is about understanding the curve well enough to make them coincide.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Strong acid, strong base: pure bookkeeping</h2>
+
+      <p>When both partners are strong, no equilibrium subtlety enters before the endpoint — the acid is fully dissociated, the base fully dissolved, and the only chemistry is $\mathrm{H^+}+\mathrm{OH^-}\to\mathrm{H_2O}$. So we simply count. After adding a volume $V_b$ of base to $V_a$ of acid, the leftover moles of $\mathrm{H^+}$ are $C_aV_a-C_bV_b$, diluted into the total volume $V_a+V_b$:</p>
+
+      <div class="equation-block">
+        $$ \conc{H^+} = \frac{C_aV_a - C_bV_b}{V_a + V_b} \qquad (\text{before equivalence}). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$C_aV_a$</dt><dd>Moles of $\mathrm{H^+}$ initially present (strong acid, fully dissociated).</dd>
+          <dt>$C_bV_b$</dt><dd>Moles of $\mathrm{OH^-}$ added so far, each of which removes one $\mathrm{H^+}$.</dd>
+          <dt>$V_a+V_b$</dt><dd>The total solution volume after the addition — the dilution denominator.</dd>
+        </dl>
+      </aside>
+
+      <p>Past the equivalence point the base is in excess, and the same logic gives $\conc{OH^-}=(C_bV_b-C_aV_a)/(V_a+V_b)$, from which $\pH=\pKw-\pOH$. At equivalence itself the two cancel: all that remains is water plus the spectator salt ($\mathrm{Na^+}$, $\mathrm{Cl^-}$), neither of which touches a proton. The solution is simply neutral, so $\conc{H^+}=\conc{OH^-}=\sqrt{\Kw}$ and</p>
+
+      <div class="equation-block">
+        $$ \pH_{\mathrm{eq}} = 7.00 \qquad (\text{strong–strong},\ 25\,\degC). $$
+      </div>
+
+      <p>For $50.0\,\mathrm{mL}$ of $0.100\Msol$ $\mathrm{HCl}$ titrated with $0.100\Msol$ $\mathrm{NaOH}$, $V_{\mathrm{eq}}=50.0\,\mathrm{mL}$ and the equivalence pH is $7.00$. The characteristic feature is the <strong>jump</strong>: because $\conc{H^+}$ falls logarithmically, the last fraction of a millilitre before equivalence and the first after it sweep the pH through several units almost vertically. That near-discontinuity is what makes the endpoint sharp.</p>
+
+      <aside class="note">
+        <h4>Why the jump is so steep</h4>
+        <p>Right at equivalence the numerator $C_aV_a-C_bV_b$ passes through zero. A tiny excess of base — one drop, perhaps $0.05\,\mathrm{mL}$ — leaves a minute $\conc{OH^-}$, but "minute" on a logarithmic scale still means a large pH change. The curve's steepness is therefore not chemistry but arithmetic: dividing a number that crosses zero. The widget below lets you watch the jump sharpen as you raise the concentrations.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Weak acid, strong base: four regions</h2>
+
+      <p>Replace the strong acid with a weak one and the curve acquires structure. A weak acid $\mathrm{HA}$ is only partly dissociated, so before any base is added the pH is set by its own equilibrium, not by its full concentration. The full titration of, say, $50.0\,\mathrm{mL}$ of $0.100\Msol$ acetic acid ($\pKa=4.76$) with $0.100\Msol$ $\mathrm{NaOH}$ moves through four regions.</p>
+
+      <p><strong>1. Initial point.</strong> Only $\mathrm{HA}$ in water. From Chapter II's estimate, $\conc{H^+}\approx\sqrt{\Ka C_a}$, here $\sqrt{(1.75\times10^{-5})(0.100)}\approx1.3\times10^{-3}\Msol$, so $\pH\approx2.87$.</p>
+
+      <p><strong>2. Buffer region.</strong> Each drop of base converts some $\mathrm{HA}$ into its conjugate base $\mathrm{A^-}$, so the flask now holds a mixture of both — a buffer. The pH is governed by the Henderson–Hasselbalch relation of Chapter IV:</p>
+
+      <div class="equation-block">
+        $$ \pH = \pKa + \log_{10}\frac{\conc{A^-}}{\conc{HA}}. $$
+      </div>
+
+      <p>At the <dfn title="Halfway to equivalence, where half the acid has been converted to conjugate base.">half-equivalence point</dfn> — exactly half the base needed for equivalence, here $25.0\,\mathrm{mL}$ — half the acid has been neutralized, so $\conc{A^-}=\conc{HA}$, the logarithm vanishes, and</p>
+
+      <div class="equation-block">
+        $$ \pH = \pKa \qquad (\text{half-equivalence}). $$
+      </div>
+
+      <p>This is the single most useful landmark on the whole curve: read the pH at the volume that is half of $V_{\mathrm{eq}}$ and you have measured the acid's $\pKa$ directly — here, $4.76$. The buffer region is also the flattest part of the curve, because here the solution resists pH change most strongly (the subject of Chapter IV).</p>
+
+      <p><strong>3. Equivalence point.</strong> All the $\mathrm{HA}$ has become $\mathrm{A^-}$; the flask now holds a solution of pure acetate at the diluted concentration $0.0500\Msol$ (the original $0.100\Msol$ in $50\,\mathrm{mL}$, now spread through $100\,\mathrm{mL}$). Acetate is a weak base, so the equivalence point is <strong>basic</strong>, not neutral. Using $\Kb=\Kw/\Ka=10^{-14}/(1.75\times10^{-5})=5.7\times10^{-10}$ and the weak-base analogue of the §2 estimate,</p>
+
+      <div class="equation-block">
+        $$ \pOH = \half\big(\pKb - \log_{10} C_{\mathrm{A^-}}\big), \qquad \pH = \pKw - \pOH. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Kb$</dt><dd>Base constant of the conjugate base $\mathrm{A^-}$, equal to $\Kw/\Ka$ (Chapter II).</dd>
+          <dt>$C_{\mathrm{A^-}}$</dt><dd>Concentration of conjugate base at equivalence — the original acid moles divided by the total volume.</dd>
+          <dt>$\pOH$</dt><dd>$-\log_{10}\conc{OH^-}$; converted to pH through $\pH+\pOH=\pKw=14.00$.</dd>
+        </dl>
+      </aside>
+
+      <p>For acetate at $0.0500\Msol$: $\pKb=14.00-4.76=9.24$, so $\pOH=\half(9.24-\log_{10}0.0500)=\half(9.24+1.30)=5.27$, giving $\pH_{\mathrm{eq}}\approx 8.72$. The equivalence point sits well above 7 — a fact that decides which indicator we may use.</p>
+
+      <p><strong>4. Excess base.</strong> Beyond equivalence the added $\mathrm{OH^-}$ swamps the feeble basicity of acetate, and the pH is set by the excess strong base exactly as in §2: $\conc{OH^-}=(C_bV_b-C_aV_a)/(V_a+V_b)$. The two curves — strong-acid and weak-acid — merge here, since past equivalence neither remembers what acid it started from.</p>
+
+      <aside class="jargon">
+        <h4>The weak-acid jump is smaller</h4>
+        <p>Because the equivalence point of a weak acid is already basic and the buffer region holds the pre-equivalence pH high, the vertical jump spans fewer pH units than the strong–strong case. The weaker the acid (larger $\pKa$), the shorter and more rounded the jump, until for a very weak acid it vanishes into the rising baseline and the endpoint becomes impossible to see. Sharpness is the theme of §6.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>One exact equation for the whole curve</h2>
+
+      <p>The four-region story is pedagogically clear but it stitches together four approximations. There is a cleaner path. Instead of asking "what is the pH after I add this volume?" — which requires solving a polynomial at every step — we invert the question: <em>what volume of base produces a given pH?</em> That inversion is exact and elementary, and it draws the entire curve from a single formula.</p>
+
+      <p>Start from the conservation laws. Define the fraction of total acid present as conjugate base at a given $\conc{H^+}$,</p>
+
+      <div class="equation-block">
+        $$ \alpha_{\mathrm{A^-}} = \frac{\Ka}{\Ka + \conc{H^+}}, $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\alpha_{\mathrm{A^-}}$</dt><dd>Fraction of the acid that has shed its proton — runs from $0$ (all $\mathrm{HA}$) to $1$ (all $\mathrm{A^-}$). It is the speciation function of Chapter VI evaluated at the current pH.</dd>
+          <dt>$\conc{H^+}$</dt><dd>The chosen hydronium concentration, $10^{-\pH}$. We sweep this to trace the curve.</dd>
+        </dl>
+      </aside>
+
+      <p>and the net excess of strong acid over strong base that the water must carry,</p>
+
+      <div class="equation-block">
+        $$ \Delta = \conc{H^+} - \conc{OH^-} = \conc{H^+} - \frac{\Kw}{\conc{H^+}}. $$
+      </div>
+
+      <p>Combining the charge balance, the mass balance on $\mathrm{A}$, and $\Kw$ — de Levie's <dfn title="A bookkeeping of proton excess and deficit that closes the system of conservation laws exactly.">proton condition</dfn> approach — and solving for the titrant volume gives the master equation:</p>
+
+      <div class="equation-block">
+        $$ \boxed{\,V_b = V_a\,\frac{C_a\,\alpha_{\mathrm{A^-}} - \Delta}{C_b + \Delta}\,}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$V_b$</dt><dd>Volume of strong-base titrant that produces the chosen $\conc{H^+}$.</dd>
+          <dt>$C_a\,\alpha_{\mathrm{A^-}}$</dt><dd>Concentration of conjugate base that must be created — i.e. the protons the base has removed from the acid.</dd>
+          <dt>$\Delta$</dt><dd>The free-proton excess (positive in acid, negative in base); it corrects for water's own ions and for any residual strong acidity.</dd>
+          <dt>$C_b+\Delta$</dt><dd>The denominator that maps "protons to remove" onto "volume of base", accounting for dilution by the titrant.</dd>
+        </dl>
+      </aside>
+
+      <p>To draw the curve you sweep $\conc{H^+}$ from large (low pH) to small (high pH), compute $V_b$ at each step, and plot pH against $V_b$. Every region of §3 falls out of this one expression as a limit. It also handles the strong acid as a special case: a strong acid is fully dissociated at all pH, so $\alpha_{\mathrm{A^-}}=1$ everywhere and</p>
+
+      <div class="equation-block">
+        $$ V_b = V_a\,\frac{C_a - \Delta}{C_b + \Delta} \qquad (\text{strong acid analyte}). $$
+      </div>
+
+      <p>Check the obvious points. At the equivalence point all the acid is consumed and the solution is just $\mathrm{A^-}$ (or, for a strong acid, neutral salt), so $\Delta\to0$ and $C_a\alpha_{\mathrm{A^-}}\to C_a$, giving $V_b\to V_aC_a/C_b=V_{\mathrm{eq}}$ — the stoichiometric volume of §1, recovered exactly. The boxed equation is the engine behind the widget below, which sweeps pH and reads off volume.</p>
+
+      <aside class="note">
+        <h4>Reading volume from pH, not pH from volume</h4>
+        <p>The trick that makes the curve trivial is that pH appears <em>nonlinearly</em> when you solve for it from volume (a cubic in $\conc{H^+}$), but volume appears <em>linearly</em> when you solve for it from pH. So we choose pH freely and let the formula hand back the volume. The plotted curve looks identical either way; it is only the bookkeeping that becomes painless.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Indicators</h2>
+
+      <p>Before pH meters, the endpoint was found by colour. An <dfn title="A weak acid whose protonated and deprotonated forms differ in colour.">indicator</dfn> is itself a weak acid, $\mathrm{HIn}$, whose two forms happen to absorb light differently:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{HIn} \;\eqm\; \mathrm{H^+} + \mathrm{In^-}, \qquad K_{\mathrm{In}} = \frac{\conc{H^+}\conc{In^-}}{\conc{HIn}}. $$
+      </div>
+
+      <p>Because it is a weak acid, it obeys the same Henderson–Hasselbalch logic as everything else:</p>
+
+      <div class="equation-block">
+        $$ \pH = \mathrm{p}K_{\mathrm{In}} + \log_{10}\frac{\conc{In^-}}{\conc{HIn}}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathrm{HIn},\ \mathrm{In^-}$</dt><dd>The acid (one colour) and conjugate base (another colour) forms of the indicator dye.</dd>
+          <dt>$\mathrm{p}K_{\mathrm{In}}$</dt><dd>$-\log_{10}K_{\mathrm{In}}$ — the pH at which the two coloured forms are present in equal amounts.</dd>
+        </dl>
+      </aside>
+
+      <p>The eye reads the dominant colour. The two forms are roughly equally visible when their ratio lies between about $1\!:\!10$ and $10\!:\!1$, i.e. when $\log_{10}(\conc{In^-}/\conc{HIn})$ runs from $-1$ to $+1$. So the visible colour change spans a <dfn title="The pH interval, about pKIn ± 1, over which an indicator visibly changes colour.">transition range</dfn></p>
+
+      <div class="equation-block">
+        $$ \pH \approx \mathrm{p}K_{\mathrm{In}} \pm 1. $$
+      </div>
+
+      <p>The art is to pick an indicator whose transition range brackets the equivalence-point pH, so that the colour flips inside the vertical jump. For our acetic-acid titration, with $\pH_{\mathrm{eq}}\approx8.72$, <dfn title="Colourless-to-pink indicator, transition pH ≈ 8.0–10.0.">phenolphthalein</dfn> ($\mathrm{p}K_{\mathrm{In}}\approx9.4$, range $8.0$–$10.0$) is the standard choice: colourless in acid, pink as the pH sweeps up through the endpoint. <dfn title="Red-to-yellow indicator, transition pH ≈ 3.1–4.4.">Methyl orange</dfn> (range $3.1$–$4.4$) would flip far too early here, but is perfectly suited to a strong-acid titration, whose jump straddles pH 7 and passes through that lower range. Choosing the wrong indicator is the classic source of titration error.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>What makes an endpoint detectable</h2>
+
+      <p>An endpoint is usable only if the pH changes fast enough at equivalence that a drop of titrant produces an unmistakable signal. Two things govern that steepness.</p>
+
+      <p><strong>Concentration.</strong> The size of the jump grows with how concentrated both solutions are. Dilute everything tenfold and the leftover and excess ion concentrations near equivalence shrink tenfold too, flattening the jump. Below roughly $10^{-3}\Msol$ the jump for a weak acid all but disappears into the baseline set by water itself.</p>
+
+      <p><strong>Acid strength.</strong> For a weak acid the jump shrinks as $\Ka$ falls. Quantitatively, the pH change brackets the equivalence point between roughly the buffer pH (near $\pKa$) below and the strong-base region above; the weaker the acid, the higher its pre-equivalence pH starts and the smaller the gap left to jump. A useful rule of thumb is that a sharp endpoint requires roughly</p>
+
+      <div class="equation-block">
+        $$ C_a\,\Ka \gtrsim 10^{-8}\,, $$
+      </div>
+
+      <p>below which the equivalence-point pH and the buffer pH have closed in on each other and no clear inflection survives. This is why very weak acids (phenol, $\pKa\approx10$) cannot be titrated cleanly in water — water's own basicity levels the signal, just as it levels strong acids in Chapter II. The widget makes this concrete: slide $\pKa$ upward and watch the jump melt away.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Gran plots and the derivative endpoint</h2>
+
+      <p>When the jump is shallow, or when you want the equivalence point without measuring near it (where electrode response is sluggish), two numerical methods beat eyeballing the curve.</p>
+
+      <p>The <dfn title="The peak of d(pH)/dV, or the zero of its second derivative, marks the equivalence point.">derivative method</dfn> notes that the inflection point — the steepest part of the curve — is where $\mathrm{d(pH)}/\mathrm{d}V$ peaks, equivalently where $\mathrm{d^2(pH)}/\mathrm{d}V^2$ crosses zero. Plotting the first derivative turns the search for a vertical region into the search for a sharp maximum, which the eye and the computer both locate well.</p>
+
+      <p>The <dfn title="A linearizing transform of titration data whose straight line extrapolates to the equivalence volume.">Gran plot</dfn> (Gran, 1952) is subtler and more robust. Before the equivalence point of a strong acid, $\conc{H^+}=(C_aV_a-C_bV_b)/(V_a+V_b)$, so the product $(V_a+V_b)\,\conc{H^+}$ is a <em>linear</em> function of $V_b$ that hits zero exactly at $V_{\mathrm{eq}}$. Since $\conc{H^+}=10^{-\pH}$, one plots</p>
+
+      <div class="equation-block">
+        $$ (V_a + V_b)\,10^{-\pH} \quad\text{versus}\quad V_b, $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$(V_a+V_b)\,10^{-\pH}$</dt><dd>The Gran function before equivalence; proportional to the moles of $\mathrm{H^+}$ remaining, hence linear in $V_b$.</dd>
+          <dt>$V_b$</dt><dd>Titrant volume added — the horizontal axis of the Gran plot.</dd>
+        </dl>
+      </aside>
+
+      <p>and extrapolates the straight line to the volume axis; the intercept is $V_{\mathrm{eq}}$. (A simpler $V_b\,10^{-\pH}$ versus $V_b$ works similarly when dilution is slight.) The beauty of Gran's construction is that it uses data taken <em>away</em> from the endpoint — where measurements are stable and the indicator-free probe behaves linearly — to pin the endpoint precisely, sidestepping the very region that is hardest to measure. The same idea, applied past equivalence, locates $V_{\mathrm{eq}}$ from the excess-base branch, and a matching weak-acid Gran function exists for the conjugate-base region.</p>
+
+      <section class="interactive" data-widget="titration-curve" aria-label="Interactive titration curve from the exact master equation">
+        <header>
+          <h4>Interactive · The titration curve</h4>
+          <span class="hint">choose acid, drag parameters</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The curve is generated by the exact master equation of §4: for each pH from $0.5$ to $13$, the volume $V_b=V_a(C_a\alpha_{\mathrm{A^-}}-\Delta)/(C_b+\Delta)$ is computed and pH is plotted against it, with $V_a=50\,\mathrm{mL}$ fixed. The equivalence point $V_{\mathrm{eq}}=C_aV_a/C_b$ is marked; for a weak acid a dashed line marks the half-equivalence point, where the curve crosses $\pH=\pKa$. Raise $\pKa$ and watch the jump flatten (§6); change concentrations and watch it sharpen or shrink.</p>
+      </section>
+
+      <p>With the curve fully in hand — its shape, its landmarks, its master equation, and the tools to read its endpoint — we are ready to follow what happens when an acid carries <em>more than one</em> proton. Each proton produces its own buffer region and its own equivalence point, and the speciation that results is the subject of the next chapter.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Daniel C. Harris.</span> <em>Quantitative Chemical Analysis</em>, 9th ed., W. H. Freeman, 2016 — Chapters 10–11 develop strong- and weak-acid titration curves, the half-equivalence $\mathrm{p}K_{\mathrm{a}}$ landmark, indicator selection, and Gran plots in the notation used here.</li>
+          <li><span class="src-title">Robert de Levie.</span> <em>Aqueous Acid–Base Equilibria and Titrations</em>, Oxford Chemistry Primer 80, Oxford University Press, 1999 — the source of the proton-condition derivation and the single master equation $V_b=V_a(C_a\alpha-\Delta)/(C_b+\Delta)$ for the whole curve.</li>
+          <li><span class="src-title">Gunnar Gran.</span> "Determination of the equivalence point in potentiometric titrations. Part II." <em>Analyst</em> 77, 661–671 (1952) — the original linearizing transform whose straight line extrapolates to $V_{\mathrm{eq}}$.</li>
+          <li><span class="src-title">Douglas A. Skoog, Donald M. West, F. James Holler, and Stanley R. Crouch.</span> <em>Fundamentals of Analytical Chemistry</em>, 9th ed., Brooks/Cole, 2014 — titration curves, endpoint detection, and the concentration/strength conditions for a sharp jump.</li>
+          <li><span class="src-title">Peter Atkins and Julio de Paula.</span> <em>Physical Chemistry</em>, 11th ed., Oxford, 2018 — Focus 6 treats the thermodynamics behind the buffer region and the equivalence-point pH of a weak acid.</li>
+          <li><span class="src-title">Robert de Levie.</span> "A general simulator for acid–base titrations." <em>J. Chem. Educ.</em> 76, 987 (1999) — the spreadsheet realization of the master equation that the widget reproduces.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="04-buffers.html"><span class="label">← Previous</span>IV · Buffers</a>
+      <a class="next" href="06-polyprotic-speciation.html"><span class="label">Next chapter</span>VI · Polyprotic Acids and Speciation →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/titration-curve.js"></script>
+</body>
+</html>

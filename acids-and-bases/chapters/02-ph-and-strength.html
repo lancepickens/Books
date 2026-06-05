@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter II · The pH Scale and the Strength of Acids — Acids and Bases: A Primer</title>
+  <meta name="description" content="Chapter 2: the acid dissociation constant Ka, pKa, the conjugate relationship Ka·Kb = Kw, the pKa ladder, and the leveling effect of water." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter II of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter II</p>
+      <h1 class="chapter-title">The pH Scale and the Strength of Acids</h1>
+      <p class="lede">Strength is not a vague adjective here — it is a number, the equilibrium constant for handing a proton to water, and it spans more than fifty powers of ten.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>"Strong" and "weak" are not about how concentrated an acid is or how dangerous it feels. They are about how completely the acid hands its proton to water. We turn that into a single equilibrium constant, $K_{\mathrm{a}}$, and because the constants range over fifty orders of magnitude we report its logarithm, $\mathrm{p}K_{\mathrm{a}}$. The whole of acid–base chemistry can be read off a vertical ladder of $\mathrm{p}K_{\mathrm{a}}$ values.</p>
+          <p>This chapter builds that ladder, shows how an acid's $\mathrm{p}K_{\mathrm{a}}$ and its conjugate base's $\mathrm{p}K_{\mathrm{b}}$ are locked together by water's own constant, and explains why water itself sets a ceiling and a floor on the acidity you can express in it — the leveling effect. By the end you can look at two $\mathrm{p}K_{\mathrm{a}}$ values and predict which way a proton will jump.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>$K_{\mathrm{a}}$</dt><dd>Acid dissociation constant — the equilibrium constant for an acid giving its proton to water.</dd>
+          <dt>$K_{\mathrm{b}}$</dt><dd>Base association constant — the equilibrium constant for a base taking a proton from water.</dd>
+          <dt>$\mathrm{p}K_{\mathrm{a}}$</dt><dd>$-\log_{10}K_{\mathrm{a}}$; small (or negative) means strong, large means weak.</dd>
+          <dt>pH</dt><dd>$-\log_{10}$ of the hydronium activity; the master variable of the book.</dd>
+          <dt>pOH</dt><dd>$-\log_{10}$ of the hydroxide activity; $\mathrm{pH}+\mathrm{pOH}=14$.</dd>
+          <dt>Strong acid</dt><dd>One whose $K_{\mathrm{a}}$ is so large it dissociates essentially completely.</dd>
+          <dt>Weak acid</dt><dd>One that reaches an equilibrium with much undissociated acid remaining.</dd>
+          <dt>Degree of dissociation</dt><dd>The fraction of acid molecules that have given up their proton, $\alpha$.</dd>
+          <dt>Conjugate base</dt><dd>What an acid becomes after losing its proton.</dd>
+          <dt>Leveling effect</dt><dd>Water's inability to distinguish acids stronger than $\mathrm{H_3O^+}$ — they all look equally strong.</dd>
+          <dt>Differentiating solvent</dt><dd>A solvent in which acids leveled by water can be told apart.</dd>
+          <dt>Activity</dt><dd>Effective concentration; the quantity equilibrium constants are strictly built from.</dd>
+          <dt>Activity coefficient</dt><dd>The ratio $\gamma$ of activity to concentration; near 1 in dilute solution.</dd>
+          <dt>Standard state</dt><dd>The reference condition ($1\,\mathrm{M}$ here) that makes $K$ dimensionless.</dd>
+          <dt>Acidity</dt><dd>Loosely, the tendency to donate protons; precisely, a low $\mathrm{p}K_{\mathrm{a}}$.</dd>
+          <dt>Basicity</dt><dd>The tendency to accept protons; precisely, a low $\mathrm{p}K_{\mathrm{b}}$ (high conjugate $\mathrm{p}K_{\mathrm{a}}$).</dd>
+          <dt>Mineral acid</dt><dd>A strong inorganic acid such as $\mathrm{HCl}$, $\mathrm{HNO_3}$, $\mathrm{H_2SO_4}$.</dd>
+          <dt>Carboxylic acid</dt><dd>An organic acid with a $\mathrm{-COOH}$ group; typically $\mathrm{p}K_{\mathrm{a}}\approx 3$–$5$.</dd>
+          <dt>Spectator ion</dt><dd>An ion (e.g. $\mathrm{Na^+}$, $\mathrm{Cl^-}$) that does not participate in the proton transfer.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>Strength is an equilibrium constant</h2>
+
+      <p>When a weak acid $\mathrm{HA}$ dissolves in water, only some of it dissociates. The reaction reaches an equilibrium,</p>
+
+      <div class="equation-block">
+        $$ \mathrm{HA} + \mathrm{H_2O} \;\eqm\; \mathrm{A^-} + \mathrm{H_3O^+}, $$
+      </div>
+
+      <p>and the position of that equilibrium is captured by the <dfn title="The equilibrium constant for an acid donating its proton to water.">acid dissociation constant</dfn> $K_{\mathrm{a}}$. Because water is the solvent its activity is essentially 1 and is omitted, leaving</p>
+
+      <div class="equation-block">
+        $$ \Ka \;=\; \frac{\conc{A^-}\,\conc{H_3O^+}}{\conc{HA}}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Ka$</dt><dd>Acid dissociation constant — dimensionless (each concentration is divided by the $1\,\mathrm{M}$ standard state). A property of the acid and the solvent, fixed at a given temperature.</dd>
+          <dt>$\conc{HA}$</dt><dd>Equilibrium concentration of the intact acid, mol·L⁻¹.</dd>
+          <dt>$\conc{A^-}$</dt><dd>Concentration of the conjugate base produced.</dd>
+          <dt>$\conc{H_3O^+}$</dt><dd>Hydronium concentration produced — equivalently $\conc{H^+}$.</dd>
+        </dl>
+      </aside>
+
+      <p>A large $K_{\mathrm{a}}$ means the equilibrium lies to the right: most of the acid has dissociated, so it is <strong>strong</strong>. A small $K_{\mathrm{a}}$ means it lies to the left, the acid is <strong>weak</strong>. The numbers are inconveniently spread out — from about $10^{3}$ for hydrochloric acid down to $10^{-10}$ for hydrocyanic acid and far beyond — so we compress them logarithmically.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The p-operator and the logarithmic scale</h2>
+
+      <p>For any quantity $X$, the "p" operator means $\mathrm{p}X = -\log_{10}X$. Applied to $K_{\mathrm{a}}$ it gives</p>
+
+      <div class="equation-block">
+        $$ \pKa = -\log_{10}\Ka, \qquad \pH = -\log_{10}\conc{H^+}. $$
+      </div>
+
+      <p>The minus sign means the scale runs <em>backwards</em>: a <strong>lower</strong> $\mathrm{p}K_{\mathrm{a}}$ is a <strong>stronger</strong> acid. Acetic acid ($K_{\mathrm{a}}=1.75\times10^{-5}$) has $\mathrm{p}K_{\mathrm{a}}=4.76$; hydrofluoric acid ($K_{\mathrm{a}}=6.8\times10^{-4}$) has $\mathrm{p}K_{\mathrm{a}}=3.17$ and is the stronger of the two. Each unit of $\mathrm{p}K_{\mathrm{a}}$ is a factor of ten in dissociation tendency, so the difference between a $\mathrm{p}K_{\mathrm{a}}$ of 3 and one of 5 is a hundredfold.</p>
+
+      <aside class="jargon">
+        <h4>Why logarithms everywhere</h4>
+        <p>Proton concentrations in real solutions span from roughly $10\,\mathrm{M}$ in concentrated acid to $10^{-15}\,\mathrm{M}$ in strong base — thirty powers of ten. No linear axis can show that. The logarithm also matches biology and perception: nerve and enzyme responses to $\mathrm{H}^+$ are roughly logarithmic, which is why pH, not $[\mathrm{H}^+]$, is the natural variable. Søren Sørensen introduced it in 1909 while studying enzymes in Carlsberg's brewery.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The conjugate seesaw: $K_{\mathrm{a}}K_{\mathrm{b}} = K_{\mathrm{w}}$</h2>
+
+      <p>A base accepts a proton from water; its strength is the <dfn title="The equilibrium constant for a base taking a proton from water.">base constant</dfn> $K_{\mathrm{b}}$. For the conjugate base $\mathrm{A^-}$ of our acid,</p>
+
+      <div class="equation-block">
+        $$ \mathrm{A^-} + \mathrm{H_2O} \;\eqm\; \mathrm{HA} + \mathrm{OH^-}, \qquad \Kb = \frac{\conc{HA}\,\conc{OH^-}}{\conc{A^-}}. $$
+      </div>
+
+      <p>Multiply $K_{\mathrm{a}}$ by $K_{\mathrm{b}}$ and the $\conc{HA}$ and $\conc{A^-}$ terms cancel, leaving only the ion product of water:</p>
+
+      <div class="equation-block">
+        $$ \Ka\,\Kb \;=\; \conc{H_3O^+}\conc{OH^-} \;=\; \Kw, \qquad\text{so}\qquad \pKa + \pKb = \pKw = 14.00. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Kb$</dt><dd>Base constant of the conjugate base $\mathrm{A^-}$.</dd>
+          <dt>$\Kw$</dt><dd>The ion-product constant of water from Chapter I, $1.0\times10^{-14}$ at $25\,^{\circ}\mathrm{C}$.</dd>
+          <dt>$\pKb$</dt><dd>$-\log_{10}K_{\mathrm{b}}$; for any conjugate pair it is simply $14.00-\mathrm{p}K_{\mathrm{a}}$.</dd>
+        </dl>
+      </aside>
+
+      <p>This is the seesaw made quantitative. Acetic acid's $\mathrm{p}K_{\mathrm{a}}$ of $4.76$ forces its conjugate base, acetate, to have $\mathrm{p}K_{\mathrm{b}} = 9.24$ — a weak base. Because the relationship is exact, tables list only $K_{\mathrm{a}}$ values; the basicity of any conjugate base follows by subtraction from 14. There is no need for separate base tables.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The $\mathrm{p}K_{\mathrm{a}}$ ladder</h2>
+
+      <p>Arrange the common acids vertically by $\mathrm{p}K_{\mathrm{a}}$ and you get a single chart that organizes most of aqueous chemistry. At the top sit the strong mineral acids with negative $\mathrm{p}K_{\mathrm{a}}$; in the middle, carboxylic acids near 3–5 and the ammonium/phenol region near 9–10; at the bottom, water and alcohols above 15.</p>
+
+      <p>The ladder has a predictive payoff: a proton always falls from a lower acid (smaller $\mathrm{p}K_{\mathrm{a}}$) to the conjugate base of a higher one. Equivalently, the equilibrium constant of any proton-transfer reaction is</p>
+
+      <div class="equation-block">
+        $$ \log_{10}K_{\text{transfer}} \;=\; \pKa(\text{product acid}) - \pKa(\text{reactant acid}). $$
+      </div>
+
+      <p>If the acid you start with sits well below the acid you would have to re-form, the reaction runs essentially to completion. This single rule decides the outcome of nearly every reaction in organic and biochemistry where a proton moves. The interactive ladder below lets you slide a pH line through it and watch which side of each acid wins.</p>
+
+      <section class="interactive" data-widget="pka-ladder" aria-label="Interactive pKa ladder with a movable pH line">
+        <header>
+          <h4>Interactive · The $\mathrm{p}K_{\mathrm{a}}$ ladder</h4>
+          <span class="hint">drag the pH line</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">Each rung is a real acid at its tabulated $\mathrm{p}K_{\mathrm{a}}$. The horizontal line is the solution pH; drag it. For each acid the bar shows the fraction protonated, $\alpha_{\mathrm{HA}} = 1/(1+10^{\,\mathrm{pH}-\mathrm{p}K_{\mathrm{a}}})$ — the Henderson–Hasselbalch result of Chapter IV. An acid is more than half deprotonated exactly when the pH rises above its $\mathrm{p}K_{\mathrm{a}}$.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Strong acids and the leveling effect</h2>
+
+      <p>What happens when an acid is <em>much</em> stronger than hydronium? Dissolve $\mathrm{HCl}$ ($\mathrm{p}K_{\mathrm{a}}\approx -6$) in water and it does not reach a balanced equilibrium — it dumps its proton onto water entirely. The proton-donor you actually have in solution is therefore $\mathrm{H_3O^+}$, not $\mathrm{HCl}$. The same is true of $\mathrm{HBr}$, $\mathrm{HI}$, $\mathrm{HNO_3}$, and $\mathrm{HClO_4}$: every one of them is converted essentially completely to hydronium.</p>
+
+      <p>The consequence is that water cannot tell these acids apart. A $0.1\,\mathrm{M}$ solution of any of them has the same pH, because the only acid present in force is $\mathrm{H_3O^+}$. This is the <dfn title="Water's conversion of all acids stronger than hydronium into hydronium, masking their intrinsic differences.">leveling effect</dfn>: the strongest acid that can exist in water is $\mathrm{H_3O^+}$, and the strongest base is $\mathrm{OH^-}$. Anything outside that window is leveled to the window's edge.</p>
+
+      <div class="equation-block">
+        $$ \text{usable acidity window in water:}\qquad \mathrm{p}K_{\mathrm{a}}\big(\mathrm{H_3O^+}\big) = -1.74 \;\;\text{to}\;\; \mathrm{p}K_{\mathrm{a}}\big(\mathrm{H_2O}\big) = 15.74. $$
+      </div>
+
+      <p>To distinguish the strong acids — to measure how much stronger $\mathrm{HClO_4}$ is than $\mathrm{HCl}$ — you must move to a less basic, <dfn title="A solvent in which acids that water levels can be ranked.">differentiating solvent</dfn> such as glacial acetic acid, or measure in the gas phase. Chapter VIII takes this seriously and pushes past the right-hand edge entirely, into the superacids.</p>
+
+      <aside class="note">
+        <h4>The $\mathrm{p}K_{\mathrm{a}}$ of water and hydronium</h4>
+        <p>Treating water as an acid ($\mathrm{H_2O}\rightleftharpoons \mathrm{H^+}+\mathrm{OH^-}$) and including its $55.5\,\mathrm{M}$ concentration in the constant gives $\mathrm{p}K_{\mathrm{a}}(\mathrm{H_2O}) = 15.74$; treating hydronium as an acid gives $\mathrm{p}K_{\mathrm{a}}(\mathrm{H_3O^+}) = -1.74$. These two numbers are the floor and ceiling of the ladder. (Some texts quote 14 and 0 by leaving water's concentration out; we keep the $55.5$ factor for consistency with the molecular $\mathrm{p}K_{\mathrm{a}}$ values in Chapter VII.)</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>A first estimate of pH</h2>
+
+      <p>With $K_{\mathrm{a}}$ in hand we can already estimate the pH of a weak-acid solution. Put $C$ moles per litre of $\mathrm{HA}$ in water. If a small amount $x = \conc{H^+}$ dissociates, then $\conc{A^-}\approx x$ and $\conc{HA}\approx C-x$, so</p>
+
+      <div class="equation-block">
+        $$ \Ka = \frac{x^2}{C-x} \;\approx\; \frac{x^2}{C} \quad\Longrightarrow\quad \conc{H^+}\approx\sqrt{\Ka\,C}, \qquad \pH \approx \half\big(\pKa - \log_{10}C\big). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$C$</dt><dd>The formal (total) concentration of acid added, mol·L⁻¹.</dd>
+          <dt>$x$</dt><dd>The amount that dissociates, equal to $\conc{H^+}$ produced by the acid.</dd>
+        </dl>
+      </aside>
+
+      <p>For $0.10\,\mathrm{M}$ acetic acid this gives $\conc{H^+}=\sqrt{1.75\times10^{-5}\times0.10}=1.3\times10^{-3}\,\mathrm{M}$, or pH $2.87$ — about $1.3\%$ dissociated. The approximation hides three assumptions: that the dissociated fraction is small ($x\ll C$), that the acid itself overwhelms water's own $\mathrm{H^+}$, and that activities equal concentrations. Each can fail — for very dilute or very weak acids especially — and Chapter III replaces this back-of-envelope formula with an exact treatment built from mass and charge balance.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>A caveat we will mostly suppress: activity</h2>
+
+      <p>Equilibrium constants are built, strictly, from <dfn title="Effective concentration; what a species' chemical potential actually responds to.">activities</dfn> $a_i=\gamma_i\,[i]$, not concentrations. The <dfn title="The factor relating activity to concentration; 1 in an ideal dilute solution.">activity coefficient</dfn> $\gamma_i$ measures how much an ion's neighbors interfere with it. In dilute solution $\gamma\to1$ and activity equals concentration, which is why we can write pH in terms of $\conc{H^+}$. But in seawater, blood, or any solution above $\sim\!0.01\,\mathrm{M}$ in ions, $\gamma$ drifts well below 1, and a careful calculation uses the Debye–Hückel expression</p>
+
+      <div class="equation-block">
+        $$ \log_{10}\gamma_\pm = -0.509\,z_+ z_- \frac{\sqrt{I}}{1+\sqrt{I}}, \qquad I = \half\sum_i c_i z_i^2, $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\gamma_\pm$</dt><dd>Mean ionic activity coefficient of a salt.</dd>
+          <dt>$I$</dt><dd>Ionic strength — a charge-weighted sum over all ions, mol·L⁻¹.</dd>
+          <dt>$z_i$</dt><dd>The charge number of ion $i$ (e.g. $+1$, $-2$).</dd>
+          <dt>$0.509$</dt><dd>The Debye–Hückel constant for water at $25\,^{\circ}\mathrm{C}$ (units of $\mathrm{M}^{-1/2}$).</dd>
+        </dl>
+      </aside>
+
+      <p>This is the extended Debye–Hückel law (the $1+\sqrt{I}$ denominator is the Davies-style correction that keeps it usable to moderate $I$). We will flag activity where it changes an answer — measuring a true thermodynamic $\mathrm{p}K_{\mathrm{a}}$, computing pH in concentrated brine — and otherwise set $\gamma=1$ and proceed with concentrations, as nearly all of practical aqueous chemistry does.</p>
+
+      <p>We now have strength as a number, a ladder to read it from, and the window water allows. The next chapter asks the harder question the §6 estimate dodged: given any acid, base, or mixture, what is the pH <em>exactly</em>?</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Daniel C. Harris.</span> <em>Quantitative Chemical Analysis</em>, 9th ed., W. H. Freeman, 2016 — §8–9 develop $K_{\mathrm{a}}$, $K_{\mathrm{b}}$, $\mathrm{p}K_{\mathrm{a}}$, and the weak-acid pH estimate exactly as here; Appendix G tabulates acid constants.</li>
+          <li><span class="src-title">Peter Atkins and Julio de Paula.</span> <em>Physical Chemistry</em>, 11th ed., Oxford, 2018 — Focus 6 for the thermodynamic basis of $K_{\mathrm{a}}$ and the Debye–Hückel treatment of activity.</li>
+          <li><span class="src-title">Eric V. Anslyn and Dennis A. Dougherty.</span> <em>Modern Physical Organic Chemistry.</em> University Science Books, 2006 — Chapter 5 for the $\mathrm{p}K_{\mathrm{a}}$ ladder as the organizing principle of mechanism, and the leveling effect.</li>
+          <li><span class="src-title">S. P. L. Sørensen.</span> "Enzymstudien. II." <em>Biochem. Z.</em> 21, 131–304 (1909) — the paper that introduced the pH notation.</li>
+          <li><span class="src-title">CRC Handbook of Chemistry and Physics</span>, 97th ed., CRC Press, 2016 — "Dissociation Constants of Inorganic and Organic Acids" for the $\mathrm{p}K_{\mathrm{a}}$ values used in the ladder widget.</li>
+          <li><span class="src-title">C. W. Davies.</span> <em>Ion Association.</em> Butterworths, 1962 — the source of the Davies equation form of the activity-coefficient correction quoted in §7.</li>
+        </ul>
+      </section>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="01-three-lenses.html"><span class="label">← Previous</span>I · Three Lenses on Acidity</a>
+      <a class="next" href="03-weak-acid-equilibria.html"><span class="label">Next chapter</span>III · Equilibrium in Water →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/pka-ladder.js"></script>
+</body>
+</html>
