@@ -64,7 +64,7 @@
 
       <ul>
         <li><strong>Berendsen</strong> rescales velocities by a factor that pushes the instantaneous kinetic energy toward the target. Fast, simple, but doesn't produce a rigorous canonical ensemble; suitable for equilibration only.</li>
-        <li><strong>Nosé–Hoover</strong> introduces an extended Hamiltonian with an extra "thermostat" degree of freedom. The dynamics are deterministic and time-reversible; correctly produces the canonical ensemble for ergodic systems. Standard for production MD.</li>
+        <li><strong>Nosé–Hoover</strong> couples the system to an extra "thermostat" degree of freedom; the resulting dynamics are non-Hamiltonian but conserve an extended energy. The dynamics are deterministic and time-reversible; correctly produces the canonical ensemble for ergodic systems. Standard for production MD.</li>
         <li><strong>Langevin</strong> adds a damping force $-\gamma m \mathbf{v}$ and a stochastic force $\sqrt{2\gamma m k_B T}\, \boldsymbol{\eta}(t)$ to the equations of motion. Stochastic, rigorous, and robust — the modern default in many biomolecular codes.</li>
       </ul>
 
@@ -101,7 +101,7 @@
 
       <p>$F(s)$ at the saddle minus $F(s)$ at the reactant minimum is the <em>activation free energy</em>, the thing that controls rates by Eyring's $k = (k_B T / h)\, e^{-\beta \Delta F^\ddagger}$.</p>
 
-      <p>The fundamental problem of MD-based free-energy work is that ordinary dynamics rarely cross significant barriers. A 30 kJ/mol barrier has a Boltzmann weight $e^{-12}$ at room temperature, so on average the system stays in the reactant well $\sim 10^5$ times longer than it visits the saddle. Direct sampling of activated chemistry takes longer than the universe is old.</p>
+      <p>The fundamental problem of MD-based free-energy work is that ordinary dynamics rarely cross significant barriers. A 30 kJ/mol barrier has a Boltzmann weight $e^{-12}$ at room temperature, so on average the system stays in the reactant well $\sim 10^5$ times longer than it visits the saddle — crossings are already rare events on simulation timescales, and for the higher barriers typical of covalent chemistry ($\gtrsim 100$ kJ/mol) direct sampling would take longer than the universe is old.</p>
 
       <p>The fix is to <strong>bias</strong> the dynamics — visit the rare states deliberately, then undo the bias in the analysis.</p>
 
@@ -114,7 +114,7 @@
       <p>Laio and Parrinello (2002) automated the biasing. As the system explores the chosen <dfn title="Smooth functions of atomic coordinates encoding the slow modes of the system — e.g. a bond distance, a dihedral, a coordination number, or a learned latent variable.">collective variables</dfn> $s_1(\mathbf{R}), \dots, s_d(\mathbf{R})$, the simulation deposits a Gaussian "hill" of bias potential at the current location every $\tau_G$ time steps:</p>
 
       <div class="equation-block">
-        $$ V_{\text{bias}}(\mathbf{s}, t) \;=\; \sum_{t' < t} w\, \exp\!\left[-\sum_{i=1}^{d} \frac{(s_i(\mathbf{R}(t')) - s_i(\mathbf{R}(t)))^2}{2 \sigma_i^2}\right]. $$
+        $$ V_{\text{bias}}(\mathbf{s}, t) \;=\; \sum_{t' < t} w\, \exp\!\left[-\sum_{i=1}^{d} \frac{(s_i - s_i(\mathbf{R}(t')))^2}{2 \sigma_i^2}\right]. $$
       </div>
 
       <p>The accumulated bias progressively fills wells in the free-energy surface. Once they are level, the system diffuses freely between basins, and the negative of the deposited bias estimates the free-energy surface:</p>
@@ -147,7 +147,7 @@
       <section class="further-reading">
         <h2><span class="sec-num"></span>Further reading</h2>
         <ul>
-          <li><span class="src-title">Daan Frenkel and Berend Smit.</span> <em>Understanding Molecular Simulation: From Algorithms to Applications</em>, 2nd ed., Academic Press 2002 — the standard textbook. Chapter 4 on Verlet and symplectic integration; Chapter 6 on free-energy methods; Chapter 14 on rare-event sampling.</li>
+          <li><span class="src-title">Daan Frenkel and Berend Smit.</span> <em>Understanding Molecular Simulation: From Algorithms to Applications</em>, 2nd ed., Academic Press 2002 — the standard textbook. Chapter 4 on Verlet and symplectic integration; Chapter 7 on free-energy methods; Chapter 16 on rare-event sampling.</li>
           <li><span class="src-title">Mark Tuckerman.</span> <em>Statistical Mechanics: Theory and Molecular Simulation</em>, Oxford 2010 — modern, careful, opinionated. Chapters 3–5 cover thermostats and ensembles with unusual depth.</li>
           <li><span class="src-title">L. Verlet.</span> "Computer 'experiments' on classical fluids. I." <em>Phys. Rev.</em> 159, 98 (1967) — the original Verlet integrator paper.</li>
           <li><span class="src-title">R. Car and M. Parrinello.</span> "Unified approach for molecular dynamics and density-functional theory." <em>Phys. Rev. Lett.</em> 55, 2471 (1985) — CPMD.</li>

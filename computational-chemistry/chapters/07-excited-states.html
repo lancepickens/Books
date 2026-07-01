@@ -46,9 +46,9 @@
       <aside class="where">
         <h4>Where</h4>
         <dl>
-          <dt>$i, j$</dt><dd>Occupied Kohn–Sham orbitals.</dd>
-          <dt>$a, b$</dt><dd>Virtual Kohn–Sham orbitals.</dd>
-          <dt>$\mathbf{A}_{ia,jb}$</dt><dd>$(\varepsilon_a - \varepsilon_i)\delta_{ij}\delta_{ab} + (ia|jb) + (ia|f_{\text{xc}}|jb) - c_x (ij|ab)$. KS orbital-energy difference plus the response kernel; $c_x$ is the HF-exchange fraction (0 for pure DFT, $c_x > 0$ for hybrids).</dd>
+          <dt>$i, j$</dt><dd>Occupied Kohn–Sham spin orbitals.</dd>
+          <dt>$a, b$</dt><dd>Virtual Kohn–Sham spin orbitals.</dd>
+          <dt>$\mathbf{A}_{ia,jb}$</dt><dd>$(\varepsilon_a - \varepsilon_i)\delta_{ij}\delta_{ab} + (ia|jb) + (ia|f_{\text{xc}}|jb) - c_x (ij|ab)$. KS orbital-energy difference plus the response kernel; $c_x$ is the HF-exchange fraction (0 for pure DFT, $c_x > 0$ for hybrids). These matrix elements are written in the spin-orbital basis; the closed-shell singlet form in spatial orbitals instead carries a Hartree term $2(ia|jb)$.</dd>
           <dt>$\mathbf{B}_{ia,jb}$</dt><dd>$(ia|jb) + (ia|f_{\text{xc}}|jb) - c_x (ib|ja)$. Couples particle–hole and hole–particle excitations.</dd>
           <dt>$\mathbf{X}, \mathbf{Y}$</dt><dd>Excitation and de-excitation amplitudes; the $i \to a$ component is the amplitude for that single-orbital transition in the eigenmode at frequency $\omega$.</dd>
         </dl>
@@ -88,7 +88,7 @@
 
       <p>This is a <strong>double cone</strong>: the gap $E_+ - E_-$ vanishes at $(g, h) = (0, 0)$ and grows linearly in any direction away. Around the cone, the adiabatic states pick up a topological Berry phase of $\pi$: trace a loop around the CI, and the wavefunction picks up a sign change. Numerically, this is why dynamics through a CI cannot be done in the adiabatic basis — the wavefunction is multi-valued there.</p>
 
-      <p>Conical intersections are not exotic. They are the mechanism for: ultrafast radiationless decay in DNA bases (10 fs deexcitation, protecting the genome from UV damage), <em>cis-trans</em> isomerization of retinal (the first step of vision), photoisomerization of azobenzenes (photoswitches), internal conversion in essentially every fluorescent molecule. Any photochemistry that proceeds faster than ~1 ps is almost always passing through a CI.</p>
+      <p>Conical intersections are not exotic. They are the mechanism for: ultrafast radiationless decay in DNA bases (sub-picosecond, ~100 fs–1 ps deexcitation, protecting the genome from UV damage), <em>cis-trans</em> isomerization of retinal (the first step of vision), photoisomerization of azobenzenes (photoswitches), internal conversion in essentially every fluorescent molecule. Any photochemistry that proceeds faster than ~1 ps is almost always passing through a CI.</p>
 
       <section class="interactive" data-widget="conical-intersection" aria-label="Conical intersection and surface hopping">
         <header>

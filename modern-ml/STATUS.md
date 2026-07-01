@@ -64,6 +64,10 @@ Three rounds of citation verification have run, covering effectively every Furth
 
 All other ~89 refs verified as-cited. arXiv IDs, years, venues, page numbers, edition information all checked.
 
+## External accuracy review (2026-07-01)
+
+An external accuracy review pass produced 15 vetted findings (2 errors, 6 imprecisions, 7 pedantic); all corrections were applied on 2026-07-01 across Ch 1–6 and 8–10 (Sobel caption labels, SVM support-vector wording, ridge tangency, GRPO/WordPiece/BPE attribution, Chinchilla-offset note, AIME-vs-USAMO split, encoder–decoder staleness, momentum sum-vs-average, PE wavelength, RAG caption, V-JEPA date).
+
 ## Outstanding validation work
 
 Tracked in the project TaskList. Four passes mirror the comp-chem workflow:

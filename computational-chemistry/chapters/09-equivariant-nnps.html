@@ -92,7 +92,7 @@
 
       <p><strong>Allegro</strong> (Musaelian et al. 2023) is strictly local: information is exchanged between neighbors but never propagated to neighbors-of-neighbors, sidestepping the message-passing bottleneck. This gives near-linear scaling with system size and the easiest path to GPU parallelism.</p>
 
-      <p><strong>MACE</strong> (Batatia et al. 2022) — Many-body Atomic Cluster Expansion — generalizes the cluster expansion of Drautz (2019) by using equivariant features as the building blocks. A small number of message-passing layers (typically two) reach four-body and higher correlation, achieving state-of-the-art accuracy with a remarkably compact architecture. MACE is the basis of most foundation-model NNPs as of 2025.</p>
+      <p><strong>MACE</strong> (Batatia et al. 2022) — a message-passing form of the atomic cluster expansion (ACE) — generalizes the cluster expansion of Drautz (2019) by using equivariant features as the building blocks. A small number of message-passing layers (typically two) reach four-body and higher correlation, achieving state-of-the-art accuracy with a remarkably compact architecture. MACE underpins a number of foundation-model NNPs as of 2025, though other architectures (e.g. CHGNet, ORB, UMA) take different routes.</p>
 
       <hr class="section-rule" />
 
@@ -119,7 +119,7 @@
 
       <h2><span class="sec-num">§4</span>Where this is going</h2>
 
-      <p>Three trends are reshaping the field circa 2026. <strong>Larger training distributions</strong> — terabytes of DFT data, automated curation, and active-learning loops at the dataset level — keep extending the chemistry covered by foundation NNPs. <strong>Better architectures</strong> — strictly local equivariant designs (eSEN, SevenNet), graph transformers — keep pushing accuracy per FLOP. And <strong>differentiable simulation</strong> — propagating gradients through the entire MD trajectory — opens up training objectives based on bulk observables (radial distribution functions, free energies, transport coefficients) rather than just per-configuration energies and forces.</p>
+      <p>Three trends are reshaping the field circa 2026. <strong>Larger training distributions</strong> — terabytes of DFT data, automated curation, and active-learning loops at the dataset level — keep extending the chemistry covered by foundation NNPs. <strong>Better architectures</strong> — more scalable equivariant message-passing designs (eSEN, SevenNet), graph transformers — keep pushing accuracy per FLOP. And <strong>differentiable simulation</strong> — propagating gradients through the entire MD trajectory — opens up training objectives based on bulk observables (radial distribution functions, free energies, transport coefficients) rather than just per-configuration energies and forces.</p>
 
       <p>A natural question is whether ML potentials will displace classical force fields and DFT entirely. The honest answer in 2026 is "partly." For routine MD on systems chemically close to the training distribution, ML potentials are already the right default. For new chemistry — rare elements, exotic bonding, high pressure, strong correlation — DFT and CCSD(T) remain the source of ground truth. The field's most active research is on the boundary between the two.</p>
 

@@ -83,3 +83,7 @@ Harness deps (`katex@0.16.47`, `jsdom`) are installed under the scripts dir and 
 1. `~/dev/Books/serve.sh 8765 acids-and-bases/`
 2. Open `http://localhost:8765/acids-and-bases/`, click through the TOC, exercise every widget (Pass A).
 3. Then run the advisor equation pass (Pass B), Ch II–X.
+
+## External accuracy review — 2026-07-01
+
+An external factual-accuracy review pass was run against the book; its vetted corrections were applied (Ch I Arrhenius 1884/1887 note; Ch II HCl Ka ~10⁶, Debye–Hückel |z₊z₋| + Davies −0.3I form and naming, pH 2.88; Ch IV buffer capacity falls to ~⅓ at 10:1; Ch V pH 2.88; Ch X redundant kcal restatement removed; index TOC III "exact cubic" not "ICE tables").

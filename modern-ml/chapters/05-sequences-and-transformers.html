@@ -222,7 +222,7 @@
           <dt>$p$</dt><dd>A scalar (integer) — the position of the token in the sequence ($0, 1, 2, \dots$).</dd>
           <dt>$k$</dt><dd>A scalar (integer) — which pair of dimensions of the embedding we're filling; each pair $(2k, 2k{+}1)$ gets a sine and a cosine.</dd>
           <dt>$d$</dt><dd>The embedding dimension. Different $k$ use different wavelengths, so together they encode position at many scales.</dd>
-          <dt>$10000^{2k/d}$</dt><dd>The wavelength: small for low $k$ (fast oscillation, fine position), huge for high $k$ (slow oscillation, coarse position).</dd>
+          <dt>$10000^{2k/d}$</dt><dd>The inverse angular frequency (the wavelength is $2\pi \cdot 10000^{2k/d}$): small for low $k$ (fast oscillation, fine position), huge for high $k$ (slow oscillation, coarse position).</dd>
         </dl>
       </aside>
 
@@ -245,7 +245,7 @@
       <ul>
         <li><strong>Encoder-only</strong> (BERT-family). Bidirectional self-attention; trained to fill in masked tokens. Used for classification, embeddings, retrieval (Chapter IX).</li>
         <li><strong>Decoder-only</strong> (GPT-family, the modern default). Causal self-attention; trained to predict the next token. All modern LLMs — GPT-4 / Claude / Llama / DeepSeek / Gemini — fit here.</li>
-        <li><strong>Encoder–decoder</strong> (T5, original "Attention Is All You Need" architecture). Encoder reads the input bidirectionally, decoder generates output with cross-attention to the encoder. Currently dominant for translation and structured generation; less popular for general-purpose chatbots, though still used in some image–text models.</li>
+        <li><strong>Encoder–decoder</strong> (T5, original "Attention Is All You Need" architecture). Encoder reads the input bidirectionally, decoder generates output with cross-attention to the encoder. Long the standard for translation and structured generation, though decoder-only LLMs now dominate there too; still used in some image–text models.</li>
       </ul>
 
       <p>The pattern of "one architecture, three configurations" is unusual in machine learning. Most prior eras had different architectures for different problems. The transformer's success across modalities is part of why people use the word <em>foundation model</em>: one trainable thing that, given the right data, becomes a vision system, a code model, a translator, a chat assistant. Chapter VI is about what training one looks like.</p>

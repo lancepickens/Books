@@ -79,7 +79,7 @@
         </dl>
       </aside>
 
-      <p>A large $K_{\mathrm{a}}$ means the equilibrium lies to the right: most of the acid has dissociated, so it is <strong>strong</strong>. A small $K_{\mathrm{a}}$ means it lies to the left, the acid is <strong>weak</strong>. The numbers are inconveniently spread out — from about $10^{3}$ for hydrochloric acid down to $10^{-10}$ for hydrocyanic acid and far beyond — so we compress them logarithmically.</p>
+      <p>A large $K_{\mathrm{a}}$ means the equilibrium lies to the right: most of the acid has dissociated, so it is <strong>strong</strong>. A small $K_{\mathrm{a}}$ means it lies to the left, the acid is <strong>weak</strong>. The numbers are inconveniently spread out — from about $10^{6}$ for hydrochloric acid down to $10^{-10}$ for hydrocyanic acid and far beyond — so we compress them logarithmically.</p>
 
       <hr class="section-rule" />
 
@@ -185,7 +185,7 @@
         </dl>
       </aside>
 
-      <p>For $0.10\,\mathrm{M}$ acetic acid this gives $\conc{H^+}=\sqrt{1.75\times10^{-5}\times0.10}=1.3\times10^{-3}\,\mathrm{M}$, or pH $2.87$ — about $1.3\%$ dissociated. The approximation hides three assumptions: that the dissociated fraction is small ($x\ll C$), that the acid itself overwhelms water's own $\mathrm{H^+}$, and that activities equal concentrations. Each can fail — for very dilute or very weak acids especially — and Chapter III replaces this back-of-envelope formula with an exact treatment built from mass and charge balance.</p>
+      <p>For $0.10\,\mathrm{M}$ acetic acid this gives $\conc{H^+}=\sqrt{1.75\times10^{-5}\times0.10}=1.3\times10^{-3}\,\mathrm{M}$, or pH $2.88$ — about $1.3\%$ dissociated. The approximation hides three assumptions: that the dissociated fraction is small ($x\ll C$), that the acid itself overwhelms water's own $\mathrm{H^+}$, and that activities equal concentrations. Each can fail — for very dilute or very weak acids especially — and Chapter III replaces this back-of-envelope formula with an exact treatment built from mass and charge balance.</p>
 
       <hr class="section-rule" />
 
@@ -194,7 +194,7 @@
       <p>Equilibrium constants are built, strictly, from <dfn title="Effective concentration; what a species' chemical potential actually responds to.">activities</dfn> $a_i=\gamma_i\,[i]$, not concentrations. The <dfn title="The factor relating activity to concentration; 1 in an ideal dilute solution.">activity coefficient</dfn> $\gamma_i$ measures how much an ion's neighbors interfere with it. In dilute solution $\gamma\to1$ and activity equals concentration, which is why we can write pH in terms of $\conc{H^+}$. But in seawater, blood, or any solution above $\sim\!0.01\,\mathrm{M}$ in ions, $\gamma$ drifts well below 1, and a careful calculation uses the Debye–Hückel expression</p>
 
       <div class="equation-block">
-        $$ \log_{10}\gamma_\pm = -0.509\,z_+ z_- \frac{\sqrt{I}}{1+\sqrt{I}}, \qquad I = \half\sum_i c_i z_i^2, $$
+        $$ \log_{10}\gamma_\pm = -0.509\,|z_+ z_-| \left(\frac{\sqrt{I}}{1+\sqrt{I}} - 0.3\,I\right), \qquad I = \half\sum_i c_i z_i^2, $$
       </div>
 
       <aside class="where">
@@ -207,7 +207,7 @@
         </dl>
       </aside>
 
-      <p>This is the extended Debye–Hückel law (the $1+\sqrt{I}$ denominator is the Davies-style correction that keeps it usable to moderate $I$). We will flag activity where it changes an answer — measuring a true thermodynamic $\mathrm{p}K_{\mathrm{a}}$, computing pH in concentrated brine — and otherwise set $\gamma=1$ and proceed with concentrations, as nearly all of practical aqueous chemistry does.</p>
+      <p>This is the extended Debye–Hückel law in its Davies form (the $-0.3\,I$ term is Davies's empirical extension that keeps it usable to moderate $I$; without it, the bare $1+\sqrt{I}$ denominator is the Güntelberg approximation). We will flag activity where it changes an answer — measuring a true thermodynamic $\mathrm{p}K_{\mathrm{a}}$, computing pH in concentrated brine — and otherwise set $\gamma=1$ and proceed with concentrations, as nearly all of practical aqueous chemistry does.</p>
 
       <p>We now have strength as a number, a ladder to read it from, and the window water allows. The next chapter asks the harder question the §6 estimate dodged: given any acid, base, or mixture, what is the pH <em>exactly</em>?</p>
 

@@ -42,7 +42,7 @@
           <dt>Rollout / trace</dt><dd>One full sampled response from the model — the chain of thought plus the final answer. The unit of training data for RL.</dd>
           <dt>Policy-gradient update</dt><dd>The RL update rule: take a step that increases the probability of high-reward rollouts and decreases the probability of low-reward ones.</dd>
           <dt>PPO</dt><dd>The standard RL algorithm (also used in RLHF, Chapter VII). Heavy and unstable for long-sequence sparse-reward problems.</dd>
-          <dt>GRPO (Group Relative Policy Optimization)</dt><dd>The 2025 DeepSeek-R1 algorithm. Skips the value head; computes "advantage" by normalizing rewards within the group of $K$ samples drawn from the same prompt. Simpler than PPO, memory-efficient at long context, now the default for open reasoning training.</dd>
+          <dt>GRPO (Group Relative Policy Optimization)</dt><dd>Introduced in DeepSeekMath (2024) and popularized by DeepSeek-R1 (2025). Skips the value head; computes "advantage" by normalizing rewards within the group of $K$ samples drawn from the same prompt. Simpler than PPO, memory-efficient at long context, now the default for open reasoning training.</dd>
           <dt>Advantage</dt><dd>Roughly, "how much better this rollout did than the average rollout from the same prompt." Used to weight the policy-gradient update.</dd>
           <dt>Outcome reward model (ORM)</dt><dd>Scores whole traces as right/wrong based on the final answer only.</dd>
           <dt>Process reward model (PRM)</dt><dd>Scores each intermediate step of a trace. More expensive to label, but much better training signal for math reasoning.</dd>
@@ -133,7 +133,7 @@
       <p>By mid-2025, reasoning models are clearly best on:</p>
 
       <ul>
-        <li><strong>Math.</strong> Competition problems (AIME, USAMO) once considered well past LLM capability are now near-saturated for the top reasoning models.</li>
+        <li><strong>Math.</strong> Competition problems once considered well past LLM capability are now within reach: short-answer contests like AIME are near-saturated for the top reasoning models, while proof-based ones like USAMO remain challenging.</li>
         <li><strong>Code.</strong> Both single-function generation (HumanEval, MBPP) and longer-form coding agent tasks (SWE-bench).</li>
         <li><strong>Multi-step logic and planning</strong> in well-defined domains.</li>
       </ul>

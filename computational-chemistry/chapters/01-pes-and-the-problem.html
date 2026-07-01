@@ -42,7 +42,7 @@
       <ul>
         <li><strong>Equilibrium geometries</strong> are local minima: $\nabla V = 0$ with $\nabla^2 V$ positive-definite.</li>
         <li><strong>Forces on nuclei</strong> are $\mathbf{F}_A = -\nabla_{\mathbf{R}_A} V$, so any molecular dynamics simulation is just integrating Newton's equations on this surface.</li>
-        <li><strong>Vibrational frequencies</strong> are eigenvalues of the mass-weighted Hessian $\nabla^2 V$ at a minimum.</li>
+        <li><strong>Vibrational frequencies</strong> are the square roots of the eigenvalues of the mass-weighted Hessian $\nabla^2 V$ at a minimum (the eigenvalue is $\omega^2$).</li>
         <li><strong>Reaction barriers</strong> are saddle points connecting two minima; reaction rates follow from transition state theory applied to the surface.</li>
         <li><strong>Thermochemistry</strong> — enthalpies of formation, bond energies, equilibrium constants — comes from values of $V$ at different geometries, dressed with partition-function factors.</li>
       </ul>
@@ -166,7 +166,7 @@
 
       <p>and wavefunctions $\psi_{nlm}(r,\theta,\varphi) = R_{nl}(r)\, Y_l^m(\theta,\varphi)$. The radial factor $R_{nl}$ is built from associated Laguerre polynomials; the angular factor $Y_l^m$ is a spherical harmonic.</p>
 
-      <p>What chemists actually use are <em>real</em> linear combinations of the $Y_l^m$: the familiar $p_x, p_y, p_z$ dumbbells, the $d_{z^2}$ donut-with-a-collar, the $d_{xz}, d_{yz}, d_{xy}, d_{x^2-y^2}$ clovers. Real combinations are eigenfunctions of $\hat L^2$ but not of $\hat L_z$. They are the orbitals every textbook draws because they are the ones that point along chemical bonds. The interactive below lets you flip through them on an $xz$ cross-section.</p>
+      <p>What chemists actually use are <em>real</em> linear combinations of the $Y_l^m$: the familiar $p_x, p_y, p_z$ dumbbells, the $d_{z^2}$ donut-with-a-collar, the $d_{xz}, d_{yz}, d_{xy}, d_{x^2-y^2}$ clovers. Real combinations are eigenfunctions of $\hat L^2$ but, except for the $m=0$ members ($p_z$, $d_{z^2}$), not of $\hat L_z$. They are the orbitals every textbook draws because they are the ones that point along chemical bonds. The interactive below lets you flip through them on an $xz$ cross-section.</p>
 
       <section class="interactive" data-widget="h-orbital-viewer" aria-label="Hydrogen atom orbital viewer">
         <header>

@@ -44,7 +44,7 @@
           <dt>Perplexity</dt><dd>$e^{\text{cross-entropy}}$. Roughly, "the model's average uncertainty per token." Lower is better; the metric pretraining tries to push down.</dd>
           <dt>Tokenizer</dt><dd>The component that converts raw text to a sequence of integers (and back). Modern tokenizers split words into sub-word chunks so even rare words are representable.</dd>
           <dt>Vocabulary</dt><dd>The fixed set of token IDs the model knows. Typically 32k–256k entries.</dd>
-          <dt>BPE (Byte-Pair Encoding)</dt><dd>A tokenization algorithm that starts from characters and repeatedly merges the most-frequent adjacent pair. Used in GPT-2 onward.</dd>
+          <dt>BPE (Byte-Pair Encoding)</dt><dd>A tokenization algorithm that starts from characters and repeatedly merges the most-frequent adjacent pair. Used in the GPT series from GPT-1 on (byte-level from GPT-2 onward).</dd>
           <dt>WordPiece, SentencePiece, Unigram</dt><dd>Alternative subword tokenizers. WordPiece in BERT; SentencePiece + Unigram in T5 and most multilingual models.</dd>
           <dt>Scaling law</dt><dd>An empirical formula (usually a power law) that says how pretraining loss decreases as you scale up parameter count, data, or compute.</dd>
           <dt>Kaplan scaling</dt><dd>The original 2020 OpenAI scaling-law paper. Recommended spending most extra compute on bigger models.</dd>
@@ -86,8 +86,8 @@
       <p>Neural networks process vectors, not strings. A <dfn title="A reversible mapping from text strings to sequences of integers (token IDs) and back. Modern tokenizers are subword: words become a handful of tokens, rare words decompose, common words map 1-to-1.">tokenizer</dfn> converts raw text to a sequence of integer IDs from a fixed vocabulary (typically 32k–256k entries). The dominant subword schemes:</p>
 
       <ul>
-        <li><strong>Byte-Pair Encoding</strong> (BPE; Sennrich, Haddow &amp; Birch 2016). Start with characters; repeatedly merge the most frequent adjacent pair to grow the vocabulary. Used by GPT-2 onward.</li>
-        <li><strong>WordPiece</strong> (Devlin et al. 2019). BPE-like but uses likelihood under a language model rather than raw frequency. Used by BERT.</li>
+        <li><strong>Byte-Pair Encoding</strong> (BPE; Sennrich, Haddow &amp; Birch 2016). Start with characters; repeatedly merge the most frequent adjacent pair to grow the vocabulary. Used by the GPT series from GPT-1 on (byte-level BPE from GPT-2 onward).</li>
+        <li><strong>WordPiece</strong> (Schuster &amp; Nakajima 2012). BPE-like but uses likelihood under a language model rather than raw frequency. Used by BERT (Devlin et al. 2019).</li>
         <li><strong>SentencePiece + Unigram</strong> (Kudo 2018; Kudo &amp; Richardson 2018). Treats the input as a raw byte stream (no pre-tokenization on spaces) and selects a vocabulary by EM under a unigram language model. Used by T5 and many multilingual models.</li>
       </ul>
 
@@ -147,7 +147,7 @@
         </dl>
       </aside>
 
-      <p>with $\alpha_C \approx 0.05$, so loss drops slowly but reliably as you spend more compute. The implication: bigger model + more data + more compute = lower loss, with predictable returns.</p>
+      <p>with $\alpha_C \approx 0.05$, so loss drops slowly but reliably as you spend more compute. (Kaplan et al. fit a pure power law with no offset; the additive $\mathcal{L}_\infty$ term shown here is the parameterization introduced by Hoffmann et al. 2022.) The implication: bigger model + more data + more compute = lower loss, with predictable returns.</p>
 
       <p>The Kaplan paper recommended spending most additional compute on bigger models. <strong>Chinchilla</strong> (Hoffmann et al. 2022, DeepMind) revisited the analysis with a more careful experimental design and reached the opposite conclusion: for fixed compute, optimal allocation grows $N$ and $D$ <em>at roughly equal rates</em>. Their rule of thumb, "Chinchilla-optimal," is roughly 20 training tokens per parameter. Compute-optimal scaling looks like</p>
 
