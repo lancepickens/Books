@@ -84,6 +84,12 @@ Convention confirmed to hold: $\phi_\mu$ (Greek subscript) for atomic-orbital ba
 
 ---
 
+## External accuracy review pass (2026-07-01)
+
+An external factual-accuracy review of all chapters was applied on 2026-07-01. Vetted corrections were made across index.html and Chs 1–10 (prose claims, widget caption wording, textbook chapter numbers, and a few unit/scaling statements); central equations were confirmed correct.
+
+---
+
 ## Where we left off (2026-05-26)
 
 Drafts complete; Passes C (citations) and D (notation) done in this session. Remaining: Pass A (browser-verify widgets) and Pass B (advisor equation pass on Ch 2–10). Pass A is still the recommended next step — cheapest and surfaces the most issues the other passes can't see.

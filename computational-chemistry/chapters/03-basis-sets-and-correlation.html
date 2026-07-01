@@ -157,7 +157,7 @@
       <p>Stack the methods we now have by scaling and typical error in a CBS-quality basis:</p>
 
       <div class="equation-block">
-        $$ \underbrace{\text{HF}}_{O(N^4),\;\sim 1\%\text{ correlation}} \;\to\; \underbrace{\text{MP2}}_{O(N^5),\;80–90\%} \;\to\; \underbrace{\text{CCSD}}_{O(N^6),\;\sim 99\%} \;\to\; \underbrace{\text{CCSD(T)}}_{O(N^7),\;\geq 99.9\%}. $$
+        $$ \underbrace{\text{HF}}_{O(N^4),\;0\%\text{ of }E_{\text{corr}}\;(\approx 99\%\text{ of }E)} \;\to\; \underbrace{\text{MP2}}_{O(N^5),\;80–90\%} \;\to\; \underbrace{\text{CCSD}}_{O(N^6),\;\sim 99\%} \;\to\; \underbrace{\text{CCSD(T)}}_{O(N^7),\;\geq 99.9\%}. $$
       </div>
 
       <p>For closed-shell molecules at equilibrium geometries, CCSD(T) extrapolated to the CBS limit is accurate to roughly <strong>1 kcal/mol</strong> in bond energies, barriers, and atomization energies — the "chemical accuracy" target. Below that, relativistic corrections, core correlation, and post-CCSD(T) effects start to matter; this is the territory of W4 / HEAT thermochemistry protocols.</p>
@@ -188,7 +188,7 @@
       <section class="further-reading">
         <h2><span class="sec-num"></span>Further reading</h2>
         <ul>
-          <li><span class="src-title">Helgaker, Jørgensen, Olsen.</span> <em>Molecular Electronic-Structure Theory.</em> Wiley 2000 — the definitive reference. Chapter 6 on Gaussian basis sets, Chapter 8 on MP perturbation theory, Chapters 13–14 on coupled-cluster theory.</li>
+          <li><span class="src-title">Helgaker, Jørgensen, Olsen.</span> <em>Molecular Electronic-Structure Theory.</em> Wiley 2000 — the definitive reference. Chapter 6 on atomic basis functions, Chapter 8 on Gaussian basis sets, Chapter 13 on coupled-cluster theory, Chapter 14 on MP perturbation theory.</li>
           <li><span class="src-title">S. F. Boys.</span> "Electronic wave functions. I. A general method of calculation for the stationary states of any molecular system." <em>Proc. Roy. Soc. A</em> 200, 542 (1950) — the original argument for Gaussian basis functions.</li>
           <li><span class="src-title">T. H. Dunning, Jr.</span> "Gaussian basis sets for use in correlated molecular calculations. I." <em>J. Chem. Phys.</em> 90, 1007 (1989) — the cc-pVnZ correlation-consistent family.</li>
           <li><span class="src-title">C. Møller and M. S. Plesset.</span> "Note on an approximation treatment for many-electron systems." <em>Phys. Rev.</em> 46, 618 (1934) — the perturbative expansion underlying MP2.</li>

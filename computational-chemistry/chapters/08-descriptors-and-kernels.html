@@ -135,7 +135,7 @@
 
       <p>SOAP-GAP and Behler–Parrinello neural-network potentials (HDNNPs) defined the first generation of ML potentials, roughly 2007–2018. Their successes are substantial: SiO₂ glass models with quantum-chemistry forces but classical-MD speed, Fe-C steels at scale, water with experimental accuracy. Both deliver smooth forces and stable MD over nanoseconds, the basic prerequisite for any production use.</p>
 
-      <p>Their limits are also clear. Three-body symmetry functions are blind to interactions that require four or more bodies for a faithful representation; kernel methods scale unfavorably with training-set size ($O(N_{\text{train}}^2)$ at prediction, $O(N_{\text{train}}^3)$ at training, until sparse approximations are used). Both rely on hand-engineered descriptors whose parameters $\{\eta, R_s, \dots\}$ require trial and error.</p>
+      <p>Their limits are also clear. Three-body symmetry functions are blind to interactions that require four or more bodies for a faithful representation; kernel methods scale unfavorably with training-set size ($O(N_{\text{train}})$ to predict the mean energy — $O(N_{\text{train}}^2)$ for the predictive variance — and $O(N_{\text{train}}^3)$ at training, until sparse approximations are used). Both rely on hand-engineered descriptors whose parameters $\{\eta, R_s, \dots\}$ require trial and error.</p>
 
       <p>The second generation, the subject of Chapter IX, replaces fixed descriptors with <em>learned</em> features that satisfy the symmetries by construction — and adds a network architecture that respects rotation not just by hiding it in invariants, but by tracking how features transform.</p>
 

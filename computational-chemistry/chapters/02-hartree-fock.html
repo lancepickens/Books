@@ -160,7 +160,7 @@
           <span class="hint">step or run · toggle DIIS</span>
         </header>
         <div class="widget-mount"></div>
-        <p class="caption">A real SCF on H₂ in the minimal STO-3G basis. Two basis functions, one occupied bonding orbital. The plot shows the energy and density-matrix change per iteration; with DIIS disabled the iteration can drift, with DIIS the residual collapses in a few cycles. At convergence the total energy reaches $\approx -1.117\,\mathrm{Ha}$ — about $0.057\,\mathrm{Ha}$ above the exact FCI value $-1.174\,\mathrm{Ha}$ (Helgaker et al., Tab. 11.1). That gap is the <strong>correlation energy</strong>, the subject of Chapter III.</p>
+        <p class="caption">A real SCF on H₂ in the minimal STO-3G basis. Two basis functions, one occupied bonding orbital. The plot shows the energy and density-matrix change per iteration; with DIIS disabled the iteration can drift, with DIIS the residual collapses in a few cycles. At convergence the total energy reaches $\approx -1.117\,\mathrm{Ha}$ — about $0.057\,\mathrm{Ha}$ above the exact nonrelativistic value $-1.174\,\mathrm{Ha}$. That gap combines basis-set error with the <strong>correlation energy</strong> (FCI in the same STO-3G basis gives $\approx -1.137\,\mathrm{Ha}$, so correlation accounts for $\approx 0.02\,\mathrm{Ha}$ of it); both are the subject of Chapter III.</p>
       </section>
 
       <hr class="section-rule" />
@@ -175,7 +175,7 @@
         $$ E_{\text{corr}} \;\equiv\; E_{\text{exact}} \,-\, E_{\text{HF}}. $$
       </div>
 
-      <p>It is small as a fraction of the total but comparable in magnitude to chemical bond energies, reaction barriers, and intermolecular forces — exactly the quantities chemistry cares about. Hartree–Fock energies are wrong by tens of kilocalories per mole. HF systematically underbinds molecules, overestimates bond lengths, misses van der Waals interactions entirely (they require correlation to exist), and breaks qualitatively at the dissociation of any bond made of more than one electron pair.</p>
+      <p>It is small as a fraction of the total but comparable in magnitude to chemical bond energies, reaction barriers, and intermolecular forces — exactly the quantities chemistry cares about. Hartree–Fock energies are wrong by tens of kilocalories per mole. HF systematically underbinds molecules, underestimates bond lengths (bonds come out slightly too short, vibrational frequencies too high), misses van der Waals interactions entirely (they require correlation to exist), and breaks qualitatively at the homolytic dissociation of any electron-pair bond — H₂ is the canonical example.</p>
 
       <p>What HF leaves out is the correlated motion of opposite-spin electrons. Two electrons of opposite spin can sit on top of each other in the mean-field picture; in reality they avoid each other, and that avoidance lowers the energy. Same-spin electrons already avoid each other through exchange — that part HF gets right. The dynamics correlation of opposite-spin pairs is what every method in Chapter III adds back.</p>
 
@@ -196,8 +196,8 @@
       <section class="further-reading">
         <h2><span class="sec-num"></span>Further reading</h2>
         <ul>
-          <li><span class="src-title">Szabo &amp; Ostlund.</span> <em>Modern Quantum Chemistry</em>, Chapter 3 — the canonical pedagogical derivation of Hartree–Fock, the Slater–Condon rules (§2.3), the Roothaan equations (§3.4), and a fully worked H₂/STO-3G example (§3.5) that the interactive above reproduces.</li>
-          <li><span class="src-title">Helgaker, Jørgensen, Olsen.</span> <em>Molecular Electronic-Structure Theory</em>, Wiley 2000 — Chapter 10 for second-quantized HF and Chapter 11 for SCF algorithms in production codes.</li>
+          <li><span class="src-title">Szabo &amp; Ostlund.</span> <em>Modern Quantum Chemistry</em>, Chapter 3 — the canonical pedagogical derivation of Hartree–Fock, the Slater–Condon rules (§2.3), the Roothaan equations (§3.4), a fully worked HeH⁺/STO-3G SCF example (§3.5.2), and the analytic minimal-basis H₂ model (§3.8.7); the interactive above runs the same SCF procedure on H₂.</li>
+          <li><span class="src-title">Helgaker, Jørgensen, Olsen.</span> <em>Molecular Electronic-Structure Theory</em>, Wiley 2000 — Chapter 10 for second-quantized HF and the SCF algorithms used in production codes.</li>
           <li><span class="src-title">P. Pulay.</span> "Convergence acceleration of iterative sequences. The case of SCF iteration." <em>Chem. Phys. Lett.</em> 73, 393 (1980) — DIIS, the trick that makes SCF practical.</li>
           <li><span class="src-title">C. C. J. Roothaan.</span> "New developments in molecular orbital theory." <em>Rev. Mod. Phys.</em> 23, 69 (1951) — the original matrix formulation of Hartree–Fock in a basis.</li>
           <li><span class="src-title">T. Koopmans.</span> "Über die Zuordnung von Wellenfunktionen und Eigenwerten zu den einzelnen Elektronen eines Atoms." <em>Physica</em> 1, 104 (1934) — the orbital-energy interpretation, still the simplest way to get ionization potentials out of an HF calculation.</li>
