@@ -53,7 +53,7 @@
           <dt>Minibatch</dt><dd>The handful (8 to 8000) of examples used to estimate the gradient at each step.</dd>
           <dt>Learning rate $\eta$</dt><dd>How big a step to take. The single most important hyperparameter.</dd>
           <dt>Epoch</dt><dd>One full pass through the training set.</dd>
-          <dt>Momentum</dt><dd>An exponentially-weighted average of past gradients added to the update. Accelerates progress along consistent directions.</dd>
+          <dt>Momentum</dt><dd>An exponentially-weighted sum of past gradients added to the update. Accelerates progress along consistent directions.</dd>
           <dt>Adam / AdamW</dt><dd>The modern default optimizers. Track running averages of the gradient and its square, giving each parameter its own adaptive step size. AdamW is the variant with cleaner weight decay; standard for transformer training.</dd>
           <dt>Weight decay</dt><dd>A penalty that gently shrinks weights toward zero each step — neural-net regularization, mathematically similar to ridge.</dd>
           <dt>Learning-rate schedule</dt><dd>How $\eta$ changes through training. Typically: <em>warmup</em> (ramp up over the first few hundred steps), then <em>cosine decay</em> back down to near zero.</dd>
@@ -160,7 +160,7 @@
 
       <p>Stochastic because we use a noisy gradient estimate; the noise is a feature (helps escape narrow minima), not a bug. The learning rate $\eta$ is the single most important hyperparameter. The minibatch size trades off gradient quality for parallelism — modern training uses very large batches (thousands of examples) to saturate GPU throughput.</p>
 
-      <p><strong>Momentum</strong> (Polyak 1964) maintains a velocity that averages past gradients:</p>
+      <p><strong>Momentum</strong> (Polyak 1964) maintains a velocity that accumulates past gradients:</p>
 
       <div class="equation-block">
         $$ \mathbf{v}_{t+1} = \mu\, \mathbf{v}_t + \nabla \mathcal{L}, \qquad \boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t - \eta\, \mathbf{v}_{t+1}, $$
@@ -173,7 +173,7 @@
           <dt>$t$</dt><dd>A scalar (integer) — the iteration counter, one per minibatch.</dd>
           <dt>$\eta$</dt><dd>A scalar — the learning rate, the size of each downhill step. Too big diverges, too small crawls.</dd>
           <dt>$\nabla_{\boldsymbol\theta}\mathcal{L}_{\text{batch}}$</dt><dd>A vector the same shape as $\boldsymbol\theta$ — the gradient of the loss on the current minibatch. Points uphill, so we subtract it.</dd>
-          <dt>$\mathbf{v}_t$</dt><dd>A vector — the "velocity," an exponentially-decaying running average of past gradients.</dd>
+          <dt>$\mathbf{v}_t$</dt><dd>A vector — the "velocity," an exponentially-weighted sum of past gradients (each past gradient discounted by a power of $\mu$; no $(1-\mu)$ factor, so it is a sum, not an average).</dd>
           <dt>$\mu$</dt><dd>A scalar in $[0,1)$ — the momentum coefficient (typically $0.9$). How much of the previous velocity carries over.</dd>
         </dl>
       </aside>

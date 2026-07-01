@@ -170,7 +170,7 @@
           <span class="hint">pick image · pick kernel</span>
         </header>
         <div class="widget-mount"></div>
-        <p class="caption">A small input image is convolved with one of several hand-set kernels. The "Sobel-x" filter computes a horizontal-edge response; "Sobel-y" the vertical; "blur" averages a $3 \times 3$ neighborhood; "sharpen" subtracts the local average from the center. Convolutional layers in a CNN start with random kernels and learn variants of these (and then far more abstract patterns at deeper layers). The same filter slides across the whole image — that is parameter sharing made visible.</p>
+        <p class="caption">A small input image is convolved with one of several hand-set kernels. The "Sobel-x" filter computes a horizontal gradient and so responds to vertical edges; "Sobel-y" to horizontal ones; "blur" averages a $3 \times 3$ neighborhood; "sharpen" subtracts the local average from the center. Convolutional layers in a CNN start with random kernels and learn variants of these (and then far more abstract patterns at deeper layers). The same filter slides across the whole image — that is parameter sharing made visible.</p>
       </section>
 
       <section class="further-reading">

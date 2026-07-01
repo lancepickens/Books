@@ -56,6 +56,10 @@ Self-contained HTML book at `meteorology/`. Open by serving over HTTP:
 - **Structural lint.** Every chapter has the preamble + glossary, ≥1 "Where" block per symbol-introducing equation, the correctly-wired widget (`data-widget` slug ↔ `interactive/<slug>.js` script tag), further-reading, chapter-nav, and `../style.css`/`../book.js`. All internal chapter links and all 10 index TOC links resolve.
 - **Citations.** Two layers. (a) The build's per-chapter adversarial verify pass web-checked Further-reading entries and refined several (e.g. it corrected the Ch X ML papers to their published journal titles/venues). (b) The lead then independently spot-verified the highest-risk references via live lookup (2026-05-30), breaking the circularity that the ML arXiv IDs originally came from the author's brief: **all six Ch X ML arXiv IDs confirmed** to resolve to the correct papers — GraphCast `2212.12794` (Science 382, 1416–1421), Pangu `2211.02556` (Nature 619, 533–538), GenCast `2312.15796` (Nature 637, 84–90), FourCastNet `2202.11214`, Aurora `2405.13063`, AIFS `2406.01465` — plus **Eady 1949** (Tellus 1, 33–52) and **Holton & Hakim 5th ed.** (Academic Press, 2013). The chapter prudently gives full journal cites only where confirmed and arXiv-only for FourCastNet/Aurora/AIFS (avoiding Aurora's renamed-title trap). The remaining textbook-chapter/section references (Vallis 2e, Wallace & Hobbs 2e, Marshall & Plumb, Pierrehumbert, Stull, Markowski & Richardson, Emanuel, Kalnay; Held & Hou 1980; Emanuel 1986) carry over from the build verify pass and were **not** individually re-checked by the lead — a light citation pass over those remains a reasonable (low-risk) to-do.
 
+## External accuracy review (2026-07-01)
+
+An external expert accuracy review found no equation-level errors; its nine vetted corrections (citation section numbers, Holton & Hakim 2013 dates in Ch V/VI, BRN storm-mode regimes, Richardson-failure attribution, mid-troposphere emission level, storm-size magnitude span, La Niña wording) were applied on 2026-07-01.
+
 ## How it was built
 
 Two `Workflow` runs orchestrated subagents:
