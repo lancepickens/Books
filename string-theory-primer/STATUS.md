@@ -1,6 +1,6 @@
 # String Theory: A Primer — Project Status
 
-**Last updated:** 2026-05-20
+**Last updated:** 2026-07-01
 **Phase:** First draft complete; validation pending.
 
 ## What exists
@@ -76,6 +76,10 @@ These all appear in multiple chapters with different meanings; audit must add ex
    - Ch XV `ads-disk` Poincaré geodesics — the arc-orientation logic is heuristic; corner cases when the two points are close to a common diameter may render the wrong arc.
 4. **Pass D — Equation accuracy advisor pass on Ch IV–XV.** Spot-check Virasoro algebra, the $D=26$ derivation, the RNS action, the sigma-model $\beta$-functions, the Strominger–Vafa Cardy step, and the GKP–Witten dictionary.
 5. **Pass E — Citation verification.** Sample at least two citations per chapter for accuracy of journal, volume, year, page. arXiv IDs need to load.
+
+## Review log
+
+- **2026-07-01 — External accuracy review pass; corrections applied.** An expert factual review of all 15 chapters produced 26 findings (errors, imprecisions, pedantic fixes); all were applied. Physics fixes include: horizon-area prefactor in Ch XIV, light-cone gauge condition and zero-point-energy sign structure ($E_0$ vs $a$) in Ch VIII, AdS$_5$ coordinate count in Ch XV, open-string node/antinode counting in Ch VI, heterotic-vs-type-II SUSY qualifier in Ch XI, Type I D9-branes in Ch XIII, KSS-bound and Ryu–Takayanagi wording in Ch XV. Citation section-numbers in "Further reading" blocks were also corrected (Ch III, VI, VII, VIII, X, XIII, XIV) — relevant to validation pass E, which should build on these corrected references.
 
 ## Things known to be true (don't rework)
 
