@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Appendix · How This Book Was Researched — Low-Energy Nuclear Reactions</title>
+  <meta name="description" content="A detailed account of how the research for this book was conducted and analyzed, and by which AI models." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Appendix</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Appendix</p>
+      <h1 class="chapter-title">How This Book Was Researched</h1>
+      <p class="lede">A book that spends ten chapters auditing other people's methods owes the reader a full accounting of its own.</p>
+
+      <section class="preamble" aria-label="Appendix primer">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>This book was researched, written, and verified by AI language models working as an orchestrated team, on a commission that explicitly required two things unusual for a book: that the subagent model type used for each chapter or task be recorded in a footnote, and that this appendix describe in detail how the research was conducted and analyzed and by which models. This page is that accounting.</p>
+          <p>The short version: one orchestrating model (<code>claude-fable-5</code>) designed the book, dispatched ten specialist research agents and one completeness critic across the literature, wrote the conventions-anchor chapter itself, fanned the remaining chapters out to draft agents, and subjected every chapter — including its own — to an independent adversarial verification agent with live web access. All agents were instances of <code>claude-fable-5</code>. Every stage's outputs, token counts, and failure modes are reported below, including the things that did <em>not</em> work.</p>
+        </div>
+      </section>
+
+      <h2><span class="sec-num">§1</span>The commission and the editorial contract</h2>
+
+      <p>The commissioning request asked for a compilation of the latest peer-reviewed research on low-energy nuclear reactions in the house style of this workspace; the compiler's own speculation about where the next breakthroughs will likely come from; explicit flags wherever experimental results are ahead of theory, for future research follow-up; per-chapter model accounting; and this methods appendix. The editorial contract adopted in response is the <em>register discipline</em> used throughout: every statement is presented as exactly one of established physics, contested claim (always attributed, always with the standing critique alongside, always with venue quality noted), or labeled speculation (confined to Chapter X and marked asides). The results-ahead-of-theory flags accumulate into the ledger of Chapter IX §7.</p>
+
+      <h2><span class="sec-num">§2</span>Stage one — the research fan-out</h2>
+
+      <p>Research was performed by a ten-agent parallel workflow, each agent assigned one slice of the literature and instructed to work only from live web searches and fetched sources — never from model memory — with an explicit epistemic protocol: never invent a citation; confirm bibliographic details (authors, venue, volume, pages, year, DOI/arXiv) against primary or multiple independent secondary sources; mark anything unconfirmable as <code>UNVERIFIED</code>; record for every claim whether its venue is peer-reviewed and whether it was independently replicated; and treat negative results and published critiques as first-class findings. The ten areas: (1) baseline fusion physics; (2) the 1989 Fleischmann–Pons episode; (3) calorimetry methods and critiques; (4) the claimed nuclear-evidence base; (5) the Google-funded program; (6) NASA lattice-confinement fusion; (7) Japanese and European programs; (8) ARPA-E and recent institutional re-engagement; (9) the theory landscape; (10) adjacent validated physics for grounding speculation.</p>
+
+      <p>Each agent wrote a structured report (summary, key findings with full citations and replication status, canonical equations with sources, results-ahead-of-theory candidates, widget-ready data, reliability assessment). The ten reports total roughly 300&nbsp;KB. An eleventh agent — a completeness critic — then read all ten summaries and ran its own searches for anything missed or wrong. It found: one missing strand (the Holmlid ultra-dense-hydrogen corpus and its peer-reviewed refutation, now a cautionary sidebar in Chapter IX); one citation conflation between two Czerski-group papers (a 2025 <em>Physical Review X</em> measurement and a separate ion-tracks preprint), corrected before drafting; one unconfirmed program-milestone detail, softened; and two spurious search-engine leads that traced to no primary source and were discarded. Aggregate research-stage statistics: <strong>11 agents, 1,003,659 tokens, 471 tool calls, 65 minutes wall-clock, zero agent failures</strong>.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>The execution environment's web proxy blocked direct fetches from several publishers (nature.com, arxiv.org, some agency PDF servers) during the research window. Agents compensated by cross-checking every citation against at least two independent secondary confirmations and flagging single-source details as <code>UNVERIFIED</code> for the verification stage. This limitation is inherited honestly: a handful of page-range and article-number details in this book rest on convergent secondary sources rather than the publisher's own page.</p>
+      </aside>
+
+      <h2><span class="sec-num">§3</span>Stage two — synthesis into briefs</h2>
+
+      <p>The orchestrating model then wrote the shared house-style specification (conventions, symbols, register rules, structural contract) and a per-chapter <em>equation brief</em>: the section outline, every load-bearing equation in exact canonical form with its named source, the constants easiest to get wrong (flagged for live verification rather than recall), the widget's physics with reference values computed in advance, and the citation list. The completeness critic's corrections were appended to the affected briefs. Briefs are the mechanism by which a fanned-out book keeps notation and accuracy coherent: drafting agents copy canonical forms rather than recalling them.</p>
+
+      <h2><span class="sec-num">§4</span>Stage three — drafting and adversarial verification</h2>
+
+      <p>Chapter I was drafted directly by the orchestrating model as the book's conventions anchor and structural gold template (its arithmetic slip — "fifty-three" orders of magnitude where the correct figure is about fifty-two — was caught during brief-writing and fixed, a small argument for the process). Chapters II–X were drafted by nine independent agents, each given the same spec, the gold template, its own brief, and the underlying research reports. Every chapter — including Chapter I — was then passed to a separate adversarial verification agent instructed to re-check every Further-reading citation against the live web, re-derive the display equations against the brief's canonical forms, audit the register discipline, confirm the KaTeX macro whitelist, execute and recompute the widget's reference values, and fix problems in place. The verification stage's findings and fixes are recorded in the book's <code>STATUS.md</code>.</p>
+
+      <h2><span class="sec-num">§5</span>Stage four — mechanical validation gates</h2>
+
+      <p>After the agent pipeline, the orchestrating model ran three empirical gates in the main loop (agent self-reports are never trusted for these): a strict KaTeX harness rendering every math expression in the book under <code>strict: "error"</code> with the book's exact macro set (catching silently-broken formulas the runtime hides); syntax checks and a JSDOM execution of every interactive widget, comparing on-screen readouts against the briefs' precomputed reference values; and a structural lint (glossaries, Where-blocks, widget wiring, navigation links, citation-section presence). Results are recorded in <code>STATUS.md</code>, including anything that remains browser-untested.</p>
+
+      <h2><span class="sec-num">§6</span>Model accounting</h2>
+
+      <p>Every role in this production ran on the same model type, <code>claude-fable-5</code> (Anthropic Claude, Fable 5), differing only in role prompt and tool access. Per-chapter footnotes record the same facts chapter-locally.</p>
+
+      <div class="equation-block" style="font-family: var(--sans); font-size: 0.85rem;">
+        <table style="border-collapse: collapse; width: 100%; max-width: 44rem; margin: 0 auto;">
+          <thead>
+            <tr style="border-bottom: 1px solid var(--rule-strong); text-align: left;">
+              <th style="padding: 0.4rem 0.6rem;">Role</th>
+              <th style="padding: 0.4rem 0.6rem;">Count</th>
+              <th style="padding: 0.4rem 0.6rem;">Model</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding: 0.35rem 0.6rem;">Orchestrator / lead author (spec, briefs, Ch. I, appendix, validation)</td><td style="padding: 0.35rem 0.6rem;">1</td><td style="padding: 0.35rem 0.6rem;"><code>claude-fable-5</code></td></tr>
+            <tr><td style="padding: 0.35rem 0.6rem;">Literature-research agents (areas 1–10)</td><td style="padding: 0.35rem 0.6rem;">10</td><td style="padding: 0.35rem 0.6rem;"><code>claude-fable-5</code></td></tr>
+            <tr><td style="padding: 0.35rem 0.6rem;">Completeness critic (gap-check)</td><td style="padding: 0.35rem 0.6rem;">1</td><td style="padding: 0.35rem 0.6rem;"><code>claude-fable-5</code></td></tr>
+            <tr><td style="padding: 0.35rem 0.6rem;">Chapter draft agents (Ch. II–X)</td><td style="padding: 0.35rem 0.6rem;">9</td><td style="padding: 0.35rem 0.6rem;"><code>claude-fable-5</code></td></tr>
+            <tr><td style="padding: 0.35rem 0.6rem;">Adversarial verification agents (Ch. I–X)</td><td style="padding: 0.35rem 0.6rem;">10</td><td style="padding: 0.35rem 0.6rem;"><code>claude-fable-5</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Total: 31 subagent invocations orchestrated by one lead, all <code>claude-fable-5</code>. No smaller or larger model tiers were used at any stage; where a footnote names a "draft agent" or "verification agent," the distinction is one of role and independent context, not of model capability.</p>
+
+      <h2><span class="sec-num">§7</span>Honest limitations</h2>
+
+      <p>Four limitations the reader should carry. First, the proxy constraint of §2: a minority of bibliographic details rest on convergent secondary sources. Second, this is a compilation dated <strong>July 2026</strong>; in a field currently producing genuine peer-reviewed movement (the 2025 <em>Nature</em> and <em>PRX</em> results of Chapters VII–VIII), its shelf life is short. Third, the interactive widgets are verified to execute correctly and reproduce their reference values in a headless DOM; live pointer interactions are verified only as recorded in <code>STATUS.md</code>. Fourth — and most fundamental — the compilers are language models: the same adversarial-verification-plus-mechanical-gates machinery described here is our mitigation for, not an immunity to, the failure modes any single mind brings to a literature this contested. Where we have judged, Chapter IX shows the arithmetic of the judgment; where we have speculated, Chapter X says so in the first sentence.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">This workspace.</span> <em>STATUS.md for this book</em> — the chapter-by-chapter validation record, conventions in force, and outstanding passes.</li>
+          <li><span class="src-title">Berlinguette, C. P. et al.</span> <em>Revisiting the cold case of cold fusion</em>, Nature 570, 45–51 (2019) — the model for publish-regardless program design that this book's methods imitate at book scale.</li>
+          <li><span class="src-title">U.S. DOE.</span> <em>Report of the Review of Low Energy Nuclear Reactions</em> (2004) — the template for structured, charge-question-driven evidence review.</li>
+        </ul>
+      </section>
+
+      <p class="colophon-note" style="font-family: var(--sans); font-size: 0.78rem; color: var(--text-faint); margin-top: 1.5rem;">Appendix production note: written directly by the orchestrating lead model (<code>claude-fable-5</code>) from the workflow telemetry and build records of this session.</p>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="10-next-breakthroughs.html"><span class="label">← Previous</span>Where the Breakthroughs May Come From</a>
+      <a class="next" href="../index.html"><span class="label">Next</span>Contents →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+</body>
+</html>
