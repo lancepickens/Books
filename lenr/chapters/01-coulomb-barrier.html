@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter I · The Yardstick — Low-Energy Nuclear Reactions</title>
+  <meta name="description" content="The Coulomb barrier, the Gamow factor, and the canonical D+D numbers every LENR claim must be measured against." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter I of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter I</p>
+      <h1 class="chapter-title">The Yardstick: Fusion and the Coulomb Barrier</h1>
+      <p class="lede">Before we can weigh any extraordinary claim, we need the ordinary physics it is claimed against — and in nuclear fusion, the ordinary physics is a wall.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>This book is about a family of claims: that nuclear reactions — fusion, transmutation, the release of nuclear-scale energy — can happen inside ordinary metals at ordinary temperatures. To judge those claims you need to know what standard physics says should happen, and how confidently it says it. That is this chapter's job. We build the yardstick: the electrostatic barrier that keeps two nuclei apart, the quantum tunneling that occasionally lets them through, and the precisely measured reaction rates and by-products of deuterium–deuterium fusion.</p>
+          <p>Two numbers from this chapter run through the whole book. The first is the <em>Gamow factor</em>, the exponential that suppresses fusion at low energy — at room temperature it suppresses it by dozens of orders of magnitude, which is why "cold fusion" sounds impossible. The second is the expected <em>nuclear ash</em>: known fusion reactions produce neutrons, tritium, and gamma rays in fixed proportions, so a watt of fusion power should announce itself unmistakably — and lethally. Every experimental claim in later chapters either fights the first number or is interrogated with the second.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>nucleus</dt><dd>The tiny positively charged core of an atom, made of protons and neutrons; about 100,000 times smaller than the atom itself.</dd>
+          <dt>nucleon</dt><dd>A proton or a neutron — the two building blocks of nuclei.</dd>
+          <dt>nuclide</dt><dd>A specific nuclear species, identified by its proton count and total nucleon count, written like $\nuc{4}{He}$.</dd>
+          <dt>isotope</dt><dd>Nuclides of the same element (same proton count) with different neutron counts — hydrogen, deuterium, and tritium are isotopes of hydrogen.</dd>
+          <dt>deuterium (D)</dt><dd>Heavy hydrogen: one proton plus one neutron. About one in 6,400 hydrogen atoms in seawater.</dd>
+          <dt>deuteron (d)</dt><dd>The bare nucleus of a deuterium atom.</dd>
+          <dt>tritium (T, t)</dt><dd>Hydrogen with two neutrons; radioactive, half-life 12.3 years. A key fusion by-product, and hence a key piece of forensic evidence.</dd>
+          <dt>fusion</dt><dd>Two light nuclei merging into a heavier one, releasing energy because the product is more tightly bound.</dd>
+          <dt>binding energy</dt><dd>The energy needed to pull a nucleus apart into its nucleons; equivalently, the energy released when it forms.</dd>
+          <dt>Q-value</dt><dd>The net energy released by a nuclear reaction, fixed by the mass difference between reactants and products.</dd>
+          <dt>electronvolt (eV)</dt><dd>The energy an electron gains crossing one volt: $1.6\times10^{-19}$ joules. Chemistry lives at eV; nuclear physics at MeV — a million times more.</dd>
+          <dt>Coulomb barrier</dt><dd>The electrostatic repulsion between two positively charged nuclei that must be overcome (or tunneled through) before the strong force can grab them.</dd>
+          <dt>strong nuclear force</dt><dd>The short-range force that binds nucleons; overwhelmingly stronger than electrostatics, but only within a few femtometers.</dd>
+          <dt>femtometer (fm)</dt><dd>$10^{-15}$ meters — the size scale of nuclei. Atoms are ~100,000 fm across.</dd>
+          <dt>quantum tunneling</dt><dd>The quantum-mechanical ability of a particle to pass through an energy barrier it classically could not surmount, with a probability that falls exponentially with barrier size.</dd>
+          <dt>Gamow factor</dt><dd>The exponential tunneling-suppression factor $e^{-2\pi\eta}$ in fusion cross sections, from George Gamow's 1928 tunneling theory.</dd>
+          <dt>Sommerfeld parameter ($\eta$)</dt><dd>The dimensionless number measuring how "classically forbidden" a nuclear collision is; large $\eta$ means heavy suppression.</dd>
+          <dt>cross section ($\sigma$)</dt><dd>The effective target area a reaction presents, measured in barns; encodes the reaction probability per collision.</dd>
+          <dt>barn (b)</dt><dd>$10^{-28}\,\mathrm{m^2}$, roughly the cross-sectional area of a uranium nucleus — jokingly "as big as a barn" to a neutron.</dd>
+          <dt>astrophysical S-factor</dt><dd>The cross section with the tunneling exponential and the trivial $1/E$ divided out — the slowly varying part that captures pure nuclear physics.</dd>
+          <dt>branching ratio</dt><dd>When a reaction has several possible outcomes, the fraction going to each channel.</dd>
+          <dt>reduced mass</dt><dd>The effective mass $\mu = m_1 m_2/(m_1+m_2)$ that governs the relative motion of a two-body system.</dd>
+          <dt>center-of-mass energy</dt><dd>The collision energy available in the frame where total momentum is zero — the energy that matters for tunneling.</dd>
+          <dt>screening</dt><dd>The shielding of nuclear charge by nearby electrons, which effectively lowers the Coulomb barrier by an energy $\Ue$.</dd>
+          <dt>muon-catalyzed fusion</dt><dd>Genuine room-temperature fusion in which a heavy cousin of the electron shrinks a hydrogen molecule ~200-fold; real, replicated, and instructive (Chapter IX).</dd>
+          <dt>neutron activation</dt><dd>Making surrounding material radioactive by neutron bombardment — one reason a true watt of D+D fusion is hazardous.</dd>
+          <dt>WKB approximation</dt><dd>A standard semiclassical method for computing tunneling probabilities through smooth barriers.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>Why fusion pays: the million-fold energy gap</h2>
+
+      <p>Chemistry rearranges the electrons of atoms; nuclear reactions rearrange nucleons. The energy scales differ by a factor of about a million. Burning a hydrogen molecule in oxygen releases a few eV. Fusing two deuterons releases a few MeV. This gap is the entire allure of the field: a nuclear process running quietly in a jar of heavy water would carry an energy density no battery or fuel could approach.</p>
+
+      <p>The gap is set by binding energies. The <dfn title="the energy required to disassemble a nucleus into free protons and neutrons">binding energy</dfn> of a nucleus climbs steeply for light nuclei — the deuteron is bound by 2.22 MeV, while $\nuc{4}{He}$ is bound by 28.3 MeV. Fusing light nuclei into helium therefore releases MeV-scale energy, quantified by the reaction's <dfn title="the net kinetic energy released, fixed by the mass difference of reactants and products">Q-value</dfn>:</p>
+
+      <div class="equation-block">
+        $$ Q = \left(\sum_{\mathrm{reactants}} m_i - \sum_{\mathrm{products}} m_f\right) c^2 . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$Q$</dt><dd>Scalar, MeV. The energy released per reaction, appearing as kinetic energy of the products (and photons, if any).</dd>
+          <dt>$m_i,\ m_f$</dt><dd>Rest masses of each reactant and product nucleus (constants, MeV/$c^2$).</dd>
+          <dt>$c$</dt><dd>Speed of light (constant); $mc^2$ converts mass to energy.</dd>
+        </dl>
+      </aside>
+
+      <p>For deuterium–deuterium fusion the ledger is precisely known. Two deuterons can react three ways:</p>
+
+      <div class="equation-block">
+        $$ \mathrm{d} + \mathrm{d} \;\longrightarrow\;
+        \begin{cases}
+        \mathrm{t} + \mathrm{p}, & Q = 4.03\MeV \\[2pt]
+        \nuc{3}{He} + \mathrm{n}, & Q = 3.27\MeV \\[2pt]
+        \nuc{4}{He} + \gamma, & Q = 23.85\MeV
+        \end{cases} $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\mathrm{t},\ \mathrm{p},\ \mathrm{n}$</dt><dd>Triton (tritium nucleus), proton, neutron — the light products of the two dominant channels.</dd>
+          <dt>$\gamma$</dt><dd>A gamma-ray photon, which must carry away the energy in the third channel because a lone $\nuc{4}{He}$ cannot conserve both energy and momentum.</dd>
+        </dl>
+      </aside>
+
+      <p>Hold on to those three lines: they are the fingerprint of d+d fusion, and Chapter IV is essentially a forensic investigation into whether any of those fingerprints appear in LENR experiments — and in what proportions.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The wall: the Coulomb barrier</h2>
+
+      <p>The catch is that both deuterons are positively charged. Before the <dfn title="the short-range attractive force binding nucleons, effective only within a few femtometers">strong force</dfn> can bind them — it reaches only a few femtometers — electrostatic repulsion must be overcome. Two point charges $Z_1 e$ and $Z_2 e$ separated by $r$ repel with potential energy</p>
+
+      <div class="equation-block">
+        $$ V(r) = \frac{Z_1 Z_2 e^2}{4\pi\epsilon_0\, r} = Z_1 Z_2\,\frac{1.44\eV\cdot\mathrm{nm}}{r} , $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$V(r)$</dt><dd>Scalar field of separation $r$: the electrostatic potential energy of the pair.</dd>
+          <dt>$Z_1, Z_2$</dt><dd>Proton numbers of the two nuclei (both 1 for deuterons).</dd>
+          <dt>$e^2/4\pi\epsilon_0$</dt><dd>The Coulomb constant in convenient units: $1.44\eV\cdot\mathrm{nm} = 1.44\MeV\cdot\mathrm{fm}$.</dd>
+          <dt>$r$</dt><dd>Separation between the nuclear centers (nm or fm).</dd>
+        </dl>
+      </aside>
+
+      <p>Evaluate it where the strong force takes over, around $r \approx 4$ fm for two deuterons, and $V \approx 360\keV$ — the conventional statement that the d+d <dfn title="the electrostatic energy hill between two nuclei, peaking where the strong force takes over">Coulomb barrier</dfn> is a few hundred keV high. Room temperature, for comparison, is $k_B T \approx 0.025\eV$. The barrier towers about <em>ten million times</em> above the thermal energy of anything in a beaker. Classically, nothing happens. Ever.</p>
+
+      <aside class="jargon">
+        <h4>Why hot fusion is hot</h4>
+        <p>Mainstream fusion attacks the barrier head-on: heat a plasma to $\sim10^8$ K so that keV-scale collisions become common, or slam accelerated beams together. The Sun does it with temperature plus enormous density plus patience. The entire question of this book is whether condensed matter offers any third path.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The crack in the wall: tunneling and the Gamow factor</h2>
+
+      <p>Quantum mechanics leaves a crack. A particle's wavefunction penetrates a classically forbidden barrier, so there is a finite probability of <dfn title="passing through an energy barrier that classical mechanics forbids, with exponentially small probability">tunneling</dfn> through rather than over. George Gamow computed this for alpha decay in 1928; the same physics governs fusion. In the <dfn title="a semiclassical method: the tunneling amplitude is the exponential of the integrated 'forbiddenness' across the barrier">WKB approximation</dfn>, the probability of two nuclei with center-of-mass energy $E$ penetrating their Coulomb barrier is dominated by the exponential</p>
+
+      <div class="equation-block">
+        $$ P(E) \;\sim\; e^{-2\pi\eta}, \qquad
+           2\pi\eta \;=\; \pi\,\frac{Z_1 Z_2 e^2}{4\pi\epsilon_0\,\hbar}\sqrt{\frac{2\mu}{E}}
+           \;=\; \sqrt{\frac{\EG}{E}} , $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\eta$</dt><dd>The Sommerfeld parameter (dimensionless): the ratio of the Coulomb interaction strength to the collision velocity. Large $\eta$ = deeply forbidden.</dd>
+          <dt>$\mu$</dt><dd>Reduced mass of the pair, $\mu = m_1 m_2/(m_1+m_2)$; for d+d, $\mu c^2 = 937.8\MeV$ (half the deuteron mass).</dd>
+          <dt>$E$</dt><dd>Center-of-mass collision energy (keV) — for a lattice at temperature $T$, of order $k_BT$.</dd>
+          <dt>$\EG$</dt><dd>The Gamow energy (constant): $\EG = 2\mu c^2 (\pi\alpha Z_1 Z_2)^2 \approx 986\keV$ for d+d, with $\alpha \approx 1/137$ the fine-structure constant.</dd>
+        </dl>
+      </aside>
+
+      <p>The numbers are merciless. At a hot-fusion energy of $E = 50\keV$, $2\pi\eta = \sqrt{986/50} \approx 4.4$ and the suppression is a manageable $e^{-4.4} \approx 10^{-2}$. At $E = 1\keV$, the suppression is $e^{-31.4} \approx 10^{-14}$. And at room temperature — $E \sim 0.025\eV$ — the exponent is $\sqrt{986\,000/0.025} \approx 6280$, a suppression of order $10^{-2728}$. Numbers like that are why the claims of Chapter II were received the way they were.</p>
+
+      <p>The honest statement of the "miracle" required is best made with a real molecule. In gaseous $\Dtwo$, two deuterons sit 74 pm apart, their wavefunctions overlapping the barrier's far tail. Koonin and Nauenberg computed the resulting fusion rate: about $3\times10^{-64}$ fusions per molecule per second — one fusion in a liter of $\Dtwo$ gas would take vastly longer than the age of the universe. To produce a single watt of d+d fusion in a mole of deuterium pairs, that rate must rise to roughly $3\times10^{-12}$ per pair per second: an enhancement of <em>about fifty-two orders of magnitude</em>. That is the yardstick.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>Tunneling is stupendously sensitive to the inputs: the rate scales exponentially in $\sqrt{\mu}$ and in the effective barrier width. Halve the separation, or substitute a heavier "electron" (Chapter IX's muons), and the rate can jump tens of orders of magnitude. This sensitivity cuts both ways — it is what makes exotic mechanisms conceivable, and what makes casual estimates worthless.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Measuring the crack: cross sections and the S-factor</h2>
+
+      <p>Fusion probability is quantified as a <dfn title="the effective target area for a reaction; probability per unit incident flux">cross section</dfn> $\sigma(E)$, in <dfn title="10⁻²⁸ m², the standard unit of nuclear cross sections">barns</dfn>. Because the raw cross section plunges exponentially at low energy, nuclear physicists factor out the parts they understand — the tunneling exponential and a kinematic $1/E$ — and write</p>
+
+      <div class="equation-block">
+        $$ \sigma(E) \;=\; \frac{\Sfac}{E}\, e^{-2\pi\eta} , $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\sigma(E)$</dt><dd>The fusion cross section at center-of-mass energy $E$ (barns).</dd>
+          <dt>$\Sfac$</dt><dd>The astrophysical S-factor (keV·b): the slowly varying residue containing the genuinely nuclear physics. For d(d,p)t, $S(0) \approx 56\keV\cdot\mathrm{b}$; the d(d,n)$\nuc{3}{He}$ branch is nearly equal.</dd>
+        </dl>
+      </aside>
+
+      <p>The S-factor formalism matters for this book for one big reason: $\Sfac$ is <em>measured</em>, down to a few keV, by accelerator experiments — and it is smooth. The standard parametrizations (Bosch–Hale) reproduce the world's d+d data to a few percent. Any claim that fusion proceeds at appreciable rates in a metal at milli-eV energies is therefore a claim that something — the barrier, the screening, the effective mass, the many-body physics — differs radically from the vacuum two-body problem. It cannot hide in uncertainty about nuclear physics; the nuclear physics is nailed down. Whatever is contested in this field, it lives in the exponent, not in $\Sfac$.</p>
+
+      <p>One measured modification is real and important: <dfn title="the reduction of the effective Coulomb barrier by the negative charge of nearby electrons">electron screening</dfn>. Electrons around and between the colliding nuclei cancel part of the repulsion, which acts like a small energy boost $\Ue$ to the collision:</p>
+
+      <div class="equation-block">
+        $$ \sigma_{\mathrm{screened}}(E) \;\approx\; \sigma_{\mathrm{bare}}(E + \Ue),
+        \qquad f(E) = \frac{\sigma_{\mathrm{screened}}}{\sigma_{\mathrm{bare}}}
+        \;\approx\; \exp\!\left[\pi\eta\,\frac{\Ue}{E}\right] \;\text{for } \Ue \ll E. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Ue$</dt><dd>The screening energy (eV): tens of eV for atomic targets, and — remarkably — hundreds of eV inside some metals (Chapter VI).</dd>
+          <dt>$f(E)$</dt><dd>The enhancement factor: how many times larger the screened cross section is than the bare one at the same energy. It grows explosively as $E$ falls toward $\Ue$.</dd>
+        </dl>
+      </aside>
+
+      <p>Screening is the one experimentally certified sense in which a metal lattice is friendlier to fusion than vacuum. Chapter VI gives it a full treatment; the widget below lets you feel its (in)adequacy directly.</p>
+
+      <section class="interactive" data-widget="gamow-tunneling" aria-label="Interactive Gamow tunneling and cross-section explorer">
+        <header>
+          <h4>Interactive · The Gamow window</h4>
+          <span class="hint">slide energy · add screening</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The d+d penetration factor $e^{-2\pi\eta}$ with $2\pi\eta = \sqrt{\EG/E}$, $\EG = 986\keV$, and the cross section $\sigma(E) = \frac{\Sfac}{E}e^{-2\pi\eta}$ with $\Sfac = 56\keV\cdot\mathrm{b}$, on a log scale from chemistry's meV world up to hot-fusion keV. Drag the energy slider and watch the exponent: between room temperature and 50 keV the probability changes by more than 2,700 orders of magnitude. The screening slider shifts the effective energy to $E + \Ue$ — real, measured, and visibly unable to rescue the meV end of the axis.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The expected ashes — and the dead-graduate-student problem</h2>
+
+      <p>Below the barrier, the two dominant d+d channels fire almost equally: roughly half the fusions yield $\mathrm{t}+\mathrm{p}$, half yield $\nuc{3}{He}+\mathrm{n}$. The radiative channel to $\nuc{4}{He}+\gamma$ is famously rare — about $10^{-7}$ of events — because it requires an electromagnetic transition the strong channels bypass.</p>
+
+      <p>Now do the bookkeeping for one watt of claimed d+d fusion power. With $\sim3.65\MeV$ released on average per fusion, one watt is about $1.7\times10^{12}$ fusions per second — hence roughly $8\times10^{11}$ neutrons per second at 2.45 MeV, a similar tritium production rate, and prompt gammas from neutron capture in everything nearby. An unshielded experimenter beside such a cell would receive a dangerous dose in minutes. This is the <dfn title="John Huizenga's blunt summary: if watts of d+d fusion were real with standard branching, the experimenters would be dead">"dead graduate student" problem</dfn>: Fleischmann and Pons remained conspicuously alive, so either their heat was not nuclear, or the nuclear physics in a lattice differs from vacuum d+d not just in <em>rate</em> but in <em>branching</em> — a second, independent miracle.</p>
+
+      <div class="equation-block">
+        $$ R_{\mathrm{fus}} = \frac{\Pxs}{\bar{Q}} \approx \frac{1\,\mathrm{W}}{3.65\MeV \times 1.6\times10^{-13}\,\mathrm{J/MeV}} \approx 1.7\times10^{12}\ \mathrm{s^{-1}}, \qquad R_{\mathrm{n}} \approx \tfrac{1}{2} R_{\mathrm{fus}} . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$R_{\mathrm{fus}}$</dt><dd>Fusion events per second implied by an excess power $\Pxs$ (scalar, s⁻¹).</dd>
+          <dt>$\bar{Q}$</dt><dd>Mean energy per fusion for the 50/50 d+d branches, $\approx (4.03+3.27)/2 = 3.65\MeV$.</dd>
+          <dt>$R_{\mathrm{n}}$</dt><dd>Expected neutron emission rate: about half of all fusions produce a 2.45 MeV neutron.</dd>
+        </dl>
+      </aside>
+
+      <p>Keep this calculation loaded. It converts every wattage claim in Chapters II–VIII into a precise, testable neutron and tritium prediction, and the systematic <em>absence</em> of commensurate neutrons is the single most robust experimental fact in the entire LENR literature. Whatever the field has found, it is not vacuum-physics d+d fusion.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>What a lattice may and may not plead</h2>
+
+      <p>A deuteron in palladium is not a deuteron in vacuum, and it is worth stating precisely which pleas are available to it. The lattice provides: conduction electrons (screening, measured, hundreds of eV at best — Chapter VI); confinement and high density (deuterium in Pd approaches the density of liquid hydrogen); phonons and collective modes (the basis of several theories in Chapter IX); and occasional energetic particles from cosmic rays or radioactivity (the seed NASA exploits deliberately in Chapter VII). What the lattice cannot plead is any change to $\Sfac$ or to the Q-values: those are properties of the nuclei themselves.</p>
+
+      <p>So the honest framing of the whole controversy, and of this book, is a pair of questions with numbers attached:</p>
+
+      <p><em>Rate:</em> can any condensed-matter mechanism raise the d+d (or p+metal) reaction rate by the ~50 orders of magnitude between molecular deuterium and a detectable signal? <em>Ashes:</em> if it can, why are the products not the ones two-body physics demands? Every theory in Chapter IX is an attempt to answer both at once; every experiment in Chapters III–VIII is an attempt to force the question with data. The <em>Gamow factor</em> and the <em>error bar</em> — the suppression you must beat and the measurement you must trust — are the two numbers to keep in view on every page that follows.</p>
+
+      <aside class="note">
+        <h4>Ahead of theory</h4>
+        <p>Nothing in this chapter is contested — it is the yardstick itself. But note the asymmetry it creates: the theoretical prior against room-temperature fusion is so strong that <em>any</em> reproducible nuclear signature from a metal-hydride at low energy would be a result ahead of theory. That is exactly the situation claimed by the experiments of Chapters IV, VI, and VIII, and audited in Chapter IX.</p>
+      </aside>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Krane, K. S.</span> <em>Introductory Nuclear Physics</em>, Wiley 1988 — binding energy, Q-values, and barrier penetration; Ch. 4 and Ch. 14 (fusion).</li>
+          <li><span class="src-title">Clayton, D. D.</span> <em>Principles of Stellar Evolution and Nucleosynthesis</em>, University of Chicago Press 1983 — the Gamow factor and astrophysical S-factor formalism; §4-2 to §4-4.</li>
+          <li><span class="src-title">Bosch, H.-S. &amp; Hale, G. M.</span> <em>Improved formulas for fusion cross-sections and thermal reactivities</em>, Nuclear Fusion 32, 611–631 (1992) — the standard parametrization of d(d,p)t and d(d,n)³He cross sections.</li>
+          <li><span class="src-title">Angulo, C. et al. (NACRE collaboration).</span> <em>A compilation of charged-particle induced thermonuclear reaction rates</em>, Nuclear Physics A 656, 3–183 (1999) — evaluated low-energy S-factors including d+d.</li>
+          <li><span class="src-title">Koonin, S. E. &amp; Nauenberg, M.</span> <em>Calculated fusion rates in isotopic hydrogen molecules</em>, Nature 339, 690–691 (1989) — the canonical rate of spontaneous fusion in D₂, the yardstick's zero point.</li>
+          <li><span class="src-title">Huizenga, J. R.</span> <em>Cold Fusion: The Scientific Fiasco of the Century</em>, University of Rochester Press 1992 — the branching-ratio and "missing ashes" arguments, from the co-chair of the 1989 DOE panel.</li>
+          <li><span class="src-title">Assenbaum, H. J., Langanke, K. &amp; Rolfs, C.</span> <em>Effects of electron screening on low-energy fusion cross sections</em>, Zeitschrift für Physik A 327, 461–468 (1987) — the screening enhancement formula used in §4.</li>
+        </ul>
+      </section>
+
+      <p class="colophon-note" style="font-family: var(--sans); font-size: 0.78rem; color: var(--text-faint); margin-top: 1.5rem;">Chapter production note: drafted directly by the orchestrating lead model (<code>claude-fable-5</code>) as the book's conventions-anchor chapter, informed by the baseline-physics research sweep (research agent: <code>claude-fable-5</code>); equations and citations adversarially verified by a <code>claude-fable-5</code> verification subagent. See the <a href="appendix-methods.html">methods appendix</a> for the full research process.</p>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="../index.html"><span class="label">← Previous</span>Contents</a>
+      <a class="next" href="02-fleischmann-pons.html"><span class="label">Next chapter</span>1989: Palladium, Heavy Water, and a Scientific Crisis →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/gamow-tunneling.js"></script>
+</body>
+</html>
