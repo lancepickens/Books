@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter III · The Art of the Calorimeter — Low-Energy Nuclear Reactions</title>
+  <meta name="description" content="How excess heat is actually measured: isoperibolic, mass-flow, and Seebeck calorimetry, the failure modes that generate phantom watts, and the datasets that survive scrutiny best." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter III of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter III</p>
+      <h1 class="chapter-title">The Art of the Calorimeter</h1>
+      <p class="lede">Every claim of anomalous heat is really a claim about a temperature sensor, a calibration constant, and an error budget — and phantom watts are easier to make than real ones.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>Chapter I built the Gamow factor — the number that says lattice fusion should not happen. Chapter II told the story of 1989, when two electrochemists said their measurements showed it happening anyway. This chapter is about the other number in the book's frame: the error bar. A calorimeter is just an instrument that counts joules going into and out of a box, and in principle nothing could be simpler. In practice, an electrolytic cell is one of the least cooperative boxes imaginable: it bubbles, evaporates, stores chemical energy, changes its own liquid level, and releases heat in places the calibration never visited.</p>
+          <p>We will meet the three instrument families the field relies on, write down the real bookkeeping equations each one uses, and then do something the 1989 press conference did not: catalogue the specific, quantified ways each design can manufacture "excess heat" out of nothing. With that catalogue in hand we can weigh the strongest surviving heat datasets — and the strongest critiques of them — and end with a checklist for what a believable excess-heat measurement would have to look like. The physics in this chapter is entirely conventional; what is contested is only whether particular experiments beat their own error budgets.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>calorimeter</dt><dd>An instrument that measures heat flow — here, the total thermal power leaving an electrochemical cell.</dd>
+          <dt>isoperibolic calorimeter</dt><dd>A design that holds the surroundings at constant temperature and infers cell power from how far the cell runs hotter than its bath ("isoperibolic" = constant surroundings).</dd>
+          <dt>Dewar flask</dt><dd>A vacuum-jacketed vessel (a laboratory thermos). Fleischmann and Pons used silvered Dewar cells so heat would leave mainly by radiation.</dd>
+          <dt>heat-transfer coefficient</dt><dd>The constant of proportionality between the cell–bath temperature difference and the power flowing out; watts per kelvin.</dd>
+          <dt>calibration constant</dt><dd>The measured value of the heat-transfer coefficient, determined by injecting a known power with a resistive heater. Everything hangs on its stability.</dd>
+          <dt>joule heating</dt><dd>Heat produced by current flowing through electrical resistance — the known, mundane part of a cell's power input.</dd>
+          <dt>thermoneutral potential</dt><dd>The cell voltage at which electrolysis neither heats nor cools the cell: 1.481&nbsp;V for light water, about 1.527&nbsp;V for heavy water. Voltage above this appears as heat; the rest leaves as gas chemistry.</dd>
+          <dt>open cell</dt><dd>An electrolysis cell that vents its evolved gases; the chemical energy they carry must be subtracted on paper rather than measured.</dd>
+          <dt>closed cell</dt><dd>A sealed cell in which evolved gases are recombined internally, so all input power eventually appears as measurable heat.</dd>
+          <dt>recombination</dt><dd>Deuterium and oxygen gas reacting back into heavy water inside the cell, releasing their chemical energy as heat where the bookkeeping did not expect it.</dd>
+          <dt>catalytic recombiner</dt><dd>A catalyst (typically platinum) placed in a closed cell to force complete recombination in a known location.</dd>
+          <dt>faradaic efficiency</dt><dd>The fraction of electrolysis current that actually produces the expected gases; if it is below 100%, open-cell energy accounting silently breaks.</dd>
+          <dt>mass-flow calorimeter</dt><dd>A design that captures the cell's heat in a pumped coolant stream and computes power from flow rate, specific heat, and temperature rise — first-principles bookkeeping.</dd>
+          <dt>specific heat capacity</dt><dd>The energy needed to warm one gram of a substance by one kelvin; for water, 4.18 J g⁻¹ K⁻¹.</dd>
+          <dt>Seebeck effect</dt><dd>A temperature difference across a junction of two conductors produces a voltage — the physics of thermocouples.</dd>
+          <dt>Seebeck envelope calorimeter</dt><dd>A box whose entire wall is a thermoelectric sensor, so its output voltage is proportional to total heat flux regardless of where inside the heat originates.</dd>
+          <dt>thermopile</dt><dd>Many thermocouples wired in series to amplify the Seebeck voltage; the wall material of an envelope calorimeter.</dd>
+          <dt>excess power ($\Pxs$)</dt><dd>Measured output power minus all accounted input power. The quantity every claim in this book stands on.</dd>
+          <dt>systematic error</dt><dd>A repeatable bias in a measurement — wrong calibration, unmodeled heat path — that no amount of averaging removes.</dd>
+          <dt>random error</dt><dd>Noise that fluctuates from reading to reading and shrinks as the square root of the number of measurements averaged.</dd>
+          <dt>calibration-constant shift (CCS)</dt><dd>Kirk Shanahan's proposed systematic: if the place where heat is released inside the cell moves, the effective calibration constant moves with it, creating phantom excess.</dd>
+          <dt>loading ratio ($\DPd$)</dt><dd>The atomic ratio of deuterium to palladium in the cathode; proponents claim excess heat requires loading above about 0.875.</dd>
+          <dt>current density</dt><dd>Electrolysis current per unit cathode area (mA&nbsp;cm⁻²); a second claimed threshold variable.</dd>
+          <dt>entrainment</dt><dd>Liquid droplets carried out of a boiling cell with the vapor; counting them as vapor overstates the energy that left.</dd>
+          <dt>heat after death</dt><dd>Fleischmann and Pons's term for cells that allegedly kept producing heat after the current was switched off — reported in the regime with the worst error bars.</dd>
+          <dt>blind calibration</dt><dd>Calibrating an instrument by someone who does not know which runs are "live," so expectation cannot steer the constants.</dd>
+          <dt>signal-to-noise ratio</dt><dd>The size of the claimed effect divided by the size of the measurement uncertainty; the single number that decides whether a measurement means anything.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>The measurement problem: milliwatts riding on watts</h2>
+
+      <p>Start with the shape of the problem. A typical Fleischmann–Pons-type cell draws several watts of electrical power. The anomalies claimed in the peer-reviewed literature are mostly tens to hundreds of milliwatts — 5–30% of input in the strongest datasets, under 1% in many others. The signal, if it exists, is a small difference between two large numbers, sustained for days. This is the <em>error bar</em> half of the book's unifying frame: where Chapter I asked how experiments might raise the tunneling probability, this chapter asks how tightly the heat measurement can be trusted — because every excess-heat claim lives or dies by exactly that number.</p>
+
+      <p>"Excess heat" has a precise meaning: energy out minus energy in, integrated over the run,</p>
+
+      <div class="equation-block">
+        $$ E_{\mathrm{xs}}(t) \;=\; \int_0^{t} \left[\, P_{\mathrm{out}}(t') - P_{\mathrm{in}}(t') \,\right] \dd t' , $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$E_{\mathrm{xs}}$</dt><dd>Scalar (joules): cumulative excess energy up to time $t$. A claim is only as good as this integral and its uncertainty.</dd>
+          <dt>$P_{\mathrm{out}}$</dt><dd>Total thermal power leaving the cell (W), the calorimeter's job to measure.</dd>
+          <dt>$P_{\mathrm{in}}$</dt><dd>Total accounted input power (W): electrical power minus whatever leaves as chemical energy in vented gases.</dd>
+          <dt>$t'$</dt><dd>Integration variable (s); runs last days to weeks, so small steady biases integrate into large fake energies.</dd>
+        </dl>
+      </aside>
+
+      <p>The subtlety hides inside $P_{\mathrm{in}}$. In an <dfn title="an electrolysis cell that vents its evolved gases rather than recombining them internally">open cell</dfn>, the current splits water and the gases leave, carrying chemical energy with them. Only the cell voltage <em>above</em> the <dfn title="the cell voltage at which electrolysis is thermally neutral: input electrical power exactly equals the enthalpy carried off by the evolved gases">thermoneutral potential</dfn> appears as heat:</p>
+
+      <div class="equation-block">
+        $$ P_{\mathrm{in}} \;=\; \left( E_{\mathrm{cell}} - E_{tn} \right) I , \qquad
+           E_{tn} = \frac{\Delta H}{n F} =
+           \begin{cases}
+             1.481\ \mathrm{V} & \mathrm{H_2O} \\[2pt]
+             1.527\ \mathrm{V} & \mathrm{D_2O}
+           \end{cases} $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$E_{\mathrm{cell}}$</dt><dd>Measured cell voltage (V), typically 3–10 V under load.</dd>
+          <dt>$I$</dt><dd>Electrolysis current (A).</dd>
+          <dt>$E_{tn}$</dt><dd>Thermoneutral potential (constant, V): the enthalpy of water formation expressed as a voltage. Fleischmann and Pons used a working value of 1.54 V for D₂O, which folds in vapor carried off at their bath temperature.</dd>
+          <dt>$\Delta H$</dt><dd>Enthalpy of formation of the liquid from its gases (constant): 285.8 kJ mol⁻¹ for H₂O, 294.6 kJ mol⁻¹ for D₂O.</dd>
+          <dt>$n,\ F$</dt><dd>Electrons transferred per molecule ($n = 2$) and the Faraday constant ($F = 96{,}485$ C mol⁻¹).</dd>
+        </dl>
+      </aside>
+
+      <aside class="jargon">
+        <h4>1.23, 1.48, or 1.53 volts?</h4>
+        <p>Three different "water-splitting voltages" circulate, and picking the wrong one manufactures heat from thin air. The reversible potential, 1.229 V, is the free-energy (ΔG) value and ignores the entropy the cell exchanges with its surroundings. The thermoneutral values above are the enthalpy (ΔH) values, which is what heat bookkeeping needs. And the heavy-water value differs from light water by 46 mV — use 1.481 V for a D₂O cell and, at one ampere, you have just invented 46 mW of phantom excess, comfortably above many claimed signals. During initial loading the bookkeeping shifts again, because deuterium is being absorbed by the cathode rather than evolved as gas.</p>
+      </aside>
+
+      <p>Notice what this equation already implies: in an open cell, part of the energy budget is not measured at all — it is <em>assumed</em>, on the premise that every coulomb makes gas and every molecule of gas leaves. Both premises can fail, and §4 will price the failure. First, the instruments.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The isoperibolic calorimeter: heat as a temperature difference</h2>
+
+      <p>The 1989 instrument, and still the most common, is the <dfn title="a calorimeter whose surroundings (a large water bath) are held at constant temperature, with cell power inferred from the cell–bath temperature difference">isoperibolic calorimeter</dfn>: the cell sits in a constant-temperature bath, runs slightly hotter than the bath, and the temperature difference is read as a power through a calibrated coefficient. At steady state, in its simplest linearized form,</p>
+
+      <div class="equation-block">
+        $$ P_{\mathrm{out}} \;=\; k_c \left( T_{\mathrm{cell}} - T_{\mathrm{bath}} \right) , $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$k_c$</dt><dd>The heat-transfer coefficient (W K⁻¹) — the <em>calibration constant</em>. It is measured, not derived: a resistive heater injects a known power and the temperature response is recorded.</dd>
+          <dt>$T_{\mathrm{cell}},\ T_{\mathrm{bath}}$</dt><dd>Cell and bath temperatures (K). For $k_c = 0.8$ W K⁻¹ and 10 W of input, the cell runs 12.5 K above its bath.</dd>
+        </dl>
+      </aside>
+
+      <p>Fleischmann and Pons's actual cells were silvered <dfn title="a vacuum-jacketed vessel; silvering makes radiation the dominant heat-loss channel">Dewar flasks</dfn>, engineered so that heat left mainly by radiation, and their working equation (Fleischmann et&nbsp;al., <em>J. Electroanal. Chem.</em> 287, 293 (1990)) is the full unsteady balance with a radiative transfer term:</p>
+
+      <div class="equation-block">
+        $$ C_p M\,\frac{\dd(\Delta\theta)}{\dd t}
+           \;=\; \left(E_{\mathrm{cell}} - E_{tn}\right) I \;+\; Q_f \;+\; P_{\mathrm{heater}}
+           \;-\; k_R\!\left[ \left(\theta_b + \Delta\theta\right)^4 - \theta_b^4 \right]
+           \;-\; P_{\mathrm{evap}} \;-\; P_{\mathrm{gas}} , $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$C_p M$</dt><dd>Heat capacity of the cell contents (J K⁻¹) — it <em>falls</em> as electrolyte is consumed, a built-in drift term.</dd>
+          <dt>$\Delta\theta,\ \theta_b$</dt><dd>Cell–bath temperature difference and absolute bath temperature (K); the quartic bracket is the radiative form of the loss term.</dd>
+          <dt>$Q_f$</dt><dd>The putative anomalous ("excess") power (W) — the unknown being solved for.</dd>
+          <dt>$P_{\mathrm{heater}}$</dt><dd>Known power injected by the calibration heater (W).</dd>
+          <dt>$k_R$</dt><dd>Radiative heat-transfer coefficient (W K⁻⁴): the calibration constant of this design, extracted by fitting the response to heater pulses.</dd>
+          <dt>$P_{\mathrm{evap}},\ P_{\mathrm{gas}}$</dt><dd>Power carried away by evaporation and by the sensible + latent enthalpy of the evolved gas stream (W). The latent heat of D₂O, 2064 J g⁻¹, differs from H₂O's 2259 J g⁻¹ — another constant that silently matters.</dd>
+        </dl>
+      </aside>
+
+      <p>Read that equation as an audit trail. The left side is thermal inertia; on the right, one term is the answer ($Q_f$) and every other term is a place for the answer to hide. The calibration constant $k_R$ is determined by nonlinear regression against heater pulses; the heat capacity drifts; evaporation depends on temperature and bubbling; the gas term depends on the open-cell assumptions of §1. The design's virtues are real — it is cheap, sensitive, and fast — but its output is only as good as the claim that $k_R$ measured during a calibration pulse still applies hours later, at a different liquid level, with a different bubble pattern, and with heat possibly being released at a different place inside the cell.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>Advocates report astonishing precision for this design: Miles and Fleischmann quoted uncertainties as low as ±0.1 mW for the silvered-Dewar cells. Treat that figure as a claim about the <em>random</em> error under ideal conditions, made by the method's proponents; independent laboratories running comparable cells quoted error bars hundreds of times larger (MIT's 1989 phase-II calorimetry, for instance, stated ±40 mW), and the disputes of §4 and §6 are almost entirely about <em>systematic</em> error, which no stated precision addresses.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Following the heat out: mass-flow and Seebeck designs</h2>
+
+      <p>The cleanest answer to "is your calibration constant real?" is to build an instrument with almost nothing to calibrate. In a <dfn title="a calorimeter that captures the cell's heat in a pumped coolant stream and computes power from first principles: flow × specific heat × temperature rise">mass-flow calorimeter</dfn>, the cell sits inside a jacket through which coolant is pumped at a measured rate, and essentially all the cell's heat ends up in the stream:</p>
+
+      <div class="equation-block">
+        $$ P_{\mathrm{out}} \;=\; \dot{m}\, c_p \left( T_{\mathrm{out}} - T_{\mathrm{in}} \right) \left( 1 + \varepsilon_{\mathrm{loss}} \right) , $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\dot{m}$</dt><dd>Coolant mass flow rate (g s⁻¹), measured directly — e.g. by weighing the effluent.</dd>
+          <dt>$c_p$</dt><dd>Specific heat of the coolant (J g⁻¹ K⁻¹; 4.18 for water) — a handbook constant, not a fitted one.</dd>
+          <dt>$T_{\mathrm{out}} - T_{\mathrm{in}}$</dt><dd>Temperature rise of the stream across the cell (K).</dd>
+          <dt>$\varepsilon_{\mathrm{loss}}$</dt><dd>The small calibrated fraction of heat that escapes without joining the stream — below 2% in the SRI instruments. This residue is the only place a calibration dispute can live.</dd>
+        </dl>
+      </aside>
+
+      <p>Every factor is either measured on the spot or a handbook constant; the fitted correction is a few percent of the total rather than 100% of it. This was the choice of Michael McKubre's group at SRI International, whose labyrinth-sealed flow calorimeters anchor the dataset of §5. The price is complexity and sluggishness — a flow calorimeter integrates over minutes, so it cannot resolve the fast "bursts" that isoperibolic cells report. Whether that is a bug or a diagnostic is a fair question to hold on to.</p>
+
+      <p>The third family closes the geometry instead of the plumbing. A <dfn title="a calorimeter whose walls are thermopiles, producing a voltage proportional to the total heat flux passing through, nearly independent of where the heat originates inside">Seebeck envelope calorimeter</dfn> surrounds the entire cell with thermopile walls: every parcel of heat leaving the box, in any direction, from any internal location, must cross the sensor, and the summed voltage reads total heat flux. Position-independence is the point — it is the design most immune to the "the heat moved" failure mode of §4. Edmund Storms, the design's most prolific LENR practitioner, reports long-term stability of ±60 mW over months and ±10 mW under favorable conditions (figures from the field's own journal, <em>J. Condensed Matter Nucl. Sci.</em>, so read them as practitioner claims rather than audited specifications).</p>
+
+      <p>A useful summary: the isoperibolic design measures a temperature and <em>infers</em> a power; the mass-flow design measures a power almost directly; the Seebeck design integrates a power over all directions. The field's evidentiary ladder in §5 climbs exactly this ordering.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The failure catalog: how to make phantom watts</h2>
+
+      <p>Four failure modes account for most of the thirty-five-year calorimetry argument. Each is quantitative, and each has a published exchange attached to it.</p>
+
+      <p><strong>Recombination.</strong> Open-cell bookkeeping subtracts $E_{tn} I$ on the assumption that all evolved gas leaves. If a fraction $f$ of the D₂ and O₂ instead recombines inside the cell — on the electrode, on a catalytic speck, in the foam — that fraction's chemical energy reappears as real heat the ledger did not expect:</p>
+
+      <div class="equation-block">
+        $$ P_{\mathrm{recomb}} \;=\; f\, E_{tn}\, I \;\le\; 1.527\ \mathrm{V} \times I . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$f$</dt><dd>Recombination fraction (dimensionless, 0–1); equivalently a faradaic efficiency below one has the same fingerprint.</dd>
+          <dt>$P_{\mathrm{recomb}}$</dt><dd>Phantom "excess" power (W). At $I = 1$ A, complete recombination fakes ~1.5 W — larger than almost every claimed signal.</dd>
+        </dl>
+      </aside>
+
+      <p>This was the thrust of the 1989 Caltech critique (Miskelly, Lewis and colleagues, <em>Science</em> 246, 793 (1989)) and of Jones and Hansen's faradaic-efficiency papers; Chapter II's widget let you price it directly. The community's structural fix was the <dfn title="a sealed cell containing a catalyst that forces complete recombination in a known location, so all input power appears as measurable heat">closed cell with catalytic recombiner</dfn>, standard in serious work after about 1992: with recombination forced and internal, the $E_{tn}$ term drops out of the bookkeeping entirely.</p>
+
+      <p><strong>Calibration-constant shift.</strong> The subtlest entry is Kirk Shanahan's <dfn title="Shanahan's hypothesis that relocation of heat sources inside a cell shifts the effective calibration constant by a few percent, which is enough to mimic reported excess heat">calibration-constant shift</dfn> (CCS) hypothesis (<em>Thermochim. Acta</em> 387, 95 (2002)). No calorimeter collects heat with perfectly uniform efficiency over its interior; the calibration constant is really a weighted average over <em>where</em> the heat is released during calibration. If the heat's location later moves — say, recombination begins at the electrode surface rather than in a recombiner at the top — the true constant shifts by a few percent while the experimenter keeps using the old one. Shanahan argued that a 1–3% unrecognized shift quantitatively reproduces reported excess-power curves in mass-flow data. The arithmetic of the phantom is worth displaying, because it is the heart of this chapter's widget:</p>
+
+      <div class="equation-block">
+        $$ \Pxs^{\mathrm{inf}} \;=\; k_a \left( T_{\mathrm{cell}} - T_{\mathrm{bath}} \right) - P_{\mathrm{in}}
+           \;=\; \Pxs^{\mathrm{true}} \;+\; \delta \left( P_{\mathrm{in}} + \Pxs^{\mathrm{true}} \right),
+           \qquad \delta = \frac{k_a - k_t}{k_t} , $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Pxs^{\mathrm{inf}},\ \Pxs^{\mathrm{true}}$</dt><dd>The excess power the experimenter infers versus whatever excess actually exists (W).</dd>
+          <dt>$k_a$</dt><dd>The calibration constant the experimenter <em>assumes</em> (W K⁻¹) — measured once, with the heater.</dd>
+          <dt>$k_t$</dt><dd>The heat-transfer coefficient actually in force during the live run (W K⁻¹).</dd>
+          <dt>$\delta$</dt><dd>The fractional calibration error (dimensionless). Because it multiplies the full input power, $\delta = +1\%$ on a 10 W cell manufactures 100 mW of phantom excess — precisely the scale of many published claims.</dd>
+        </dl>
+      </aside>
+
+      <p>The rebuttal record is genuinely two-sided and should be reported as such. A ten-author response (Marwan et&nbsp;al., <em>J. Environ. Monit.</em> 12, 1765 (2010)) answered Shanahan's critique in the same journal with three main points: Seebeck envelope calorimeters integrate heat flux over nearly the full solid angle and are close to position-independent, yet also report excess; measured recombination in the relevant cells is far below the level CCS needs; and CCS offers no reason why the supposed shift should correlate with deuterium loading and appear in D₂O but not H₂O cells. Shanahan maintains the rebuttals misconstrue the mechanism. No neutral party has settled the exchange with a purpose-built experiment, and both sides of it are peer-reviewed — though it is worth noticing that the venue, an environmental-monitoring journal, is an odd home for the field's central metrology dispute.</p>
+
+      <p><strong>Heat leaks and cold fingers.</strong> Any unmodeled conduction path — a bundle of sensor leads, a support rod, a falling liquid level exposing glass — changes the effective heat-transfer coefficient between calibration and measurement. Wilson and colleagues' reanalysis (§6) located a specific version in the Fleischmann–Pons protocol: the calibration procedure neglected the change in electrochemical input power during the heater pulse itself.</p>
+
+      <p><strong>Positive feedback.</strong> If the calibration constant depends on temperature (radiation's $T^4$ guarantees some dependence) and the analysis linearizes it at the calibration point, then anything that warms the cell — including a small real or phantom excess — is scored with the wrong constant, inflating the apparent excess further. Claims of excess that <em>grows</em> with temperature need this mundane amplifier excluded first.</p>
+
+      <section class="interactive" data-widget="calorimeter-lab" aria-label="Interactive isoperibolic calorimeter error laboratory">
+        <header>
+          <h4>Interactive · The calorimeter truth machine</h4>
+          <span class="hint">dial the input · drift the calibration · add noise</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">An idealized isoperibolic cell with $k_t = 0.8$ W K⁻¹: the true physics sets $T_{\mathrm{cell}} = T_{\mathrm{bath}} + (P_{\mathrm{in}} + \Pxs^{\mathrm{true}})/k_t$, while the experimenter infers $\Pxs^{\mathrm{inf}} = k_a (T_{\mathrm{cell}} - T_{\mathrm{bath}}) - P_{\mathrm{in}}$ from noisy temperature readings. Set the true excess to zero and drift the calibration by +1% on a 10 W input: a steady 100 mW phantom appears, indistinguishable point-by-point from a genuine signal of the size many papers report. Note what averaging does and does not fix — the scatter shrinks with integration time, but the phantom is systematic and survives forever.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The datasets that survive best</h2>
+
+      <p>Judged against the failure catalog — closed cells, first-principles calorimetry, controls, published error analysis — three bodies of excess-heat work are generally ranked strongest, by proponents and by neutral reviewers alike. None has survived hostile replication, for a reason §6 makes precise.</p>
+
+      <p><strong>SRI/EPRI (McKubre and colleagues).</strong> The flow-calorimetry program at SRI International, funded by the Electric Power Research Institute, is the field's best-instrumented electrolytic dataset: closed cells with catalytic recombiners, mass-flow calorimetry with $\varepsilon_{\mathrm{loss}} &lt; 2\%$, and hydrogen cells run as controls in the same instruments. McKubre et&nbsp;al. reported (in the peer-reviewed core paper, <em>J. Electroanal. Chem.</em> 368, 55 (1994), with the bulk of the data in EPRI contract reports TR-104195 and TR-107843) excess power in D/Pd cells but not H/Pd cells, typically 3–10% of input at watt scale, and organized their observations into an empirical parametrization:</p>
+
+      <div class="equation-block">
+        $$ \Pxs \;\propto\; \left( x - x^{\circ} \right)^2 \left( i - i^{\circ} \right) \abs{\frac{\dd x}{\dd t}} ,
+           \qquad x^{\circ} \approx 0.875, \quad i^{\circ} \approx 200\text{–}250\ \mathrm{mA\,cm^{-2}} , $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$x$</dt><dd>The loading ratio $\DPd$ (dimensionless): deuterium atoms per palladium atom in the cathode.</dd>
+          <dt>$x^{\circ}$</dt><dd>The claimed loading threshold: below $x \approx 0.875$, no excess; in the EPRI program, every cell that reached $x &gt; 0.95$ reportedly showed excess and none below $0.90$ did.</dd>
+          <dt>$i,\ i^{\circ}$</dt><dd>Cathode current density and its claimed threshold (mA cm⁻²).</dd>
+          <dt>$\abs{\dd x/\dd t}$</dt><dd>The deuterium flux through the interface — excess correlates with loading <em>changing</em>, not merely being high.</dd>
+        </dl>
+      </aside>
+
+      <p>Handle this equation with register discipline: it is SRI's parametrization of SRI's data, published in full only in conference proceedings and contract reports, with a cell-specific proportionality constant that was never made universal. It is not a law of nature; it is the field's most careful description of when its flagship anomaly is said to appear.</p>
+
+      <p><strong>The Energetics–ENEA–SRI three-lab campaign.</strong> Energetics Technologies (Israel) claimed large excess using "SuperWave" current modulation, with a showcase run (ETI-64) asserting roughly 25× energy gain; the protocol was then run at SRI and at ENEA (Italy's national energy agency) using ENEA-fabricated palladium foils, with significant excess reported in roughly 70% of runs. This is the field's best example of protocol transfer across laboratories — and it must be weighed with its caveats: every venue involved is a conference proceeding or symposium volume, none of it passed independent peer review, and the "replication" was performed by collaborating laboratories sharing personnel and materials, not by adversaries.</p>
+
+      <p><strong>Lonchampt's engineering replication.</strong> At CEA Grenoble, Georges Lonchampt rebuilt the Fleischmann–Pons ICARUS-type cells to specification — reportedly the only group to execute the original protocol faithfully — and observed modest excess, of order 5–10% during normal electrolysis, with larger apparent excess during boil-off episodes (ICCF-6 proceedings, 1996; conference-grade, and the boil-off regime is precisely where entrainment errors are worst, as Lonchampt himself noted).</p>
+
+      <aside class="note">
+        <h4>Ahead of theory</h4>
+        <p>Two features of the SRI dataset outrun any explanation, mundane or exotic, and belong in Chapter IX's ledger. First, <em>isotope specificity</em>: H/Pd cells in the same calorimeters showed nothing while D/Pd cells showed excess — either the strongest control in the field or evidence of a deuterium-specific systematic, and Shanahan's CCS, being isotope-agnostic, struggles with it. Second, the <em>loading threshold</em>: no theory predicts an onset at $\DPd \approx 0.875$, and if the integrated energy densities are taken at face value (of order MJ per cm³ of palladium, hundreds of eV per atom), they exceed any conceivable chemistry by two orders of magnitude. These are results ahead of theory only if they are results at all — which is exactly what §6 disputes.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The critiques of even the best</h2>
+
+      <p>The canonical peer-reviewed critique of the founding dataset is Wilson et&nbsp;al. (General Electric), "Analysis of experiments on the calorimetry of LiOD-D₂O electrochemical cells," <em>J. Electroanal. Chem.</em> 332, 1 (1992) — published, deliberately, in the same journal as the claims. Their reanalysis of the Fleischmann–Pons 1990 paper found specific systematic errors: the calibration-pulse method neglected the change in electrochemical input power during the heater pulse, the treatment of evaporation and the thermoneutral voltage was faulted, and unaccounted recombination was not excluded. Their conclusion was that Fleischmann and Pons significantly overestimated their excess heat. Two honest footnotes: Fleischmann and Pons published a combative same-issue rebuttal conceding nothing; and Wilson's own corrected accounting did not zero out every cell — the advocate Charles Beaudette later argued that roughly 700 mW of excess survived Wilson's reanalysis in one cell, a partisan reading of Wilson's tables that Wilson himself did not endorse. Neither side conceded, and the exchange remains the single best entry point into open-cell error accounting.</p>
+
+      <p>What about SRI? McKubre's papers are notable within the field for carrying explicit error analysis — itemized uncertainty budgets in which the claimed excess exceeds the stated combined error by an order of magnitude in the best runs. That matters because it converts the dispute from "did they measure carefully?" to "is the error model complete?" — which is exactly where Shanahan's CCS aims. The unresolved question is not arithmetic but the completeness of the systematic-error catalog; a 1% effect the model omits defeats a 0.5% error budget no matter how honestly computed.</p>
+
+      <p>The modern benchmark is the Google-funded program (Berlinguette et&nbsp;al., <em>Nature</em> 570, 45 (2019)) — the first time in decades that well-resourced outsiders built state-of-the-art calorimetry specifically for these claims. Their published verdict: no evidence of excess heat anywhere they looked, including 420 calorimetric tests of nickel–hydrogen systems with ~50 mW resolution. For the palladium claims the result is subtler and more interesting: the program found that the claimed prerequisite loading, $\DPd \ge 0.875$, could be reached only rarely and held almost never — exceeded twice in several dozen attempts — and that the indirect loading measures older work relied on can badly mislead. Read carefully, the Nature paper is simultaneously the strongest modern null result <em>and</em> an explanation of why nulls are guaranteed: the anomaly, if real, lives in a materials regime that essentially no replication (including, mostly, Google's own) ever occupied. It refutes the claims' reproducibility, not — by its own account — their operating point.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>A specification for belief</h2>
+
+      <p>This chapter's failure catalog can be inverted into a positive specification — what a heat claim would need before the error-bar half of our frame stops being the live explanation:</p>
+
+      <p><em>Closed cell</em>, so recombination is forced and the thermoneutral subtraction disappears from the books. <em>Mass-flow or Seebeck calorimetry</em>, so the measurement is first-principles or position-independent rather than hanging on one fitted constant. <em>Blind calibration</em>, with live and control runs interleaved and the analyst ignorant of which is which. <em>Signal at least ten times the total stated error</em>, systematic terms included — not 1.5σ bumps. <em>Days-long integration</em>, because energy, not power, is what chemistry cannot fake at MJ scale. <em>Isotopic and material controls in the same instrument</em> — H₂O beside D₂O, platinum beside palladium. And <em>independent replication with a shared, written protocol</em>, by a laboratory with no stake in the outcome.</p>
+
+      <p>Almost nothing in the literature meets the full specification. The SRI dataset meets more of it than anything else — closed cells, flow calorimetry, hydrogen controls, explicit error budgets — and fails at the final clause, hostile replication, which the Google program suggests may be a materials problem before it is an honesty problem. The specification is also the chapter's summary judgment: calorimetry is a solved measurement problem wrapped around an unsolved reproducibility problem. The instruments exist; what has never existed is an anomaly that travels. Keep both of the book's numbers in view — the Gamow factor says the heat should not be nuclear, and the error bar says much of it may not even be heat. Whatever remains is the subject of the next chapter, which asks whether the claimed nuclear ashes fare any better.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Fleischmann, M., Pons, S., Anderson, M. W., Li, L. J. &amp; Hawkins, M.</span> <em>Calorimetry of the palladium–deuterium–heavy water system</em>, J. Electroanal. Chem. 287, 293–348 (1990) — the fullest statement of the original claim and of the isoperibolic method of §2.</li>
+          <li><span class="src-title">Wilson, R. H., Bray, J. W., Kosky, P. G., Vakil, H. B. &amp; Will, F. G.</span> <em>Analysis of experiments on the calorimetry of LiOD-D₂O electrochemical cells</em>, J. Electroanal. Chem. 332, 1–31 (1992) — the canonical peer-reviewed reanalysis, with the Fleischmann–Pons rebuttal in the same issue.</li>
+          <li><span class="src-title">McKubre, M. C. H., Crouch-Baker, S., Rocha-Filho, R. C., Smedley, S. I., Tanzella, F. L., Passell, T. O. &amp; Santucci, J.</span> <em>Isothermal flow calorimetric investigations of the D/Pd and H/Pd systems</em>, J. Electroanal. Chem. 368, 55–66 (1994) — the field's strongest peer-reviewed heat dataset; mass-flow method of §3.</li>
+          <li><span class="src-title">Shanahan, K. L.</span> <em>A systematic error in mass flow calorimetry demonstrated</em>, Thermochim. Acta 387, 95–100 (2002) — the calibration-constant-shift hypothesis of §4, DOI 10.1016/S0040-6031(01)00832-2.</li>
+          <li><span class="src-title">Marwan, J., McKubre, M. C. H., Tanzella, F. L., Hagelstein, P. L., Miles, M. H., Swartz, M. R., Storms, E., Iwamura, Y., Mosier-Boss, P. A. &amp; Forsley, L. P. G.</span> <em>A new look at low-energy nuclear reaction (LENR) research: a response to Shanahan</em>, J. Environ. Monit. 12, 1765–1770 (2010) — the field's collective rebuttal to CCS, DOI 10.1039/c0em00267d.</li>
+          <li><span class="src-title">Storms, E.</span> <em>Status of cold fusion (2010)</em>, Naturwissenschaften 97, 861–881 (2010) — a proponent's survey of the heat evidence across all calorimeter types, DOI 10.1007/s00114-010-0711-x.</li>
+          <li><span class="src-title">Berlinguette, C. P., Chiang, Y.-M., Munday, J. N., Schenkel, T., Fork, D. K., Koningstein, R. &amp; Trevithick, M. D.</span> <em>Revisiting the cold case of cold fusion</em>, Nature 570, 45–51 (2019) — the Google-program verdict and the modern calorimetry-and-loading standard, DOI 10.1038/s41586-019-1256-6.</li>
+        </ul>
+      </section>
+
+      <p class="colophon-note" style="font-family: var(--sans); font-size: 0.78rem; color: var(--text-faint); margin-top: 1.5rem;">Chapter production note: researched and drafted by Claude subagents (draft agent: <code>claude-fable-5</code>; adversarial verification pass by <code>claude-fable-5</code> scheduled — see STATUS.md), orchestrated by <code>claude-fable-5</code>. See the <a href="appendix-methods.html">methods appendix</a> for the full research process.</p>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="02-fleischmann-pons.html"><span class="label">← Previous</span>1989: Palladium, Heavy Water, and a Scientific Crisis</a>
+      <a class="next" href="04-nuclear-evidence.html"><span class="label">Next chapter</span>The Claimed Nuclear Evidence →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/calorimeter-lab.js"></script>
+</body>
+</html>

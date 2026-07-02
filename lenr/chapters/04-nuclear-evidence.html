@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter IV · The Claimed Nuclear Evidence — Low-Energy Nuclear Reactions</title>
+  <meta name="description" content="Helium-4, tritium, transmutation, particle tracks, and neutrons: the claimed nuclear ash of LENR, each strand weighed against commensurability and its standing critique." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter IV of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter IV</p>
+      <h1 class="chapter-title">The Claimed Nuclear Evidence</h1>
+      <p class="lede">A fire that leaves no ash is not a fire — so for thirty-five years the field has searched its cells for the nuclear ash, and this chapter weighs everything it claims to have found.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>Chapter III ended on an uncomfortable truth: calorimetry alone, however careful, can never prove a nuclear origin — it can only measure heat that chemistry seems unable to supply. The decisive evidence must be nuclear: new atoms that were not there before, or radiation caught in the act. Since 1989 the field has advanced five candidate signatures — helium-4 correlated with heat, tritium, transmuted heavy elements, charged-particle tracks in plastic detectors, and low-level neutrons. This chapter takes them one at a time: the strongest peer-reviewed claim, the replication record, the magnitudes, and the standing critique.</p>
+          <p>One idea does most of the work here, and it comes straight from Chapter I's yardstick: <em>commensurability</em>. Every nuclear product carries a known energy, so any measured product rate converts directly into "watts explained," and any claimed excess power converts into a predicted product rate. A claim whose heat and ash match at the right ratio is forensically interesting; a claim whose ash would explain a billionth of its heat is really two unrelated claims. Keep the exchange rate in mind throughout: one watt of deuterium fusion making helium-4 means about 260 billion helium atoms per second, every second, for as long as the heat flows.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>nuclear ash</dt><dd>The product nuclei a nuclear reaction must leave behind — helium, tritium, or transmuted elements — in amounts fixed by the energy released.</dd>
+          <dt>commensurability</dt><dd>The bookkeeping test: does the measured amount of nuclear product match the measured heat at the known energy-per-reaction? The master move of this chapter.</dd>
+          <dt>helium-4 ($\nuc{4}{He}$)</dt><dd>The ordinary, stable isotope of helium; the claimed dominant ash of LENR, and also 5.22 parts per million of the air around every experiment.</dd>
+          <dt>mass spectrometry</dt><dd>Weighing atoms and molecules by deflecting their ions; the technique used to count helium atoms in cell gases.</dd>
+          <dt>parts per million (ppm)</dt><dd>A concentration unit: one molecule per million. Atmospheric helium sits at 5.22 ppm — the ever-present contamination benchmark.</dd>
+          <dt>in-leakage</dt><dd>Atmospheric helium seeping into a cell or sample flask through seals or glass walls, mimicking a nuclear source.</dd>
+          <dt>retention fraction</dt><dd>The fraction of helium born in a metal cathode that escapes into the gas where it can be measured; the rest stays trapped in the solid.</dd>
+          <dt>anodic stripping</dt><dd>Electrochemically dissolving the outer layers of a cathode to release gases trapped inside it — how SRI hunted for retained helium.</dd>
+          <dt>tritium (t)</dt><dd>Radioactive hydrogen-3, half-life 12.3 years; produced by one of the two normal d+d fusion branches, so its presence or absence is diagnostic.</dd>
+          <dt>liquid scintillation counting</dt><dd>Detecting tritium's weak beta decay by mixing the sample into a cocktail that flashes light for each decay.</dd>
+          <dt>autoradiography</dt><dd>Letting a radioactive sample expose photographic film to map where the activity sits — used at BARC to image tritium in titanium targets.</dd>
+          <dt>transmutation</dt><dd>The conversion of one chemical element into another by a nuclear process — the most extraordinary of the LENR claims.</dd>
+          <dt>permeation</dt><dd>Gas diffusing through a solid membrane; the Iwamura experiments drive deuterium gas through layered palladium foils.</dd>
+          <dt>multilayer</dt><dd>A sandwich of thin films — here palladium and calcium oxide layers tens of nanometers thick — whose structure is claimed to be essential to transmutation.</dd>
+          <dt>XPS</dt><dd>X-ray photoelectron spectroscopy: identifies which elements sit in the top few nanometers of a surface by the energies of ejected electrons.</dd>
+          <dt>ICP-MS</dt><dd>Inductively coupled plasma mass spectrometry: dissolves a sample into a plasma and counts trace elements atom by atom — sensitive to nanograms and below.</dd>
+          <dt>ToF-SIMS</dt><dd>Time-of-flight secondary-ion mass spectrometry: sputters ions off a surface and weighs them, mapping trace elements with high mass resolution.</dd>
+          <dt>mass interference</dt><dd>Two different species with nearly the same mass (an atom vs. a molecular ion) landing on the same spectrometer peak — a classic way to "detect" an element that isn't there.</dd>
+          <dt>mononuclidic</dt><dd>An element with only one stable isotope (like praseodymium-141), so isotope ratios cannot distinguish a nuclear origin from contamination.</dd>
+          <dt>isotopic signature</dt><dd>The ratios of an element's isotopes; natural sources have fixed ratios, so anomalous ratios argue against ordinary contamination.</dd>
+          <dt>CR-39</dt><dd>A clear plastic that records the passage of charged particles as latent damage trails, revealed as pits by etching in hot lye.</dd>
+          <dt>triple track</dt><dd>Three etch pits splitting from a common point in CR-39 — the signature of a carbon nucleus shattered into three alpha particles by a fast neutron.</dd>
+          <dt>background</dt><dd>The signal an instrument reports with no source present — cosmic rays, radon, ambient helium, tritium in ordinary water. Every claim is an excess above this.</dd>
+          <dt>upper limit</dt><dd>The largest signal that could have hidden in a null measurement; how physics states "we looked and found nothing" quantitatively.</dd>
+          <dt>control cell</dt><dd>An identical cell run with the interesting ingredient swapped out (light water for heavy water); the experiment's alibi against artifacts.</dd>
+          <dt>blind analysis</dt><dd>Analyzing samples without knowing which are "live" and which are controls, so expectation cannot steer the result.</dd>
+          <dt>statistical significance</dt><dd>How unlikely a signal is to be a background fluctuation, counted in standard deviations ($\sigma$); large excesses can still have mundane, non-statistical explanations.</dd>
+          <dt>contamination</dt><dd>The mundane arrival of the sought-for substance from the environment — the null hypothesis that stalks every trace-level claim in this chapter.</dd>
+          <dt>conference proceedings</dt><dd>Papers published from a meeting without full journal peer review; much of this field's most-quoted evidence lives there, which matters for how hard it can be leaned on.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>The forensic standard: commensurability</h2>
+
+      <p>Chapter I established what deuterium fusion must produce; Chapter III established how excess heat is measured. This chapter joins them. The rule is arithmetic: if an excess power $\Pxs$ comes from a nuclear reaction releasing energy $Q$ per event, the products must appear at the rate</p>
+
+      <div class="equation-block">
+        $$ R \;=\; \frac{\Pxs}{Q}
+           \;=\; \frac{1\ \mathrm{W}}{23.85\MeV \times 1.602\times10^{-13}\ \mathrm{J/MeV}}
+           \;\approx\; 2.62\times10^{11}\ \mathrm{atoms\ s^{-1}} , $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$R$</dt><dd>Scalar, s⁻¹: the rate at which product nuclei must be created if the heat is nuclear.</dd>
+          <dt>$\Pxs$</dt><dd>Excess power (W), as measured by the calorimetry of Chapter III.</dd>
+          <dt>$Q$</dt><dd>Energy released per reaction (MeV). The number shown uses $Q = 23.85\MeV$, the d+d$\,\to\nuc{4}{He}$ Q-value from Chapter I.</dd>
+          <dt>$1.602\times10^{-13}\ \mathrm{J/MeV}$</dt><dd>Unit conversion constant (note: this is the joule value of one <em>MeV</em>; the more familiar $1.602\times10^{-19}$ is one eV).</dd>
+        </dl>
+      </aside>
+
+      <p>This single equation is the chapter's master move. It converts any claimed product into "watts explained" and any claimed wattage into a predicted ash rate. One watt attributed to d+d$\,\to\nuc{4}{He}$ demands $2.62\times10^{11}$ helium atoms per second. One watt attributed to the ordinary d(d,p)t branch demands $2.5\times10^{12}$ tritons per second — and, per Chapter I, a lethal accompaniment of neutrons. Run the equation backwards on a tritium claim of $10^{9}$ atoms per hour and you get picowatts: real forensic evidence, perhaps, but evidence for a process a trillion times too feeble to explain the heat it is offered alongside. Every section below applies this test, and the scorecard in §8 records the verdicts.</p>
+
+      <p>Two honest complications will recur. First, products can hide: helium born inside a palladium cathode may stay dissolved in the metal, so the gas-borne rate is only a <dfn title="the fraction of product atoms that escape the solid into the measurable gas phase">retention</dfn>-corrected fraction of production. Second, products can arrive uninvited: helium is in the air, tritium is in heavy water stocks, and trace elements are on fingerprints and tweezers. The whole art of this chapter's experiments — and of their critics — is the fight over those two corrections.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Helium-4 correlated with heat: the field's best card</h2>
+
+      <p>If the heat of Chapter III is real and nuclear, and neutrons and gammas are absent (Chapter I's dead-graduate-student argument), then by elimination the field's favored hypothesis is d+d$\,\to\nuc{4}{He}$ with the energy somehow delivered as heat. That hypothesis makes a sharp prediction: helium in the cell gas at $2.62\times10^{11}$ atoms per second per watt, in heat-producing cells and only in heat-producing cells.</p>
+
+      <p>The canonical test is Melvin Miles and co-workers at the Naval Air Warfare Center, China Lake (with Benjamin Bush and J. J. Lagowski at the University of Texas), published in the peer-reviewed <em>Journal of Electroanalytical Chemistry</em> in 1993. Effluent gas from Pd/D₂O electrolysis cells was collected in flasks and sent for helium analysis <em>blind</em> — the analysts did not know which flasks came from heat-producing runs. Miles reported helium in the gas of heat-producing cells at $10^{11}$–$10^{12}$ atoms per second per watt of excess power — a band that brackets the commensurate rate — while H₂O control cells and no-heat runs showed none. Across three campaigns, his summary count was 18 of 21 heat-producing experiments with helium detected, and 30 of 33 experiments consistent overall (heat with helium, or no heat and no helium).</p>
+
+      <p>Two later programs report the same order of magnitude. Michael McKubre's group at SRI International replicated the "Case" gas-loading configuration (palladium on carbon catalyst under D₂ at ~170–200 °C) in metal-sealed vessels and reported helium growing monotonically with integrated excess heat — in some runs rising <em>above</em> the atmospheric 5.22 ppm level, which in-leakage cannot do, since leaks equilibrate toward ambient rather than past it. In SRI's electrolysis run "M4," the raw ratio came out near 31 MeV per helium atom; after anodic stripping and D₂O flushing to recover helium retained in the cathode, SRI reported recovering approximately 104% of the helium expected at 23.8 MeV per atom. At ENEA Frascati, Apicella, Violante and co-workers reported a preliminary correlation of laser-triggered excess energy with helium rising above instrument background, using high-resolution mass spectrometry to separate $\nuc{4}{He}$ (4.0026 u) from the D₂ molecule (4.028 u) — the mass interference that haunts all helium work. Edmund Storms's 2010 review in <em>Naturwissenschaften</em> aggregates roughly a dozen heat–helium data sets and argues the slope clusters near $25\pm5$ MeV per atom.</p>
+
+      <aside class="note">
+        <h4>Note — where each claim lives</h4>
+        <p>Venue matters here more than anywhere else in the book. Miles (1993) and Storms (2010) are journal peer-reviewed. But the <em>tightest</em> Q-value agreements — SRI's M4 at "104% of 23.8 MeV," the Case replications, the ENEA correlation — were published in ICCF conference proceedings and internal EPRI/SRI reports, not refereed journals. The field's best quantitative numbers are, by the standards of Chapter I's sources, its least independently audited.</p>
+      </aside>
+
+      <p>Now the critiques, which are serious. First, <em>the background problem</em>: the helium concentrations in most of these measurements sit near or below the 5.22 ppm of ordinary air, so atmospheric in-leakage — through seals, or by diffusion through the very glass of Miles's collection flasks — is a mundane candidate source. This was the principal objection of the more negative reviewers in the 2004 DOE panel (Chapter II), and it is why the above-ambient Case results are argued about so fiercely. Second, <em>the retention circularity</em>: helium born in the outer microns of a palladium cathode partly stays there, so analyses introduce a retention fraction $f_{\mathrm{ret}}$ — and when $f_{\mathrm{ret}}$ is <em>fitted</em> to bring the slope to 23.85 MeV, the agreement is partly assumed rather than measured. Formally, if only a fraction $f_{\mathrm{ret}}$ of the helium reaches the gas, the detected rate and the apparent energy-per-atom become</p>
+
+      <div class="equation-block">
+        $$ R_{\mathrm{det}} \;=\; f_{\mathrm{ret}}\,\frac{\Pxs}{Q},
+           \qquad
+           Q_{\mathrm{app}} \;\equiv\; \frac{\Pxs}{R_{\mathrm{det}}} \;=\; \frac{Q}{f_{\mathrm{ret}}} . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$R_{\mathrm{det}}$</dt><dd>Scalar, s⁻¹: the helium arrival rate actually measured in the gas phase.</dd>
+          <dt>$f_{\mathrm{ret}}$</dt><dd>Dimensionless fraction (0 to 1): the released — i.e. non-retained — share of the helium produced. SRI's M4 analysis corresponds to $f_{\mathrm{ret}}\approx0.6$–0.8 before stripping.</dd>
+          <dt>$Q_{\mathrm{app}}$</dt><dd>The <em>apparent</em> MeV-per-detected-atom. At $f_{\mathrm{ret}} = 0.5$, a true 23.85 MeV process masquerades as 47.7 MeV per detected atom — which is why raw slopes above 23.85 are read by proponents as retention and by critics as a fudge factor.</dd>
+        </dl>
+      </aside>
+
+      <p>Third, the calorimetric denominator itself is contested: Kirk Shanahan has argued (in a peer-reviewed exchange in the <em>Journal of Environmental Monitoring</em>, 2010, answered by Marwan and ten co-authors in the same volume) that calibration-constant shifts could manufacture the excess power against which the helium is correlated. The widget below lets you play the whole argument yourself: the data band, the commensurability line, and the retention slider that tilts it.</p>
+
+      <section class="interactive" data-widget="heat-helium" aria-label="Interactive heat-helium commensurability explorer">
+        <header>
+          <h4>Interactive · The heat–helium ledger</h4>
+          <span class="hint">slide retention · select a point</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">Excess power versus helium detection rate on a log axis, against the commensurability line $R_{\mathrm{det}} = f_{\mathrm{ret}}\Pxs/Q$ with $Q = 23.85\MeV$: at $\Pxs = 100$ mW and full release the line sits at $2.62\times10^{10}$ atoms/s, and at $f_{\mathrm{ret}} = 0.5$ each detected atom masquerades as 47.7 MeV. The round points are <em>representative</em> Miles-class points drawn from his reported $10^{11}$–$10^{12}$ atoms s⁻¹ W⁻¹ band (J. Electroanal. Chem. 346, 99 (1993)) — illustrative placements, not digitized data — and the square point carries SRI M4's reported raw ratio of ≈31 MeV per atom (conference-grade source). Select a point to read its implied MeV per detected atom and judge for yourself how much work the retention slider does.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The gamma problem: 24 MeV with nowhere to go</h2>
+
+      <p>Suppose the correlation is real. Then the field's own best evidence creates its sharpest theoretical crisis. In vacuum, d+d$\,\to\nuc{4}{He}$ is not merely rare (a $\sim10^{-7}$ branch, Chapter I) — it is <em>obligated by kinematics</em> to emit its energy as a 23.8 MeV gamma ray, because a lone helium nucleus cannot carry away 23.85 MeV of energy while conserving momentum. No LENR experiment reports 23.8 MeV gammas. So the heat–helium hypothesis requires the energy to leave through some unknown channel that delivers megaelectronvolts to the lattice as mere heat.</p>
+
+      <p>How tightly is that unknown channel constrained? Peter Hagelstein — MIT electrical engineer and the field's most mathematically serious theorist — answered in a peer-reviewed 2010 paper in <em>Naturwissenschaften</em>. Take the heat–helium correlation at ~24 MeV per atom as input, and suppose each helium nucleus is born with kinetic energy $E_\alpha$. A fast alpha ploughing through deuterated palladium knocks deuterons forward, and some of those strike other deuterons hard enough to fuse by the ordinary d(d,n)$\nuc{3}{He}$ branch — so a fast-alpha scenario predicts <em>secondary neutrons</em> in calculable proportion. Measured neutron emission from Fleischmann–Pons-type cells is bounded between roughly 0.008 and 0.8 neutrons per joule of excess energy. Working the secondary-yield calculation backwards:</p>
+
+      <div class="equation-block">
+        $$ 0.008 \;\le\; Y_n \;\le\; 0.8\ \mathrm{n/J}
+           \quad\Longrightarrow\quad
+           E_\alpha \;\lesssim\; 6.2\text{–}20.2\keV \;\ll\; Q = 23.85\MeV . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$Y_n$</dt><dd>Measured upper limits on neutrons emitted per joule of excess energy (n/J), from published searches on active cells.</dd>
+          <dt>$E_\alpha$</dt><dd>The birth kinetic energy of the $\nuc{4}{He}$ nucleus (keV). The bound is the largest $E_\alpha$ consistent with the neutron limits, given standard knock-on and secondary-fusion cross sections.</dd>
+        </dl>
+      </aside>
+
+      <p>Read the inequality slowly: more than 99.9% of the reaction energy must appear in a form that is neither a gamma ray nor kinetic energy of any particle — parceled out, somehow, in quanta no larger than tens of keV. Nothing in accepted nuclear physics or QED does this. The constraint is itself mainstream-published and widely accepted <em>conditional on the correlation being real</em>; it is the reason Chapter IX's theories are all, in one way or another, machines for shredding one 24 MeV quantum into a billion phonons.</p>
+
+      <aside class="note">
+        <h4>Ahead of theory</h4>
+        <p>Ledger item #1 for Chapter IX. The heat–helium correlation, if real, is an experimentally claimed Q-value with no allowed exit channel: two-body kinematics demands a gamma that is not seen, and Hagelstein's constraint (Naturwissenschaften 97, 345 (2010)) caps every particle's energy at ~$10^{-3}$ of the reaction energy. No accepted mechanism fragments a nuclear quantum this way. This is the single sharpest gap between the field's best evidence and known physics.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Tritium: real detections, impossible bookkeeping</h2>
+
+      <p>Tritium should be easy. It is rare in nature, unmistakable in a liquid scintillation counter, and produced by half of ordinary d+d fusions. The tritium record is accordingly the field's strangest: clear positive detections in respectable venues, at levels that explain essentially none of the heat.</p>
+
+      <p>The cleanest single paper is Fritz Will, Krystyna Cedzynska and Denton Linton in the <em>Journal of Electroanalytical Chemistry</em> (1993): four out of four palladium-wire cathodes of one preparation, electrolyzed in tightly closed D₂SO₄ cells, yielded up to $2.1\times10^{11}$ tritium atoms over seven days against a $4\times10^{9}$-atom background — with high deuterium loading ($\DPd$ above about 0.8) apparently necessary, and parallel H₂SO₄ control cells showing nothing. Will, a respected electrochemist (formerly of General Electric), also published closed-system assays showing commercial palladium does not arrive pre-loaded with hidden tritium — pre-empting the obvious contamination objection to his own result. Earlier and larger in bulk is the corpus from the Bhabha Atomic Research Centre in India: Iyengar and Srinivasan's overview in <em>Fusion Technology</em> (vol. 18, 1990; the journal was peer-reviewed, though notably receptive to cold fusion in that era) collects reports from roughly a dozen independent BARC teams — tritium in electrolytic and gas-loaded palladium and titanium, imaged by autoradiography on titanium targets. At Los Alamos, Thomas Claytor's group reported tritium generation from pulsed deuterium plasma discharges on palladium wires, at rates of order $10^{9}$–$10^{10}$ atoms per hour, with D₂ runs up to 25 times matched H₂ controls — though in laboratory reports and conference papers, not refereed journals.</p>
+
+      <p>Now the bookkeeping. Run §1's equation backwards: $2.1\times10^{11}$ tritium atoms in seven days is a production rate of $3.5\times10^{5}$ atoms per second, which at the d(d,p)t branch's 4.03 MeV corresponds to about $2\times10^{-7}$ watts. The excess-heat claims of Chapters II–III are watts. The tritium, taken at face value, explains roughly one part in $10^{7}$ of the heat — so tritium and heat are not two witnesses to one story; they are two different anomalies that happen to share apparatus. Worse, the BARC teams' headline quantitative result is that neutrons accompany their tritium at a ratio near $10^{-8}$, where vacuum d+d physics demands approximately one — an eight-order-of-magnitude branching inversion.</p>
+
+      <aside class="note">
+        <h4>Ahead of theory</h4>
+        <p>Ledger item #2. Claimed tritium with neutron-to-tritium ratios of $10^{-7}$–$10^{-9}$ (BARC; Claytor) inverts the near-50/50 d+d branching of Chapter I by up to nine orders of magnitude. No mechanism in accepted few-body nuclear physics suppresses the $\nuc{3}{He}$+n channel relative to t+p at low energy by anything like this factor. If the tritium is nuclear, the nuclear physics in the lattice is not vacuum d+d physics — which is also, of course, the skeptic's simplest reason to doubt that it is nuclear at all.</p>
+      </aside>
+
+      <p>The critiques here are not hypothetical; they landed. Kevin Wolf of Texas A&amp;M, whose tritium findings were among the most cited, traced his own signals to pre-existing contamination of the cathodes — "my tritium was an impurity" (<em>Science</em> 248, 1301 (1990)). In the same issue, Gary Taubes alleged that tritium results from another Texas A&amp;M laboratory were consistent with deliberate spiking (<em>Science</em> 248, 1299 (1990)); university inquiries ruled out proven fraud but found the evidence unconvincing — a shadow the episode never fully escaped. Open cells also concentrate the trace tritium naturally present in heavy water as electrolysis preferentially boils off the lighter isotopes. Will's closed cells and assayed materials were designed to defeat exactly these objections, and no published critique has specifically overturned his paper; but neither has any independent laboratory replicated his protocol at journal level, and the BARC program's results faded through the 1990s without a modern, blinded confirmation.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Transmutation: the boldest claim, the thinnest margin</h2>
+
+      <p>The most extraordinary claim in this book comes from Mitsubishi Heavy Industries. Yasuhiro Iwamura and colleagues reported — in the mainstream, peer-reviewed <em>Japanese Journal of Applied Physics</em> (2002) — that when deuterium gas permeates for about a week through a nanostructured foil (40 nm of palladium over alternating CaO and Pd layers on bulk palladium) with a ~100-nanogram layer of cesium on its surface, the cesium steadily <em>disappears</em> and praseodymium <em>appears</em> in its place, at the $10^{14}$–$10^{15}$-atom scale, tracked day by day with XPS and confirmed with ToF-SIMS and ICP-MS. Strontium, similarly treated, appeared to become molybdenum. The pattern is arresting:</p>
+
+      <div class="equation-block">
+        $$ \nuc{133}{Cs} \;\longrightarrow\; \nuc{141}{Pr},
+           \qquad
+           \nuc{88}{Sr} \;\longrightarrow\; \nuc{96}{Mo} , $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\nuc{133}{Cs},\ \nuc{141}{Pr}$</dt><dd>The sole stable isotopes of cesium and praseodymium. The claimed step is +4 protons and +4 neutrons — as if two entire alpha particles were absorbed at once.</dd>
+          <dt>$\nuc{88}{Sr},\ \nuc{96}{Mo}$</dt><dd>The same +8-nucleon jump. The claimed molybdenum was dominated by $\nuc{96}{Mo}$, whose natural abundance is only 16.7% — an isotopic signature no ordinary contamination should carry.</dd>
+        </dl>
+      </aside>
+
+      <p>The claimed controls behave as a believer would hope: no permeation, no praseodymium; hydrogen instead of deuterium, no praseodymium; no CaO layer, no praseodymium. And uniquely in this field, there is a peer-reviewed partial replication by an unaffiliated industrial laboratory: Hioki and colleagues at Toyota Central R&amp;D Labs (<em>Jpn. J. Appl. Phys.</em> 52, 107301 (2013)) implanted the cesium by ion beam — closing the wet-chemistry contamination route — and reported praseodymium increases after deuterium permeation relative to unpermeated controls, though at substantially smaller quantities than Mitsubishi's, not always clear of their own contamination scatter, and framed by the authors themselves with conspicuous caution.</p>
+
+      <p>Against this stands the best-resourced replication attempt in the field's history: the U.S. Naval Research Laboratory (David Kidwell, Kenneth Grabowski and colleagues) worked with Mitsubishi's own protocols, failed to reproduce the effect, discovered environmental praseodymium contamination in the Mitsubishi laboratory itself (down to a contaminated pair of tweezers), and argued that the claimed quantities — $10^{14}$–$10^{15}$ atoms is roughly 0.02–0.2 <em>nanograms</em> — sit comfortably within realistic contamination and mass-interference budgets (a $\nuc{141}{Pr}$ peak is impersonated by cesium-oxide and barium-hydride molecular ions in SIMS and ICP-MS). Praseodymium is mononuclidic, so no isotope ratio can acquit it. The strongest counter-evidence would be the anomalous $\nuc{96}{Mo}$-dominated isotopics in the strontium channel, which contamination cannot mimic — but Kidwell disputed that very measurement as a misassignment, and it has never been independently confirmed. Note the epistemic asymmetry: the positive claims are journal-published, while the NRL critique was presented at ICCF-15 (2009) and circulated in reports but — per the available record — never itself passed through peer review. Both sides of the dispute are thus incompletely audited.</p>
+
+      <aside class="note">
+        <h4>Ahead of theory</h4>
+        <p>Ledger item #3. Even granting the observations, no theory — mainstream or field-internal — predicts a clean, radiation-free transfer of exactly 8 nucleons whose rate depends on a 2-nanometer CaO layer. Widom–Larsen neutron-capture chains and Takahashi's multi-deuteron condensates (Chapter IX) both predict product distributions different from what Iwamura reports. The claim is ahead of even the field's own theories.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Energetic particles: pits in plastic</h2>
+
+      <p>From 2007 the SPAWAR group in San Diego (Pamela Mosier-Boss, Stanislaw Szpak, Frank Gordon, Lawrence Forsley) pursued a clever variant: instead of loading bulk palladium for weeks, <em>co-deposit</em> palladium and deuterium simultaneously from a PdCl₂/LiCl/D₂O bath onto a thin cathode pressed against a CR-39 track detector — chemistry builds the loaded lattice atom by atom, and the plastic keeps a permanent, integrating record of any charged particle that strikes it. In the peer-reviewed <em>European Physical Journal — Applied Physics</em> (40, 293 (2007)), they reported copious etch pits on chips from D₂O co-deposition runs — morphologically consistent, they argued, with alpha particles of roughly 1 MeV and below — while H₂O runs, no-current soaks, and CuCl₂ substitutions produced few or none. (A citation warning for readers chasing sources: this paper is often mis-cited as "Eur. Phys. J. A 40, 293 (2009)" — a different journal entirely; the correct venue is EPJ <em>Applied Physics</em>, 2007.) In <em>Naturwissenschaften</em> (96, 135 (2009)) they added the exotic centerpiece: a handful of <em>triple tracks</em> — three lobes radiating from a common vertex, the textbook signature of a carbon nucleus in the plastic shattered into three alphas, a reaction requiring neutrons above roughly 9.6 MeV. Deuterium–deuterium fusion makes 2.45 MeV neutrons; 9.6 MeV implicates something like the 14.1 MeV neutrons of d+t fusion — which would require a tritium-producing step first, stacking one unaccepted mechanism atop another.</p>
+
+      <p>The replication story is instructive because it splits cleanly in two. The <em>observation</em> replicates: in the 2007 "Galileo Project" organized by writer Steven Krivit, multiple laboratories — including the avowedly skeptical Earthtech in Austin — reproduced the pitting readily. The <em>interpretation</em> does not. Ludwik Kowalski, in a peer-reviewed comment (<em>Eur. Phys. J. Appl. Phys.</em> 44, 287 (2008); SPAWAR reply immediately following), showed the dominant pits' diameter-versus-depth systematics are inconsistent with alpha particles or any lighter nuclear projectile. Earthtech's protected-detector tests found CR-39 in contact with electrolyte suffers gross chemical attack — etch rates some fifty-fold above normal — and that chips shielded from electrolyte contact showed no tracks above background (reported on the web, not peer-reviewed). Candidate mundane sources in the published exchange include chemical attack by the electrolyte, micro-explosions of recombining D₂/O₂ bubbles, and corona damage from the cell's electric field. The triple tracks are too rare — of order a few per detector — to settle statistically, and even taken at face value they imply neutron rates around a few per hour: some ten orders of magnitude below heat-commensurate rates. Whatever made them, it cannot be the main event.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Neutrons: the clearest negative in the field</h2>
+
+      <p>Neutrons are where the field's forensics are least ambiguous — against it. The one <em>Nature</em>-level positive is Steven Jones and colleagues (BYU, 1989; the "other" cold fusion announcement of Chapter II): a neutron spectrometer signal near 2.45 MeV — the d(d,n)$\nuc{3}{He}$ fingerprint — from Ti/Pd electrolysis, implying a fusion rate of order $10^{-23}$ per deuteron pair per second. Note the scale: that is a picowatt-class effect, about $10^{13}$ times <em>smaller</em> than Fleischmann–Pons heat requires. Jones's claim, modest as it was, did not survive: Moshe Gai's low-background counting experiment (Yale/BNL, <em>Nature</em> 340, 29 (1989)) set limits well below the BYU signal, and Michael Salamon's team spent five weeks with detectors beside Pons's <em>own operating cells</em> (<em>Nature</em> 344, 401 (1990)), bounding neutron emission at roughly one per second and fusion power at $10^{-12}$–$10^{-6}$ watts — during periods the cells were allegedly active. The dramatic 1989–1990 reports of neutron <em>bursts</em> from cycled titanium–deuterium gas systems (BYU–Los Alamos) were later withdrawn when the signals were traced to high-voltage breakdown artifacts in the ³He counter tubes. And the best-instrumented modern search, the Google-funded program (Berlinguette et al., <em>Nature</em> 570, 45 (2019); Chapter VIII), fielded state-of-the-art neutron diagnostics on highly loaded Pd systems and found nothing anomalous in the parameter space it could reach.</p>
+
+      <p>Why do sporadic ultra-low-level neutron claims neither save nor damn the heat claims? Because of §1's arithmetic, run in both directions. They cannot <em>save</em> the heat: a few neutrons per hour, or even per second, converts to picowatts–nanowatts of d+d fusion, off by ten to twelve orders of magnitude from claimed watts. But they cannot <em>damn</em> it either, on the field's own terms: the aneutronic-helium hypothesis of §2–§3 predicts almost no neutrons, so neutron silence is consistent with it — which is precisely what makes that hypothesis so hard to falsify with a neutron counter, and why the heat–helium correlation, not the neutron ledger, is where the field's case must stand or fall. What the neutron record <em>does</em> establish, beyond reasonable dispute, is Chapter I's conclusion: whatever happens in these cells, it is not ordinary two-body d+d fusion at watt scale.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§8</span>The scorecard</h2>
+
+      <p>Here is the chapter in one table. "Commensurate?" asks §1's question: does the product rate match the claimed heat at the known Q-value? Verdicts are this book's, argued in the sections above.</p>
+
+      <div style="overflow-x: auto; margin: 1.5rem 0;">
+        <table style="border-collapse: collapse; font-family: var(--sans); font-size: 0.78rem; line-height: 1.45; min-width: 640px;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--rule, #e6ddcb); text-align: left;">
+              <th style="padding: 0.5rem 0.75rem 0.5rem 0;">Product</th>
+              <th style="padding: 0.5rem 0.75rem;">Strongest citation</th>
+              <th style="padding: 0.5rem 0.75rem;">Replication</th>
+              <th style="padding: 0.5rem 0.75rem;">Commensurate?</th>
+              <th style="padding: 0.5rem 0.75rem;">Standing critique</th>
+              <th style="padding: 0.5rem 0 0.5rem 0.75rem;">Verdict</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--rule, #e6ddcb); vertical-align: top;">
+              <td style="padding: 0.5rem 0.75rem 0.5rem 0;"><strong>⁴He + heat</strong></td>
+              <td style="padding: 0.5rem 0.75rem;">Miles, J. Electroanal. Chem. 346, 99 (1993)</td>
+              <td style="padding: 0.5rem 0.75rem;">SRI, ENEA — conference-grade only</td>
+              <td style="padding: 0.5rem 0.75rem;">Claimed yes (~24 MeV/atom, with retention corrections)</td>
+              <td style="padding: 0.5rem 0.75rem;">Near-ambient He levels; in-leakage; fitted retention; contested calorimetry</td>
+              <td style="padding: 0.5rem 0 0.5rem 0.75rem;"><em>Suggestive, unproven — the field's most testable claim</em></td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--rule, #e6ddcb); vertical-align: top;">
+              <td style="padding: 0.5rem 0.75rem 0.5rem 0;"><strong>Tritium</strong></td>
+              <td style="padding: 0.5rem 0.75rem;">Will, J. Electroanal. Chem. 360, 161 (1993); BARC, Fusion Technol. 18 (1990)</td>
+              <td style="padding: 0.5rem 0.75rem;">Multi-lab 1989–95; none modern, journal-level</td>
+              <td style="padding: 0.5rem 0.75rem;">No — ~10⁻⁷ of claimed heat; n/t inverted ~10⁸×</td>
+              <td style="padding: 0.5rem 0.75rem;">Demonstrated contamination (Wolf); spiking allegation (Taubes); open-cell enrichment</td>
+              <td style="padding: 0.5rem 0 0.5rem 0.75rem;"><em>Unresolved anomaly reports; low evidential weight</em></td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--rule, #e6ddcb); vertical-align: top;">
+              <td style="padding: 0.5rem 0.75rem 0.5rem 0;"><strong>Transmutation</strong></td>
+              <td style="padding: 0.5rem 0.75rem;">Iwamura, Jpn. J. Appl. Phys. 41, 4642 (2002)</td>
+              <td style="padding: 0.5rem 0.75rem;">Partial (Hioki/Toyota 2013); NRL failed</td>
+              <td style="padding: 0.5rem 0.75rem;">Not tested against heat; quantities are nanogram-scale</td>
+              <td style="padding: 0.5rem 0.75rem;">Contamination-scale masses; mass interference; NRL found lab Pr contamination</td>
+              <td style="padding: 0.5rem 0 0.5rem 0.75rem;"><em>Contested; contamination not excluded</em></td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--rule, #e6ddcb); vertical-align: top;">
+              <td style="padding: 0.5rem 0.75rem 0.5rem 0;"><strong>CR-39 tracks</strong></td>
+              <td style="padding: 0.5rem 0.75rem;">Mosier-Boss, Eur. Phys. J. Appl. Phys. 40, 293 (2007); Naturwiss. 96, 135 (2009)</td>
+              <td style="padding: 0.5rem 0.75rem;">Pitting replicates (incl. skeptics); interpretation does not</td>
+              <td style="padding: 0.5rem 0.75rem;">No — implied fluxes ~10¹⁰ below heat-commensurate</td>
+              <td style="padding: 0.5rem 0.75rem;">Chemical/mechanical damage (Kowalski; Earthtech protected-chip nulls)</td>
+              <td style="padding: 0.5rem 0 0.5rem 0.75rem;"><em>Observation real; nuclear interpretation weak</em></td>
+            </tr>
+            <tr style="vertical-align: top;">
+              <td style="padding: 0.5rem 0.75rem 0.5rem 0;"><strong>Neutrons</strong></td>
+              <td style="padding: 0.5rem 0.75rem;">Jones, Nature 338, 737 (1989)</td>
+              <td style="padding: 0.5rem 0.75rem;">Contradicted (Gai; Salamon in Pons's lab); bursts withdrawn</td>
+              <td style="padding: 0.5rem 0.75rem;">No — deficit of 8–12 orders vs any heat claim</td>
+              <td style="padding: 0.5rem 0.75rem;">Instrumental artifacts; limits below the claims</td>
+              <td style="padding: 0.5rem 0 0.5rem 0.75rem;"><em>Excluded at heat-commensurate levels</em></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>The honest bottom line, in the register discipline of this book. <em>Established:</em> no nuclear product has ever been observed commensurate with claimed excess heat through ordinary d+d channels, and neutron emission at heat-commensurate levels is excluded by multiple peer-reviewed null measurements — including in Pons's own laboratory. <em>Contested:</em> the heat–helium correlation is the strongest strand — peer-reviewed at its core, with a claimed slope bracketing 23.85 MeV per atom — but its tightest numbers live in conference proceedings, its signals flirt with atmospheric background, and its retention correction is partly circular; tritium and transmutation have journal-published positives standing against demonstrated contamination episodes and failed high-quality replications; none of it reaches proof standard. And several strands, <em>if real</em>, are not merely unexplained but ahead of any theory, mainstream or otherwise — the 24 MeV with no exit channel, the inverted branching ratio, the 8-nucleon jumps. Chapter IX will collect those IOUs. The <em>Gamow factor and the error bar</em> frame it as ever: nothing in this chapter enlarges the tunneling probability; everything in it is a fight over whether the measurement — of atoms this time, not watts — can be trusted at parts-per-million stakes. First, though, Chapters V–VII visit the one variable every experimenter agrees matters: how much deuterium you can force into the metal, and what it does when it's there.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Miles, M. H., Hollins, R. A., Bush, B. F., Lagowski, J. J. &amp; Miles, R. E.</span> <em>Correlation of excess power and helium production during D₂O and H₂O electrolysis using palladium cathodes</em>, Journal of Electroanalytical Chemistry 346, 99–117 (1993) — the canonical heat–helium paper; blind helium analyses, 18/21 correlation.</li>
+          <li><span class="src-title">Hagelstein, P. L.</span> <em>Constraints on energetic particles in the Fleischmann–Pons experiment</em>, Naturwissenschaften 97, 345–352 (2010) — the peer-reviewed bound forcing any helium birth energy below ~20 keV; §3's equation, DOI 10.1007/s00114-009-0644-4.</li>
+          <li><span class="src-title">Will, F. G., Cedzynska, K. &amp; Linton, D.-C.</span> <em>Reproducible tritium generation in electrochemical cells employing palladium cathodes with high deuterium loading</em>, Journal of Electroanalytical Chemistry 360, 161–176 (1993) — the cleanest closed-cell tritium claim, with materials assays against contamination.</li>
+          <li><span class="src-title">Iwamura, Y., Sakano, M. &amp; Itoh, T.</span> <em>Elemental analysis of Pd complexes: effects of D₂ gas permeation</em>, Japanese Journal of Applied Physics 41, 4642–4650 (2002) — the Cs→Pr and Sr→Mo transmutation claims, DOI 10.1143/JJAP.41.4642.</li>
+          <li><span class="src-title">Mosier-Boss, P. A., Szpak, S., Gordon, F. E. &amp; Forsley, L. P. G.</span> <em>Triple tracks in CR-39 as the result of Pd–D co-deposition: evidence of energetic neutrons</em>, Naturwissenschaften 96, 135–142 (2009) — the triple-track claim; read with Kowalski's comment, Eur. Phys. J. Appl. Phys. 44, 287 (2008). DOI 10.1007/s00114-008-0449-x.</li>
+          <li><span class="src-title">Jones, S. E. et al.</span> <em>Observation of cold nuclear fusion in condensed matter</em>, Nature 338, 737–740 (1989) — the low-level neutron claim; read with Salamon et al., Nature 344, 401–405 (1990), the in-situ null in Pons's laboratory. DOI 10.1038/338737a0.</li>
+          <li><span class="src-title">Storms, E.</span> <em>Status of cold fusion (2010)</em>, Naturwissenschaften 97, 861–881 (2010) — a proponent's peer-reviewed aggregation of the heat–helium data sets; useful for the claims map, to be read with this chapter's critiques alongside. DOI 10.1007/s00114-010-0711-x.</li>
+        </ul>
+      </section>
+
+      <p class="colophon-note" style="font-family: var(--sans); font-size: 0.78rem; color: var(--text-faint); margin-top: 1.5rem;">Chapter production note: researched and drafted by Claude subagents (draft agent: <code>claude-fable-5</code>; adversarial verification pass by <code>claude-fable-5</code> scheduled — see STATUS.md), orchestrated by <code>claude-fable-5</code>. See the <a href="appendix-methods.html">methods appendix</a> for the full research process.</p>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="03-calorimetry.html"><span class="label">← Previous</span>The Art of the Calorimeter</a>
+      <a class="next" href="05-loading-the-lattice.html"><span class="label">Next chapter</span>Loading the Lattice →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/heat-helium.js"></script>
+</body>
+</html>
