@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter II · 1989 — Low-Energy Nuclear Reactions</title>
+  <meta name="description" content="What Fleischmann and Pons claimed, what the replication wave found, what two DOE reviews concluded — and why 1989 still sets the evidentiary bar." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter II of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter II</p>
+      <h1 class="chapter-title">1989: Palladium, Heavy Water, and a Scientific Crisis</h1>
+      <p class="lede">Two accomplished electrochemists announced, at a press conference, that they had tamed the Gamow factor in a jar of heavy water — and the year that followed taught science exactly how much a watt of certainty costs.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>On March 23, 1989, Martin Fleischmann and Stanley Pons of the University of Utah told the world's press that a palladium rod, electrolyzing heavy water on a laboratory bench, was releasing more heat than any chemistry could supply — and that the source was nuclear. Chapter I told you why that claim demanded a roughly fifty-order-of-magnitude miracle in the tunneling rate. This chapter tells you what was actually claimed, how the claim was audited, and why nearly every audit failed it. It is the founding episode of the field this book covers, and it is also the founding episode of the field's evidentiary standards: everything in Chapters III–VIII is, one way or another, a response to what went wrong in 1989.</p>
+          <p>The chapter's spine is bookkeeping. An electrolysis cell is an energy ledger: electrical power in, heat and gas out. "Excess heat" is a claim that the ledger doesn't balance — which means the claim is only as good as the accountant's error bar. We will follow the ledger's most treacherous line items (the thermoneutral potential, gas recombination), then follow the nuclear evidence as it collapsed, the replication wave as it broke, and the two U.S. Department of Energy reviews that bracketed the field's first fifteen years. In the book's running frame: Fleischmann and Pons claimed a Gamow-factor miracle on the strength of an error bar the community could not audit.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>electrolysis</dt><dd>Driving a chemical reaction with electric current — here, splitting water into hydrogen (or deuterium) and oxygen gas.</dd>
+          <dt>electrode</dt><dd>A conductor where current enters or leaves the electrolyte; reactions happen at its surface.</dd>
+          <dt>cathode</dt><dd>The negative electrode, where reduction occurs — in these cells, where deuterium is evolved and absorbed. Fleischmann and Pons's cathodes were palladium.</dd>
+          <dt>anode</dt><dd>The positive electrode, where oxygen is evolved; usually platinum in these experiments.</dd>
+          <dt>electrolyte</dt><dd>The conducting liquid between the electrodes — here heavy water with dissolved LiOD.</dd>
+          <dt>heavy water (D₂O)</dt><dd>Water in which both hydrogens are deuterium; chemically near-identical to H₂O, ~10% denser.</dd>
+          <dt>LiOD</dt><dd>Lithium deuteroxide, the deuterated analogue of LiOH, added to make heavy water conduct.</dd>
+          <dt>palladium (Pd)</dt><dd>A noble metal famous for absorbing enormous volumes of hydrogen into its crystal lattice — up to nearly one hydrogen per palladium atom.</dd>
+          <dt>loading (D/Pd)</dt><dd>The atomic ratio $\DPd$ of dissolved deuterium to palladium; the variable the field later came to see as decisive (Chapter V).</dd>
+          <dt>open cell</dt><dd>An electrolysis cell that vents its gases; the escaping D₂ and O₂ carry chemical energy out uncounted unless corrected for.</dd>
+          <dt>closed cell</dt><dd>A sealed cell with a catalyst that recombines the gases back into water inside, so all input power must appear as heat — the post-1989 standard.</dd>
+          <dt>recombination</dt><dd>D₂ and O₂ reacting back into D₂O inside the cell, releasing their chemical energy as heat where the bookkeeping may not expect it.</dd>
+          <dt>faradaic efficiency</dt><dd>The fraction of the current that goes into the intended electrolysis reaction rather than side processes; assumed 100% in the simplest accounting.</dd>
+          <dt>thermoneutral potential</dt><dd>The cell voltage at which electrolysis neither heats nor cools the cell: exactly the reaction enthalpy per unit charge, 1.527 V for D₂O.</dd>
+          <dt>calorimeter</dt><dd>An instrument that measures heat flow; the entire 1989 controversy is, at bottom, a fight about calorimeters.</dd>
+          <dt>isoperibolic calorimeter</dt><dd>A design that infers power from the temperature difference between cell and constant-temperature bath through a calibrated heat-leak coefficient.</dd>
+          <dt>excess heat</dt><dd>Measured heat output exceeding all accounted inputs; written $\Pxs$ throughout this book.</dd>
+          <dt>current density</dt><dd>Current per unit electrode area (mA/cm²); the knob Fleischmann and Pons said drove the effect.</dd>
+          <dt>scintillation detector</dt><dd>A crystal (here sodium iodide, NaI) that flashes light when a gamma ray deposits energy, giving a spectrum of counts versus energy.</dd>
+          <dt>Compton edge</dt><dd>A shoulder that must appear in a gamma spectrum below the full-energy peak, from photons that scatter once and escape; its absence marks a spectrum as unphysical.</dd>
+          <dt>neutron-capture gamma</dt><dd>The 2.224 MeV photon emitted when a neutron is captured by hydrogen (n + p → d + γ) — the signature by which stray neutrons announce themselves in a water bath.</dd>
+          <dt>background</dt><dd>The ever-present counts from cosmic rays and ambient radioactivity that any claimed nuclear signal must rise above.</dd>
+          <dt>replication</dt><dd>An independent laboratory reproducing a claimed effect with its own apparatus — the currency in which extraordinary claims are paid for.</dd>
+          <dt>null result</dt><dd>A measurement consistent with zero effect, usually stated as an upper bound ("no more than X at 95% confidence").</dd>
+          <dt>preliminary note</dt><dd>A short, fast-tracked journal communication of urgent results — the format of the original Fleischmann–Pons paper.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>March 23, 1989: the press conference before the paper</h2>
+
+      <p>The announcement came out of order. On March 23, 1989, the University of Utah convened the press to declare that Fleischmann and Pons had achieved "sustained nuclear fusion" in a test tube — before the supporting paper was available to anyone who might check it. Contemporaneous reporting attributes the haste to two pressures: the university's patent filings, and a priority race with a rival group. Forty-five miles south at Brigham Young University, the physicist Steven Jones was preparing a claim that was superficially similar and quantitatively opposite: neutron emission from deuterium-loaded titanium and palladium at roughly $2\times10^{-3}$ neutrons per second (Jones et al., <em>Nature</em> 338, 737, 1989) — a trace nuclear whisper, about fourteen orders of magnitude too small to matter energetically, and one that itself failed later replication. The Utah claim was not a whisper. It was watts.</p>
+
+      <p>The paper, when it appeared, was M. Fleischmann and S. Pons, "Electrochemically induced nuclear fusion of deuterium," <em>Journal of Electroanalytical Chemistry</em> 261, 301 (1989) — a "Preliminary note," submitted March 11 and in print by April 10, followed by an erratum (<em>ibid.</em> 263, 187) that among other corrections added the overlooked third author, graduate student Marvin Hawkins. It reported three kinds of evidence: excess enthalpy far beyond the authors' chemical accounting; neutron emission inferred at a rate of order $10^4$ per second; and a gamma-ray line attributed to those neutrons being captured by hydrogen in the water bath shielding the cell. It attributed the heat to an unknown nuclear process. Note the shape of the claim from the start: the calorimetry was the discovery, and the nuclear measurements were the corroboration. Within three months the corroboration was gone (§4), and the discovery rested on calorimetry alone.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>"Press-release science" was the phrase the episode made famous, but the sequence was not lawless: a peer-reviewed paper <em>was</em> in press when the cameras rolled. What failed was auditability — the paper was too thin for anyone to reconstruct the error budget, and the authors, swamped and litigious by turns, declined to supply what was missing. The lesson the field drew is the standard this book applies: a claim exists scientifically when an outsider can re-derive its error bar.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The cell, and what "excess heat" meant operationally</h2>
+
+      <p>The apparatus was almost defiantly simple: a palladium cathode (rods of 0.1–0.4 cm diameter in the first paper) and a platinum anode in a glass cell of heavy water with LiOD electrolyte, driven at current densities from tens to hundreds of mA/cm², sitting in a constant-temperature water bath. Palladium is the one indispensable ingredient: it absorbs deuterium into its lattice interstices, and weeks of electrolysis push the <dfn title="the atomic ratio of absorbed deuterium to palladium atoms in the cathode">loading</dfn> $\DPd$ toward one deuteron per palladium atom. The cell was <dfn title="an electrolysis cell that vents its product gases rather than recombining them internally">open</dfn>: the D₂ and O₂ bubbled out and left the building.</p>
+
+      <p>That venting is where the accounting begins. Part of the electrical power fed to an open cell does not become heat at all — it is stored as the chemical energy of the escaping gases. The dividing line is the <dfn title="the cell voltage at which electrolysis is exactly enthalpy-neutral: below it the cell cools, above it the cell heats">thermoneutral potential</dfn>, the voltage that exactly pays the enthalpy bill of splitting the water:</p>
+
+      <div class="equation-block">
+        $$ E_{\mathrm{tn}} = \frac{\Delta H}{nF}, \qquad
+           E_{\mathrm{tn}}^{\mathrm{H_2O}} = \frac{285.8\ \mathrm{kJ\,mol^{-1}}}{2 \times 96\,485\ \mathrm{C\,mol^{-1}}} = 1.481\ \mathrm{V}, \qquad
+           E_{\mathrm{tn}}^{\mathrm{D_2O}} = 1.527\ \mathrm{V} . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$E_{\mathrm{tn}}$</dt><dd>The thermoneutral potential (constant, volts): the enthalpy cost of electrolysis per unit charge.</dd>
+          <dt>$\Delta H$</dt><dd>Molar enthalpy of the electrolysis reaction $\mathrm{D_2O(l)} \to \mathrm{D_2} + \tfrac{1}{2}\mathrm{O_2}$ (constant): 285.8 kJ/mol for H₂O, 294.6 kJ/mol for D₂O.</dd>
+          <dt>$n$</dt><dd>Electrons transferred per water molecule (constant, $n=2$).</dd>
+          <dt>$F$</dt><dd>The Faraday constant, $96\,485\ \mathrm{C\,mol^{-1}}$: the charge of a mole of electrons.</dd>
+        </dl>
+      </aside>
+
+      <p>So the heat a well-behaved open cell should produce is not $IV$ but $I(E_{\mathrm{cell}} - E_{\mathrm{tn}})$, and "excess heat" meant, operationally, the measured output minus that expectation:</p>
+
+      <div class="equation-block">
+        $$ P_{\mathrm{heat}} = I\left(E_{\mathrm{cell}} - E_{\mathrm{tn}}\right), \qquad
+           \Pxs = P_{\mathrm{out}} - I\left(E_{\mathrm{cell}} - E_{\mathrm{tn}}\right) . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$I$</dt><dd>Cell current (scalar, amperes), set by the experimenter.</dd>
+          <dt>$E_{\mathrm{cell}}$</dt><dd>Measured cell voltage (scalar, volts), typically 3–6 V in these experiments.</dd>
+          <dt>$P_{\mathrm{heat}}$</dt><dd>Electrical input power that should appear as heat in an open cell (W).</dd>
+          <dt>$P_{\mathrm{out}}$</dt><dd>Heat output measured by the calorimeter (W).</dd>
+          <dt>$\Pxs$</dt><dd>The claimed excess power (W): the ledger's unbalanced line.</dd>
+        </dl>
+      </aside>
+
+      <p>Fleischmann and Pons knew this bookkeeping cold — they used a working value of 1.54 V for D₂O, which folds in the vapor carried off with the gases, and their calorimetric equations (developed fully in their 1990 paper, <em>J. Electroanal. Chem.</em> 287, 293) are competent electrochemistry. The vulnerability lies elsewhere: the correction <em>assumes the gases actually leave</em>. If a fraction $\gamma$ of the evolved D₂ and O₂ recombines inside the cell — on the electrode, in the foam, at the surface — its chemical energy comes back as heat the ledger did not expect:</p>
+
+      <div class="equation-block">
+        $$ P_{\mathrm{heat}} = I\left[E_{\mathrm{cell}} - E_{\mathrm{tn}}(1-\gamma)\right],
+           \qquad \Delta P_{\mathrm{fake}} = I\,E_{\mathrm{tn}}\,\gamma \;\le\; I\,E_{\mathrm{tn}} . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\gamma$</dt><dd>The recombination fraction (dimensionless, 0–1): the share of evolved gas that reacts back to D₂O inside the cell.</dd>
+          <dt>$\Delta P_{\mathrm{fake}}$</dt><dd>The apparent "excess" (W) an experimenter infers if they assume $\gamma = 0$: real heat, wrongly booked as anomalous.</dd>
+        </dl>
+      </aside>
+
+      <p>At one ampere, full recombination fakes about 1.5 W of excess — and, more insidiously, a mere 10% recombination fakes the few-percent excess typical of the contested claims. Fleischmann and Pons did measure their recombination and reported it small; their critics' point (Lewis's Caltech group, and later Wilson's GE team and the "faradaic efficiency" papers) was that in an <em>open, unstirred</em> cell the experimenter must prove it small continuously, for every run, at an accuracy better than the claimed effect. The widget below lets you run that audit yourself.</p>
+
+      <aside class="jargon">
+        <h4>Three voltages, one trap</h4>
+        <p>Water electrolysis has three canonical voltages: the reversible potential 1.23 V (the Gibbs free energy per charge — the thermodynamic minimum), the H₂O thermoneutral potential 1.481 V, and the D₂O thermoneutral potential 1.527 V. Using the wrong one silently manufactures or destroys tens of milliwatts per ampere: 1.23 V instead of 1.527 V books the gas stream's entropy term as anomalous heat, and the H₂O value applied to heavy water fakes 46 mW/A. Chapter III returns to this ledger line by line.</p>
+      </aside>
+
+      <section class="interactive" data-widget="fp-energy-budget" aria-label="Interactive open-cell energy budget auditor">
+        <header>
+          <h4>Interactive · The open-cell energy budget</h4>
+          <span class="hint">set current · set voltage · dial recombination</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">An open-cell audit: input power $IV$ splits into the chemical power leaving with the gas, $I E_{\mathrm{tn}}(1-\gamma)$, and the heat actually deposited, $I[E_{\mathrm{cell}} - E_{\mathrm{tn}}(1-\gamma)]$, with $E_{\mathrm{tn}} = 1.527$ V for heavy water. At the reference setting ($I = 0.5$ A, $E_{\mathrm{cell}} = 4.5$ V, $\gamma = 0$) the cell deposits 1.487 W and shows zero excess; dial recombination to just 10% and an experimenter who assumes vented gas books a phantom 76 mW — about 5% "excess," the same few-percent scale that ignited a worldwide controversy. Fleischmann and Pons did measure recombination and reported it small; the widget shows why critics demanded closed cells anyway.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The claimed magnitudes</h2>
+
+      <p>What did they actually claim, in numbers? The 1989 note reported excess heat from rods of palladium at levels the authors tabulated as percentages of input and as watts per cubic centimeter of cathode — of order watts per cm³ at the higher current densities. The 1990 follow-up paper (Fleischmann, Pons, Anderson, Li and Hawkins, <em>J. Electroanal. Chem.</em> 287, 293–348) made the case in earnest across dozens of runs: heavy-water cells in positive excess of hundreds of milliwatts (summaries of its tables put the average across nineteen positive runs near 0.6 W) against light-water blanks consistent with zero, with "bursts" during which the excess rate reportedly exceeded the electrical input many times over and specific excess powers reached of order $100\ \mathrm{W\,cm^{-3}}$ of palladium. These are the authors' own figures, from their own calorimetry, and they are contested at the root: Chapter III walks through the published reanalyses (Wilson et al., Morrison) that attribute part or — depending on whom you read — all of the effect to calibration systematics.</p>
+
+      <p>Two anecdotes gave the claim its folklore. First, the meltdown: the 1989 paper itself recounts an early experiment (1984–85, in most tellings) in which a 1 cm cube of palladium, left electrolyzing overnight, destroyed itself — a substantial portion of the cathode melted, part of it vaporized, and the cell and a section of the fume cupboard were wrecked. Palladium melts at about 1555 °C; the authors argued no chemical process in the cell could concentrate that much energy. Skeptics answered that a cube loaded with deuterium is a store of chemical energy (D₂ + O₂ recombination, hydride decomposition) entirely capable of violent release, and that a single uninstrumented accident is not a measurement. Second, the projections: taking the burst figures at face value implied integrated energy densities of megajoules per cubic centimeter of palladium — hundreds of eV per palladium atom, far beyond the ~1–2 eV/atom ceiling of any chemistry. That arithmetic is exactly why the claim had to be nuclear <em>if the calorimetry was right</em> — and why everything turned on whether it was.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The nuclear evidence collapses first</h2>
+
+      <p>Recall from Chapter I §5 what a watt of d+d fusion must shed: with the two dominant branches firing roughly equally,</p>
+
+      <div class="equation-block">
+        $$ R_{\mathrm{n}} \;\approx\; \tfrac{1}{2}\,\frac{\Pxs}{\bar{Q}}
+           \;\approx\; 0.9\times10^{12}\ \mathrm{s^{-1}}\ \text{per watt of excess power}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$R_{\mathrm{n}}$</dt><dd>Expected neutron emission rate (s⁻¹) if the excess power $\Pxs$ were vacuum-physics d+d fusion.</dd>
+          <dt>$\bar{Q}$</dt><dd>Mean energy per fusion over the two ~50/50 branches, $\approx 3.65\MeV$ (Chapter I §5).</dd>
+        </dl>
+      </aside>
+
+      <p>Fleischmann and Pons claimed watts of heat and neutrons at of order $10^4\ \mathrm{s^{-1}}$ — an admission, right in the founding paper, that the neutrons were about <em>a billion times</em> too few for the heat. The authors embraced the discrepancy as evidence of "an hitherto unknown nuclear process"; the physics community read it as evidence that the heat was not nuclear. And then even the $10^4$ evaporated. The neutron rate had been inferred from a gamma-ray line: neutrons escaping the cell should be captured by protons in the water bath, emitting photons at 2.224 MeV (the deuteron's binding energy — established physics, measured to sub-keV precision). Richard Petrasso and colleagues at the MIT Plasma Fusion Center dissected the published peak (<em>Nature</em> 339, 183, 1989, with an exchange at <em>Nature</em> 339, 667): it sat at the wrong energy (near 2.2 MeV but inconsistent with 2.224 MeV once instrument calibration was traced); its width was a factor of about two <em>narrower</em> than their NaI detector's resolution permits any real line to be; the <dfn title="the shoulder below a gamma peak from photons that Compton-scatter once and escape the detector">Compton edge</dfn> that must accompany a 2.224 MeV photopeak at 1.99 MeV was absent; and the counting rate was internally inconsistent with the claimed neutron flux by a factor of order fifty. Secondary accounts also report that the peak's position shifted between the announcement video and the published figure; no formal misconduct finding ever adjudicated that allegation, and this book reports it only as reported. What is beyond dispute is the conclusion: the gamma line was an instrumental artifact, and with it fell the only direct nuclear evidence in the original paper.</p>
+
+      <p>This is the "dead graduate student" arithmetic of Chapter I doing its forensic work in real time. By spring 1989 the claim had already assumed its lasting logical shape: heat allegedly far above chemistry, nuclear ash far below the heat. Either the calorimetry was wrong, or the nuclear physics of a lattice differs from vacuum d+d in both rate and branching — Huizenga's "miracles," stacked.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>The replication wave</h2>
+
+      <p>The spring and summer of 1989 produced one of the largest spontaneous replication efforts in the history of physics. Hundreds of groups tried; the decisive audits came from laboratories that measured heat <em>and</em> nuclear products simultaneously, with stated error budgets.</p>
+
+      <p><strong>Caltech.</strong> Nathan Lewis, Charles Barnes and colleagues (<em>Nature</em> 340, 525, 1989) ran the full battery: calorimetry with stirred, carefully calibrated cells, plus searches for neutrons, gammas, tritium and $\nuc{4}{He}$. They found nothing above background on every channel — and, constructively, showed that an <em>unstirred</em> F&amp;P-style cell develops temperature gradients that a single thermistor reads as phantom excess heat. Their companion analysis of the published calorimetric evidence (Miskelly et al., <em>Science</em> 246, 793, 1989) argued the original claims were consistent with mundane errors, recombination among them. At the American Physical Society meeting in Baltimore (May 1–2, 1989), Steven Koonin — whose molecular fusion-rate calculation anchored Chapter I — went further than the data, attributing the episode to "the incompetence and delusion of Pons and Fleischmann"; eight of nine invited speakers judged the claim dead. The line drew applause and marks the moment the controversy's tone hardened on both sides.</p>
+
+      <p><strong>Harwell.</strong> The UK Atomic Energy Authority's laboratory (Williams et al., <em>Nature</em> 342, 375, 1989) ran the most systematic search: three independent calorimeter designs, high-efficiency neutron and gamma detection, and on the order of a hundred electrode–electrolyte combinations — with Fleischmann himself advising the setup in its early weeks. The result was null across the board, and the paper doubled as a field guide to false positives: neutron-counter electrical noise, cosmic-ray background variation, calibration error in simple calorimeters, and the slow electrolytic enrichment of tritium already present in heavy water.</p>
+
+      <p><strong>MIT.</strong> The Plasma Fusion Center's team (Albagli et al., <em>J. Fusion Energy</em> 9, 133, 1990) combined calorimetry with neutron and gamma counting, helium mass spectrometry, tritium assay and surface analysis, concluding that "within estimated levels of accuracy, no excess power output or any other evidence of fusion products was detected." One caveat belongs on the record: in 1991 the MIT science writer Eugene Mallove resigned, alleging that the group's Phase-II calorimetry curves had been improperly baseline-shifted before publication; MIT stood by the work, the allegation appeared only in advocacy venues, and it has never been substantiated in the peer-reviewed literature. It is reported here as an allegation, because the field's later mythology leans on it heavily.</p>
+
+      <p><strong>Inside Pons's own laboratory.</strong> The most surgical audit was Salamon et al. (<em>Nature</em> 344, 401, 1990): a University of Utah physics team monitored Pons's own operating cells — cells contemporaneously said to be producing excess heat — for five weeks with gamma detection, bounding neutron emission at roughly one neutron per second and fusion power at between $10^{-12}$ and $10^{-6}$ W. For publishing this, the team received a letter from Pons's attorney, C. Gary Triggs, demanding retraction under threat of suit; the American Physical Society protested the threat as an attack on scientific freedom, and Triggs later apologized. The episode did lasting reputational damage quite apart from the physics.</p>
+
+      <p>Set the wave's outcome precisely: it did not prove that no cell ever produced excess heat. It established that the claimed effect did not travel — not to better calorimeters, not to better nuclear diagnostics, not even to instruments carried into the discoverers' own laboratory — and that every nuclear channel, measured independently, sat at or below background, a factor of $10^9$ or more beneath the heat. In the frame of this book: the community tightened the error bar, and the Gamow-factor miracle vanished from every instrument that could have seen its ash.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The institutional verdicts: 1989 and 2004</h2>
+
+      <p>The U.S. Department of Energy convened a panel under its Energy Research Advisory Board (ERAB), co-chaired by nuclear chemist John Huizenga and Nobel laureate Norman Ramsey, which reported in November 1989 (report DOE/S-0073). Its language was measured and has been quoted ever since: the experimental results "do not present convincing evidence that useful sources of energy will result from the phenomena attributed to cold fusion," and the evidence for "a new nuclear process termed cold fusion is not persuasive." The panel recommended against any special program or dedicated centers — while its preamble cautioned that the claims could not yet all be categorically proved or disproved, and the report explicitly kept the ordinary peer-review door open for well-focused experiments. Funding agencies heard the first half; the field's survivors clung to the second.</p>
+
+      <p>Fifteen years later the DOE looked again, at the request of researchers who argued the evidence base had matured. The 2004 review ("Report of the Review of Low Energy Nuclear Reactions," Office of Science, December 1, 2004) put the claims before eighteen anonymous reviewers, half via written submissions and half at a one-day presentation. The findings deserve exact statement, because both camps misquote them. On the evidence for excess power: the reviewers were "split approximately evenly" — a genuinely divided expert panel, which is itself a remarkable datum fifteen years after the field's public burial. On the evidence that the effects are nuclear in origin: two-thirds did not find it conclusive, one reviewer was fully convinced, and the remainder were somewhat convinced; most noted that the effects are not reproducible on demand. The panel's summary judged its conclusions "similar to those found in the 1989 review," and — nearly unanimously — recommended that agencies entertain <em>individual, well-designed proposals</em> through normal peer review. No dedicated program was created then, and none existed until the developments of Chapter VIII.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>Read the 2004 split carefully: it separates two questions this book keeps separate everywhere. "Is there an unexplained thermal anomaly?" drew an even split. "Is it nuclear?" drew two-to-one skepticism. The gap between those two numbers — experts half-persuaded a measurement anomaly exists, largely unpersuaded of its interpretation — is the epistemic state the rest of this book explores, and it is precisely the error-bar question versus the Gamow-factor question.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>What survived 1989</h2>
+
+      <p>Three things outlived the collapse. The first is a hypothesis. Fleischmann and Pons ran months-long electrolysis on cathodes prepared with obsessive electrochemical care, and later work claimed the excess-heat effect switches on only above a loading threshold near $\DPd \approx 0.875$–0.9 — a regime most 1989 replicators, running weeks rather than months on off-the-shelf palladium, plausibly never reached. That claim is contested and lab-specific (it comes chiefly from SRI International's program, Chapter V), but it received an ironic endorsement in 2019, when the Google-funded reinvestigation (Berlinguette et al., <em>Nature</em> 570, 45, 2019) found that sustaining $\DPd \ge 0.875$ is so materially difficult that the original claims were, in their words' effect, never tested at their own operating point. The loading hypothesis does not rescue 1989 — it merely renders the null results less total than they seemed — and Chapter V weighs it on its own evidence.</p>
+
+      <p>The second is a discipline. Every calorimetric sin catalogued in 1989–1994 — open-cell recombination, unstirred gradients, calibration drift, the 1.23 V trap, boil-off entrainment — became a design rule: closed cells with catalytic recombiners, stirred or position-insensitive calorimeters, blank cells run in parallel, stated error budgets. The canonical peer-reviewed audit of the original calorimetry, Wilson et al. (<em>J. Electroanal. Chem.</em> 332, 1, 1992), found that Fleischmann and Pons's calibration procedure neglected the change in electrochemical input power during heater pulses and concluded they had significantly overestimated the excess — though, in a wrinkle the advocacy literature has leaned on ever since, Wilson's own reanalysis did not reduce every run to zero (the pro-LENR writer Beaudette reads Wilson's tables as leaving one cell with ~40% unexplained excess; that is Beaudette's reading, not Wilson's conclusion). Fleischmann and Pons rebutted in the same journal and conceded nothing. Chapter III makes this exchange — the best short course in calorimetric error ever published — its centerpiece.</p>
+
+      <p>The third is a sociological case study that science is still metabolizing. Simultaneous-discovery pressure, patent lawyers scheduling physics announcements, claims propagated by fax and press wire ahead of data, a flagship journal (<em>Nature</em>, which never published the original claim) becoming the venue of record for its demolition, and careers ended on both sides — Utah's National Cold Fusion Institute closed in June 1991; Pons and Fleischmann moved to a Toyota-funded laboratory in France that closed in 1998, tens of millions spent, without a marketable result. The standard histories (Huizenga's from inside the ERAB panel; Taubes's from inside the laboratories) read the episode as pathological science; the science-studies literature (Simon's <em>Undead Science</em>) reads it as a lesson in how scientific closure actually happens, and how a community can keep working after it. Both readings are useful; neither changes a single number in this chapter.</p>
+
+      <aside class="note">
+        <h4>Ahead of theory</h4>
+        <p>Strictly, 1989 was the opposite of a result ahead of theory: established theory (branching ratios, capture gammas, tunneling rates) audited the results and demolished them. What survives as genuinely unresolved is narrower, and it is a matter of record rather than physics: no published audit ever reduced <em>every</em> Fleischmann–Pons calorimetric run to an identified error — the mainstream verdict rests on irreproducibility, identified systematics in some runs, and the absent nuclear ash, not on a run-by-run refutation. That residue — an unexplained thermal record with no nuclear signature and no mechanism — is the seed of every claim audited in Chapters III–VIII, and it enters Chapter IX's ledger as the field's founding IOU.</p>
+      </aside>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Fleischmann, M. &amp; Pons, S.</span> <em>Electrochemically induced nuclear fusion of deuterium</em>, Journal of Electroanalytical Chemistry 261, 301–308 (1989); erratum 263, 187–188 (1989) — the original preliminary note and the erratum adding M. Hawkins; DOI 10.1016/0022-0728(89)80006-3.</li>
+          <li><span class="src-title">Petrasso, R. D., Chen, X., Wenzel, K. W., Parker, R. R., Li, C. K. &amp; Fiore, C.</span> <em>Problems with the γ-ray spectrum in the Fleischmann et al. experiments</em>, Nature 339, 183–185 (1989) — the dissection of the 2.2 MeV line; exchange with Fleischmann et al. at Nature 339, 667 (1989).</li>
+          <li><span class="src-title">Lewis, N. S., Barnes, C. A., Heben, M. J. et al.</span> <em>Searches for low-temperature nuclear fusion of deuterium in palladium</em>, Nature 340, 525–530 (1989) — the Caltech multi-channel null replication; DOI 10.1038/340525a0.</li>
+          <li><span class="src-title">Williams, D. E., Findlay, D. J. S., Craston, D. H. et al.</span> <em>Upper bounds on 'cold fusion' in electrolytic cells</em>, Nature 342, 375–384 (1989) — the Harwell systematic search and its catalogue of false-positive mechanisms; DOI 10.1038/342375a0.</li>
+          <li><span class="src-title">Energy Research Advisory Board.</span> <em>Cold Fusion Research</em>, U.S. Department of Energy report DOE/S-0073 (November 1989) — the first institutional verdict, co-chaired by J. Huizenga and N. Ramsey.</li>
+          <li><span class="src-title">U.S. Department of Energy, Office of Science.</span> <em>Report of the Review of Low Energy Nuclear Reactions</em> (December 1, 2004) — the 18-reviewer re-examination; source of the "split approximately evenly" and "nearly unanimous" findings quoted in §6.</li>
+          <li><span class="src-title">Huizenga, J. R.</span> <em>Cold Fusion: The Scientific Fiasco of the Century</em>, University of Rochester Press, 1992 — the inside chronicle from the ERAB co-chair; the "miracles" framing used throughout this book.</li>
+        </ul>
+      </section>
+
+      <p class="colophon-note" style="font-family: var(--sans); font-size: 0.78rem; color: var(--text-faint); margin-top: 1.5rem;">Chapter production note: researched and drafted by Claude subagents (draft agent: <code>claude-fable-5</code>; adversarial verification pass by <code>claude-fable-5</code> scheduled — see STATUS.md), orchestrated by <code>claude-fable-5</code>. See the <a href="appendix-methods.html">methods appendix</a> for the full research process.</p>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="01-coulomb-barrier.html"><span class="label">← Previous</span>The Yardstick: Fusion and the Coulomb Barrier</a>
+      <a class="next" href="03-calorimetry.html"><span class="label">Next chapter</span>The Art of the Calorimeter →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/fp-energy-budget.js"></script>
+</body>
+</html>

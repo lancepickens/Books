@@ -1,7 +1,7 @@
 # Low-Energy Nuclear Reactions — Project Status
 
-**Last updated:** 2026-07-02
-**Phase:** Shell scaffolded; literature research workflow running; chapter briefs pending.
+**Last updated:** 2026-07-02 (evening)
+**Phase:** Research complete (11 agents, 1.00M tokens, 0 failures). Ch I drafted by lead + harness-validated. Ch II–IV drafted by subagents + harness-validated (KaTeX strict 286/286; JSDOM widgets 5/5 reproduce brief reference values) — **adversarial verification pending**. Ch V–X drafts + all verify passes were cut off by the session token limit (resets 21:00 UTC); build workflow will be resumed from cache (runId wf_5537d654-23b).
 
 ## What exists
 
@@ -35,10 +35,10 @@ Self-contained HTML book at `lenr/`. Open by serving over HTTP:
 
 | # | Title | Widget file | Draft | Eqn audit | Citations | KaTeX strict | Widget numerics |
 |---|---|---|---|---|---|---|---|
-| 1 | The Yardstick: Fusion and the Coulomb Barrier | `gamow-tunneling.js` | – | – | – | – | – |
-| 2 | 1989: Palladium, Heavy Water, and a Scientific Crisis | `fp-energy-budget.js` | – | – | – | – | – |
-| 3 | The Art of the Calorimeter | `calorimeter-lab.js` | – | – | – | – | – |
-| 4 | The Claimed Nuclear Evidence | `heat-helium.js` | – | – | – | – | – |
+| 1 | The Yardstick: Fusion and the Coulomb Barrier | `gamow-tunneling.js` | ✓ lead | lead spot-check (K&N/ALR/NACRE web-verified) | partial | ✓ | ✓ |
+| 2 | 1989: Palladium, Heavy Water, and a Scientific Crisis | `fp-energy-budget.js` | ✓ | pending | pending | ✓ | ✓ |
+| 3 | The Art of the Calorimeter | `calorimeter-lab.js` | ✓ | pending | pending | ✓ | ✓ |
+| 4 | The Claimed Nuclear Evidence | `heat-helium.js` | ✓ | pending | pending | ✓ | ✓ |
 | 5 | Loading the Lattice | `loading-threshold.js` | – | – | – | – | – |
 | 6 | Electron Screening: The Accepted Anomaly | `screening-enhancement.js` | – | – | – | – | – |
 | 7 | The Reassessment: Google and NASA | `lattice-fusion.js` | – | – | – | – | – |
@@ -52,4 +52,7 @@ Per the commissioning request, the subagent model type used for each chapter/tas
 
 ## Outstanding
 
-- Research workflow completion → per-chapter equation briefs → draft/verify workflow → KaTeX strict + JSDOM widget + structural validation → browser pass → commit/PR.
+- Resume build workflow at 21:00 UTC (session limit): drafts Ch V–X + adversarial verify for ALL chapters (I–X). Ch II–IV footnotes currently say "verification pass scheduled" — restore the standard footnote wording after their verify passes complete.
+- `loading-threshold.js` (Ch V widget) was written before its draft agent was cut off; the resumed draft:ch5 agent will finish the chapter and may overwrite it.
+- Then: full KaTeX/JSDOM/structural gates, browser pass, final STATUS + methods-appendix stats update.
+- Note: PR #3 (scaffold + Ch I + appendix + research) was merged by the user 2026-07-02; follow-up work continues on the restarted branch as a new PR.
