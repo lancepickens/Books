@@ -1,7 +1,7 @@
 # Low-Energy Nuclear Reactions — Project Status
 
 **Last updated:** 2026-07-02 (evening)
-**Phase:** Research complete (11 agents, 1.00M tokens, 0 failures). Ch I drafted by lead + harness-validated. Ch II–IV drafted by subagents + harness-validated (KaTeX strict 286/286; JSDOM widgets 5/5 reproduce brief reference values) — **adversarial verification pending**. Ch V–X drafts + all verify passes were cut off by the session token limit (resets 21:00 UTC); build workflow will be resumed from cache (runId wf_5537d654-23b).
+**Phase:** Research complete (11 agents, 1.00M tokens, 0 failures). Ch I drafted by lead + harness-validated. Ch II–IV drafted by subagents + harness-validated (KaTeX strict 441/441; JSDOM widgets 5/5 reproduce brief reference values) — **adversarial verification pending**. Ch V–X drafts + all verify passes were cut off by the session token limit (resets 21:00 UTC); build workflow will be resumed from cache (runId wf_5537d654-23b).
 
 ## What exists
 
@@ -39,8 +39,8 @@ Self-contained HTML book at `lenr/`. Open by serving over HTTP:
 | 2 | 1989: Palladium, Heavy Water, and a Scientific Crisis | `fp-energy-budget.js` | ✓ | pending | pending | ✓ | ✓ |
 | 3 | The Art of the Calorimeter | `calorimeter-lab.js` | ✓ | pending | pending | ✓ | ✓ |
 | 4 | The Claimed Nuclear Evidence | `heat-helium.js` | ✓ | pending | pending | ✓ | ✓ |
-| 5 | Loading the Lattice | `loading-threshold.js` | – | – | – | – | – |
-| 6 | Electron Screening: The Accepted Anomaly | `screening-enhancement.js` | – | – | – | – | – |
+| 5 | Loading the Lattice | `loading-threshold.js` | ✓ | pending | pending | ✓ | ✓ |
+| 6 | Electron Screening: The Accepted Anomaly | `screening-enhancement.js` | ✓ | pending | pending | ✓ | ✓ |
 | 7 | The Reassessment: Google and NASA | `lattice-fusion.js` | – | – | – | – | – |
 | 8 | New Programs: Japan, Europe, ARPA-E | `nano-heat.js` | – | – | – | – | – |
 | 9 | Theories and the Explanatory Gap | `rate-ladder.js` | – | – | – | – | – |

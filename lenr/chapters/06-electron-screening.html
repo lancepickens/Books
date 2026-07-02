@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter VI · Electron Screening — Low-Energy Nuclear Reactions</title>
+  <meta name="description" content="Electron screening in deuterated metals: the replicated, peer-reviewed accelerator anomaly in which measured screening energies exceed every published calculation." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter VI of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter VI</p>
+      <h1 class="chapter-title">Electron Screening: The Accepted Anomaly</h1>
+      <p class="lede">Fire deuterons into a slab of palladium and the fusion rate comes out wrong — too high, by a factor the best available theory cannot explain — and this time the referees, the replications, and the mainstream journals all agree the effect is real.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>So far the anomalies in this book have been contested: heat that some calorimeters see and others don't, ashes that appear in one lab and vanish in the next. This chapter is different. Since 2001, at least four independent accelerator groups — in Berlin and Szczecin, at Tohoku in Japan, in Bochum, and at Berkeley — have fired low-energy deuteron beams into deuterium-loaded metals and measured the fusion yield. In every metal tested, the yield at the lowest energies is larger than bare-nucleus physics predicts. The standard way to book the excess is a "screening energy": the metal's electrons cancel part of the Coulomb repulsion, as if every collision got a small energy discount. The discount is real, replicated, and published in mainstream journals. It is also, quantitatively, a scandal: measured values run two to eight times larger than any published calculation, and the four groups disagree with each other by factors of two to three.</p>
+          <p>This makes electron screening the book's pivot. It is an existence proof that the lattice is not a spectator — condensed-matter physics measurably reaches into a nuclear reaction rate. But the chapter's second job is arithmetic honesty: we will extrapolate the measured discount down to room temperature, carefully, with the Chapter I machinery, and watch it fall tens of orders of magnitude short of rescuing cold fusion. A real anomaly and an insufficient one — both things are true at once, and the whole field lives in the space between them.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>electron screening</dt><dd>The partial cancellation of the repulsion between two nuclei by the negative charge of electrons around and between them.</dd>
+          <dt>screening energy ($\Ue$)</dt><dd>The single number (in eV) that summarizes screening: the effective energy boost a colliding pair receives, so that $\sigma_{\mathrm{scr}}(E) = \sigma_{\mathrm{bare}}(E+\Ue)$.</dd>
+          <dt>screening length</dt><dd>The distance over which surrounding charge neutralizes a test charge; inside it, the two nuclei feel nearly the full repulsion minus a constant offset.</dd>
+          <dt>adiabatic limit</dt><dd>The maximum screening a bound electron can supply if it adjusts infinitely quickly to the approaching nuclei — about 27–28 eV for deuterons on deuterium.</dd>
+          <dt>united-atom limit</dt><dd>The thought experiment behind the adiabatic limit: as two nuclei merge, their electron cloud becomes that of the combined ("united") atom, whose deeper binding energy is donated to the collision.</dd>
+          <dt>gas target</dt><dd>A cell of D₂ gas used as the target; the clean benchmark, with no lattice and only molecular electrons.</dd>
+          <dt>beam–target experiment</dt><dd>An accelerator setup: a deuteron beam of known energy strikes a deuterated target and detectors count the charged products or neutrons.</dd>
+          <dt>lab vs center-of-mass energy</dt><dd>For a beam deuteron hitting a resting deuteron, only half the beam energy is available to the relative motion: $E_{\mathrm{cm}} = E_{\mathrm{lab}}/2$.</dd>
+          <dt>thick-target yield</dt><dd>The reaction count from a beam stopping entirely inside the target — an integral over the slowing-down path, which must be unfolded to get a cross section.</dd>
+          <dt>stopping power</dt><dd>The rate at which a projectile loses energy in matter; poorly known below a few keV, and a major systematic in screening measurements.</dd>
+          <dt>metal deuteride</dt><dd>A metal (Pd, Ti, Zr, Ta…) with deuterium dissolved in its lattice, written e.g. PdD$_x$; the target material in all these experiments.</dd>
+          <dt>stoichiometry</dt><dd>The actual deuterium-to-metal ratio in the beam spot — hard to know, changed by the beam itself, and the leading suspect for inter-group disagreement.</dd>
+          <dt>enhancement factor ($f$)</dt><dd>The ratio of the measured (screened) cross section to the bare-nucleus one at the same energy; the observable everything else is fitted to.</dd>
+          <dt>conduction electrons</dt><dd>Electrons in a metal that are not tied to any one atom and move quasi-freely; the candidate source of the extra screening.</dd>
+          <dt>Fermi energy</dt><dd>The energy of the most energetic conduction electrons even at absolute zero — several eV in metals, corresponding to temperatures of tens of thousands of kelvin.</dd>
+          <dt>degenerate electron gas</dt><dd>An electron population whose behavior is set by quantum statistics (the Pauli principle), not temperature; conduction electrons at room temperature are deeply degenerate.</dd>
+          <dt>Thomas–Fermi screening</dt><dd>The standard quantum-statistical description of how a degenerate electron gas screens a charge, with an essentially temperature-independent screening length.</dd>
+          <dt>jellium</dt><dd>The simplest metal model: ions smeared into a uniform positive background with an electron gas on top; used for first-principles screening estimates.</dd>
+          <dt>dielectric function</dt><dd>The response function $\epsilon(q,\omega)$ describing how a material's charges rearrange around a disturbance; the machinery behind the best screening calculations.</dd>
+          <dt>Debye screening</dt><dd>The classical (Boltzmann) screening law for hot dilute plasmas; invoked controversially by the Bochum group to explain metal screening.</dd>
+          <dt>plasma discharge</dt><dd>A low-voltage gas discharge used to bombard a target with ions of a few hundred eV to a few keV — a way to reach energies below what beams can deliver cleanly.</dd>
+          <dt>internal pair conversion</dt><dd>A nuclear de-excitation that emits an electron–positron pair instead of a gamma ray; the claimed decay mode of a proposed ⁴He threshold resonance.</dd>
+          <dt>threshold resonance</dt><dd>A nuclear state sitting almost exactly at the energy where a reaction channel opens; if one exists in ⁴He at the d+d threshold, low-energy fusion would be modified.</dd>
+          <dt>ion track</dt><dd>The femtoseconds-long trail of dense excitation a slowing ion leaves in a solid; one group proposes fusion occurs thermally inside these transient hot zones.</dd>
+          <dt>carbon buildup</dt><dd>The slow growth of a carbon film on any beam-struck surface from residual vacuum-chamber hydrocarbons; it shifts the effective beam energy and mimics physics.</dd>
+          <dt>sputtering</dt><dd>Erosion of the target surface by the beam itself, which continually changes the very deuterium density one is trying to hold fixed.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>A wall with a discount: the screened potential</h2>
+
+      <p>Chapter I treated two colliding deuterons as naked point charges. Real deuterons in a target are dressed: bound electrons, molecular electrons, or a metal's conduction sea surround them, and that negative charge cancels part of the repulsion. The geometry is simple. Electrons rearrange over a characteristic <dfn title="the distance over which surrounding charge neutralizes a test charge">screening length</dfn> — ångströms for atoms, fractions of an ångström for a dense electron gas. The nuclear action happens at femtometers, thousands of times deeper in. So over the entire region where tunneling is decided, the electron cloud is effectively a distant, static shell, and inside a shell of charge the potential is lowered by a <em>constant</em>. The barrier keeps its shape and loses altitude:</p>
+
+      <div class="equation-block">
+        $$ V_{\mathrm{scr}}(r) \;\approx\; \frac{Z_1 Z_2 e^2}{4\pi\epsilon_0\, r} \;-\; \Ue , \qquad r \ll R_{\mathrm{scr}} , $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$V_{\mathrm{scr}}(r)$</dt><dd>Scalar field of separation $r$: the potential energy of the pair with electrons included.</dd>
+          <dt>$\Ue$</dt><dd>The screening energy (constant, eV): the depth of the electron-induced offset. Tens of eV for atoms; the subject of this chapter for metals.</dd>
+          <dt>$R_{\mathrm{scr}}$</dt><dd>The screening length (constant, of order 0.01–0.1 nm in a metal) — vastly larger than the femtometer scales where tunneling is decided.</dd>
+        </dl>
+      </aside>
+
+      <p>A constant shift of the potential is exactly equivalent to a constant boost of the collision energy. That single observation, made precise by Assenbaum, Langanke and Rolfs in 1987, is the entire formalism of this chapter: the screened cross section at energy $E$ is the bare cross section at $E + \Ue$,</p>
+
+      <div class="equation-block">
+        $$ \sigma_{\mathrm{scr}}(E) \;=\; \sigma_{\mathrm{bare}}(E + \Ue), \qquad
+           f(E) \;=\; \frac{\sigma_{\mathrm{scr}}(E)}{\sigma_{\mathrm{bare}}(E)}
+           \;\approx\; \exp\!\left[\pi\eta(E)\,\frac{\Ue}{E}\right] \quad (\Ue \ll E). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$E$</dt><dd>Center-of-mass collision energy (keV). For a deuteron beam on resting deuterons, $E = E_{\mathrm{lab}}/2$ — the classic factor-of-two trap.</dd>
+          <dt>$f(E)$</dt><dd>The enhancement factor (dimensionless): how many times the screened cross section exceeds the bare one. It grows explosively as $E$ falls toward $\Ue$.</dd>
+          <dt>$\eta(E)$</dt><dd>The Sommerfeld parameter from Chapter I, with $2\pi\eta = \sqrt{\EG/E}$ and the d+d Gamow energy $\EG = 986\keV$.</dd>
+        </dl>
+      </aside>
+
+      <aside class="jargon">
+        <h4>Why $\pi\eta$, not $2\pi\eta$</h4>
+        <p>The exponent looks like half a Gamow factor, and it is. The tunneling exponent is $2\pi\eta(E) = \sqrt{\EG/E}$; shift $E$ by a small $\Ue$ and expand to first order: since $\sqrt{\EG/E}$ falls like $E^{-1/2}$, its change is $-\tfrac{1}{2}\sqrt{\EG/E}\;(\Ue/E) = -\pi\eta\,\Ue/E$. The factor $\tfrac12$ from differentiating the square root converts $2\pi\eta$ into $\pi\eta$. Transcribing $2\pi\eta$ into the enhancement formula — a common error in the secondary literature — overstates every enhancement quadratically.</p>
+      </aside>
+
+      <p>Note what the formula promises. At high energy, screening is invisible: a 50 keV collision barely notices a discount of a few hundred eV. But $f(E)$ has $1/E$ inside an exponential riding on $\eta \propto E^{-1/2}$, so as the energy drops the enhancement blows up. Screening is a low-energy phenomenon by construction — which is precisely why it belongs in this book, and why measuring it means fighting an accelerator down to energies where beams barely work at all.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The honest benchmark: gas targets and the adiabatic limit</h2>
+
+      <p>How big should $\Ue$ be? For an isolated atom or molecule there is a clean upper bound, the <dfn title="the maximum screening a bound electron can provide if it adjusts instantaneously to the approaching nuclei">adiabatic limit</dfn>. Picture the collision slowly: as the two deuterium nuclei approach, their shared electron cloud deforms continuously into the cloud of the <dfn title="the atom whose nucleus carries the combined charge of two merging nuclei; its electron binding sets the adiabatic energy gain">united atom</dfn> — a helium-like system whose electrons are more tightly bound. The binding-energy difference is released into the relative motion of the nuclei: the electrons, sliding downhill into deeper orbits, pay the collision an energy subsidy. For deuterons on atomic or molecular deuterium that bookkeeping tops out near $\Ue \approx 27$–$28\eV$ — a couple of Rydbergs, the natural scale of atomic physics.</p>
+
+      <p>And in gas targets, that is exactly what is measured: $\Ue = 25 \pm 5\eV$ for the d+d reaction in D₂ gas, established by the Rolfs group's accelerator program in the 1990s. Theory and experiment agree. This matters more than it may look: it certifies the method. The whole apparatus — thick-target yields, stopping-power corrections, the extraction of $\Ue$ from a fit of $f(E)$ against the bare cross section — was validated on a system where the answer was known. The screening story does not begin with an anomaly; it begins with a confirmation.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>The same physics runs the other way in stellar interiors, where plasma screening enhances solar fusion rates and must be <em>divided out</em> of laboratory data to get the bare S-factor astrophysicists need. Screening entered nuclear physics as a nuisance parameter for the Sun — the LUNA underground program measured it to correct solar reaction rates — years before metals made it a puzzle in its own right.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>The metal surprise</h2>
+
+      <p>In 2001, Konrad Czerski and collaborators in Berlin put deuterated <em>metals</em> — Al, Zr, Ta — under a 5–60 keV deuteron beam and published the yields in <em>Europhysics Letters</em> (a mainstream venue). The extracted screening energies came out around an order of magnitude above the gas-target value: for Ta, roughly 300 eV. The following year Jiro Kasagi's group at Tohoku University reported in the <em>Journal of the Physical Society of Japan</em> a systematic scan across target materials at beam energies down to 2.5 keV, with screening energies of $\Ue = 310 \pm 20 \pm 50\eV$ for Pd, $200 \pm 15 \pm 40\eV$ for Fe, and — strangest of all — $600 \pm 20 \pm 75\eV$ for palladium <em>oxide</em>, where the d+d yield at 2.5 keV (lab) ran about fifty times the bare expectation. Then in 2004 Francesco Raiola, Claus Rolfs and the Bochum group published a survey of 58 deuterated materials in <em>The European Physical Journal A</em>: most metals showed large screening — Pd near 800 eV on their analysis — while insulators, semiconductors and a few metals like Au showed gas-like values of tens of eV. A periodic table of screening, with a sharp metal/non-metal divide.</p>
+
+      <p>What does theory allow? The adiabatic limit says ~28 eV from bound electrons. Adding everything a metal legitimately has — conduction electrons treated as a <dfn title="the standard quantum-statistical screening of a charge by a degenerate electron gas, with an essentially temperature-independent screening length">Thomas–Fermi</dfn> degenerate gas, the ion lattice's polarization, cohesion effects — the best available calculations land near 100–300 eV at the very most; Czerski's own improved dielectric-function model gives about 134 eV for Pd. The measured values sit a factor of two to eight above <em>any</em> published calculation. That is the anomaly. It has now stood for a quarter century, in refereed journals, replicated in kind by independent groups on three continents.</p>
+
+      <p>Replicated in kind — but not in magnitude, and the disagreement is itself part of the puzzle. For the same metal, palladium: Kasagi (Tohoku, 2002) reports $\approx 310\eV$; Raiola (Bochum, 2004) reports $\approx 800\eV$; Huke, Czerski and colleagues, in the field's most careful error analysis (<em>Physical Review C</em> 78, 015803, 2008), report $296 \pm 15\eV$ and argue that much of the spread comes from what the beam does to the target: sputtering and beam-induced diffusion change the deuterium density in the first nanometers of the surface — exactly the layer where the lowest-energy reactions happen — so a fit that assumes uniform stoichiometry books a density artifact as screening. Add poorly known stopping powers below a few keV and carbon buildup on the beam spot, and a factor-two systematic is easy to assemble. The Huke analysis is the standing caveat over every number in this section; it reduces the anomaly, but even its own corrected value, $296\eV$, is still more than double the best theory.</p>
+
+      <aside class="note">
+        <h4>Ahead of theory</h4>
+        <p>This one is uncontested — the cleanest entry in the whole ledger of Chapter IX. Measured d+d screening energies in deuterated metals (roughly 300–800 eV depending on group and method) exceed every published first-principles calculation (~30 eV adiabatic; ~100–300 eV with all solid-state effects) by factors of two to eight, and the measurements disagree among themselves by factors of two to three. Every party to the dispute — Bochum, Berlin/Szczecin, Tohoku, Berkeley — agrees an unexplained enhancement exists; no accepted model reproduces its magnitude or its material pattern (large in Pd, PdO, Ta; small in Au, insulators, semiconductors). This is the "electron screening puzzle" of low-energy nuclear physics: mainstream, peer-reviewed, and open since 2001.</p>
+      </aside>
+
+      <section class="interactive" data-widget="screening-enhancement" aria-label="Interactive electron screening enhancement-factor explorer">
+        <header>
+          <h4>Interactive · The screening discount</h4>
+          <span class="hint">slide U<sub>e</sub> · move the energy marker</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The enhancement factor $f(E) = \exp[\pi\eta\,\Ue/E]$ with $\pi\eta = \tfrac{1}{2}\sqrt{986\keV/E}$, plotted for the three canonical scales of $\Ue$: 25 eV (D₂ gas, matching theory), 300 eV (the most theory can plausibly supply in a metal), and 800 eV (Bochum's measured Pd value). At 10 keV the curves barely separate; at 2 keV the 800 eV discount is worth a factor of ~85 — nearly two orders of magnitude the Gamow factor never had to pay. The readout also shows the exact shifted-energy form $\tfrac{E}{E+\Ue}\,e^{2\pi\eta(E)-2\pi\eta(E+\Ue)}$, which is smaller: the first-order formula overshoots once $E$ stops being large compared to $\Ue$.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>A contested explanation: Debye's ghost in a Fermi sea</h2>
+
+      <p>The Bochum group proposed a disarmingly classical explanation. Treat a metal's quasi-free conduction electrons as a hot dilute plasma, and they gather around a deuteron in a <dfn title="the classical screening law for hot dilute plasmas, with screening length set by temperature">Debye</dfn> cloud whose radius shrinks — and whose screening energy therefore grows — as temperature falls:</p>
+
+      <div class="equation-block">
+        $$ R_D \;=\; \sqrt{\frac{\epsilon_0\, k_B T}{e^2\, n_{\mathrm{eff}}}}\,, \qquad
+           \Ue^{\mathrm{Debye}} \;=\; \frac{e^2}{4\pi\epsilon_0\, R_D} \;\propto\; \sqrt{\frac{n_{\mathrm{eff}}}{T}}\,. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$R_D$</dt><dd>The Debye radius (scalar, length): the size of the classical screening cloud.</dd>
+          <dt>$k_B T$</dt><dd>The thermal energy (constant at fixed temperature; $\approx 0.025\eV$ at room temperature).</dd>
+          <dt>$n_{\mathrm{eff}}$</dt><dd>The fitted density of "quasi-free" electrons participating in the cloud (scalar, m⁻³) — the model's one adjustable knob.</dd>
+        </dl>
+      </aside>
+
+      <p>The model fits the periodic-table pattern tolerably with of order one quasi-free electron per metal atom, and it makes a sharp prediction: $\Ue \propto 1/\sqrt{T}$. Remarkably, Raiola et al. reported the prediction confirmed — in a 2006 follow-up (<em>Eur. Phys. J. A</em> 27, s01, 79) the screening in deuterated Pt fell as the target was heated from 20 °C to 340 °C, tracking the Debye curve; the authors called it the first observation of a temperature-dependent nuclear cross section.</p>
+
+      <p>The critique is not subtle, and it is now the majority view. Conduction electrons at room temperature are not a classical gas — they are a deeply <dfn title="a quantum gas whose statistics are set by the Pauli exclusion principle rather than by temperature">degenerate</dfn> Fermi system, with Fermi energies of several eV, thousands of times the thermal energy. Their screening is Thomas–Fermi screening, set by the Fermi energy and essentially blind to temperature; applying Boltzmann statistics to them is a category error, whatever the fit quality. Huke et al. (PRC 2008) put it bluntly: the Debye–Hückel picture is "clearly excluded" on basic solid-state grounds, and Kasagi's group leveled the same objection independently. What of the measured temperature trend? A metal deuteride heated by hundreds of degrees changes its deuterium solubility, diffusivity and surface chemistry all at once — the very systematics flagged in §3 track temperature too. The temperature dependence is a contested single-group result carrying an inadmissible theory; the enhancement it was meant to explain, however, does not go away when the model does. The anomaly survives its own worst explanation.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>What screening buys at room temperature — done honestly</h2>
+
+      <p>Now the calculation this chapter owes the rest of the book. Suppose we take the most generous measured number at face value — $\Ue = 800\eV$ in Pd — and ask what it does for two deuterons at thermal energy, $E \approx 0.025\eV$. The first-order formula $f(E) = e^{\pi\eta \Ue/E}$ is useless here: it assumes $\Ue \ll E$ and diverges nonsensically in the opposite regime. The honest move is the exact shifted form, $\sigma_{\mathrm{scr}}(E) = \sigma_{\mathrm{bare}}(E + \Ue)$: at $E \approx 0$, the collision effectively happens at $\Ue$ itself, so the tunneling exponent is the Gamow factor evaluated at 0.8 keV,</p>
+
+      <div class="equation-block">
+        $$ 2\pi\eta(\Ue) \;=\; \sqrt{\frac{\EG}{\Ue}} \;=\; \sqrt{\frac{986\keV}{0.8\keV}} \;\approx\; 35.1,
+           \qquad e^{-35.1} \approx 5.7\times10^{-16}. $$
+      </div>
+
+      <p>Compare Chapter I: the bare thermal Gamow factor was $e^{-6280} \sim 10^{-2728}$. Screening at 800 eV has collapsed an exponent of 6,280 down to 35 — it has closed <em>most of the exponent</em>. This is why screening haunts every theoretical conversation in this field: no other measured, replicated effect comes within shouting distance of that kind of leverage on the Gamow factor.</p>
+
+      <p>But a penetration probability is not a rate, and here the extrapolation must be done with adult supervision. If $10^{-16}$ per barrier assault were the right number, any plausible attempt frequency — molecular vibrations run at $\sim 10^{14}$ per second — would predict vigorous, easily detectable fusion in every slab of deuterated palladium on Earth. It is not observed. The arithmetic is telling us the transplant is illegitimate, and Huke et al. and the recent Metzler review both say why: a beam-derived $\Ue$ describes the <em>dynamic</em> response of the electron gas to a fast keV projectile sweeping through it. Two thermal deuterons parked at neighboring interstitial sites, $\gtrsim 0.17$ nm apart, are a different problem — a molecular-type bound system, whose fusion rate is governed by the Koonin–Nauenberg calculation of Chapter I and rigorously capped by the Leggett–Baym bound (<em>Phys. Rev. Lett.</em> 63, 191, 1989): no equilibrium electronic arrangement in condensed matter can raise the tunneling rate to anywhere near observable levels.</p>
+
+      <p>So the honest ladder, in fusions per deuteron pair per second, reads:</p>
+
+      <p>$\lam \approx 3\times10^{-64}$ for the bare D₂ molecule (Koonin–Nauenberg) &nbsp;→&nbsp; at most $\sim 10^{-45}$ with static screening from consistent theory ($\Ue \approx 100$–150 eV equivalent), the ceiling enforced by Leggett–Baym &nbsp;→&nbsp; versus the $\sim 10^{-11}$ needed for a watt per cubic centimeter of PdD. Measured against the ~53 missing orders of magnitude, legitimate screening buys perhaps 10–20 of them. It closes a third of the exponent — call it half if you insist on force-feeding the most anomalous beam values into an equilibrium calculation where they don't belong — and none of the remainder. The anomaly is real; the rescue is not.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>Keep the two registers of this chapter separate. That metals screen keV-beam fusion far more than theory predicts: established, replicated, unexplained. That screening of any measured magnitude produces watt-level fusion at 300 K: excluded by the same formalism that certifies the anomaly, by some thirty orders of magnitude. A surprising discount on the barrier is not a hole in the wall.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The sub-keV frontier</h2>
+
+      <p>Everything hinges on the lowest energies, where $f(E)$ is largest — and where experiments are hardest. Below a few keV a deuteron in a solid stops within nanometers, so the signal comes entirely from a surface layer whose deuterium content the beam itself is churning; stopping powers there are extrapolations; absolute yields are tiny; and every hour of beam time grows carbon on the spot. The modern campaigns attack the regime with new tricks, and report new anomalies.</p>
+
+      <p>At Berkeley Lab, Schenkel and colleagues (<em>J. Appl. Phys.</em> 126, 203302, 2019) sidestepped the accelerator entirely with a pulsed plasma discharge, driving deuterons of less than 2 keV onto Pd wires. Neutron yields exceeded the bare-nucleus expectation more than a hundredfold, describable by $\Ue = 1000 \pm 250\eV$ — the largest value ever reported, with the authors' own caveats prominently attached: the ion energy distribution in a discharge is broad, and the surface deuterium density during plasma loading is poorly known. The same group's ARPA-E-funded follow-up moved to calibrated beams to pin those systematics down; a December 2025 preprint from the group (Karahadian et al., arXiv:2512.06212 — a preprint, not yet peer-reviewed) reports sub-keV yields on <em>electrochemically loaded</em> Pd and Ti some eighteen orders of magnitude above the bare extrapolation.</p>
+
+      <p>The most consequential recent thread is Czerski's. His Szczecin group pushed thick-target d+d yields in ZrD₂ across seven decades of signal, down to a center-of-mass energy of 675 eV — comparable to $\Ue$ itself — and reported in <em>Physical Review X</em> (15, 041004, 2025) that below about 5 keV the data show signatures of a new reaction channel: a proposed $0^+$ <dfn title="a nuclear state lying almost exactly at the energy where a reaction channel opens">threshold resonance</dfn> in ⁴He decaying by <dfn title="nuclear de-excitation emitting an electron–positron pair instead of a gamma ray">internal electron–positron pair emission</dfn>, following the group's own theory papers (PRC 106, L011601, 2022; PRC 109, L021601, 2024). The group's zirconium-target analyses fit screening energies near 340 eV. This is register two, stated carefully: PRX is a top-tier venue and the claim passed hard review, but it is a single group's result, no independent confirmation exists, and no such resonance appears in the evaluated A = 4 level compilations. If it is real, the most-studied fusion reaction in physics has had a hidden low-energy channel for eighty years. A separate manuscript from the same group (arXiv:2409.02112, journal status unconfirmed) goes further, interpreting a sub-2.5-keV yield plateau as <em>thermal</em> fusion inside transiently molten ion tracks — a preprint-stage claim that should be read as a hypothesis, not a result.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>The pivot: what an accepted anomaly proves</h2>
+
+      <p>Recall the book's two numbers: the Gamow factor and the error bar. Every chapter so far has been about the error bar — whether calorimetry and nuclear diagnostics can be trusted. This chapter is the book's purest Gamow-factor chapter, and its lesson is double-edged.</p>
+
+      <p>Edge one: the lattice is not vacuum. A metal measurably, reproducibly modifies a nuclear reaction rate, by more than the best theory can explain, and mainstream nuclear physics has carried that open anomaly on its books for twenty-five years without resolving it. Anyone who says condensed matter cannot touch nuclear physics is wrong by direct experiment. Edge two: the touch is a caress, not a demolition. The same formalism that certifies a factor of 50 at 2.5 keV certifies tens of missing orders of magnitude at 0.025 eV. Screening moves the exponent further than anything else in this book — and still not remotely far enough.</p>
+
+      <p>There is, however, a third way to read the numbers, and it sets up the next chapter. The enhancement is enormous precisely where deuterons carry a few keV. So do not ask the lattice to fuse thermal deuterons; <em>inject hot ones</em> and let the lattice's anomalously large screening — plus its billion-fold density advantage over any plasma — do what it demonstrably does. That is exactly the design logic NASA published in 2020: an external driver makes keV deuterons inside a deuteride, where screened fusion proceeds at measurably enhanced rates. Chapter VII takes up that story, alongside the Google program's reassessment of the field's error bars.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Assenbaum, H. J., Langanke, K. &amp; Rolfs, C.</span> <em>Effects of electron screening on low-energy fusion cross sections</em>, Zeitschrift für Physik A 327, 461–468 (1987) — the screened-potential formalism, the $\sigma(E+\Ue)$ equivalence, and the $e^{\pi\eta\Ue/E}$ enhancement of §1.</li>
+          <li><span class="src-title">Czerski, K., Huke, A., Biller, A., Heide, P., Hoeft, M. &amp; Ruprecht, G.</span> <em>Enhancement of the electron screening effect for d+d fusion reactions in metallic environments</em>, Europhysics Letters 54, 449–455 (2001) — the first metal-target measurements (Al, Zr, Ta, 5–60 keV), DOI 10.1209/epl/i2001-00265-7.</li>
+          <li><span class="src-title">Kasagi, J., Yuki, H., Baba, T., Noda, T., Ohtsuki, T. &amp; Lipson, A. G.</span> <em>Strongly enhanced DD fusion reaction in metals observed for keV D⁺ bombardment</em>, Journal of the Physical Society of Japan 71, 2881–2885 (2002) — the material scan of §3, including PdO at 600 eV and the ×50 yield at 2.5 keV, DOI 10.1143/JPSJ.71.2881.</li>
+          <li><span class="src-title">Raiola, F. et al.</span> <em>Enhanced electron screening in d(d,p)t for deuterated metals</em>, European Physical Journal A 19, 283–287 (2004) — the 58-material survey and the Debye-model proposal, DOI 10.1140/epja/i2003-10125-0; temperature follow-up: <em>Enhanced d(d,p)t fusion reaction in metals</em>, Eur. Phys. J. A 27, s01, 79–82 (2006).</li>
+          <li><span class="src-title">Huke, A., Czerski, K., Heide, P., Ruprecht, G., Targosz, N. &amp; Żebrowski, W.</span> <em>Enhancement of deuteron-fusion reactions in metals and experimental implications</em>, Physical Review C 78, 015803 (2008) — the definitive systematic-error analysis; Pd at 296 ± 15 eV vs ~134 eV theory; the Debye model excluded; arXiv:0805.4538.</li>
+          <li><span class="src-title">Schenkel, T. et al.</span> <em>Investigation of light ion fusion reactions with plasma discharges</em>, Journal of Applied Physics 126, 203302 (2019) — sub-2-keV plasma-discharge yields on Pd consistent with $\Ue = 1000 \pm 250$ eV, with the authors' systematics caveats; arXiv:1905.03400.</li>
+          <li><span class="src-title">Dubey, R., Czerski, K. et al.</span> <em>Experimental signatures of a new channel of the deuteron-deuteron reaction at very low energy</em>, Physical Review X 15, 041004 (2025) — yields to $E_{\mathrm{cm}} = 675$ eV and the claimed ⁴He threshold-resonance channel of §6; arXiv:2408.07567. Single-group; awaiting independent replication.</li>
+        </ul>
+      </section>
+
+      <p class="colophon-note" style="font-family: var(--sans); font-size: 0.78rem; color: var(--text-faint); margin-top: 1.5rem;">Chapter production note: researched and drafted by Claude subagents (draft agent: <code>claude-fable-5</code>; adversarial verification pass by <code>claude-fable-5</code> scheduled — see STATUS.md), orchestrated by <code>claude-fable-5</code>. See the <a href="appendix-methods.html">methods appendix</a> for the full research process.</p>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="05-loading-the-lattice.html"><span class="label">← Previous</span>Loading the Lattice</a>
+      <a class="next" href="07-google-nasa.html"><span class="label">Next chapter</span>The Reassessment: Google and NASA →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/screening-enhancement.js"></script>
+</body>
+</html>

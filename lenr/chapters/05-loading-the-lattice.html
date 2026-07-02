@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter V · Loading the Lattice — Low-Energy Nuclear Reactions</title>
+  <meta name="description" content="The palladium–deuterium hydride, electrochemical loading, the R/R₀ measurement problem, and the contested claim that excess heat begins at D/Pd ≈ 0.875." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter V of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter V</p>
+      <h1 class="chapter-title">Loading the Lattice: Palladium as a Materials Problem</h1>
+      <p class="lede">Strip away the nuclear controversy and an experimental question remains that any metallurgist can love: how much deuterium can you force into a piece of palladium, how do you know it stayed, and why do some pieces take it while their twins refuse?</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>This chapter puts the nuclear question aside almost entirely. Palladium soaked in deuterium is a real and remarkable material — a dense metallic hydride that has been studied since 1866 — whether or not anything nuclear ever happens inside it. We will meet its two solid phases and the stress of converting between them, the electrochemical trick that turns a volt of cell overpotential into the equivalent of enormous gas pressure, and the surprisingly delicate art of measuring how much deuterium is actually inside a cathode while the experiment runs.</p>
+          <p>The reason this materials science belongs in a book about contested claims is a single empirical assertion, made most precisely by Michael McKubre's group at SRI International: that excess heat appears <em>only</em> when the deuterium-to-palladium ratio is pushed above roughly 0.875 — a regime most 1989 replication attempts never reached, and, as a well-funded 2015–2019 program discovered, one that is genuinely hard to reach on purpose. If you believe the claim, it converts a scandal into a specification. If you doubt it, it is an unfalsifiable escape hatch. Either way, it made loading the field's central materials number, and this chapter examines how that number is produced, measured, and argued over.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>palladium (Pd)</dt><dd>A silvery noble metal of the platinum group, famous since 1866 for absorbing hundreds of times its own volume of hydrogen gas.</dd>
+          <dt>face-centered cubic (fcc)</dt><dd>Palladium's crystal structure: atoms at the corners and face centers of a repeating cube.</dd>
+          <dt>interstitial site</dt><dd>A gap between the atoms of a crystal lattice where a small foreign atom can sit.</dd>
+          <dt>octahedral site</dt><dd>The interstitial gap at the center of six surrounding metal atoms in an fcc crystal — where hydrogen sits in palladium. There is exactly one per Pd atom.</dd>
+          <dt>metal hydride</dt><dd>A metal with hydrogen dissolved into (or bonded within) its lattice; PdD is an <em>interstitial</em> hydride, still metallic and conducting.</dd>
+          <dt>loading ratio ($x$)</dt><dd>The atomic ratio $x = \DPd$: deuterium atoms per palladium atom. The chapter's central variable.</dd>
+          <dt>α phase</dt><dd>The dilute solid solution: a little D dissolved in nearly pure Pd, $x$ of order a few percent at room temperature.</dd>
+          <dt>β phase</dt><dd>The concentrated hydride phase, $x \gtrsim 0.6$ at room temperature, with a visibly expanded lattice.</dd>
+          <dt>miscibility gap</dt><dd>A range of compositions a system cannot adopt as one uniform phase; between α and β, palladium splits into coexisting regions of both.</dd>
+          <dt>phase diagram</dt><dd>The map of which phase is stable at each composition, temperature, and pressure.</dd>
+          <dt>critical point</dt><dd>The temperature and pressure above which two coexisting phases merge into one; for Pd–H, near 300 °C and ~20 bar.</dd>
+          <dt>lattice parameter</dt><dd>The edge length of the repeating crystal cube, measured in ångströms; it swells as hydrogen loads.</dd>
+          <dt>Sieverts' law</dt><dd>For dilute dissolution, absorbed atomic hydrogen scales as the <em>square root</em> of gas pressure — because H₂ must split into two atoms to enter.</dd>
+          <dt>fugacity</dt><dd>The "effective pressure" of a gas in thermodynamic bookkeeping: the pressure an ideal gas would need to match the real gas's chemical driving force.</dd>
+          <dt>overpotential</dt><dd>The extra voltage, beyond the equilibrium value, applied at an electrode to drive its reaction at a finite rate.</dd>
+          <dt>current density ($i$)</dt><dd>Electric current per unit electrode area, here in mA per cm²; the knob that sets how hard electrolysis pushes.</dd>
+          <dt>Faraday constant ($F$)</dt><dd>The charge of a mole of electrons, $96{,}485$ coulombs — the conversion rate between current and reaction rate.</dd>
+          <dt>surface poison</dt><dd>A trace impurity that adsorbs on the cathode and alters its surface chemistry — blocking either deuterium entry or deuterium escape.</dd>
+          <dt>resistance-ratio method (R/R₀)</dt><dd>Inferring loading from the electrical resistance of the cathode, normalized to its hydrogen-free value — cheap, continuous, and treacherously two-valued.</dd>
+          <dt>four-terminal measurement</dt><dd>Passing current through two leads and sensing voltage with two others, so contact resistance doesn't contaminate the reading.</dd>
+          <dt>operando X-ray diffraction</dt><dd>Measuring the crystal's lattice parameter by X-ray diffraction <em>while the experiment runs</em>, giving a direct, calibration-free composition gauge.</dd>
+          <dt>hydrogen embrittlement</dt><dd>The cracking and weakening of metals infiltrated by hydrogen — the same lattice strain that makes high loading self-defeating.</dd>
+          <dt>dislocation</dt><dd>A line defect in a crystal along which planes of atoms are mis-stacked; loading stress multiplies them.</dd>
+          <dt>grain</dt><dd>A single-crystal region within an ordinary polycrystalline metal; its boundaries are fast paths and trap sites for hydrogen.</dd>
+          <dt>crystallographic texture</dt><dd>A statistical preference of grains for particular orientations, set by rolling and annealing history.</dd>
+          <dt>annealing</dt><dd>Heating a metal to heal defects and reset its microstructure — one of the levers in cathode-preparation recipes.</dd>
+          <dt>co-deposition</dt><dd>Electroplating palladium from solution <em>while</em> deuterium evolves, so the metal is born loaded instead of being filled afterwards.</dd>
+          <dt>dendrite</dt><dd>The branching, high-surface-area metal deposit that co-deposition produces — nothing like a polished bulk cathode.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>A metal that drinks deuterium</h2>
+
+      <p>Thomas Graham noticed in 1866 that palladium absorbs prodigious volumes of hydrogen; it remains the textbook <dfn title="a metal that dissolves hydrogen atoms into the gaps of its crystal lattice while remaining metallic">interstitial hydride</dfn>. Deuterium enters the metal as single atoms and sits in the <dfn title="the gap at the center of six surrounding metal atoms in a face-centered-cubic crystal">octahedral sites</dfn> of palladium's fcc lattice — one such site per Pd atom, so complete filling corresponds to one D per Pd. The composition is tracked by a single number:</p>
+
+      <div class="equation-block">
+        $$ x \;\equiv\; \DPd \;=\; \frac{N_{\mathrm{D}}}{N_{\mathrm{Pd}}}, \qquad 0 \le x \lesssim 1 . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$x$</dt><dd>The loading (dimensionless): the atomic ratio of dissolved deuterium to palladium, averaged over the cathode.</dd>
+          <dt>$N_{\mathrm{D}},\ N_{\mathrm{Pd}}$</dt><dd>Counts of deuterium and palladium atoms in the sample.</dd>
+        </dl>
+      </aside>
+
+      <p>The Pd–H(D) <dfn title="the map of which phase is stable at each composition, temperature and pressure">phase diagram</dfn> — assessed comprehensively by Manchester, San-Martín and Pitre (1994), with the thermodynamics reviewed by Flanagan and Oates (1991) — has two solid phases below a critical point near 300 °C and about 20 bar. The <em>α phase</em> is a dilute solution, a few percent D at room temperature. The <em>β phase</em> is the true hydride, beginning around $x \approx 0.6$ at room temperature. Between them lies a <dfn title="a composition range that a system cannot adopt as a single uniform phase, splitting instead into two coexisting phases">miscibility gap</dfn>: a loading cathode does not pass smoothly from empty to full but coexists as α and β regions, with a phase front sweeping through the metal. In the dilute limit the uptake follows <dfn title="dissolved atomic hydrogen scales as the square root of the gas pressure, because each H₂ molecule must dissociate into two atoms to enter the metal">Sieverts' law</dfn>, $x \propto \sqrt{P}$ — a first hint that the currency of loading is the chemical potential of <em>atoms</em>, not the pressure of molecules.</p>
+
+      <p>Loading physically swells the crystal: the lattice parameter grows from 3.89 Å in pure Pd to about 4.03 Å in the β phase — roughly 3.5% in length, 10% in volume. That expansion has two consequences that run through the whole chapter. First, density: pure Pd packs $6.8\times10^{22}$ atoms per cm³, so a cathode loaded to $x \approx 0.9$ holds roughly $5{-}6\times10^{22}$ deuterium atoms per cm³ — comparable to liquid deuterium itself ($\sim 5\times10^{22}$ atoms/cm³). Electrochemistry at room temperature quietly achieves a deuterium density that otherwise requires cryogenics. Second, stress: a 10% volume mismatch between coexisting α and β regions is enormous by metallurgical standards, and §5 shows it is the main reason high loading is so hard to keep.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>Everything in this section is established materials science, replicated for over a century and summarized in mainstream reviews. The controversy in this chapter begins only when loading numbers are <em>correlated with heat</em> (§4). Keep the two registers separate: the hydride is real; the threshold is a claim.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Volts as pressure: electrochemical loading</h2>
+
+      <p>Why electrolyze heavy water instead of simply pressurizing the metal with D₂ gas? Because a cathode is a pressure amplifier. During electrolysis, D₂O is reduced at the palladium surface, depositing adsorbed D atoms that either pair up and bubble away as D₂ or dissolve into the lattice. Driving the electrode harder — applying a cathodic <dfn title="the extra voltage beyond equilibrium applied at an electrode to drive its reaction at a finite rate">overpotential</dfn> $\eta_c$ — raises the electrochemical potential of those adsorbed atoms. If the surface stayed in equilibrium with D₂ gas, the gas would need an effective pressure — a <dfn title="the effective pressure that captures a real gas's chemical driving force in thermodynamic bookkeeping">fugacity</dfn> — larger by an exponential factor:</p>
+
+      <div class="equation-block">
+        $$ \frac{f_{\mathrm{D_2}}}{f^{\circ}} \;=\; \exp\!\left[\frac{2F\eta_c}{RT}\right],
+        \qquad \log_{10}\!\frac{f_{\mathrm{D_2}}}{f^{\circ}} \;=\; \frac{2F\eta_c}{RT\ln 10} \;\approx\; 33.8\;\frac{\eta_c}{1\,\mathrm{V}} \quad (T = 298\,\mathrm{K}). $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$f_{\mathrm{D_2}}$</dt><dd>The equivalent fugacity of D₂ (scalar, pressure units): the gas pressure that would exert the same chemical driving force on the metal.</dd>
+          <dt>$f^{\circ}$</dt><dd>The reference fugacity, 1 atm.</dd>
+          <dt>$F$</dt><dd>Faraday constant, $96{,}485\ \mathrm{C\,mol^{-1}}$ — a mole of electron charge.</dd>
+          <dt>$\eta_c$</dt><dd>Cathodic overpotential (V), taken positive here; the factor 2 counts the two electrons transferred per D₂ molecule.</dd>
+          <dt>$R$</dt><dd>Gas constant, $8.314\ \mathrm{J\,mol^{-1}\,K^{-1}}$.</dd>
+          <dt>$T$</dt><dd>Absolute temperature (K).</dd>
+        </dl>
+      </aside>
+
+      <p>Taken literally, the numbers are outlandish: one volt of overpotential is "worth" $10^{34}$ atmospheres. The honest reading is that this is the <em>ideal, reversible ceiling</em> — the Nernstian bound assuming the adsorbed layer equilibrates with the gas. Real cathodes never approach it: the same surface kinetics that evolve D₂ bubbles vent the driving force, and careful measurements in the hydrogen-charging literature find <em>actual</em> equivalent fugacities of order thousands of atmospheres, not $10^{34}$ (for steel cathodes, Liu, Atrens and co-workers measured up to $\sim 6.5\times10^{3}$ atm — Corrosion Science 87, 239, 2014). Still, thousands of atmospheres from a bench-top power supply is the whole game: it is why an electrolytic cell, and not a gas bottle, was Fleischmann and Pons's instrument, and why loading in practice is a <em>steady state</em> — a tug-of-war between electrochemical injection and leakage back out through the same surface — rather than a filling of a tank.</p>
+
+      <aside class="jargon">
+        <h4>The surface is the valve</h4>
+        <p>Because injection and escape both happen at the electrode surface, the achievable loading is controlled less by voltage than by surface chemistry: whatever slows the recombination of adsorbed D atoms into D₂ keeps the "pressure" high. This is why trace electrolyte impurities — silicates dissolved from the glass cell, boron, aluminium, even the lithium of LiOD — figure so prominently in loading recipes, and why two chemically "identical" cells can equilibrate at very different $x$. The valve, not the pump, sets the level.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Watching $x$ in real time: the R/R₀ curve</h2>
+
+      <p>You cannot weigh a cathode while it electrolyzes. The field's workhorse gauge is electrical: dissolved deuterium scatters conduction electrons, so the cathode's resistance rises as it loads. Measured with a <dfn title="current through two leads, voltage sensed with two others, so contact resistance does not contaminate the reading">four-terminal</dfn> AC bridge and normalized to the unloaded value, the ratio $R/R_0$ traces a well-established but awkward curve: it climbs to a maximum of about 2.0 near $x \approx 0.75$ for D/Pd, then <em>falls</em> with further loading — through roughly 1.7 near $x \approx 0.93$ (per the compilation of Zhang, Zhang and Zhang, 2002) and onward down toward ~1.4–1.5 as $x \to 1$. Physically, resistivity peaks where the part-filled interstitial sublattice is maximally disordered; as the sites approach complete filling, order returns and scattering drops.</p>
+
+      <p>The consequence is that the gauge is <em>two-valued</em>: a reading of $R/R_0 = 1.7$ is consistent with a mediocre loading of $x \approx 0.5$ <em>or</em> an excellent one of $x \approx 0.93$. To know which branch you are on, you must track the whole history — watch the ratio rise, crest, and descend — and trust that nothing (a crack, a temperature drift, a partial de-load) silently walked the sample back over the peak. Every quantitative loading claim of the 1990s runs through this inference. McKubre's group, who did more than anyone to calibrate and standardize the method, were explicit that it measures the <em>average</em> loading of the bulk, and published calibrations only alongside stated caveats; Zhang and co-workers devoted a seventeen-page paper to the method's failure modes (temperature coefficients, phase coexistence, surface damage, geometry changes from cracking).</p>
+
+      <p>The sharpest modern audit came from the Google-funded program (§6): Benck and co-workers, cross-checking resistance against <dfn title="X-ray diffraction performed on the working electrode during operation, reading composition directly from the lattice parameter">operando X-ray diffraction</dfn> — which reads composition directly off the swelling lattice parameter — found that at high loading the resistance proxy can seriously mislead, precisely in the regime where the contested claims live. A field whose central empirical law has a two-valued, artifact-prone instrument on its $x$-axis has a measurement problem before it has a physics problem — the "error bar" half of this book's refrain, transplanted from calorimetry to composition.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>The threshold claim: heat begins at 0.875</h2>
+
+      <p>Now the contested part. Through the 1990s, McKubre's SRI group ran mass-flow calorimetry (Chapter III) on dozens of Pd cathodes whose loading, current, and interfacial deuterium flux were logged continuously. Out of that program came the field's most-quoted empirical regularity: excess power appeared only in heavily loaded cells, and its magnitude was parametrized as</p>
+
+      <div class="equation-block">
+        $$ \Pxs \;=\; k\,\left(x - x^{\circ}\right)^{2}\left(i - i^{\circ}\right)\abs{\frac{\dd x}{\dd t}},
+        \qquad x^{\circ} \approx 0.875, \quad i^{\circ} \approx 200{-}250\ \mathrm{mA\,cm^{-2}} , $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\Pxs$</dt><dd>Excess power (W): heat out beyond all accounted input, per Chapter III's bookkeeping.</dd>
+          <dt>$x^{\circ}$</dt><dd>The claimed loading threshold (dimensionless): below it, no excess at any current. Onsets quoted between 0.84 and 0.88.</dd>
+          <dt>$i,\ i^{\circ}$</dt><dd>Electrolytic current density and its claimed threshold (mA cm⁻²).</dd>
+          <dt>$\dd x/\dd t$</dt><dd>The rate of change of loading — a deuterium <em>flux</em> through the interface; steady full cells reportedly made less heat than cells being actively worked.</dd>
+          <dt>$k$</dt><dd>A cell-specific proportionality constant. It was never given as a universal number — which is exactly what separates a parametrization from a law.</dd>
+        </dl>
+      </aside>
+
+      <p>Read the fine print in the attribution. The flow-calorimetry methods and the D/Pd-versus-H/Pd comparison were peer-reviewed (McKubre et al., <em>J. Electroanal. Chem.</em> 368, 55, 1994); the correlation itself was published in conference proceedings (ICCF-3, 1993) and EPRI contract reports, and restated years later in the field's house journal (JCMNS 4, 32, 2011). Within the EPRI program the claim is stark: every cell that reached $x &gt; 0.95$ showed excess heat, and no cell below 0.90 did. As a sociological explanation it is elegant — 1989's replicators, working with off-the-shelf palladium and no loading diagnostics, would mostly have sat near the ambient equilibrium $x \approx 0.7$, comfortably below the claimed threshold, and found nothing.</p>
+
+      <p>The standing critiques are equally clear. The correlation comes from one laboratory's own data, parametrized post hoc; the constant $k$ varies cell to cell; the $x$-axis is the two-valued resistance gauge of §3; and no hostile laboratory ever ran the protocol at $x \ge 0.95$ to check it — because, as §6 shows, reaching that regime is itself a research problem. Shanahan's calibration-shift critique of the calorimetry (Chapter III) applies here undiminished. So the threshold functions in the literature less as a tested law than as a boundary condition proponents place on replication: a claim that is simultaneously the field's best excuse and its most concrete, falsifiable materials prediction.</p>
+
+      <aside class="note">
+        <h4>Ahead of theory</h4>
+        <p>No theory — mainstream or fringe — <em>predicts</em> 0.875. The claimed threshold does not coincide with any known feature of the Pd–D phase diagram (the β phase is complete well below it; the ordered near-stoichiometric phases sit above it), and the quadratic dependence and flux term are purely descriptive. If the correlation is real, it is a lone empirical regularity awaiting a mechanism; if it is an artifact, it is a remarkably specific one. Chapter IX's ledger of results-ahead-of-theory carries it with that double flag.</p>
+      </aside>
+
+      <section class="interactive" data-widget="loading-threshold" aria-label="Interactive loading curve and excess-power threshold explorer">
+        <header>
+          <h4>Interactive · The loading threshold</h4>
+          <span class="hint">slide loading · slide current</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The resistance gauge and the threshold claim in one picture. The amber curve is a representative $R/R_0$ calibration for D/Pd — anchored at the established peak of ≈2.0 near $x \approx 0.75$, descending through ≈1.7 at $x \approx 0.93$ (Zhang et al., J. Electroanal. Chem. 528, 1, 2002; exact falling-branch values vary between laboratories) — with the ghost marker showing the <em>other</em> loading that gives the same reading. The slate curve is SRI's empirical correlation $\Pxs = k(x-0.875)^2(i - i^{\circ})$ with $i^{\circ} = 200$ mA cm⁻², the flux factor folded into $k$, and $k$ normalized illustratively so that $x=0.95$, $i=250$ mA cm⁻² gives 100 mW per cm³ of cathode (the constant is cell-specific and was never published as universal — McKubre et al., ICCF-3 1993; JCMNS 4, 32, 2011). Slide the loading below 0.875 and the prediction collapses to zero at any current: the believer's one-picture story of why 1989's replications failed.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Why nine-tenths is hard</h2>
+
+      <p>If high loading were easy, the threshold claim would have been settled in a season. It is not easy, for reasons that are pure materials science. The α→β conversion's 10% volume mismatch means a loading cathode is a solid trying to expand inside itself: the β front puts the interior under stresses that nucleate <dfn title="line defects along which crystal planes are mis-stacked">dislocations</dfn>, multiply defects, and open microcracks — the same physics as <dfn title="the cracking and weakening of metals infiltrated by hydrogen">hydrogen embrittlement</dfn>. Every crack is a new internal surface where dissolved D can recombine to D₂ and escape; a cracked cathode is a leaky tank that no overpotential can fill. High loading is therefore self-limiting: push too fast and the act of loading destroys the capacity to load.</p>
+
+      <p>The protocols that emerged read like recipes because they are recipes: load gently at low current density to move the α/β front slowly; only then raise the current toward the claimed $i^{\circ}$; manage temperature (solubility falls as temperature rises); add trace species deliberately (aluminium, boron, silicates) to condition the surface valve of §2; avoid poisons that catalyze recombination. And beneath the protocol lies the <em>materials lottery</em>, the field's open secret: nominally identical cathodes behave differently, and only some batches "work." The most systematic response was Vittorio Violante's program at ENEA Frascati, which spent two decades correlating loading success and (claimed) excess-heat occurrence with measurable metallurgy — rolling and annealing schedules, grain size, hardness, and crystallographic texture (the fraction of grains near ⟨100⟩ orientation) — and claimed, in conference proceedings and reports, reproducible $x &gt; 0.95$ in foils manufactured to spec, with ENEA-fabricated foils used in the SRI and Energetics replication campaigns of Chapter III. The metallurgy itself is solid and was adopted by other laboratories; the correlation with heat remains proceedings-grade — it has never been published in a mainstream refereed journal.</p>
+
+      <aside class="jargon">
+        <h4>The lottery as evidence</h4>
+        <p>Both camps claim the batch-to-batch capriciousness as support. To proponents it shows the effect depends on uncontrolled microstructural variables — exactly what you expect if some rare defect geometry or impurity site is the active ingredient. To skeptics it is the classic signature of an artifact hunted through an uncontrolled parameter space: with enough cathodes and no pre-registered criterion, some batch will always "work." The materials science that would distinguish these — full characterization before, during, and after a blinded, adversarial run — is precisely what §8 specifies and what has never been done.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The Google program buys a better gauge</h2>
+
+      <p>The most consequential modern test of this chapter's claims came from the Google-funded, four-laboratory program (2015–2019) whose public summary appeared in <em>Nature</em> (Berlinguette et al., 570, 45, 2019). One of its three thrusts aimed squarely at the loading question: build cells that reach and <em>hold</em> $\DPd \ge 0.875$, instrument them properly, and see. Two results matter here. First, the program's materials paper (Benck et al., <em>Chemistry of Materials</em> 31, 4234, 2019) reached a maximum loading of $x = 0.96 \pm 0.02$ — measured by operando X-ray diffraction rather than resistance, using aqueous, polymer, and ceramic solid electrolytes — and demonstrated along the way that the resistance-ratio proxy misleads at high $x$. Second, and more sobering: across several dozen attempts, the program exceeded the 0.875 benchmark <em>only twice</em>, transiently; sustaining the claimed active regime under calorimetry proved out of reach even for a well-funded team that wanted to get there. No excess heat was observed in any properly instrumented run.</p>
+
+      <p>The epistemics deserve to be stated with care, because the paper itself states them with care. The program's null is devastating to any reading of the literature in which high loading is <em>easy</em> and heat is <em>common</em> — it explains thirty years of failed replications in one stroke. But it is explicitly <em>not</em> a refutation of the SRI correlation, because the correlation's own operating point was barely ever reached: a threshold claim is untested, not falsified, by experiments that stay below the threshold. (Proponents add that the record 0.96 was achieved with protium, not deuterium, and not in a heat-measuring cell.) The authors' verdict — no anomalies found, parameter space genuinely under-explored, better tools now exist — is the rare sentence in this field that both camps quote approvingly. What the program unambiguously delivered is the gauge this chapter has been missing: loading numbers you do not have to take on faith.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>Skipping the queue: co-deposition</h2>
+
+      <p>There is a claimed shortcut around the whole loading problem. In <dfn title="electroplating palladium from a dissolved salt while simultaneously evolving deuterium, so the fresh metal deposit forms already loaded">co-deposition</dfn>, introduced by Stanislaw Szpak and Pamela Mosier-Boss at the Navy's SPAWAR laboratory in San Diego (Szpak, Mosier-Boss and Smith, <em>J. Electroanal. Chem.</em> 302, 255, 1991), no bulk cathode is loaded at all. Palladium is electroplated from PdCl₂ dissolved in D₂O onto an inert substrate <em>while</em> deuterium evolves, so each freshly deposited atomic layer forms already saturated: effectively instant high loading, in minutes instead of weeks, without the α/β stress history of a bulk foil. The deposit is a black, branching, dendritic sponge of enormous surface area — as far from Violante's engineered foils as palladium gets. Proponents report that co-deposition cells show their claimed effects promptly and, by the standards of this field, reproducibly; the approach supplied the CR-39 track-detector evidence — including the disputed "triple tracks" attributed to energetic neutrons — that Chapter IV examined in detail.</p>
+
+      <p>The critiques mirror the design. The plated film is thin and its mass tiny, so claimed heat signals are small and the calorimetry correspondingly delicate; the violent surface chemistry of simultaneous plating and gas evolution is exactly the environment in which chemical damage to a plastic track detector is most plausible (Kowalski's published critique of the CR-39 interpretation, and the wider exchange, are covered in Chapter IV); and the signature claims have not been reproduced outside the network of collaborating laboratories. Co-deposition's real significance for <em>this</em> chapter is conceptual: it concedes the premise that bulk loading is the bottleneck, and bets the field's chips on the near-surface, high-flux, defect-rich regime instead — the same corner of parameter space where §4's flux term $\abs{\dd x/\dd t}$ already pointed.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§8</span>A materials specification for a definitive experiment</h2>
+
+      <p>This chapter's payoff is that the controversy now has a bill of materials. Whatever one believes about the heat, the loading claim is concrete enough to specify the experiment that would test it, component by component: cathodes metallurgically characterized before the run (texture, hardness, grain size, impurity assay — Violante's checklist); loading driven by a protocol capable of $x \ge 0.95$ and <em>measured by operando diffraction</em>, not by the two-valued resistance gauge alone (Benck's contribution); current density held above the claimed $i^{\circ}$ with deliberate flux excursions (McKubre's correlation); heat measured by a calorimeter of Chapter III's best class, with Chapter IV's nuclear diagnostics running throughout; and the whole thing executed with pre-registered criteria by a team with no stake in the outcome. Every element exists; they have never been assembled in one adversarial experiment. That assembly is Chapter X's subject.</p>
+
+      <p>Notice, finally, where this chapter sits in the book's frame — <em>the Gamow factor and the error bar</em>. Loading is the field's claimed lever on the first number: proponents' theories (Chapter IX) need the dense, confined, screened deuterium of the β phase, and the threshold claim asserts the tunneling-relevant conditions switch on only near full occupancy. Materials characterization is the second number: until $x$ itself is measured with an instrument that cannot lie about which branch it is on, the field's central empirical law has error bars on its <em>x-axis</em> as well as its <em>y</em>. The next chapter turns to the one place where a metal lattice has been <em>proven</em> — in accelerator beams, by mainstream groups, with mainstream referees — to change a nuclear reaction rate: electron screening.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Flanagan, T. B. &amp; Oates, W. A.</span> <em>The palladium–hydrogen system</em>, Annual Review of Materials Science 21, 269–304 (1991) — the standard review of the hydride's thermodynamics and phases. DOI 10.1146/annurev.ms.21.080191.001413.</li>
+          <li><span class="src-title">Manchester, F. D., San-Martín, A. &amp; Pitre, J. M.</span> <em>The H–Pd (hydrogen–palladium) system</em>, Journal of Phase Equilibria 15, 62–83 (1994) — the assessed phase diagram used in §1. DOI 10.1007/BF02667685.</li>
+          <li><span class="src-title">McKubre, M. C. H., Crouch-Baker, S., Rocha-Filho, R. C., Smedley, S. I., Tanzella, F. L., Passell, T. O. &amp; Santucci, J.</span> <em>Isothermal flow calorimetric investigations of the D/Pd and H/Pd systems</em>, Journal of Electroanalytical Chemistry 368, 55–66 (1994) — the peer-reviewed core of the SRI loading-and-heat program; the threshold correlation itself is in ICCF-3 proceedings (1993) and EPRI reports TR-104195/TR-107843.</li>
+          <li><span class="src-title">Zhang, W.-S., Zhang, Z.-F. &amp; Zhang, Z.-L.</span> <em>Some problems on the resistance method in the in situ measurement of hydrogen content in palladium electrode</em>, Journal of Electroanalytical Chemistry 528, 1–17 (2002) — the R/R₀ gauge and its failure modes.</li>
+          <li><span class="src-title">Benck, J. D., Jackson, A., Young, D., Rettenwander, D. &amp; Chiang, Y.-M.</span> <em>Producing high concentrations of hydrogen in palladium via electrochemical insertion from aqueous and solid electrolytes</em>, Chemistry of Materials 31, 4234–4245 (2019) — the Google program's loading record (x = 0.96 ± 0.02, operando XRD) and the audit of resistance proxies. DOI 10.1021/acs.chemmater.9b01243; arXiv:1808.01555.</li>
+          <li><span class="src-title">Berlinguette, C. P., Chiang, Y.-M., Munday, J. N., Schenkel, T., Fork, D. K., Koningstein, R. &amp; Trevithick, M. D.</span> <em>Revisiting the cold case of cold fusion</em>, Nature 570, 45–51 (2019) — the program overview; the 0.875 benchmark was exceeded only twice over several dozen tests. DOI 10.1038/s41586-019-1256-6.</li>
+          <li><span class="src-title">Szpak, S., Mosier-Boss, P. A. &amp; Smith, J. J.</span> <em>On the behavior of Pd deposited in the presence of evolving deuterium</em>, Journal of Electroanalytical Chemistry 302, 255–260 (1991) — the original co-deposition paper (§7).</li>
+        </ul>
+      </section>
+
+      <p class="colophon-note" style="font-family: var(--sans); font-size: 0.78rem; color: var(--text-faint); margin-top: 1.5rem;">Chapter production note: researched and drafted by Claude subagents (draft agent: <code>claude-fable-5</code>; adversarial verification pass by <code>claude-fable-5</code> scheduled — see STATUS.md), orchestrated by <code>claude-fable-5</code>. See the <a href="appendix-methods.html">methods appendix</a> for the full research process.</p>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="04-nuclear-evidence.html"><span class="label">← Previous</span>The Claimed Nuclear Evidence</a>
+      <a class="next" href="06-electron-screening.html"><span class="label">Next chapter</span>Electron Screening: The Accepted Anomaly →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/loading-threshold.js"></script>
+</body>
+</html>
