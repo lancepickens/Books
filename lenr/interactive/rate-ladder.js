@@ -78,11 +78,13 @@
     { v: 8.5,   top: true,  label: "ddμ measured",  sub: "10⁸–10⁹ s⁻¹" }
   ];
 
-  // ── Self-mount ──
-  document.querySelectorAll("[data-widget='rate-ladder']").forEach(section => {
-    const host = section.querySelector(".widget-mount");
-    if (host) build(host);
-  });
+  // ── Self-mount (skipped in DOM-free harnesses) ──
+  if (typeof document !== "undefined") {
+    document.querySelectorAll("[data-widget='rate-ladder']").forEach(section => {
+      const host = section.querySelector(".widget-mount");
+      if (host) build(host);
+    });
+  }
 
   function build(host) {
     host.innerHTML = "";

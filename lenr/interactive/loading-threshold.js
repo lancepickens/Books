@@ -1,10 +1,13 @@
 /* Chapter V widget — Loading the lattice: the R/R0 curve and the threshold.
    Left/primary curve: the in-situ resistance-ratio calibration R/R0 vs
    loading x = D/Pd — a representative piecewise-linear digitization anchored
-   at the established peak R/R0 ~= 2.0 near x ~= 0.75 (McKubre & Tanzella,
-   "Using resistivity to measure H/Pd and D/Pd loading"; Zhang, Zhang & Zhang,
-   J. Electroanal. Chem. 528, 1 (2002), which gives rho_beta/rho_Pd = 1.72
-   at x = 0.93). Exact falling-branch values vary between laboratories
+   at the established peak R/R0 ~= 2.0 near x ~= 0.74-0.75, with the falling
+   branch following the polynomial calibration of McKubre & Tanzella,
+   J. Condensed Matter Nucl. Sci. 29, 129 (2019): rho_beta/rho_Pd =
+   0.97869 + 3.0001x - 15.090x^2 + 44.155x^3 - 49.119x^4 + 17.577x^5
+   (= 1.80 at x = 0.90, 1.72 at 0.93, 1.66 at 0.95, 1.50 at 1.0).
+   Method failure modes: Zhang, Zhang & Zhang, J. Electroanal. Chem. 528,
+   1 (2002). Exact falling-branch values vary between laboratories
    (Benck et al., Chem. Mater. 31, 4234 (2019) showed resistance proxies
    mislead at high x) — the two-branch ambiguity is the physics point.
    Second curve: SRI's empirical excess-power correlation
@@ -34,12 +37,13 @@
   // ── Pure physics (DOM-free; exercised by the JSDOM harness) ──
 
   // Representative R/R0 vs x calibration for D/Pd (see header comment).
-  // Peak 2.0 at x = 0.75 (established); falling branch through 1.72 at 0.93.
+  // Peak 2.0 at x = 0.75 (established); falling branch per the
+  // McKubre-Tanzella polynomial (1.80/1.72/1.66/1.50 at 0.90/0.93/0.95/1.0).
   const RR0_POINTS = [
     [0.00, 1.00], [0.10, 1.13], [0.20, 1.28], [0.30, 1.43], [0.40, 1.58],
     [0.50, 1.73], [0.60, 1.86], [0.70, 1.97], [0.75, 2.00],
-    [0.80, 1.93], [0.85, 1.85], [0.90, 1.78], [0.93, 1.72], [0.95, 1.66],
-    [1.00, 1.45]
+    [0.80, 1.97], [0.85, 1.90], [0.90, 1.80], [0.93, 1.72], [0.95, 1.66],
+    [1.00, 1.50]
   ];
   const X_PEAK = 0.75;
 
