@@ -16,6 +16,7 @@ Self-contained HTML book at `lenr/`. Open by serving over HTTP:
 - `book.js` — KaTeX bootstrap. Macros: `\dd \half \unit{} \abs{} \eV \keV \MeV \Ue \EG \nuc{}{} \Pd \Dtwo \DPd \Pxs \Sfac \barns \lam`. KaTeX built-ins `\eta` (Sommerfeld), `\sigma` (cross section), `\theta`, `\Gamma` used directly, never shadowed.
 - `chapters/` — 10 chapters + `appendix-methods.html` (planned)
 - `interactive/` — one widget per chapter (planned)
+- `low-energy-nuclear-reactions.pdf` — **offline PDF** of the whole book (195 pp), rendered from the HTML by headless Chromium with KaTeX injected locally (the CDNs are unreachable from the sandbox), math and widget SVGs captured as static snapshots. Regenerate with `scratchpad/pdfbuild/render.js`.
 
 ## Editorial direction
 
