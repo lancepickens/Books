@@ -7,7 +7,7 @@
    V = 4.5 V, γ = 0 → P_heat = 1.487 W, apparent excess 0; γ = 0.10 → apparent
    excess 76 mW ≈ 5.1% of the γ=0 heat. Sources: Fleischmann & Pons, JEAC 287,
    293 (1990) enthalpy balance; Miles, JCMNS 33, 74 (2020) Etn(D2O) = 1.5267 V;
-   Lewis et al., Science 246, 793 (1989) recombination critique. */
+   Miskelly et al. (Lewis group), Science 246, 793 (1989) recombination critique. */
 
 (function () {
   "use strict";

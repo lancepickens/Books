@@ -45,11 +45,13 @@
     return log10FApprox(2, UeEV);
   }
 
-  // ── Self-mount ──
-  document.querySelectorAll("[data-widget='screening-enhancement']").forEach(section => {
-    const host = section.querySelector(".widget-mount");
-    if (host) build(host);
-  });
+  // ── Self-mount (guarded so the module is require-able in Node) ──
+  if (typeof document !== "undefined") {
+    document.querySelectorAll("[data-widget='screening-enhancement']").forEach(section => {
+      const host = section.querySelector(".widget-mount");
+      if (host) build(host);
+    });
+  }
 
   function build(host) {
     host.innerHTML = "";
