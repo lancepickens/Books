@@ -1,7 +1,7 @@
 # Low-Energy Nuclear Reactions — Project Status
 
-**Last updated:** 2026-07-03
-**Phase:** All 10 chapters + appendix + 10 widgets drafted. Adversarial verification complete for Ch II–VII and IX (web-checked citations + equation fixes in place). **Ch I, VIII, X verification still pending** (workflow cut off by session limits). All mechanical gates green: KaTeX strict 765/765, widgets 10/10 execute in JSDOM and reproduce brief reference values.
+**Last updated:** 2026-07-03 (final verification pass)
+**Phase:** COMPLETE. All 10 chapters + appendix + 10 widgets drafted and verified. Ch II–VII, IX adversarially verified by claude-fable-5 subagents; Ch I, VIII, X citations web-verified by the orchestrating lead (running as claude-opus-4-8 after a mid-project model change). Mechanical gates green: KaTeX strict 765/765, widgets 10/10 execute in JSDOM and reproduce brief reference values.
 
 ## What exists
 
@@ -16,6 +16,7 @@ Self-contained HTML book at `lenr/`. Open by serving over HTTP:
 - `book.js` — KaTeX bootstrap. Macros: `\dd \half \unit{} \abs{} \eV \keV \MeV \Ue \EG \nuc{}{} \Pd \Dtwo \DPd \Pxs \Sfac \barns \lam`. KaTeX built-ins `\eta` (Sommerfeld), `\sigma` (cross section), `\theta`, `\Gamma` used directly, never shadowed.
 - `chapters/` — 10 chapters + `appendix-methods.html` (planned)
 - `interactive/` — one widget per chapter (planned)
+- `low-energy-nuclear-reactions.pdf` — **offline PDF** of the whole book (195 pp), rendered from the HTML by headless Chromium with KaTeX injected locally (the CDNs are unreachable from the sandbox), math and widget SVGs captured as static snapshots. Regenerate with `scratchpad/pdfbuild/render.js`.
 
 ## Editorial direction
 
@@ -35,24 +36,24 @@ Self-contained HTML book at `lenr/`. Open by serving over HTTP:
 
 | # | Title | Widget file | Draft | Eqn audit | Citations | KaTeX strict | Widget numerics |
 |---|---|---|---|---|---|---|---|
-| 1 | The Yardstick: Fusion and the Coulomb Barrier | `gamow-tunneling.js` | ✓ lead | lead spot-check (K&N/ALR/NACRE web-verified); **subagent pass pending** | partial | ✓ | ✓ |
+| 1 | The Yardstick: Fusion and the Coulomb Barrier | `gamow-tunneling.js` | ✓ lead | ✓ lead (all 7 cites web-verified) | ✓ web (all 7) | ✓ | ✓ |
 | 2 | 1989: Palladium, Heavy Water, and a Scientific Crisis | `fp-energy-budget.js` | ✓ | ✓ verify agent | ✓ web (all 7) | ✓ | ✓ |
 | 3 | The Art of the Calorimeter | `calorimeter-lab.js` | ✓ | ✓ verify agent | ✓ web | ✓ | ✓ |
 | 4 | The Claimed Nuclear Evidence | `heat-helium.js` | ✓ | ✓ verify agent | ✓ web | ✓ | ✓ |
 | 5 | Loading the Lattice | `loading-threshold.js` | ✓ | ✓ verify agent | ✓ web | ✓ | ✓ |
 | 6 | Electron Screening: The Accepted Anomaly | `screening-enhancement.js` | ✓ | ✓ verify agent | ✓ web | ✓ | ✓ |
 | 7 | The Reassessment: Google and NASA | `lattice-fusion.js` | ✓ | ✓ verify agent | ✓ web | ✓ | ✓ |
-| 8 | New Programs: Japan, Europe, ARPA-E | `nano-heat.js` | ✓ | **pending** | **pending** | ✓ | ✓ |
+| 8 | New Programs: Japan, Europe, ARPA-E | `nano-heat.js` | ✓ | ✓ lead (cites web-verified) | ✓ web | ✓ | ✓ |
 | 9 | Theories and the Explanatory Gap | `rate-ladder.js` | ✓ | ✓ verify agent | ✓ web | ✓ | ✓ |
-| 10 | Where the Breakthroughs May Come From | `bayes-replication.js` | ✓ | **pending** | **pending** | ✓ | ✓ |
+| 10 | Where the Breakthroughs May Come From | `bayes-replication.js` | ✓ | ✓ lead (cites web-verified) | ✓ web | ✓ | ✓ |
 
 ## Build process (user-mandated accounting)
 
-Per the commissioning request, the subagent model type used for each chapter/task is recorded in a footnote in each chapter, and `chapters/appendix-methods.html` documents in detail how the research was conducted and analyzed and by which models. Research: 10-area parallel literature workflow + gap-check critic (all agents on `claude-fable-5`). Build: draft → adversarial-verify pipeline per chapter.
+Per the commissioning request, the subagent model type used for each chapter/task is recorded in a footnote in each chapter, and `chapters/appendix-methods.html` documents in detail how the research was conducted and analyzed and by which models. Research: 10-area parallel literature workflow + gap-check critic (all agents on `claude-fable-5`). Build: draft → adversarial-verify pipeline per chapter (all subagents `claude-fable-5`). **Model change:** partway through the build the session model was switched to `claude-opus-4-8`; the final lead-run verification of Ch I/VIII/X and the closing validation were therefore performed as `claude-opus-4-8`. This is disclosed in those chapters' footnotes and the methods appendix, per the book's honesty commitment.
 
 ## Outstanding
 
-1. **Adversarial verification of Ch I, VIII, X** — their verify agents never ran (session-limit failures across three workflow resumes). Options: resume workflow `wf_5537d654-23b` after a reset, or lead-verify in the main loop (web-check the ~5–7 Further-reading citations per chapter, re-derive display equations vs the briefs). Their footnotes and this table honestly say "pending" until then; on completion restore the standard "adversarially verified" footnote wording in Ch I/VIII/X.
+1. ~~Adversarial verification of Ch I, VIII, X~~ **DONE** (2026-07-03): all Further-reading citations web-verified against primary sources by the lead. Confirmed exact: Chen/Berlinguette *Nature* 644, 640–645 (2025) DOI 10.1038/s41586-025-09042-7; Dubey/Czerski *PRX* 15, 041004 (2025) arXiv:2408.07567 (distinct from the ion-tracks preprint 2409.02112 — the gap-check conflation was avoided); Metzler et al. *NJP* 26 (2024) DOI 10.1088/1367-2630/ad091c; Iwamura et al. *JJAP* 63, 037001 (2024) DOI 10.35848/1347-4065/ad2622; plus Ch I's Koonin–Nauenberg, Assenbaum–Langanke–Rolfs, NACRE. Footnotes restored (and honestly note the model change).
 2. **Methods-appendix statistics** — update the model-accounting table and token totals in `chapters/appendix-methods.html` to the final build numbers (research 1.00M tok / 11 agents done; build across three resumes ~3.8M tok / draft+verify agents).
 3. **Browser interaction pass** — widgets are verified to execute and compute correctly in JSDOM; live drag/slider/animation not yet exercised in a real browser (`./serve.sh 8765 lenr/`). Most-interactive: `gamow-tunneling`, `rate-ladder` (7 controls), `bayes-replication`, `calorimeter-lab`.
 

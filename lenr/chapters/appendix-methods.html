@@ -78,12 +78,13 @@
             <tr><td style="padding: 0.35rem 0.6rem;">Literature-research agents (areas 1–10)</td><td style="padding: 0.35rem 0.6rem;">10</td><td style="padding: 0.35rem 0.6rem;"><code>claude-fable-5</code></td></tr>
             <tr><td style="padding: 0.35rem 0.6rem;">Completeness critic (gap-check)</td><td style="padding: 0.35rem 0.6rem;">1</td><td style="padding: 0.35rem 0.6rem;"><code>claude-fable-5</code></td></tr>
             <tr><td style="padding: 0.35rem 0.6rem;">Chapter draft agents (Ch. II–X)</td><td style="padding: 0.35rem 0.6rem;">9</td><td style="padding: 0.35rem 0.6rem;"><code>claude-fable-5</code></td></tr>
-            <tr><td style="padding: 0.35rem 0.6rem;">Adversarial verification agents (Ch. I–X)</td><td style="padding: 0.35rem 0.6rem;">10</td><td style="padding: 0.35rem 0.6rem;"><code>claude-fable-5</code></td></tr>
+            <tr><td style="padding: 0.35rem 0.6rem;">Adversarial verification agents (Ch. II–VII, IX)</td><td style="padding: 0.35rem 0.6rem;">7</td><td style="padding: 0.35rem 0.6rem;"><code>claude-fable-5</code></td></tr>
+            <tr><td style="padding: 0.35rem 0.6rem;">Lead-run citation verification (Ch. I, VIII, X)</td><td style="padding: 0.35rem 0.6rem;">1 lead</td><td style="padding: 0.35rem 0.6rem;"><code>claude-opus-4-8</code></td></tr>
           </tbody>
         </table>
       </div>
 
-      <p>Total: 31 subagent invocations orchestrated by one lead, all <code>claude-fable-5</code>. No smaller or larger model tiers were used at any stage; where a footnote names a "draft agent" or "verification agent," the distinction is one of role and independent context, not of model capability.</p>
+      <p>The research and drafting agents, the completeness critic, and the seven completed adversarial-verification agents all ran on <code>claude-fable-5</code>. Partway through the build, however, the interactive session's model was changed to <code>claude-opus-4-8</code>, and three chapters' verification passes (Ch. I, VIII, X) had been deferred by repeated token-budget limits. Those three were therefore verified directly by the orchestrating lead <em>after</em> the switch — so their citation web-checks and this appendix's final assembly were performed as <code>claude-opus-4-8</code>, not <code>claude-fable-5</code>. We record this because a book whose subject is honest accounting of who-measured-what cannot be casual about who-wrote-what: the per-chapter footnotes name the model that actually did each chapter's verification, and they do not all say the same thing.</p>
 
       <h2><span class="sec-num">§7</span>Honest limitations</h2>
 
