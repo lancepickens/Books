@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter VII · The Reassessment — Low-Energy Nuclear Reactions</title>
+  <meta name="description" content="Google's multi-lab null result in Nature and NASA's lattice confinement fusion in Physical Review C: how the question re-entered mainstream venues on mainstream terms." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter VII of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter VII</p>
+      <h1 class="chapter-title">The Reassessment: Google and NASA</h1>
+      <p class="lede">Thirty years after the press conference, the question came back to Nature and Physical Review C — asked properly this time, and answered in two very different ways.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>By 2015 the field described in Chapters II–VI had spent a quarter-century outside the mainstream: its claims lived in conference proceedings and specialty journals, and no top-tier venue would touch the subject. This chapter is about the two programs that changed that — not by validating cold fusion, but by re-opening the question in the places where physics is normally settled. Google quietly funded about thirty researchers across five institutions to re-test the three strongest historical claims with modern instruments, and published the result — a careful null — in <em>Nature</em>. NASA's Glenn Research Center, meanwhile, published in <em>Physical Review C</em> a demonstration that real d–d fusion can be made to happen <em>inside</em> a deuterated metal, provided you supply the energy from outside with MeV photons.</p>
+          <p>Our two running numbers organize the pair neatly. The Google program was an assault on the <em>error bar</em>: build calorimeters, loading probes, and tritium detectors good enough that an anomaly could not hide — and find that none does, down to tens of milliwatts. The NASA program was an assault on the <em>Gamow factor</em>: put keV-scale kinetic energy into deuterons that are already sitting in a lattice at enormous density, and let the metal's electrons help from there. One tightened the measurement; the other raised the tunneling probability — with hot deuterons, which is exactly why it is not cold fusion. Both left the field with something it had lacked since 1989: peer-reviewed coordinates for what is actually known.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>Nature Perspective</dt><dd>A commissioned, peer-reviewed review-and-opinion article in <em>Nature</em> — a venue statement that a topic is worth mainstream attention, distinct from a research Article.</dd>
+          <dt>null result</dt><dd>An experiment that finds no effect at its stated sensitivity. Informative in proportion to how good the sensitivity is.</dd>
+          <dt>loading ratio ($\DPd$)</dt><dd>The atomic ratio of dissolved deuterium to palladium; proponents' claimed threshold for excess heat is $\DPd \gtrsim 0.875$ (Chapter V).</dd>
+          <dt>operando measurement</dt><dd>Measuring a material's state (here, its hydrogen content) continuously <em>while</em> the experiment runs, rather than inferring it before or after.</dd>
+          <dt>X-ray diffraction (XRD)</dt><dd>Reading a crystal's lattice spacing from the angles at which it scatters X-rays; the Pd lattice swells measurably as hydrogen loads, so XRD gives a direct loading gauge.</dd>
+          <dt>resistance-ratio proxy</dt><dd>Inferring loading from the electrical resistance of the Pd electrode — the field's traditional gauge, shown by the Google teams to mislead badly at high loading.</dd>
+          <dt>coefficient of performance (COP)</dt><dd>Heat out divided by power in; COP = 1 means ordinary chemistry and physics, COP &gt; 1 would mean excess heat.</dd>
+          <dt>glow discharge</dt><dd>A low-pressure plasma sustained by a voltage between electrodes — the regime of neon signs, and of the Google program's pulsed-plasma experiments.</dd>
+          <dt>beam–target fusion</dt><dd>Fusion produced by accelerating ions into a stationary target; conventional, well-calibrated, and the workhorse for measuring screening.</dd>
+          <dt>screening potential ($\Ue$)</dt><dd>The effective energy boost that surrounding electrons give a fusing pair (Chapters I and VI); measured in eV, and anomalously large in metals.</dd>
+          <dt>bremsstrahlung</dt><dd>"Braking radiation": the continuous X-ray/gamma spectrum emitted when fast electrons decelerate in a heavy target. Its maximum photon energy equals the electron beam energy (the <em>endpoint</em>).</dd>
+          <dt>linac</dt><dd>A linear accelerator; NASA used a medical-type electron linac to make its bremsstrahlung photons.</dd>
+          <dt>photodisintegration</dt><dd>Breaking a nucleus apart with a photon; for the deuteron, $\gamma + \mathrm{d} \to \mathrm{n} + \mathrm{p}$ once the photon exceeds the deuteron's binding energy.</dd>
+          <dt>deuteron binding energy ($B_d$)</dt><dd>The 2.2246 MeV holding a deuteron's proton and neutron together — the threshold a photon must beat to split it.</dd>
+          <dt>photoneutron</dt><dd>A neutron released by photodisintegration.</dd>
+          <dt>knock-on collision</dt><dd>An elastic collision in which a fast particle transfers part of its kinetic energy to a struck nucleus, setting it in motion inside the material.</dd>
+          <dt>elastic scattering</dt><dd>A collision that conserves total kinetic energy — the billiard-ball case, governed purely by masses and angles.</dd>
+          <dt>neutron moderation</dt><dd>The stepwise slowing of neutrons by elastic collisions with light nuclei; the same kinematics NASA runs in reverse to heat deuterons.</dd>
+          <dt>lattice confinement fusion (LCF)</dt><dd>NASA's name for fusion of energetic deuterons occurring inside a deuterated metal, where the lattice supplies fuel density and electron screening while an external driver supplies the energy.</dd>
+          <dt>erbium deuteride (ErD₃)</dt><dd>A metal hydride that packs deuterium to roughly $10^{23}$ atoms per cm³ — about a billion times the fuel density of a tokamak plasma. Titanium deuteride (TiD₂) is similar.</dd>
+          <dt>Oppenheimer–Phillips reaction</dt><dd>A deuteron grazing a heavy nucleus can hand over just its neutron, its proton never surmounting the Coulomb barrier — a "stripping" reaction that needs less energy than full fusion.</dd>
+          <dt>scintillator</dt><dd>A material that flashes light when radiation deposits energy in it; the flash shape and size encode the particle's type and energy.</dd>
+          <dt>pulse-shape discrimination</dt><dd>Telling neutrons from gamma rays by the differing time-profile of their scintillation flashes — hard to do perfectly inside an intense gamma field.</dd>
+          <dt>spectrum unfolding</dt><dd>Reconstructing the true energy spectrum of incoming particles from a detector's indirect response — a model-dependent inversion, and a classic home for systematic error.</dd>
+          <dt>overpotential</dt><dd>The extra voltage applied to an electrode beyond the thermodynamic minimum; it acts like pressure, forcing more deuterium into the metal.</dd>
+          <dt>breakeven</dt><dd>The point where a fusion system releases as much energy as it consumes. Neither program came anywhere near it, and neither claimed to.</dd>
+          <dt>ARPA-E</dt><dd>The U.S. Department of Energy's high-risk research agency, whose 2022–2023 LENR funding program is the subject of Chapter VIII.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>Why Google funded it</h2>
+
+      <p>The Google program began, by its organizers' own account, with a question of due diligence rather than belief. Matt Trevithick and Ross Koningstein of Google asked whether the 1989 claims had ever been tested with instruments good enough to settle them — and concluded, after canvassing the literature and the field's own veterans, that they had not. Even Michael McKubre, the field's most careful electrochemist (Chapter III), conceded in 2018 that "to my knowledge there is no written replicable procedure or protocol." So from 2015 to late 2019, Google funded roughly USD 10 million of work by about thirty researchers across the University of British Columbia, MIT, the University of Maryland, Lawrence Berkeley National Laboratory, and Google itself — with an unusual mandate: publish whatever you find, positive or null, in peer-reviewed venues.</p>
+
+      <p>The public disclosure came all at once, in a 2019 <em>Nature</em> Perspective: Berlinguette, Chiang, Munday, Schenkel, Fork, Koningstein and Trevithick, "Revisiting the cold case of cold fusion." Its headline sentence is the most-quoted null in the field's modern history: the team "found no evidence of anomalous effects claimed by proponents of cold fusion that cannot otherwise be explained prosaically." But the same paper argues, with equal care, that the parameter space where the claims live — very highly loaded metal hydrides, calorimetry under extreme conditions, nuclear reactions at eV-to-keV energies inside lattices — is genuinely under-explored, and that the instruments built to explore it have value regardless of the answer. Both halves of that sentence matter; the rest of this chapter unpacks them.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>A Perspective is not a research Article, and the program's primary data live in about a dozen separate peer-reviewed papers cited below. The <em>Nature</em> venue mattered less for the data than for the permission it granted: after May 2019 it was once again respectable to say, in a mainstream journal, that this parameter space deserved instruments.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Three thrusts, three answers</h2>
+
+      <p>The program organized itself around the three strongest historical claims, and its findings are best kept separate, because they are of three different kinds.</p>
+
+      <p><em>Thrust A: highly loaded Pd–D electrochemistry.</em> The Fleischmann–Pons claim, refined by McKubre's correlation (Chapter V), holds that excess heat requires sustained loading $\DPd \gtrsim 0.875$. The Google teams found that merely <em>reaching</em> that regime — and knowing you have reached it — is brutally hard. Over several dozen electrochemical runs the 0.875 benchmark was exceeded only twice, fleetingly. In a companion <em>Chemistry of Materials</em> study, Benck et al. pushed palladium to a loading of $x = 0.96 \pm 0.02$ (with protium, not deuterium) and, crucially, showed by operando X-ray diffraction that the field's traditional resistance-ratio proxy for loading can badly mislead at high $x$ — meaning that decades of claimed loadings above 0.9 carry an unquantified calibration risk. In properly instrumented runs, calorimetry at tens-of-milliwatt sensitivity found no excess heat. The honest verdict, stated candidly in the Perspective itself, is not "refuted" but "not yet tested at scale": the claimed regime was too hard to hold long enough to run the heat measurement proponents ask for.</p>
+
+      <p><em>Thrust B: pulsed plasma discharges.</em> To re-test the 1990s Los Alamos claims of tritium from pulsed deuterium discharges onto palladium wires, Thomas Schenkel's group at Berkeley Lab ran benchtop glow-discharge experiments for days to weeks at a time: peak ion current densities of 0.1 to several A/cm² at keV-scale cathode voltages. The LENR-style result was null — no tritium above background, and no 2.22 MeV neutron-capture gammas beyond what ordinary beam–target d–d fusion predicts. But the conventional physics produced the program's most interesting number: at center-of-mass energies $E_{\mathrm{cm}} \lesssim 2\keV$, the measured d–d neutron yields ran more than $100\times$ above the bare-nucleus extrapolation, consistent with a screening potential of $\Ue = 1000 \pm 250\eV$ in the deuterated palladium target (Schenkel et al., <em>J. Appl. Phys.</em> 126, 203302, 2019). Recall from Chapter VI the operative formula:</p>
+
+      <div class="equation-block">
+        $$ f(E) \;=\; \frac{\sigma_{\mathrm{screened}}(E)}{\sigma_{\mathrm{bare}}(E)} \;\approx\; \exp\!\left[\pi\eta(E)\,\frac{\Ue}{E}\right], \qquad \pi\eta(E) = \half\sqrt{\frac{\EG}{E}} , $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$f(E)$</dt><dd>Enhancement factor (dimensionless): how many times the screened cross section exceeds the bare one at center-of-mass energy $E$. Valid for $\Ue \ll E$ (Assenbaum–Langanke–Rolfs, Chapter I §4).</dd>
+          <dt>$\Ue$</dt><dd>Screening potential (eV) — the effective energy boost from the target's electrons. Convert to keV before dividing by $E$; mixed units silently inflate $f$.</dd>
+          <dt>$\eta(E)$</dt><dd>Sommerfeld parameter (dimensionless, Chapter I); for d+d, $\EG = 986\keV$, so $\pi\eta = \half\sqrt{986/E[\keV]}$.</dd>
+        </dl>
+      </aside>
+
+      <p>Because $f$ grows explosively as $E$ falls toward $\Ue$, sub-keV yield anomalies are diagnostic — and systematics-prone. The Schenkel paper is careful on this point: the sub-keV baseline depends on stopping powers and on the deuterium depth profile at the target surface, and the authors present $\Ue \approx 1000\eV$ as "a possible explanation," not a measurement of new physics.</p>
+
+      <aside class="note">
+        <h4>Ahead of theory</h4>
+        <p>A screening potential of $1000 \pm 250\eV$ in palladium sits far above what adiabatic-limit many-body theory readily supplies (roughly a few hundred eV at best), and it corroborates the earlier Raiola et al. beam measurements of $\Ue \approx 800\eV$ in Pd (Chapter VI). The <em>existence</em> of anomalously large screening in metals is multiply replicated across independent groups; its <em>magnitude</em> disagrees between groups by factors of 2–3, one 2023 palladium target showed no enhancement at all, and thirty-plus years after the screening formula was written down there is still no accepted first-principles calculation reproducing hundreds of eV in PdD$_x$. This — not excess heat — is the solidest anomaly the Google program touched, and Chapter IX's ledger will collect it.</p>
+      </aside>
+
+      <p><em>Thrust C: nanostructured metal hydrides at high temperature.</em> To confront the Ni–H "reactor" claims of the 2010s (Chapter IV's cautionary tail), the UBC team built a gram-scale calorimeter that operates at up to 1232 °C under 33 bar of hydrogen with roughly 50 mW power resolution (MacLeod et al., <em>Rev. Sci. Instrum.</em> 88, 084101, 2017) — and ran 420 samples of hydrided metal powders through it. The measured coefficient of performance was consistently 1: no anomalous heat beyond chemistry, in by far the largest controlled survey of such materials ever published. Proponents can and do argue that some specific fuel recipe was missed; no critique has identified which.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>What the program concluded — and the tools it left</h2>
+
+      <p>Summed up, the Google program's conclusion has two clauses. First: across the three re-examined claims, no evidence of anomalous effects — no excess heat at 50 mW resolution in 420 powder samples, no tritium in weeks of plasma discharges, no reliably sustained loading above the claimed threshold, and therefore no confirmation of the 1989-style anomalies anywhere the instruments could see. Second: the interesting corner of parameter space — $\DPd$ held above 0.875 <em>under</em> precision calorimetry — was reached only twice, transiently, so its emptiness is asserted by extrapolation, not observation. The program's authors state both clauses plainly; readers who quote only one are editorializing.</p>
+
+      <p>The lasting products were instruments and methods, published as ordinary materials science: the MacLeod high-temperature, high-pressure calorimeter; Benck's operando-XRD protocol for hydride stoichiometry, which replaced a folklore loading gauge with a crystallographic one; and a run of palladium-hydride surface science from the same collaboration — Johnson et al. in <em>Nature Materials</em> on how hydrogen uptake nucleates at lattice-strained nanocrystal vertices, and Jansonius et al. in <em>Angewandte Chemie</em> on how elastic strain tunes hydrogen absorption. None of these is about cold fusion; all of them make any future loading claim easier to check. That is what tightening the error bar looks like in practice.</p>
+
+      <p>The program also had a coda, published after six more years of quiet work by the same UBC–Berkeley axis. In 2025, Chen, Maiwald, Schauer and colleagues in Berlinguette's group reported in <em>Nature</em> a benchtop device — the "Thunderbird" reactor — that bombards a palladium target with keV deuterons while electrochemically loading it with deuterium in situ. Switching the electrochemistry on raised the beam-driven d–d fusion neutron rate by $15 \pm 2\%$ (three campaigns: 135.5, 142.9 and 138.6 neutrons per second beam-only, rising to 156.7, 159.2 and 164.3 with loading), with about one volt of overpotential doing the fuel-densifying work of roughly 800 atmospheres of D₂ pressure. Read the claim precisely: this is peer-reviewed, mainstream, and <em>not</em> cold fusion — the fusion is ordinary hot beam–target d–d, the electrochemistry is a knob that packs more fuel near the surface, there is no net energy, and as of mid-2026 no independent replication has yet been published. But it is the cleanest demonstration on record that the electrochemical and nuclear regimes touch at all: a voltage measurably moved a fusion rate. Whether the 15% is entirely fuel density or partly a change in screening is not fully settled in the paper — a small, well-posed open question of exactly the kind the 2019 Perspective asked for.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>NASA's lattice confinement fusion: the mechanism chain</h2>
+
+      <p>The second reassessment came from an unexpected quarter. In April 2020, a NASA Glenn Research Center team published back-to-back papers in <em>Physical Review C</em> — Pines et al. (theory) and Steinetz et al. (experiment) — reporting d–d fusion inside deuterated metals, driven not by an ion beam but by photons. They named the scheme <dfn title="fusion of energetic deuterons inside a deuterated metal, with the lattice supplying fuel density and electron screening and an external driver supplying the energy">lattice confinement fusion</dfn>: the metal's job is to hold deuterium at around $10^{23}$ atoms per cm³ — on the order of a billion times the ion density of a tokamak plasma — and to supply electron screening; the driver's job is to make a few of those deuterons hot.</p>
+
+      <p>The mechanism is a four-step cascade, and each step is textbook physics. First, a linac's electron beam makes bremsstrahlung photons with an endpoint of about 2.9 MeV. Second, any photon above the deuteron's binding energy splits a lattice deuteron:</p>
+
+      <div class="equation-block">
+        $$ \gamma + \mathrm{d} \;\to\; \mathrm{n} + \mathrm{p}, \qquad E_\gamma \ge B_d = 2.2246\MeV, \qquad T_n \approx T_p \approx \frac{E_\gamma - B_d}{2} , $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$B_d$</dt><dd>Deuteron binding energy (constant): $2.2246\MeV$ — the photodisintegration threshold. Not to be confused with the 2.9 MeV beam endpoint.</dd>
+          <dt>$E_\gamma$</dt><dd>Photon energy (MeV), anywhere in the bremsstrahlung continuum up to the endpoint.</dd>
+          <dt>$T_n,\ T_p$</dt><dd>Kinetic energies of the released neutron and proton. Because their masses are nearly equal and the photon carries little momentum, the surplus $E_\gamma - B_d$ is shared almost equally.</dd>
+        </dl>
+      </aside>
+
+      <p>An endpoint photon thus yields a photoneutron of about $(2.9 - 2.2246)/2 \approx 0.34\MeV$; because the bremsstrahlung spectrum is continuous and weighted toward threshold, NASA's spectrum-averaged photoneutron energy was about 145 keV, with the population below 400 keV. Third — and this is the step that makes neutral particles the ideal middlemen — those photoneutrons elastically scatter off other deuterons. A charged projectile wastes its energy on the lattice's electrons; a neutron gives its energy directly to a nucleus, transferring in a single head-on collision the maximum fraction</p>
+
+      <div class="equation-block">
+        $$ \frac{T_d^{\max}}{T_n} \;=\; \frac{4\,m_n m_d}{(m_n + m_d)^2} \;=\; \frac{8}{9} \;\approx\; 0.889 , $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$T_d^{\max}$</dt><dd>Maximum kinetic energy handed to the struck deuteron (keV) — the head-on case; the average over scattering angles is half this, $4/9 \approx 0.44$.</dd>
+          <dt>$m_n,\ m_d$</dt><dd>Neutron and deuteron masses; the mass ratio 1 : 2 fixes the $8/9$. This is standard neutron-moderation kinematics, run in reverse: instead of cooling neutrons with light nuclei, NASA heats nuclei with neutrons.</dd>
+        </dl>
+      </aside>
+
+      <p>NASA's average knock-on deuteron carried about 64 keV — consistent with $\tfrac{4}{9} \times 145\keV$. Fourth, these hot deuterons collide with the cold deuterium ocean around them, and now Chapter I's cross-section machinery applies with a for-once-comfortable energy in it. Taking the illustrative endpoint case $E \approx 337\keV$: the Gamow exponent is $2\pi\eta = \sqrt{986/337} \approx 1.71$, the penetration factor is $e^{-1.71} \approx 0.18$, and</p>
+
+      <div class="equation-block">
+        $$ \sigma(E) \;=\; \frac{\Sfac}{E}\,e^{-2\pi\eta} \;\approx\; \frac{56\keV\cdot\mathrm{b}}{337\keV}\times 0.18 \;\approx\; 0.030\ \mathrm{b} = 30\ \mathrm{mb} . $$
+      </div>
+
+      <p>Thirty millibarns is an unremarkable, healthy hot-fusion cross section — about thirty orders of magnitude above anything Chapter II's electrochemists could have invoked. The observed signature was the one Chapter I promised: the 2.45 MeV neutron line of $\mathrm{d(d,n)}\nuc{3}{He}$, standing on the low-energy photoneutron continuum (the mirror branch's 3.02 MeV protons and 1.01 MeV tritons deposit their energy inside the metal). That line is the fingerprint of real fusion happening inside ErD₃ and TiD₂ — driven, always, by the accelerator next door.</p>
+
+      <section class="interactive" data-widget="lattice-fusion" aria-label="Interactive NASA lattice confinement fusion kinematics chain">
+        <header>
+          <h4>Interactive · The lattice-fusion cascade</h4>
+          <span class="hint">tune the photon · add screening</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The NASA cascade as arithmetic: a photon of energy $E_\gamma$ splits a deuteron ($B_d = 2.2246\MeV$), the surplus is shared, and the resulting hot deuteron of energy $E_d \approx (E_\gamma - B_d)/2$ fuses with cross section $\sigma = \frac{\Sfac}{E_d}e^{-\sqrt{\EG/E_d}}$ ($\EG = 986\keV$, $\Sfac = 56\keV\cdot\mathrm{b}$), boosted by screening as $f = e^{\pi\eta\,\Ue/E_d}$. At the 2.9 MeV endpoint, $E_d \approx 338\keV$ and $\sigma \approx 30$ mb — and even $\Ue = 1000\eV$ changes nothing, because screening only matters when $E$ falls toward the keV scale: drag the photon toward threshold and watch $f$ wake up. The chain here is deliberately idealized — it skips the knock-on step's $\le 8/9$ transfer and the bremsstrahlung average that put NASA's real means at 145 keV (neutrons) and 64 keV (deuterons), and the first-order screening formula strains as $E_d$ approaches $\Ue$.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>What NASA showed — and what it didn't</h2>
+
+      <p>Take the established part first. Fusion really occurred inside a room-temperature metal lattice: the 2.45 MeV line under photon drive is conventional nuclear physics, which is precisely why <em>Physical Review C</em> published it. The theory paper's contribution is about the lattice's assist: Pines et al. argue that screening in a deuterated metal — bound and conduction electrons, plus a radiation-induced plasma of knocked-about charges — should be computed from the nonlinear Vlasov problem rather than linearized Debye theory, and that when the projectile energy falls toward $\Ue$ the familiar exponential enhancement formula breaks down and the Gamow integral must be done directly for the screened potential. Those are calculational claims layered on the multiply replicated experimental fact (Chapter VI) that metals screen far more strongly — hundreds of eV, against $25 \pm 5\eV$ for D₂ gas — than adiabatic theory explains; no published calculation has independently confirmed or refuted the Vlasov treatment.</p>
+
+      <p>Now the contested part. Steinetz et al. also report neutron groups near 4 MeV (in TiD₂) and 5 MeV (in ErD₃) — above anything the 2.45 MeV fusion line plus scattering can produce. They offer two candidate explanations: "boosted" fusion, in which an already-hot deuteron fuses in flight so the neutron inherits extra energy, or Oppenheimer–Phillips stripping on the lattice's heavy nuclei, screened enough to proceed at these energies. The claim rests on spectrum unfolding from organic scintillators — EJ-309 liquid and stilbene — working by pulse-shape discrimination inside an intense bremsstrahlung gamma field, which is a systematics-heavy way to make a spectral discovery. The papers demonstrate neither mechanism, and no independent group has reproduced the feature.</p>
+
+      <aside class="note">
+        <h4>Ahead of theory</h4>
+        <p>The 4–5 MeV neutron groups are a peer-reviewed observation with two candidate explanations and zero independent replications as of mid-2026. The nearest supporting evidence comes from a programmatically allied group: Gillespie et al. (Texas Tech/MURR, <em>Nucl. Eng. Technol.</em>, 2026) found tritium production in TiD₂ irradiated in a <em>fast</em> neutron spectrum running 2.9–5.1× above conventional-physics simulation, while a mostly thermal spectrum agreed with prediction within 25% — a pattern consistent with the knock-on fusion picture, from collaborators rather than independents. Both results go to Chapter IX's ledger as claims awaiting outside replication.</p>
+      </aside>
+
+      <p>And the framing NASA itself insists on: this is not cold fusion, and the team says so without hedging — deputy PI Lawrence Forsley put it as "What we did was not cold fusion." The fusing deuterons carry tens to hundreds of keV delivered by a megavolt-scale machine; the system is nowhere near breakeven, since the linac consumes vastly more power than the fusion returns; and NASA pitches the work as a route to compact neutron sources and, speculatively, fusion–fission hybrids for space power. What the lattice contributed was fuel density and screening — a warm assist to a hot process. In this book's terms: NASA raised the Gamow factor honestly, by paying for it in beam energy, and demonstrated that the lattice makes the price somewhat lower. Later program briefings and a commercial licensee have claimed far more — fifty-fold neutron-generator gains, 2025 commercialization, hybrid demonstrations — but none of that has peer-reviewed support as of this writing, and we set it aside accordingly.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>Why these two programs matter</h2>
+
+      <p>Measured by their own data, both programs are modest: one found nothing anomalous, the other found conventional fusion in an unconventional container. Measured by what they changed, they are the hinge of the field's modern history — for three reasons.</p>
+
+      <p><em>Venue legitimacy.</em> Between 1990 and 2019, the field's positive claims lived almost entirely in conference proceedings and specialty journals (Chapter IV). "Revisiting the cold case" put the subject back in <em>Nature</em>; Steinetz and Pines put deuterated-metal nuclear reactions in <em>Physical Review C</em>; Chen et al. put an electrolytic cell wired to a fusion diagnostic back in <em>Nature</em> in 2025. None of these validates the 1989 claims — all of them establish that the underlying questions can pass ordinary peer review when asked with ordinary rigor. Young researchers, and program managers, noticed.</p>
+
+      <p><em>Tool legacies.</em> The Google program left 50 mW calorimetry at 1232 °C, operando loading metrology, and a quantitative low-energy screening dataset; NASA left a photoneutron drive scheme and a worked example of instrumenting a lattice for nuclear diagnostics. The chronic weaknesses of the historical record — loading you couldn't verify, heat you couldn't calibrate, ash you couldn't count — now each have a published, purchasable answer. Whatever one believes about anomalies, the error bars available to the next generation are categorically better.</p>
+
+      <p><em>Recruitment.</em> The programs seeded the funding wave that Chapter VIII follows. Trevithick moved to the venture fund DCVC and presented at an ARPA-E workshop on LENR in October 2021; in September 2022 ARPA-E announced an LENR Exploratory Topic that explicitly cited the Google-sponsored capabilities published in <em>Nature</em>; in February 2023 it awarded about USD 10 million across eight projects — including USD 1.5 million to Schenkel's Berkeley group to pin down the screening systematics his 2019 paper flagged, and USD 2 million to MIT for neutron detection around stimulated metal hydrides. The through-line is exact: the null program's instruments, people, and open questions became the next program's statement of work. Google tightened the error bar; NASA raised the Gamow factor; between them they rebuilt the field's licence to find out.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Berlinguette, C. P., Chiang, Y.-M., Munday, J. N., Schenkel, T., Fork, D. K., Koningstein, R. &amp; Trevithick, M. D.</span> <em>Revisiting the cold case of cold fusion</em>, Nature 570, 45–51 (2019) — the Google program's disclosure, null conclusions, and parameter-space argument; DOI 10.1038/s41586-019-1256-6.</li>
+          <li><span class="src-title">Benck, J. D., Jackson, A., Young, D., Rettenwander, D. &amp; Chiang, Y.-M.</span> <em>Producing High Concentrations of Hydrogen in Palladium via Electrochemical Insertion from Aqueous and Solid Electrolytes</em>, Chemistry of Materials 31, 4234–4245 (2019) — the 0.96 ± 0.02 loading record and the operando-XRD indictment of resistance proxies; DOI 10.1021/acs.chemmater.9b01243.</li>
+          <li><span class="src-title">Schenkel, T. et al.</span> <em>Investigation of light ion fusion reactions with plasma discharges</em>, Journal of Applied Physics 126, 203302 (2019) — the pulsed-plasma thrust: no tritium, and the U<sub>e</sub> = 1000 ± 250 eV screening fit; DOI 10.1063/1.5109445, arXiv:1905.03400.</li>
+          <li><span class="src-title">MacLeod, B. P., Schauer, P. A., Hu, K., Lam, B., Fork, D. K. &amp; Berlinguette, C. P.</span> <em>High-temperature high-pressure calorimeter for studying gram-scale heterogeneous chemical reactions</em>, Review of Scientific Instruments 88, 084101 (2017) — the instrument behind the 420-sample null; DOI 10.1063/1.4999361.</li>
+          <li><span class="src-title">Pines, V., Pines, M., Chait, A. et al.</span> <em>Nuclear fusion reactions in deuterated metals</em>, Physical Review C 101, 044609 (2020) — the LCF theory paper: screening beyond Debye, and the breakdown of the exponential enhancement formula at low E; DOI 10.1103/PhysRevC.101.044609.</li>
+          <li><span class="src-title">Steinetz, B. M., Benyo, T. L., Chait, A. et al.</span> <em>Novel nuclear reactions observed in bremsstrahlung-irradiated deuterated metals</em>, Physical Review C 101, 044610 (2020) — the LCF experiment: photoneutron drive, the 2.45 MeV fusion line, and the 4–5 MeV neutron groups; DOI 10.1103/PhysRevC.101.044610.</li>
+          <li><span class="src-title">Chen, K.-Y., Maiwald, J., Schauer, P. A. et al.</span> <em>Electrochemical loading enhances deuterium fusion rates in a metal target</em>, Nature 644, 640–645 (2025) — the Thunderbird reactor's 15 ± 2% electrochemical enhancement of beam-driven d–d fusion; DOI 10.1038/s41586-025-09042-7.</li>
+        </ul>
+      </section>
+
+      <p class="colophon-note" style="font-family: var(--sans); font-size: 0.78rem; color: var(--text-faint); margin-top: 1.5rem;">Chapter production note: researched and drafted by Claude subagents (draft agent: <code>claude-fable-5</code>; adversarial verification pass by <code>claude-fable-5</code> scheduled — see STATUS.md), orchestrated by <code>claude-fable-5</code>. See the <a href="appendix-methods.html">methods appendix</a> for the full research process.</p>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="06-electron-screening.html"><span class="label">← Previous</span>Electron Screening: The Accepted Anomaly</a>
+      <a class="next" href="08-new-programs.html"><span class="label">Next chapter</span>New Programs: Japan, Europe, ARPA-E →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/lattice-fusion.js"></script>
+</body>
+</html>

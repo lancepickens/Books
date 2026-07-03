@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter VIII · New Programs — Low-Energy Nuclear Reactions</title>
+  <meta name="description" content="The 2015–2026 experimental landscape: Japan's nano-composite heat claims, Europe's CleanHME and HERMES, ARPA-E's re-entry, and the energy-per-hydrogen-atom yardstick." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter VIII of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter VIII</p>
+      <h1 class="chapter-title">New Programs: Japan, Europe, ARPA-E</h1>
+      <p class="lede">A generation after 1989 the field's center of gravity sits in Sendai, Szczecin, and a Washington funding office — and every claim is now audited in electronvolts per hydrogen atom.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>The previous chapter ended with two institutional verdicts: Google's consortium found no excess heat, and NASA found real — but beam-driven — nuclear reactions in deuterated metals. This chapter surveys what the field itself has been doing since about 2015. Three programs dominate: a Japanese industrial–academic collaboration claiming watt-scale heat from nano-structured metal powders and films, a pair of European Union projects that split cleanly into a positive-claiming one and a negative-reporting one, and a 2023 re-entry by the U.S. government's most adventurous energy agency, ARPA-E, followed in 2026 by DARPA.</p>
+          <p>To keep our footing we will use one ruler for everything: the energy released per hydrogen atom involved. Chemistry — any chemistry — tops out near one or two electronvolts per hydrogen atom. Nuclear reactions deliver millions. Every claim in this chapter quotes a number on that axis, and every number comes with a venue (a top-tier journal, a mid-tier journal, a field-internal proceedings) and a replication status. Holding all three — the number, the venue, the replication record — at once is the discipline this chapter practices.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>gas loading</dt><dd>Absorbing hydrogen or deuterium into a metal directly from pressurized gas, usually at elevated temperature — the successor technique to 1989's electrolysis.</dd>
+          <dt>nano-composite</dt><dd>A material made of metal nanoparticles (here Pd·Ni or Cu·Ni) embedded in a ceramic support such as zirconia, giving enormous hydrogen-absorbing surface area.</dd>
+          <dt>multilayer thin film</dt><dd>A stack of alternating metal layers each a few nanometers thick, deposited by sputtering; the Tohoku experiments use six Cu/Ni bilayers on bulk nickel.</dd>
+          <dt>sputtering</dt><dd>A vacuum deposition technique that builds thin films atom by atom by knocking material off a target with ions.</dd>
+          <dt>NEDO</dt><dd>Japan's New Energy and Industrial Technology Development Organization, a government agency that funded the 2015–2017 collaborative metal-hydrogen heat project.</dd>
+          <dt>specific energy (eV/H)</dt><dd>Total released energy divided by the number of hydrogen atoms absorbed or transferred — this chapter's yardstick for "beyond chemistry."</dd>
+          <dt>enthalpy</dt><dd>The heat absorbed or released by a process at constant pressure; hydride-formation enthalpies set the chemical baseline here.</dd>
+          <dt>metal hydride</dt><dd>A metal with hydrogen dissolved in its lattice; forming one releases roughly 0.2 eV per hydrogen atom — ordinary, well-tabulated chemistry.</dd>
+          <dt>Avogadro's number ($N_A$)</dt><dd>$6.022\times10^{23}$ particles per mole — the bridge from grams of hydrogen to a count of hydrogen atoms.</dd>
+          <dt>COP</dt><dd>Coefficient of performance: output power (or energy) divided by input. COP &gt; 1 claimed from a sealed reactor is the headline number to audit.</dd>
+          <dt>differential calorimetry</dt><dd>Measuring excess heat as the difference between an active run and a blank (inert or hydrogen-free) run under nominally identical conditions.</dd>
+          <dt>blank run</dt><dd>The control experiment: same apparatus, same temperature program, inactive sample. The claimed signal is active minus blank.</dd>
+          <dt>emissivity</dt><dd>How efficiently a surface radiates heat. In a vacuum system at 600–900 °C, heat leaves mostly as radiation, so a drift in sample emissivity mimics excess power.</dd>
+          <dt>air-flow calorimetry</dt><dd>Inferring power from the temperature rise and flow rate of air passing over a reactor — simple, but sensitive to flow-profile errors.</dd>
+          <dt>JCMNS</dt><dd>The <em>Journal of Condensed Matter Nuclear Science</em>, the field's own journal; editorially reviewed by sympathetic peers, not equivalent to mainstream peer review.</dd>
+          <dt>venue quality</dt><dd>Shorthand for how adversarial a paper's review was: <em>Nature</em>/PRX, then solid specialist journals (JJAP, IJHE), then proceedings and JCMNS.</dd>
+          <dt>preprint</dt><dd>A manuscript posted (typically on arXiv) before peer review; citable, but carrying no referee endorsement yet.</dd>
+          <dt>independent replication</dt><dd>Reproduction of a result by a group outside the claiming collaboration, with its own apparatus and its own incentives.</dd>
+          <dt>Horizon 2020</dt><dd>The EU's 2014–2020 research framework programme, which funded both CleanHME and HERMES.</dd>
+          <dt>CleanHME</dt><dd>"Clean Energy from Hydrogen-Metal Systems": the EU project (2020–2025, coordinated at Szczecin) that pursued both reactor heat and accelerator screening physics.</dd>
+          <dt>HERMES</dt><dd>The parallel EU project (2020–2024, coordinated at Turku) that attempted rigorous Pd–D replications and reported essentially negative results.</dd>
+          <dt>thick-target yield</dt><dd>The reaction count from a beam stopping entirely inside a target — the raw observable of accelerator screening experiments.</dd>
+          <dt>screening energy ($\Ue$)</dt><dd>The effective collision-energy boost from electrons around the fusing nuclei (Chapter VI); measured in metals at hundreds of eV.</dd>
+          <dt>ARPA-E</dt><dd>The U.S. Advanced Research Projects Agency–Energy, which funds high-risk energy research; it funded an eight-team LENR portfolio in February 2023.</dd>
+          <dt>reference experiment</dt><dd>A standardized, openly documented experiment that any lab can run to compare results — the program-design remedy for a field of one-off claims.</dd>
+          <dt>null result</dt><dd>A measurement consistent with zero effect. Publishing them is how fields self-correct; their absence from the literature is itself a data point.</dd>
+          <dt>BAA</dt><dd>Broad Agency Announcement — the solicitation document by which DARPA invites proposals for a new program.</dd>
+          <dt>ICCF</dt><dd>The International Conference on Cold Fusion (now "Condensed Matter Nuclear Science"), the field's annual meeting since 1990.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>The yardstick: electronvolts per hydrogen atom</h2>
+
+      <p>Chapter I gave us the Gamow factor; Chapter III gave us the error bar. This chapter's claims are all calorimetric, so they live and die by the error-bar side of the frame — and the cleanest way to compare them is to normalize every claimed energy release to the number of hydrogen atoms that could have participated. Define the <dfn title="total released energy divided by the number of hydrogen (or deuterium) atoms absorbed or transferred">specific energy per hydrogen atom</dfn>:</p>
+
+      <div class="equation-block">
+        $$ E_{/\mathrm{H}} \;=\; \frac{E_{\mathrm{xs}}}{N_{\mathrm{H}}},
+        \qquad
+        N_{\mathrm{H}} \;=\; \frac{m_{\mathrm{H}}}{M_{\mathrm{H}}}\, N_A , $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$E_{/\mathrm{H}}$</dt><dd>Scalar, eV per hydrogen atom: the claimed energy yield normalized to the hydrogen inventory.</dd>
+          <dt>$E_{\mathrm{xs}}$</dt><dd>Integrated excess energy of the run (J or kJ) — the calorimeter's output, active minus blank.</dd>
+          <dt>$N_{\mathrm{H}}$</dt><dd>Number of hydrogen (or deuterium) atoms absorbed or transferred during the run (dimensionless count).</dd>
+          <dt>$m_{\mathrm{H}}$</dt><dd>Mass of that hydrogen (g), typically inferred from pressure drop or sample weight change.</dd>
+          <dt>$M_{\mathrm{H}}$</dt><dd>Molar mass of hydrogen (constant, $1.008\,\mathrm{g/mol}$; $2.014$ for deuterium).</dd>
+          <dt>$N_A$</dt><dd>Avogadro's number (constant, $6.022\times10^{23}\,\mathrm{mol^{-1}}$).</dd>
+        </dl>
+      </aside>
+
+      <p>Chemistry sets the floor rungs of the ladder. Dissolving hydrogen into palladium to form the β-phase hydride releases about $40\,\mathrm{kJ}$ per mole of H₂ — roughly $0.2\eV$ per hydrogen atom. Burning hydrogen outright, the most energetic common hydrogen chemistry, releases $286\,\mathrm{kJ}$ per mole of H₂, or about $1.5\eV$ per hydrogen atom. No rearrangement of electrons gets much past that: <em>a few eV per hydrogen atom is the ceiling of chemistry</em>. At the other end, d+d fusion to $\nuc{4}{He}$ releases $23.85\MeV$ per two deuterons — about $1.2\times10^{7}\eV$ per deuteron. Between the ceiling and the fusion line stretch five empty orders of magnitude where no known process lives, and it is precisely there — tens of eV/H to hundreds of keV/H — that this chapter's claims sit.</p>
+
+      <p>A worked example, which the widget below reproduces: an experiment reports $E_{\mathrm{xs}} = 100$ kJ of integrated excess heat while absorbing 10 mg of hydrogen. Then $N_{\mathrm{H}} = (0.010/1.008)\times 6.022\times10^{23} = 6.0\times10^{21}$ atoms and</p>
+
+      <div class="equation-block">
+        $$ E_{/\mathrm{H}} \;=\; \frac{10^{5}\,\mathrm{J}}{1.602\times10^{-19}\,\mathrm{J/eV}\;\times\;6.0\times10^{21}} \;\approx\; 104\eV/\mathrm{H} , $$
+      </div>
+
+      <p>about seventy times anything chemistry can supply from that hydrogen. If both numerator and denominator are right, something non-chemical happened. The auditor's eye goes straight to the two inputs: the numerator is a calorimeter reading with all of Chapter III's failure modes, and the denominator is <em>model-laden</em> — "hydrogen transferred" is inferred from pressure drops and absorption models, and choosing a smaller $N_{\mathrm{H}}$ inflates $E_{/\mathrm{H}}$ arithmetically. Keep both dependencies in view for every claim that follows.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Japan I: the NEDO collaborative phase (2015–2017)</h2>
+
+      <p>The most sustained institutional excess-heat effort of the past decade is Japanese. From October 2015 to October 2017, a NEDO-funded project on "metal-hydrogen energy" joined Technova, Nissan Motor, and Kobe, Tohoku, Nagoya, and Kyushu universities to cross-check a single claim: that <dfn title="metal nanoparticles (Pd·Ni or Cu·Ni) embedded in a zirconia ceramic support">nano-composite</dfn> powders — palladium–nickel or copper–nickel nanoparticles in zirconia, in 100–500 g batches — release anomalous heat when exposed to hydrogen or deuterium gas at 200–300 °C.</p>
+
+      <p>The capstone paper, Kitamura, Takahashi et al. in the <em>International Journal of Hydrogen Energy</em> (2018), reported excess power of 3–24 W lasting up to several weeks, with repeatable runs near 11–12 W (about 1.3–1.5 W per gram of nickel). Integrated over a run and divided by the hydrogen taken up, the reported specific energy came to tens of eV/H in conservative accountings, and — in the most aggressive phase-by-phase accounting — into the hundreds of keV per deuterium atom. Single-element nanoparticle controls and blank runs showed nothing. The venue matters and cuts both ways: IJHE is a mainstream, peer-reviewed Elsevier journal — one of the few times a multi-watt excess-heat claim has passed ordinary review — but it is a hydrogen-energy journal, not a nuclear-physics one, and its referees judge calorimetry, not nuclear plausibility.</p>
+
+      <p>Three audit points temper the headline. First, replication was <em>internal</em>: the same apparatus lineage circulated among the six consortium partners, whose senior authors (Takahashi, Kitamura, Iwamura, Itoh, Kasagi) co-publish across nearly every paper in this literature; no laboratory outside the network has published a reproduction. Second, the measurement is differential calorimetry at elevated temperature, where changes in gas thermal conductivity and catalytic surface chemistry between active and blank runs can masquerade as excess power; no adversarial third party has been given the chance to exclude these. Third, the eV/H bookkeeping inherits the denominator problem of §1 — "hydrogen transferred" is a modeled quantity, which is exactly why the same dataset supports quotes from ~10 eV/H to ~270 keV/D.</p>
+
+      <aside class="note">
+        <h4>Ahead of theory</h4>
+        <p>The NEDO experiments reported comparable excess heat with <em>light</em> hydrogen and with deuterium. Any explanation built on d+d fusion fails outright for the pure-H runs, and p + Ni reactions face an even taller Coulomb barrier. By ordinary nuclear reasoning the absence of a strong isotope effect is evidence <em>against</em> a nuclear origin; the field instead carries it as an unexplained signature. Chapter IX's ledger takes it up.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Japan II: Clean Planet, Tohoku, and the nano-multilayer line</h2>
+
+      <p>The successor program moved from powders to precision. At Tohoku University's Condensed Matter Nuclear Reaction Division — funded in part by the startup Clean Planet Inc. — Iwamura, Itoh, and colleagues sputter <dfn title="a stack of alternating nanometer-scale metal layers deposited on a substrate">nano-multilayers</dfn> (typically six bilayers of ~4 nm Cu on ~20 nm Ni, on bulk nickel), load them with hydrogen gas near 250 °C, then heat them rapidly to 600–900 °C in vacuum and watch the calorimetry. Their flagship paper — Iwamura et al., <em>Japanese Journal of Applied Physics</em> 63, 037001 (2024) — reports steady excess power of roughly 4–5 W on inputs of tens of watts (up to ~17% of input), deliberate "heat bursts" triggered by perturbing the input power, and a specific energy exceeding $10\keV$ per absorbed hydrogen atom — with no neutrons or gamma rays above background. JJAP is a mainstream IOP/JSAP journal; this is among the strongest venues any modern excess-heat claim has reached, and that fact deserves to be stated as plainly as the caveats that follow.</p>
+
+      <p>The caveats are structural. In a vacuum system at 600–900 °C, heat leaves the sample almost entirely as radiation, so the excess-power inference rests on calibration curves that assume the sample's <dfn title="the efficiency with which a surface radiates thermal energy, between 0 and 1">emissivity</dfn> stays put. The group's own materials companion (Hioki et al., <em>Frontiers in Materials</em>, 2024) shows by in-situ synchrotron X-ray diffraction that the Cu/Ni multilayer alloys into a single layer by 900 °C under hydrogen — the "active" nanostructure is destroyed at operating temperature, and the surface that radiates at the end of a run is not the surface that was calibrated at the start. An emissivity drift is exactly the artifact this calorimetry cannot distinguish from excess heat, and no independent replication had been published as of mid-2026. Clean Planet's commercial position — patents, investment, and boiler-prototype announcements with claimed energy densities in the MJ-per-gram-of-hydrogen range — belongs in a separate mental file from the JJAP paper: company claims are not peer-reviewed, and the book's scoreboard counts only the journal record.</p>
+
+      <p>Two companion claims from the same group push further and rest on thinner ice. A photon-radiation calorimetry study (Kasagi et al., arXiv preprint, later in JCMNS) claims $\geq 410 \pm 108\keV$ per hydrogen atom — three orders beyond even the JJAP figure — and a 2024 arXiv preprint reports helium-3 detected in heat-producing samples, the predicted ash of Takahashi's multi-deuteron condensation model. Both are at arXiv/JCMNS level, unreplicated, and should be weighted accordingly.</p>
+
+      <aside class="note">
+        <h4>Ahead of theory</h4>
+        <p>Take the JJAP number at face value for a moment: $&gt;10\keV$ per hydrogen atom, with no radiation. Any nuclear process releasing keV-to-MeV energy per event must dispose of that energy, and eighty years of nuclear measurement say it comes out as fast particles and photons. A mechanism that channels <em>all</em> of it into lattice heat, leaving nothing for the detectors, has no accepted formulation. The claims sit precisely in the regime — heat far beyond chemistry, radiation at zero — where conventional physics says "artifact." That is either the discovery or the diagnosis; Chapter IX's ledger holds the tension.</p>
+      </aside>
+
+      <section class="interactive" data-widget="nano-heat" aria-label="Interactive energy-per-hydrogen-atom auditor">
+        <header>
+          <h4>Interactive · The beyond-chemistry auditor</h4>
+          <span class="hint">set energy · set hydrogen · audit</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The yardstick of §1, live: choose an integrated excess energy $E_{\mathrm{xs}}$ and a hydrogen inventory (mass of absorbed H), and the auditor computes $E_{/\mathrm{H}} = E_{\mathrm{xs}}/N_{\mathrm{H}}$ and places it on the log ladder between hydride chemistry (~0.2 eV/H), hydrogen combustion (~1.5 eV/H), the NEDO claims (~10–100 eV/H), the Iwamura JJAP claim (&gt;10 keV/H), and d+d fusion (~12 MeV per deuteron). The duration slider converts the same energy into an average power, the number the calorimeter actually has to resolve. Note how a claim can be pushed up the ladder either by more heat <em>or</em> by assuming less hydrogen — the denominator is doing quiet work.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Mizuno's R20: the claim that would not propagate</h2>
+
+      <p>The boldest quantitative claim of the era came from Tadahiko Mizuno in Sapporo: reactors ("R19", "R20") in which palladium is hand-burnished onto nickel mesh, filled with low-pressure deuterium at a few hundred °C. With Jed Rothwell he reported 250 W of excess on 50 W of input, and 2–3 kW on 300 W — a <dfn title="coefficient of performance: output power divided by input power">COP</dfn> of 5–10 — in the <em>Journal of Condensed Matter Nuclear Science</em> 29, 21–33 (2019), measured by air-flow calorimetry. The protocol was published openly, the materials cheap, and Rothwell promoted replication energetically. It was, in effect, the field's best-advertised recipe.</p>
+
+      <p>The replication record is therefore diagnostic. One attempt (H. Zhang, 2019, documented on community forums) saw ~4 W rising to 9.6 W that faded within hours — about which Mizuno himself expressed reservations; a Hokkaido University of Science group reported a small excess that never reached formal publication; numerous documented attempts found nothing. No independent confirmation exists in any journal, and Mizuno never re-established the kilowatt-class results after his laboratory was disrupted in 2020. The critiques are conventional: single-point air-flow calorimetry is vulnerable to flow-profile and recirculation errors of just the claimed magnitude, and kilowatt-scale power densities should have permitted trivially convincing demonstrations (self-sustained boiling) that were never shown.</p>
+
+      <p>The lesson generalizes beyond Mizuno. A genuinely working recipe with COP 5, published openly to a motivated worldwide community, propagates — that is what recipes do. This one did not. When an accessible, extraordinary protocol fails to propagate, the failure itself is evidence about the original measurement, and it should update us on less accessible claims too.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Europe: CleanHME, HERMES, and the ENEA metallurgy line</h2>
+
+      <p>The European Union ran, in effect, a controlled experiment on the field itself: two Horizon 2020 projects, launched together in 2020, with different postures. <dfn title="the EU project 'Clean Energy from Hydrogen-Metal Systems' (2020–2025)">CleanHME</dfn> (grant 951974, €5.6M, sixteen partners, coordinated by Konrad Czerski at the University of Szczecin) pursued hydrogen–metal energy directly; <dfn title="the EU project that attempted rigorous replications of Pd–D excess-heat conditions (2020–2024)">HERMES</dfn> (grant 952184, ~€4.0M, coordinated by Pekka Peljo at Turku, with partners including TU München and Imperial College) set out to reproduce Pd–D excess-heat conditions with rigorous methods.</p>
+
+      <p>HERMES's outcome is quickly told and heavily weighted: it reported essentially negative results, explicitly confirming the Google consortium's conclusion (Chapter VII) that cold fusion remains unproven while the extreme-loading corner of parameter space stays hard to reach. The headline conclusion lives in EU project reporting rather than a journal, but the methodological outputs — loading protocols, operando characterization — were published normally. As with Google, a resourced, competent, motivated team looked and found nothing.</p>
+
+      <p>CleanHME's legacy splits in two. Its reactor calorimetry — project communications from the January 2025 final event claim multi-laboratory excess heat with "promising COP" but short-lived excursions — has produced <em>no peer-reviewed publication as of mid-2026</em>, so by this book's rules those numbers do not enter the scoreboard. Its accelerator physics, by contrast, is the project's durable achievement and reached remarkable venues: a proposed $0^+$ threshold resonance in $\nuc{4}{He}$ near the d+d threshold (Czerski, <em>Phys. Rev. C</em> 106, L011601 (2022)), follow-up evidence in PRC (2024), and finally Dubey, Czerski et al., <em>Physical Review X</em> 15, 041004 (2025), reporting d+d thick-target yields measured down to about $675\eV$ center-of-mass — the lowest ever — and signatures that below a few keV the reaction proceeds dominantly through the resonance, decaying by internal electron–positron pair emission. Recall the screening formalism of Chapters I and VI, which is the language of these measurements:</p>
+
+      <div class="equation-block">
+        $$ f(E) \;=\; \frac{\sigma_{\mathrm{screened}}(E)}{\sigma_{\mathrm{bare}}(E)}
+        \;\approx\; \exp\!\left[\pi\eta(E)\,\frac{\Ue}{E}\right],
+        \qquad 2\pi\eta \;=\; 31.29\,Z_1 Z_2 \sqrt{\frac{\mu}{E}} , $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$f(E)$</dt><dd>Screening enhancement factor (dimensionless): how much faster the reaction runs than the bare-nucleus expectation at center-of-mass energy $E$. Valid for $\Ue \ll E$; note the single $\pi\eta$, not $2\pi\eta$ (Assenbaum–Langanke–Rolfs).</dd>
+          <dt>$\Ue$</dt><dd>Screening energy (eV): ~25 eV in gas targets, ~100 eV from defect-free-metal theory, and of order 300–350 eV in the Szczecin group's deuterated-zirconium measurements.</dd>
+          <dt>$\eta$</dt><dd>Sommerfeld parameter (dimensionless); the $31.29$ prefactor holds for $E$ in keV (center-of-mass) and reduced mass $\mu$ in amu ($\mu = 1.007$ for d+d, so $2\pi\eta \approx 31.4/\sqrt{E_{\mathrm{keV}}}$).</dd>
+        </dl>
+      </aside>
+
+      <p>PRX is a top-tier, highly selective venue, and the claim is proportionally extraordinary: a new <em>dominant</em> channel in the most-studied fusion reaction in physics, below a few keV, missed for eighty years. One group stands behind it; independent confirmation is the entire question. It is also, notably, the only published mechanism candidate that could in principle connect the accelerator anomalies to heat-without-neutrons claims — though no quantitative bridge from picobarn yields to watts exists, and the authors do not claim one.</p>
+
+      <p>Italy's ENEA Frascati laboratory (Vittorio Violante) rounds out the European picture with two decades of palladium metallurgy: rolling and annealing protocols, grain-orientation and surface-texture studies, aimed at reproducibly reaching loadings of $\DPd &gt; 0.9$ — the operational threshold of Chapter V. The loading metallurgy is solid materials science, adopted by SRI and by the Google program; the associated excess-heat and helium correlations live almost entirely in conference proceedings and JCMNS, and the Google program, using ENEA-grade materials knowledge, found no excess heat in over 420 calorimetric tests. The metallurgy replicated; the anomaly did not follow it.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>ARPA-E's re-entry — and DARPA's escalation</h2>
+
+      <p>On 17 February 2023, ARPA-E announced roughly $10M across eight projects — the first dedicated U.S. federal LENR funding since the 1989 and 2004 DOE reviews declined to recommend a program. Program Director Scott Hsu had pre-announced the topic at ICCF-24 (the "Solid-State Energy Summit," Mountain View, July 2022); the program's stated philosophy was deliberately agnostic and methods-first: hypothesis-driven experiments, control of variables, modern nuclear diagnostics, standardized and shareable protocols, results — positive or null — publishable in top-tier journals.</p>
+
+      <p>The portfolio: Texas Tech (Robert Duncan, USD 1.15M) as a cohort-wide materials-characterization and nuclear-product-detection resource; Lawrence Berkeley National Laboratory (Thomas Schenkel, USD 1.5M, with Jeremy Munday's UC Davis group) interrogating metal hydrides with sub-keV ion beams; MIT (~USD 2M) building a reproducible gas-loading test platform — a team associated in secondary reporting with Hagelstein, Chiang, and Metzler, though the award documents name no PIs; Stanford (USD 1.5M) on nuclear-product detection from deuterated nanoparticles under phonon stimulation; the Energetics Technology Center (USD 1.5M, "CATHODE") electro-depositing Pd/Li from heavy water directly onto a scintillator; Amphionic (USD 296K) on nanoscale inter-surface potential wells; and two University of Michigan awards (USD 1.108M and a second) on D₂ gas cycling through Pd nanocrystals with laser stimulation and microwatt calorimetry, and on Pd–aramid-nanofiber composites. Hsu subsequently left ARPA-E for a DOE fusion-coordination role, with the portfolio passing to Ahmed Diallo.</p>
+
+      <p>What has the cohort produced by mid-2026? The honest answer, stated plainly: <em>no peer-reviewed excess-heat confirmation, no published reference-experiment protocol or detection-standards document, and no published null-result paper either</em> — the publish-negative-results promise is so far unrealized in the open literature. The flagship experimental output is a preprint: Karahadian et al. (arXiv:2512.06212, December 2025), from the LBNL/UC Davis team, reporting that in electrochemically loaded Pd and Ti hydrides the D–D fusion yield stops falling exponentially below about $2.5\keV$ and plateaus — at the lowest energies some $10^{18}$ times above the bare-nucleus extrapolation. A preprint is a claim awaiting referees; but its qualitative phenomenology converges with the independent, peer-reviewed Szczecin PRX result of §5, from a different laboratory on different funding. The cohort's strongest <em>refereed</em> output to date is theory-adjacent: Metzler, Hunt, Hagelstein, and Galvanetto's topical review (<em>New Journal of Physics</em> 26, 101202 (2024)) cataloguing known solid-state mechanisms — site proximity, screening, transient lattice dynamics — and arguing each is worth orders of magnitude, while the required total remains more than forty.</p>
+
+      <aside class="note">
+        <h4>Ahead of theory</h4>
+        <p>Two groups — Szczecin (PRX 15, 041004, peer-reviewed) and LBNL/UC Davis (arXiv:2512.06212, preprint) — now report a <em>plateau</em> in sub-keV d+d yields. Static screening cannot produce a plateau: $\sigma_{\mathrm{bare}}(E+\Ue)$ merely shifts the exponential cliff, so any single $\Ue$ still predicts a falling yield. A flat yield at falling beam energy means either new physics (thermalized-deuteron fusion in ion tracks, a threshold resonance) or an unmodeled systematic (beam tails, surface deuterium). Nothing in accepted theory currently accounts for it — the sharpest experiment–theory gap of the 2020s, logged for Chapter IX.</p>
+      </aside>
+
+      <p>The institutional story then escalated: in January 2026 DARPA issued a Broad Agency Announcement for <dfn title="DARPA's 2026 program 'Mechanisms for Amplification of fusion Reaction Rates in Solids'">MARRS</dfn> (HR001126S0007; proposers day 20 January, proposals due 12 March, anticipated start around September 2026), explicitly citing the post-2023 evidence of large solid-state rate amplification. The program runs two 18-month phases with reviews at months 12 and 16, and sets a quantitative goal: raise solid-state fusion rates from the current state of the art, of order $0.1$ reactions per second per gram, to $10^{6}$. It is worth converting that <em>success criterion</em> into power to calibrate expectations:</p>
+
+      <div class="equation-block">
+        $$ P \;=\; R\,\bar{Q} \;=\; 10^{6}\,\mathrm{s^{-1}g^{-1}} \times 3.65\MeV \times 1.602\times10^{-13}\,\mathrm{J/MeV} \;\approx\; 0.6\,\mu\mathrm{W/g}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$P$</dt><dd>Thermal power per gram of material if the MARRS goal rate is reached (scalar, W/g).</dd>
+          <dt>$R$</dt><dd>Fusion reaction rate per gram (s⁻¹ g⁻¹): MARRS's month-34 goal is $10^{6}$, up from a stated baseline of ~$0.1$.</dd>
+          <dt>$\bar{Q}$</dt><dd>Mean energy per d+d fusion for the two dominant branches, $\approx 3.65\MeV$ (Chapter I).</dd>
+        </dl>
+      </aside>
+
+      <p>Total success — a ten-million-fold amplification — yields <em>microwatts</em> per gram: a nuclear diagnostics milestone, still a factor of a million or more from an energy technology. That is not a criticism of the program; it is the program's own sober framing, and the right calibration for headlines about "DARPA funding cold fusion." The 2023–2026 federal re-entry has been a bet on <em>measurement</em>, and its returns so far are measured in screening physics, not watts.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>The mid-2026 scoreboard</h2>
+
+      <p>Lay the decade's claims on one table, with venue and replication status attached, and the pattern is stark.</p>
+
+      <p><strong>Replicated and mainstream:</strong> enhanced electron screening in metal deuterides under keV beams (Tohoku 2002, Bochum, Szczecin — Chapter VI), now extended by the sub-keV yield measurements, with the plateau reported independently by Szczecin (PRX, peer-reviewed) and LBNL/UC Davis (preprint). Also replicated and mainstream: the <em>negative</em> results — Google (<em>Nature</em>, 2019), HERMES (2024) — from every resourced external program that has audited the electrolytic excess-heat claims.</p>
+
+      <p><strong>Peer-reviewed, single-group, unreplicated:</strong> Kitamura's nano-composite heat (IJHE, 2018 — internal consortium replication only); Iwamura's multilayer heat (JJAP, 2024); the Czerski group's e⁺e⁻ channel (PRX, 2025). Publication in a serious venue means competent referees found no fatal flaw — not that the claim is true. For the calorimetric entries, the mundane explanations (emissivity drift, gas-conduction shifts, model-laden hydrogen accounting) have never been excluded by an adversarial third party, because no hostile, resourced replication of either Japanese protocol has ever been attempted. That — not another positive paper from the same network — is the concrete open item.</p>
+
+      <p><strong>Field-internal or commercial:</strong> Mizuno's kilowatts (JCMNS; replication effectively failed), the 410 keV/H photon calorimetry and He-3 detections (arXiv/JCMNS), CleanHME's reactor COP (project communications), Clean Planet's boiler prototypes and every other company announcement. These are claims, not results, and the decade's most reliable regularity is the asymmetry between them and the journal record: company numbers run kilowatts and COPs; refereed numbers run watts and percent-level effects; replicated numbers, so far, run picobarns.</p>
+
+      <p>What to watch from here: whether arXiv:2512.06212 survives review and whether anyone outside Szczecin and Berkeley reproduces the plateau; whether any ARPA-E team publishes a reference protocol or a null; whether MARRS's month-12 review reports amplification on schedule; and whether anyone, anywhere, subjects the Iwamura protocol to a hostile replication. Those are empirical questions with dates attached — Chapter X takes up what the answers would mean. But the claims already on the table outrun every accepted mechanism by orders of magnitude, and before we can weigh futures we must face the explanatory gap directly. That is Chapter IX.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Kitamura, A., Takahashi, A., Takahashi, K., Seto, R., Hatano, T., Iwamura, Y., Itoh, T., Kasagi, J. et al.</span> <em>Excess heat evolution from nanocomposite samples under exposure to hydrogen isotope gases</em>, International Journal of Hydrogen Energy 43 (33), 16187–16200 (2018) — the NEDO collaborative phase's capstone claim; DOI 10.1016/j.ijhydene.2018.06.187.</li>
+          <li><span class="src-title">Iwamura, Y., Itoh, T., Yamauchi, S. &amp; Takahashi, T.</span> <em>Anomalous heat generation that cannot be explained by known chemical reactions produced by nano-structured multilayer metal composites and hydrogen gas</em>, Japanese Journal of Applied Physics 63, 037001 (2024) — the Tohoku/Clean Planet flagship; DOI 10.35848/1347-4065/ad2622.</li>
+          <li><span class="src-title">Mizuno, T. &amp; Rothwell, J.</span> <em>Excess heat from palladium deposited on nickel</em>, Journal of Condensed Matter Nuclear Science 29, 21–33 (2019) — the R19/R20 claims; field-internal journal, cited here for the record audited in §4.</li>
+          <li><span class="src-title">Dubey, R., Czerski, K., Das H., G., Kowalska, A., Targosz-Śleczka, N., Kaczmarski, M. &amp; Valat, M.</span> <em>Experimental Signatures of a New Channel of the Deuteron-Deuteron Reaction at Very Low Energy</em>, Physical Review X 15, 041004 (2025) — d+d yields to ~675 eV c.m. and the e⁺e⁻-pair channel claim; arXiv:2408.07567.</li>
+          <li><span class="src-title">Metzler, F., Hunt, C., Hagelstein, P. L. &amp; Galvanetto, N.</span> <em>Known mechanisms that increase nuclear fusion rates in the solid state</em>, New Journal of Physics 26, 101202 (2024) — the ARPA-E-era mechanism census; DOI 10.1088/1367-2630/ad091c.</li>
+          <li><span class="src-title">Karahadian, M. E., Colborne, M., Persaud, A., Schenkel, T. &amp; Munday, J. N.</span> <em>Enhanced nuclear fusion in the sub-keV energy regime</em>, arXiv:2512.06212 (2025) — the LBNL/UC Davis sub-keV plateau; preprint, unrefereed as of mid-2026.</li>
+          <li><span class="src-title">ARPA-E.</span> <em>U.S. Department of Energy Announces $10 Million in Funding to Projects Studying Low-Energy Nuclear Reactions</em>, press release and project descriptions, arpa-e.energy.gov (17 February 2023) — the program's goals and the eight-team portfolio of §6.</li>
+        </ul>
+      </section>
+
+      <p class="colophon-note" style="font-family: var(--sans); font-size: 0.78rem; color: var(--text-faint); margin-top: 1.5rem;">Chapter production note: researched and drafted by Claude subagents (draft agent: <code>claude-fable-5</code>; adversarial verification pass by <code>claude-fable-5</code> scheduled — see STATUS.md), orchestrated by <code>claude-fable-5</code>. See the <a href="appendix-methods.html">methods appendix</a> for the full research process.</p>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="07-google-nasa.html"><span class="label">← Previous</span>The Reassessment: Google and NASA</a>
+      <a class="next" href="09-theory-gap.html"><span class="label">Next chapter</span>Theories and the Explanatory Gap →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/nano-heat.js"></script>
+</body>
+</html>

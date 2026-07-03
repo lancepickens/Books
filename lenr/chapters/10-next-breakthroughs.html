@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter X · Where the Breakthroughs May Come From — Low-Energy Nuclear Reactions</title>
+  <meta name="description" content="The commissioned speculation chapter: Bayesian rules for weighing correlated replications, four scenarios for a genuine breakthrough, the author's ranked bets, and a concrete decade agenda." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter X of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter X</p>
+      <h1 class="chapter-title">Where the Breakthroughs May Come From</h1>
+      <p class="lede">Nine chapters of evidence and critique end here, in the one chapter licensed to bet — on where, if anywhere, this field's genuine breakthrough is hiding, and what it would cost to go find out.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>Everything before this page reported what has been measured, claimed, and critiqued. This chapter does something different: it speculates, on purpose and on the record. Having weighed thirty-seven years of experiments against the two numbers that govern them all — the Gamow factor a claim must beat and the error bar it must survive — we now ask where a real breakthrough would most plausibly come from, what it would look like when it arrived, and which experiments would get us there fastest.</p>
+          <p>To keep the speculation honest we borrow the bookkeeping of forecasting: state a prior, say how much each new result should move it, and — crucially — discount reports that are correlated with each other. One small formula from survey statistics explains more about this field's history than any theory in Chapter IX: a hundred positive reports that share methods, materials, and expectations can carry the evidential weight of roughly one. The cheapest breakthrough available to this field is not new physics. It is evidence quality.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>prior odds</dt><dd>Your betting odds on a hypothesis before seeing new evidence — for "watts of nuclear heat in a jar," very long odds indeed, for the Chapter I reasons.</dd>
+          <dt>posterior odds</dt><dd>Your odds after the evidence: prior odds multiplied by how strongly the evidence favors the hypothesis.</dd>
+          <dt>likelihood ratio (LR)</dt><dd>How many times more probable a given result is if the hypothesis is true than if it is false. LR = 1 means the result teaches nothing.</dd>
+          <dt>Bayes' theorem</dt><dd>The rule for updating beliefs with evidence; in odds form it is a single multiplication.</dd>
+          <dt>calibration</dt><dd>The forecasting virtue of meaning your numbers: of things you call "20% likely," about one in five should happen.</dd>
+          <dt>intraclass correlation ($\rho$)</dt><dd>A number between 0 and 1 measuring how much observations within a group resemble each other — here, how non-independent two positive reports are.</dd>
+          <dt>design effect</dt><dd>Kish's factor $1+\rho(N-1)$ by which clustering inflates the variance of a survey — equivalently, deflates the information in $N$ correlated samples.</dd>
+          <dt>effective sample size ($N_{\mathrm{eff}}$)</dt><dd>The number of truly independent observations your $N$ correlated ones are worth: $N/(1+\rho(N-1))$.</dd>
+          <dt>preregistration</dt><dd>Publicly fixing the protocol, analysis, and success criteria before running the experiment, so a positive result cannot be carved out after the fact.</dd>
+          <dt>blinding</dt><dd>Hiding the identity of samples or conditions from the people measuring them, so expectation cannot steer the readings.</dd>
+          <dt>independent replication</dt><dd>The same claimed effect reproduced by different people, with different equipment, different materials, and no shared stake in the outcome.</dd>
+          <dt>systematic error</dt><dd>An error that does not average away with repetition — calorimeter miscalibration, contamination — the historic killer of LENR claims.</dd>
+          <dt>operando measurement</dt><dd>Characterizing a material <em>while it operates</em> — inside the working cell, during the claimed anomaly — rather than before or after.</dd>
+          <dt>X-ray diffraction (XRD)</dt><dd>Reading a crystal's structure from how it scatters X-rays; operando XRD tracks phase changes in a loading cathode in real time.</dd>
+          <dt>X-ray photoelectron spectroscopy (XPS)</dt><dd>Measuring surface composition and chemical state from the energies of electrons kicked out by X-rays — the top few nanometers, where cathodes live and die.</dd>
+          <dt>atom-probe tomography</dt><dd>Field-evaporating a needle-shaped sample atom by atom to reconstruct its 3-D composition at near-atomic resolution.</dd>
+          <dt>self-driving lab</dt><dd>A robotic platform that designs, runs, and analyzes its own experiments in a closed loop, choosing each next experiment by algorithm.</dd>
+          <dt>Bayesian optimization</dt><dd>The algorithm family such labs use: model the response surface, then sample where information gain is highest.</dd>
+          <dt>superhydride</dt><dd>A hydrogen-rich compound (H₃S, LaH₁₀) stabilized at megabar pressures; the family that yielded near-room-temperature superconductivity.</dd>
+          <dt>high-entropy alloy</dt><dd>An alloy of five or more principal elements in comparable amounts; some absorb hydrogen to ratios far beyond palladium's.</dd>
+          <dt>underground laboratory</dt><dd>A lab under a kilometer of rock (Gran Sasso's LUNA is the exemplar), where cosmic-ray background is low enough to measure vanishing nuclear cross sections.</dd>
+          <dt>CVD diamond detector</dt><dd>A single-crystal diamond neutron spectrometer: fast, radiation-hard, nearly blind to gammas — it can certify a 2.45 MeV d+d neutron in a noisy room.</dd>
+          <dt>low-background counting</dt><dd>The rare-event-search toolkit — radiopure materials, active vetoes, coincidence logic — that can detect of order one nuclear event per second per kilogram, unambiguously.</dd>
+          <dt>Oppenheimer–Phillips reaction</dt><dd>A deuteron grazing a heavy nucleus lets its neutron be captured while the proton is repelled — a barrier-softened channel invoked in NASA's lattice experiments.</dd>
+          <dt>neutron economy</dt><dd>The bookkeeping of a neutron-mediated scheme: each neutron spent must be replaced by breeding or an external source, or the process dies out.</dd>
+          <dt>fractionation</dt><dd>The hypothetical splitting of one MeV-scale nuclear quantum into billions of meV-scale lattice quanta — the load-bearing miracle of Chapter IX's coherence theories.</dd>
+          <dt>materials passport</dt><dd>A complete, shareable dossier on a specific sample — provenance, composition, defect state, loading history — so "the same cathode" means something between labs.</dd>
+          <dt>reference experiment</dt><dd>A standardized, fully specified protocol run identically in multiple labs, designed so that a positive in one lab is a recipe any other lab can execute.</dd>
+        </dl>
+      </section>
+
+      <aside class="note">
+        <h4>Speculation</h4>
+        <p>Unlike Chapters I–IX, this chapter states priors and bets, not settled results. Everything here is the compiling model's informed speculation, grounded in the evidence of the preceding chapters and clearly separable from it. Where a scenario leans on a published result, the citation is given and its register (established / contested / preprint) is kept; the <em>rankings and probabilities</em> are commissioned guesswork, offered to be falsified.</p>
+      </aside>
+
+      <h2><span class="sec-num">§1</span>The rules of this chapter: Bayesian honesty</h2>
+
+      <p>A speculation chapter needs rules, or it is merely advocacy with hedging. Ours are the rules of the bettor. First, state the <dfn title="the odds you assign a hypothesis before considering the new evidence">prior odds</dfn>: given Chapter I's yardstick — a tunneling suppression of order $10^{-2700}$ at thermal energies, fifty-plus orders of magnitude between molecular deuterium and a detectable signal — the prior against "watts of nuclear heat in an electrochemical cell" is properly microscopic. Second, update multiplicatively: each new experimental report multiplies the odds by its <dfn title="the ratio of the probability of the observed result if the hypothesis is true to its probability if the hypothesis is false">likelihood ratio</dfn>,</p>
+
+      <div class="equation-block">
+        $$ O_{\mathrm{post}} \;=\; O_{\mathrm{prior}} \times \prod_{i=1}^{N} \mathrm{LR}_i,
+        \qquad \mathrm{LR}_i \;=\; \frac{P(D_i \mid H)}{P(D_i \mid \lnot H)} . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$H$</dt><dd>The hypothesis under audit (e.g. "some metal-hydride system produces nuclear-scale excess heat").</dd>
+          <dt>$O_{\mathrm{prior}},\ O_{\mathrm{post}}$</dt><dd>Odds (dimensionless ratios $P/(1-P)$) before and after the evidence.</dd>
+          <dt>$D_i$</dt><dd>The $i$-th experimental report (a positive claim, a null, a retraction — each carries its own ratio).</dd>
+          <dt>$\mathrm{LR}_i$</dt><dd>Scalar $\geq 0$: how many times likelier report $D_i$ is in a world where $H$ is true than in one where it is false. A sloppy positive that artifacts produce easily has $\mathrm{LR}$ barely above 1; a blinded, preregistered, multi-diagnostic positive could have $\mathrm{LR}$ of 10 or more.</dd>
+        </dl>
+      </aside>
+
+      <p>Third — and this is the rule the field's history turns on — <em>discount correlation</em>. The product above assumes the $N$ reports are independent. LENR's positive reports overwhelmingly are not: shared cathode suppliers, shared protocols descended from the same 1989 template, shared analysis conventions, a shared conference circuit, and a publication culture in which nulls quietly vanish. Survey statisticians have priced this exactly. Kish's <dfn title="the factor by which clustered sampling inflates variance relative to simple random sampling">design effect</dfn> says that $N$ observations with pairwise <dfn title="the correlation between observations belonging to the same cluster or group">intraclass correlation</dfn> $\rho$ carry the information of only</p>
+
+      <div class="equation-block">
+        $$ N_{\mathrm{eff}} \;=\; \frac{N}{1 + \rho\,(N-1)},
+        \qquad \log_{10} O_{\mathrm{post}} \;=\; \log_{10} O_{\mathrm{prior}} \;+\; N_{\mathrm{eff}}\,\log_{10}\mathrm{LR} . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$N$</dt><dd>Integer: the number of positive reports (nominal replications).</dd>
+          <dt>$\rho$</dt><dd>Scalar in $[0,1]$: intraclass correlation between reports. $\rho=0$ is genuine independence; $\rho=1$ means every report is effectively the same observation repeated.</dd>
+          <dt>$N_{\mathrm{eff}}$</dt><dd>Scalar: the effective number of independent reports — Kish's effective sample size. As $\rho \to 1$, $N_{\mathrm{eff}} \to 1$ no matter how large $N$ grows.</dd>
+          <dt>$\mathrm{LR}$</dt><dd>A common per-report likelihood ratio, used in the second (log-form) expression as the simplifying case $\mathrm{LR}_i = \mathrm{LR}$.</dd>
+        </dl>
+      </aside>
+
+      <p>Run the field's history through it. Take a charitable prior of $10^{-6}$, a generous $\mathrm{LR}=10$ per positive report, and $N=30$ published positives. Independent, they would drive the posterior odds to $10^{-6+30} = 10^{24}$ — certainty. But at $\rho = 0.9$, which is arguably still kind to a literature this entangled, $N_{\mathrm{eff}} = 30/(1+0.9\times29) \approx 1.1$, and the posterior odds are $10^{-6+1.1} \approx 10^{-4.9}$ — moved, but still about one in eighty thousand. Thirty reports, worth one. That single arithmetic fact reconciles the two things every honest observer of this field feels at once: <em>so many</em> people have seen <em>something</em>, and yet the rational credence has barely budged since 1990.</p>
+
+      <p>It also identifies the cheapest breakthrough on offer. You can spend a decade hunting mechanisms that raise the Gamow factor — or you can raise $\mathrm{LR}$ and lower $\rho$, this year, with statistics and sociology: preregistration, blinding, hostile replication, published nulls, sample exchange. A single blinded multi-lab positive with $\mathrm{LR} \sim 100$ and $\rho \approx 0$ outweighs the entire historical corpus. Every scenario below is, at bottom, a scheme for buying either a bigger exponent or a cleaner one — the Gamow factor and the error bar, one last time.</p>
+
+      <section class="interactive" data-widget="bayes-replication" aria-label="Interactive Bayesian replication calculator">
+        <header>
+          <h4>Interactive · The replication calculator</h4>
+          <span class="hint">set a prior · stack reports · correlate them</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">Posterior log-odds $\log_{10}O_{\mathrm{post}} = \log_{10}O_{\mathrm{prior}} + N_{\mathrm{eff}}\log_{10}\mathrm{LR}$ with Kish's $N_{\mathrm{eff}} = N/(1+\rho(N-1))$, versus the naive ($\rho=0$) posterior. Slide the correlation toward 1 and watch a mountain of reports collapse to the weight of one: at prior $10^{-6}$, $\mathrm{LR}=10$, $N=30$, $\rho=0.9$ the honest posterior is $\sim10^{-4.9}$ while the naive one is $10^{24}$. The field's whole history lives in the gap between those two curves.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>Speculation A — materials determinism</h2>
+
+      <p><em>The bet:</em> if any excess-heat effect is real, its forty-year irreproducibility pattern is telling us the active condition is a <em>rare materials state</em> — a specific configuration of defects, interfaces, and near-surface stoichiometry that 1989-era experimenters could neither see nor control — and that state is findable with tools that now exist. This was this book's top-ranked scenario for most of its drafting; §3 explains why it now shares the podium.</p>
+
+      <p>The circumstantial case is old and consistent: McKubre's loading threshold ($\DPd \gtrsim 0.875$, Chapter V) that most cathodes never reached; the "good lots" and dead lots of palladium; effects that die when a cathode is repolished. The Google program's Nature perspective made the modern version of the argument — its team could not even <em>reach</em> the claimed trigger conditions, and concluded the parameter space was genuinely under-explored (Berlinguette et al., Nature 570, 45–51, 2019). What has changed is instrumentation. <dfn title="characterization performed on a material while it is operating, inside the working device">Operando</dfn> XRD and neutron diffraction can track hydride phase and loading inside a running cell; XPS maps the near-surface chemistry where electrochemistry actually happens; <dfn title="a microscopy technique that evaporates a sample atom by atom to reconstruct its three-dimensional composition">atom-probe tomography</dfn> reconstructs a suspect cathode's surface volume atom by atom. The variable that 1989 could only guess at — <em>what, exactly, is this electrode right now?</em> — is now measurable during the anomaly, not after it.</p>
+
+      <p>The search-speed lever is just as new. Berlinguette's own group built Ada, a <dfn title="an autonomous robotic laboratory that designs, executes, and analyzes experiments in a closed algorithmic loop">self-driving lab</dfn> that synthesizes and characterizes a thin-film sample about every twenty minutes (MacLeod et al., Sci. Adv. 6, eaaz8867, 2020). Point that machinery at cathode conditions — composition, metallurgy, loading protocol, trigger — and $10^3$–$10^4$ systematically logged electrochemical experiments per year is an engineering problem, not a fantasy. The same PI leading both the field's best null and its best robot is the least accidental fact in this chapter.</p>
+
+      <aside class="jargon">
+        <h4>Calibrating the robo-lab hype</h4>
+        <p>Autonomous discovery has its own overclaiming problem. DeepMind's GNoME announced 2.2 million candidate crystals and the A-Lab claimed 41 new materials synthesized in 17 days (Nature 624, 80–85 and 86–91, 2023) — and a peer-reviewed audit found few results that were simultaneously novel, credible, and useful (Cheetham &amp; Seshadri, Chem. Mater. 36, 3490–3495, 2024). The lesson transfers: a self-driving LENR search would generate torrents of candidate "hits," and only the §1 discipline — preregistered criteria, blind re-runs — keeps torrents from becoming another correlated literature.</p>
+      </aside>
+
+      <p><em>What "found it" would look like, concretely:</em> a materials passport — say, "Pd, this vacancy concentration, this near-surface oxide, $\DPd &gt; 0.9$ sustained for this long" — published with a <em>dose–response curve</em>: heat that switches on and off with the specified state, in any lab that reproduces the state, with always-on nuclear diagnostics deciding what the heat is. Materials determinism is the one scenario that would explain the entire irreproducibility record <em>and</em> retire it in the same paper. If instead the self-driving campaigns sweep the space at scale and find nothing, that is §5's outcome arriving by robot — and it settles the matter with the same data.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Speculation B — screening physics, upgraded</h2>
+
+      <p><em>The bet:</em> the anomalously large electron screening of Chapter VI is the field's most productive thread, because it is the one place where contested LENR-adjacent claims and mainstream accelerator physics share an apparatus, an equation, and now a funding line. Push metal-target d+d measurements below 2 keV with underground, LUNA-class rigor and modern target metrology, and <em>either</em> the anomalous $\Ue$ values normalize — theory catches up, artifact channels close, item (1) of Chapter IX's ledger is retired — <em>or</em> they grow further, and something genuinely new is in hand. Both outcomes are breakthroughs; only one requires new physics.</p>
+
+      <p>The baseline is clean: in D₂ gas, underground measurement gives $\Ue = 25\pm5\eV$, right at the atomic limit (Greife et al., Z. Phys. A 351, 107, 1995). In metals, groups in Berlin/Szczecin, Bochum, Tohoku, and Berkeley report $\Ue$ from roughly $300$ to $1000\eV$ — mutually inconsistent at the factor-2–3 level, unexplained by any accepted model, and sensitive to exactly the systematics (deuteron depth profiles, surface contamination, stopping powers) that modern metrology can finally pin down. This is a solved-problem <em>shape</em>: nuclear astrophysics has spent three decades turning ugly low-energy yield curves into precision science underground.</p>
+
+      <p>Events of 2025–26 made this the best-instrumented scenario in the book, which is why it now outranks Speculation A on tractability. Berlinguette's group showed in Nature that in-situ electrochemical loading raises beam-driven d+d fusion rates in Pd by $15\pm2\%$ — a modest number with an immodest meaning: an eV-scale knob, turned by a chemist, measurably modulating a nuclear rate on a calibrated platform (Nature 644, 640–645, 2025; the paper reports that about a volt of applied potential achieves deuterium activity equivalent to roughly 800 atm of gas pressure). The Szczecin group published in PRX the claim of a new low-energy d+d channel, with yields tracked down to $E_{\mathrm{cm}} = 675\eV$ (Phys. Rev. X 15, 041004, 2025) — peer-reviewed, single-group, unreplicated. And an LBNL/UC Davis preprint reports sub-keV yields in loaded Pd and Ti hydrides that stop falling and <em>plateau</em> below about 2.5 keV, of order $10^{18}$ above bare-nucleus extrapolation at the lowest points (Karahadian et al., arXiv:2512.06212 — a preprint, and an extrapolation-sensitive number; treat accordingly). DARPA's MARRS program (BAA HR001126S0007, January 2026) now aims to raise demonstrated solid-state reaction rates from the ~0.1 reactions/s/g state of the art toward $10^6$ — still a dozen orders of magnitude from power relevance, but the first program ever to give this physics quantitative milestones and deadlines.</p>
+
+      <aside class="note">
+        <h4>Ahead of theory</h4>
+        <p>The sub-keV anomalies are results ahead of theory in the strict ledger sense. A static screening energy only shifts the Gamow exponential — $\sigma_{\mathrm{scr}}(E) = \sigma_{\mathrm{bare}}(E+\Ue)$ still falls as the beam energy falls — so <em>no</em> choice of $\Ue$ produces a plateau. Either an unmodeled systematic (beam tails, surface deuterium) or genuinely new low-energy physics (thermalized-deuteron fusion in ion tracks, a threshold resonance — the Szczecin interpretations) is at work. The decisive follow-up is boring on purpose: the same measurement, underground, by a group with no stake, with independently certified targets.</p>
+      </aside>
+
+      <p>The adjacent materials physics says metal–hydrogen systems still hide surprises of exactly the needed flavor. Conventional superconductivity at 203 K in H₃S (Drozdov et al., Nature 525, 73–76, 2015) and ~250 K in LaH₁₀ (Nature 569, 528–531, 2019) — replicated, megabar-pressure, phonon-mediated — were textbook-changing discoveries in hydrogen-dominant metals, the very phase space LENR speculation invokes. High-entropy alloys absorb hydrogen to H/M = 2.5, far beyond PdH$_{0.7}$ (Sahlberg et al., Sci. Rep. 6, 36770, 2016), offering unexplored screening and confinement testbeds at ambient pressure. And the same decade supplied the cautionary mirror: the Dias room-temperature-superconductivity retractions (2022–23) showed extraordinary metal-hydride claims collapsing inside Nature itself when raw data could not be produced. The superhydride story is what a real metal–hydrogen breakthrough looks like — theory-first, replicated within a year, survived by its data. That is the template Speculation B is betting the screening anomaly can follow.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Speculation C — engineered nonequilibrium</h2>
+
+      <p><em>The bet:</em> the theorems of Chapter IX leave one door open, and it is labeled <em>nonequilibrium</em>. The Leggett–Baym bound caps what any equilibrium condensed-matter system can do to tunneling rates; NASA's lattice experiments walked through the open door deliberately, using 2.9 MeV photons to make neutrons that elastically kick deuterons to keV energies <em>inside</em> a screened, deuterium-dense lattice, where they fuse at rates the screening measurably boosts (Pines et al. and Steinetz et al., Phys. Rev. C 101, 044609 &amp; 044610, 2020 — peer-reviewed, not independently replicated). This is not cold fusion; it is hybrid hot/cold fusion, and as speculation it scales as an <em>engineering</em> question: what is the neutron economy? Each seed neutron is expensive; the scheme pays only if screened fusion chains and <dfn title="a deuteron-induced reaction in which the neutron is captured by a heavy nucleus while the proton is electrostatically repelled, softening the barrier penalty">Oppenheimer–Phillips</dfn> stripping on high-mass-number hosts return more energetic particles per neutron spent than the accelerator or gamma source consumes. Nobody has published that ledger; drafting it is a masters-thesis-sized breakthrough waiting to be claimed.</p>
+
+      <p>The same nonequilibrium license covers the phonon and plasmon proposals of Chapter IX — but here the speculation is about experiment design, not mechanism. The fractionation theories (one 24 MeV quantum dissolving into $10^9$ phonons) have spent decades unfalsified because nothing was built to falsify them. That is fixable: their load-bearing claims imply <em>observable intermediate physics</em> — phonon-modulated nuclear level shifts, excitation transfer between separated sites, angular-anisotropic X-ray emission under THz drive — each testable on equipment that exists, at costs far below a calorimetry program. The point of such experiments is not to produce power. It is to make the theories die or grow, which after Chapter IX is the more urgent product.</p>
+
+      <aside class="note">
+        <h4>Ahead of theory</h4>
+        <p>Chapter IX's ledger rows each dictate their decisive follow-up, and this scenario is where those experiments live. Anomalous $\Ue$ magnitude → underground remeasurement with certified targets (§3). Temperature-dependent screening → repeat with degenerate-electron-honest theory and operando target thermometry. The claimed ⁴He threshold resonance with $e^+e^-$ emission → a pair-spectrometer experiment by a second group; the resonance appears in no evaluated A=4 level scheme. NASA's screened O–P channels → independent replication with CVD-diamond spectroscopy and full activation analysis. Heat–helium at 23.85 MeV/He with helium born below ~20 keV → the closed-loop helium accounting experiment of §7. Each row is a funded-size experiment, not a program.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Speculation D — null closure as a breakthrough</h2>
+
+      <p><em>The bet:</em> the outcome most likely to be underrated is the definitive negative. Consider a blinded, multi-lab, preregistered replication network — ARPA-E-style reference experiments, run to rare-event-search standards — that takes the strongest surviving claims from Chapters III–VIII and either produces one lab-transferable positive or retires them. In §1's language: a network engineered so that $\rho \approx 0$ between labs and $\mathrm{LR}$ is large in <em>both</em> directions — a positive would be believable, and a null would be final.</p>
+
+      <p>The pieces exist separately and have never been assembled. The 2004 DOE review ended not with a verdict but with a procedural shrug — reviewers split, no program, "well-designed proposals welcome" (U.S. DOE, <em>Report of the Review of Low Energy Nuclear Reactions</em>, 2004) — and two decades later the ARPA-E LENR exploratory topic (roughly ten million dollars across eight teams, 2023) supplied funding and modern diagnostics but, as of mid-2026, no published cohort-wide reference protocol, no confirmed excess heat, and no published nulls either. The detection standard is no longer the bottleneck: gamma-blind single-crystal diamond spectrometers can certify a 2.45 MeV neutron line in real time in a mixed field, and the low-background techniques of the rare-event community (Heusser, Annu. Rev. Nucl. Part. Sci. 45, 543–590, 1995) can see of order one nuclear event per second per kilogram. Any modern claim can be held to that standard; a network would hold every claim to it simultaneously, with tritium blind-splits and helium closed-loop accounting as the calorimetry-independent channels.</p>
+
+      <p>Why call a negative a breakthrough? Because a <em>definitive</em> negative — not one more unpublished shrug, but preregistered nulls across the strongest protocols, with sensitivity numbers — is a thriving-world outcome. It redirects careers and money toward the parts of this story that are certainly real (the screening anomaly, the materials tools, the detectors); it converts an eternal maybe into a bounded claim ("no excess heat above X watts per cm³ under conditions Y, at confidence Z"); and the instruments and standards remain, permanently raising $\mathrm{LR}$ for whatever anomaly physics serves up next. Fields that cannot close questions cannot open new ones. The null-closure network is the only experiment in this chapter guaranteed to produce a breakthrough, because it wins on either branch.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The author's ranked bets</h2>
+
+      <p>Rules of §1 applied to the author itself: here are this book's calibrated guesses, stated as probabilities so they can be wrong in public. They are the compiling model's own numbers — speculation by commission, not community consensus — and each comes with its reasoning attached.</p>
+
+      <p><strong>P(the metal screening anomaly is quantitatively resolved by 2036) ≈ 0.7.</strong> Highest, because §3's machinery is aimed and funded: multiple accelerator groups, underground capability, MARRS-style milestones, and a question — is $\Ue$ in Pd 300 eV or 800 eV, and why? — that is answerable by measurement regardless of which answer is true. "Resolved" here includes the deflationary ending in which better target metrology collapses the anomaly into systematics; the bet is that the <em>question</em> closes, not that the anomaly survives.</p>
+
+      <p><strong>P(the sub-keV plateau survives independent replication as new physics) ≈ 0.15.</strong> Two groups with different apparatus see it, which is why this is not 0.05; but both results are young, one is a preprint, the claimed effect sits $10^{18}$ above an extrapolation exquisitely sensitive to beam-energy calibration, and history says most cliff-edge anomalies at the bottom of a yield curve are the beam, not the universe.</p>
+
+      <p><strong>P(a lab-transferable excess-heat protocol exists by 2036) ≈ 0.04.</strong> The $N_{\mathrm{eff}}$ arithmetic is the reasoning: thirty-seven years of positives compress to roughly one independent report's worth of evidence against a prior that Chapter I set at $10^{-6}$-class. Materials determinism (§2) is the one live route — a rare-state explanation could still be hiding in unexplored parameter space, and the self-driving campaigns will actually search it this decade — so this number is meaningfully above zero. But it requires the heat to be real, rare, <em>and</em> findable, three conjuncts each well below 1.</p>
+
+      <p><strong>P(a new-physics mechanism — beyond screening — confirmed by 2036) ≈ 0.01.</strong> Confirmation means Chapter IX's exit-channel problem solved by experiment: fractionation observed, or a new reaction channel replicated. Every candidate mechanism currently fails by orders of magnitude at an identifiable step, and the field's theoretical proposals have never once led its experiments. New physics remains possible — the plateau, if real, would be its first foothold — but 1% is what "possible" is worth after nine chapters of audit.</p>
+
+      <p><strong>P(null closure achieved — the strongest claims retired or transferred — by 2036) ≈ 0.35.</strong> Limited less by physics than by sociology: someone must fund and staff §5's network, and the incentive structure of both the field and its critics runs against finality. This is the number the reader can most directly move.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>The decade agenda</h2>
+
+      <p>Speculations earn their keep by pricing their tests. Here is the concrete program, with order-of-magnitude costs and the information each purchase buys.</p>
+
+      <p><strong>(1) One reference experiment per evidence strand.</strong> Heat–helium with closed-loop helium accounting; tritium with blind splits across three mass-spec labs; gas permeation with independently certified samples. Cost: ten-million-dollar class per strand over several years. Buys: the single highest-value dataset in the field — each strand either produces its first $\rho\approx0$, high-$\mathrm{LR}$ positive or is retired with sensitivity numbers.</p>
+
+      <p><strong>(2) Materials passports and sample exchange.</strong> Atom-probe, XPS, and diffraction dossiers on every cathode in every claim; physical sample swaps between claiming and skeptical labs. Cost: million-dollar class. Buys: the §2 hypothesis tested directly — if the effect follows the passport, materials determinism is confirmed; if it follows the lab, the effect is sociology.</p>
+
+      <p><strong>(3) Always-on nuclear diagnostics around every calorimetric claim.</strong> Diamond spectrometers, gamma spectroscopy, and low-background counting as a standing condition of taking any wattage claim seriously. Cost: one hundred thousand to a million dollars per lab. Buys: Chapter I's ashes bookkeeping enforced in real time — heat with commensurate ash is a discovery, heat without it is a calorimetry problem, and the ambiguity that consumed three decades never recurs.</p>
+
+      <p><strong>(4) Publish-negative infrastructure.</strong> A preregistration registry and a funded venue for nulls, so $\rho$ falls and the denominator of the field's evidence becomes visible. Cost: hundred-thousand-dollar class — the cheapest item, and per §1 possibly the highest-leverage.</p>
+
+      <p><strong>(5) Theory benchmarks.</strong> Compute $\Ue$ for d+d in Pd ab initio to ±10%, with degenerate electrons treated honestly, as a community benchmark on the model of quantum-chemistry blind challenges; extend toward nucleus-plus-lattice Hamiltonians as quantum simulation matures (the deuteron has already been computed on cloud quantum processors — Dumitrescu et al., Phys. Rev. Lett. 120, 210501, 2018 — a seed, decades from the tree). Cost: million-dollar class in people and compute. Buys: the yardstick's missing tick mark — a screening measurement can only be anomalous relative to a theory number everyone trusts.</p>
+
+      <p>Total: a few tens of millions of dollars a decade — noise against fusion budgets — to convert the longest-running dispute in modern physics into closed questions and calibrated instruments. Whether the answer is a new energy source, a new nuclear channel, a materials state worth a Nobel, or a final, well-earned null, the purchase is the same: the Gamow factor honestly beaten or honestly bounded, and the error bar, at last, small enough to trust.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Kish, L.</span> <em>Survey Sampling</em>, John Wiley &amp; Sons, New York (1965) — the design effect $1+\rho(N-1)$ and effective sample size underlying §1's replication discount.</li>
+          <li><span class="src-title">Berlinguette, C. P., Chiang, Y.-M., Munday, J. N., Schenkel, T., Fork, D. K., Koningstein, R. &amp; Trevithick, M. D.</span> <em>Revisiting the cold case of cold fusion</em>, Nature 570, 45–51 (2019) — the program null that frames §2's under-explored parameter space, DOI 10.1038/s41586-019-1256-6.</li>
+          <li><span class="src-title">Berlinguette group (UBC).</span> <em>Electrochemical loading enhances deuterium fusion rates in a metal target</em>, Nature 644, 640–645 (2025) — the 15±2% loading enhancement on a calibrated beam platform, DOI 10.1038/s41586-025-09042-7.</li>
+          <li><span class="src-title">MacLeod, B. P. et al.</span> <em>Self-driving laboratory for accelerated discovery of thin-film materials</em>, Science Advances 6, eaaz8867 (2020) — the Ada platform anchoring §2's automated-search speculation, DOI 10.1126/sciadv.aaz8867.</li>
+          <li><span class="src-title">Drozdov, A. P., Eremets, M. I., Troyan, I. A., Ksenofontov, V. &amp; Shylin, S. I.</span> <em>Conventional superconductivity at 203 kelvin at high pressures in the sulfur hydride system</em>, Nature 525, 73–76 (2015) — the superhydride surprise cited in §3, DOI 10.1038/nature14964.</li>
+          <li><span class="src-title">Steinetz, B. M. et al.</span> <em>Novel nuclear reactions observed in bremsstrahlung-irradiated deuterated metals</em>, Physical Review C 101, 044610 (2020) — NASA's hybrid hot/cold path behind §4.</li>
+          <li><span class="src-title">U.S. Department of Energy, Office of Science.</span> <em>Report of the Review of Low Energy Nuclear Reactions</em>, Washington, D.C. (December 2004) — the split verdict whose unfinished business §5 proposes to close.</li>
+        </ul>
+      </section>
+
+      <p class="colophon-note" style="font-family: var(--sans); font-size: 0.78rem; color: var(--text-faint); margin-top: 1.5rem;">Chapter production note: researched and drafted by Claude subagents (draft agent: <code>claude-fable-5</code>; adversarial verification pass by <code>claude-fable-5</code> scheduled — see STATUS.md), orchestrated by <code>claude-fable-5</code>. See the <a href="appendix-methods.html">methods appendix</a> for the full research process.</p>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="09-theory-gap.html"><span class="label">← Previous</span>Theories and the Explanatory Gap</a>
+      <a class="next" href="appendix-methods.html"><span class="label">Next</span>Appendix: How This Book Was Researched →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/bayes-replication.js"></script>
+</body>
+</html>
