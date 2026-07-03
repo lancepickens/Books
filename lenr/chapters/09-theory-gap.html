@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chapter IX · Theories and the Explanatory Gap — Low-Energy Nuclear Reactions</title>
+  <meta name="description" content="An audit of every serious LENR mechanism — muon catalysis, screening, phonon coherence, Widom–Larsen, the exotica — measured against the fifty-order rate gap and the missing ashes, ending in the book's ledger of results ahead of theory." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" integrity="sha384-nH0MfJ44wi1dd7w6jinlyBgljjS8EJAh2JBoRad8a3VDw2K69vfaaqm4WnR+gXtA" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="book-bar">
+      <a href="../index.html">← Contents</a>
+      <span class="crumb-section">Chapter IX of X</span>
+    </header>
+
+    <article>
+      <p class="chapter-eyebrow">Chapter IX</p>
+      <h1 class="chapter-title">Theories and the Explanatory Gap</h1>
+      <p class="lede">Fifty-two orders of magnitude is not a gap that a clever idea jumps on inspiration — so this chapter audits every serious attempt, with the receipts, and ends with the IOUs.</p>
+
+      <section class="preamble" aria-label="Chapter primer and glossary">
+        <h2 class="preamble-title">Before we start</h2>
+        <div class="preamble-body">
+          <p>Eight chapters of experiments have left us with a strange inventory: a handful of anomalies that refuse to die (excess-heat reports, the heat–helium correlation, tritium episodes, transmutation patterns, anomalously strong screening), and a mountain of solid physics saying none of it should happen. This chapter turns to the theorists. Since 1989, dozens of mechanisms have been proposed to explain how nuclei might react inside ordinary metals. We audit the serious ones — the proven muon benchmark, static electron screening, phonon-coherence schemes, the Widom–Larsen neutron theory, and the exotica — and we hold each to the same two requirements established in Chapter I: raise the fusion rate by roughly fifty orders of magnitude, and change the nuclear ashes. Each audit ends with a number: how far short, and at which step.</p>
+          <p>The tone here matters. It would be easy to sneer — most of these theories fail immediately and visibly. It would be equally easy to hand-wave — some of their authors are serious physicists working on a genuinely unsolved problem, and one experimental anomaly in this area (the size of measured screening energies) is real, peer-reviewed, and unexplained. So we do neither. We state what each theory claims, what it would need to be true, what published critiques found, and what remains. The chapter closes with this book's formal ledger: every experimental result from Chapters III–VIII that currently runs ahead of any accepted theory, each flagged with the one measurement that would settle it.</p>
+        </div>
+        <h3 class="glossary-title">Terms you'll meet</h3>
+        <dl class="glossary">
+          <dt>lepton</dt><dd>The particle family that includes the electron, the muon, and neutrinos; leptons feel electromagnetism and the weak force but not the strong nuclear force.</dd>
+          <dt>muon</dt><dd>An unstable heavy cousin of the electron: same charge, 206.77 times the mass, living 2.2 microseconds on average.</dd>
+          <dt>muonic molecule</dt><dd>A hydrogen molecular ion in which a muon replaces the electron; the muon's mass shrinks the molecule about 200-fold.</dd>
+          <dt>alpha-sticking</dt><dd>The fate that ends a muon's catalytic career: after a fusion, the muon occasionally binds to the outgoing helium nucleus and is carried away.</dd>
+          <dt>cycling rate</dt><dd>How many complete catalysis loops (capture, molecule formation, fusion, release) a muon can execute per second.</dd>
+          <dt>effective mass</dt><dd>The apparent mass an electron acquires inside a crystal, set by the band structure; a bookkeeping mass for how it accelerates, not new inertia for particle physics.</dd>
+          <dt>quasiparticle</dt><dd>A collective excitation of many particles that behaves like a single particle — a "dressed" electron, a phonon, a plasmon.</dd>
+          <dt>screening energy ($\Ue$)</dt><dd>The effective reduction of the Coulomb barrier by nearby electrons, expressed as an energy boost to the colliding pair (Chapters I and VI).</dd>
+          <dt>jellium</dt><dd>The idealized metal of many-body theory: a smeared-out uniform positive background filled with an electron gas.</dd>
+          <dt>degenerate electron gas</dt><dd>Electrons packed so densely that the Pauli exclusion principle, not temperature, dictates their motion — the actual state of conduction electrons in a metal.</dd>
+          <dt>Thomas–Fermi screening</dt><dd>The standard quantum treatment of how a degenerate electron gas shields a charge, with a characteristic screening length of tens of picometers in metals.</dd>
+          <dt>Debye screening</dt><dd>The classical (hot, dilute plasma) screening formula; applying it to cold metal electrons is a category error that nonetheless fit some data (§3).</dd>
+          <dt>WKB action</dt><dd>The integral $G$ in the semiclassical tunneling formula $e^{-G}$; the single number that encodes how opaque a barrier is.</dd>
+          <dt>classical turning point</dt><dd>The separation at which the pair's energy equals the barrier height — the outer edge of the classically forbidden region.</dd>
+          <dt>attempt frequency</dt><dd>The prefactor $\nu_0$ multiplying the tunneling exponential: roughly how often per second the pair "assaults" the barrier.</dd>
+          <dt>zero-point motion</dt><dd>The irreducible quantum jitter a confined particle keeps even at absolute zero.</dd>
+          <dt>phonon</dt><dd>The quantum of lattice vibration; energies of milli-electronvolts, the only currency a crystal can pay energy out in.</dd>
+          <dt>coherence</dt><dd>Many quantum systems oscillating in phase, so their amplitudes add before squaring — the source of every "collective enhancement" claim in this chapter.</dd>
+          <dt>Dicke superradiance</dt><dd>The textbook example of coherent enhancement: $N$ phase-locked emitters radiate collectively, far faster than $N$ independent ones.</dd>
+          <dt>spin–boson model</dt><dd>A workhorse model of quantum optics: two-level systems coupled to an oscillator bath; Hagelstein's framework is a "lossy" variant.</dd>
+          <dt>downconversion (fractionation)</dt><dd>Splitting one large energy quantum into many small ones — here, one 24 MeV nuclear quantum into ~10⁹ phonons; the load-bearing miracle of coherence theories.</dd>
+          <dt>exit channel</dt><dd>The route by which a reaction's energy leaves — which products, with what energies. Chapter IV's evidence problem is an exit-channel problem.</dd>
+          <dt>weak interaction</dt><dd>The force behind beta decay; the only interaction that converts protons into neutrons and back.</dd>
+          <dt>inverse beta decay</dt><dd>The reaction $e^- + p \to n + \nu_e$: an electron and a proton merging into a neutron plus a neutrino — possible only if the electron brings enough energy.</dd>
+          <dt>ultra-low-momentum neutron</dt><dd>Widom–Larsen's proposed product: a neutron born almost at rest, whose quantum wavelength is huge and whose capture probability is correspondingly enormous.</dd>
+          <dt>surface plasmon</dt><dd>A collective sloshing of surface electrons on a metal; Widom–Larsen's proposed source of enormous local electric fields.</dd>
+          <dt>mass renormalization</dt><dd>A field-induced shift in a particle's effective mass; the contested first step of the Widom–Larsen chain.</dd>
+          <dt>deep Dirac level</dt><dd>A claimed ultra-tight electron orbit, picometers from the nucleus, extracted from solutions of the Dirac equation that standard quantum mechanics rejects as unphysical.</dd>
+          <dt>hydrino</dt><dd>A claimed below-ground-state hydrogen atom (Randell Mills); incompatible with quantum electrodynamics and refuted in the mainstream literature.</dd>
+        </dl>
+      </section>
+
+      <h2><span class="sec-num">§1</span>The bar a theory must clear</h2>
+
+      <p>Chapter I set the yardstick and every chapter since has leaned on it, so let us state it one last time as an entrance exam. A deuteron pair bound in a $\Dtwo$ molecule fuses at the Koonin–Nauenberg rate of about $3\times10^{-64}$ per second — the zero point of everything. A watt of nuclear power per cubic centimeter of palladium deuteride, the scale Fleischmann and Pons claimed, requires:</p>
+
+      <div class="equation-block">
+        $$ \lambda_{\mathrm{need}} \;=\; \frac{\Pxs/Q}{N_{\mathrm{pairs}}} \;\approx\; \frac{2.6\times10^{11}\ \mathrm{s^{-1}}}{3.4\times10^{22}} \;\approx\; 8\times10^{-12}\ \mathrm{s^{-1}}\ \text{per pair}, $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\lambda_{\mathrm{need}}$</dt><dd>Scalar, s⁻¹: the per-pair fusion rate needed to explain the claimed power.</dd>
+          <dt>$\Pxs$</dt><dd>Claimed excess power, here 1 W per cm³.</dd>
+          <dt>$Q$</dt><dd>Energy per reaction; taking the most generous channel, d+d→$\nuc{4}{He}$ at $23.85\MeV = 3.82\times10^{-12}$ J.</dd>
+          <dt>$N_{\mathrm{pairs}}$</dt><dd>Deuteron pairs per cm³ in PdD: $n_D \approx 6.8\times10^{22}$ cm⁻³, so $\approx 3.4\times10^{22}$ pairs.</dd>
+        </dl>
+      </aside>
+
+      <p>From $10^{-63.5}$ to $10^{-11.1}$: <strong>requirement one is a rate enhancement of roughly fifty-two orders of magnitude.</strong> Requirement two is the ashes. Chapter IV established that the observed products — if real — are not those of vacuum d+d fusion: helium-4 without gamma rays, tritium without neutrons. The sharpest form of this requirement is a peer-reviewed constraint derived by Peter Hagelstein (Naturwissenschaften 97, 345 (2010)): if the excess heat really is d+d→$\nuc{4}{He}$ at ~24 MeV per helium, then the measured neutron ceilings (0.008–0.8 neutrons per joule) force the newborn helium nucleus to carry almost none of that energy:</p>
+
+      <div class="equation-block">
+        $$ E_{\alpha} \;\lesssim\; 6.2\text{–}20.2\ \keV \;\lll\; Q = 23.85\ \MeV . $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$E_{\alpha}$</dt><dd>Kinetic energy of the $\nuc{4}{He}$ at birth. A fast alpha in a deuterated lattice knocks deuterons forward, and those produce detectable secondary d+d neutrons; the neutron limits therefore bound $E_\alpha$.</dd>
+        </dl>
+      </aside>
+
+      <p>More than 99.9% of the reaction energy must leave through some channel that is neither a gamma ray nor an energetic particle. <strong>Requirement two is thus not just changed branching ratios; it is a new exit channel</strong> — a way to pay out a 24 MeV nuclear quantum in keV-or-smaller installments. And there is a third requirement, less often stated: <strong>a mechanism must not predict effects in the many places we have looked and found nothing.</strong> Accelerator measurements pin the d+d cross section and its screening down to sub-keV energies at the few-percent level (Chapter VI); decades of metallurgy, electrochemistry, and geochemistry have processed megatons of hydrogen-loaded metal without unexplained heat, helium, or radioactivity; and the one particle known to catalyze cold fusion — the muon, §2 — behaves in metals exactly as standard physics says. A theory that makes palladium special must explain why palladium refineries are not.</p>
+
+      <aside class="jargon">
+        <h4>The Leggett–Baym bound, and the loophole every survivor uses</h4>
+        <p>In 1989 Anthony Leggett and Gordon Baym proved an exact result (Phys. Rev. Lett. 63, 191 (1989)): in a many-body system <em>in thermal equilibrium</em>, the tunneling rate between two nuclei is bounded by what the exact interatomic potential allows, and no electronic environment in equilibrium condensed matter can raise cold d+d fusion to observable levels — the bound sits tens of orders of magnitude below $\lambda_{\mathrm{need}}$. The theorem has never been challenged in the mainstream literature. Its fine print is therefore load-bearing: every surviving LENR theory locates its miracle in <em>non-equilibrium</em> physics — driven surfaces, transient defects, coherent excitations — precisely because equilibrium is provably closed.</p>
+      </aside>
+
+      <p>That is the exam: <em>×10⁵²  on the rate, a new exit channel for the ashes, and no collateral damage to the rest of physics.</em> In the frame this book has used throughout — the Gamow factor and the error bar — a theory's job is to move the Gamow factor; the error bar it must respect. Now the candidates.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§2</span>The proven catalyst: what the muon actually buys</h2>
+
+      <p>Cold fusion — genuinely cold, replicated worldwide, quantitatively understood — has existed in laboratories since 1956. The catalyst is the <dfn title="an unstable lepton with the electron's charge and 206.77 times its mass">muon</dfn>. Drop negative muons into cold deuterium and fusion proceeds briskly at cryogenic temperatures. The mechanism is pure geometry. A muonic hydrogen molecule is an ordinary one with the electron's role played by a particle 207 times heavier, and every Coulombic length scales inversely with the orbiting mass:</p>
+
+      <div class="equation-block">
+        $$ a_\mu \;=\; a_0\,\frac{m_e}{m_\mu} \;=\; \frac{52.9\ \mathrm{pm}}{206.77} \;\approx\; 256\ \mathrm{fm}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$a_0$</dt><dd>The Bohr radius, 52.9 pm (constant): the size scale of ordinary atoms.</dd>
+          <dt>$m_\mu$</dt><dd>The muon mass, $206.77\,m_e$ (constant). Using the free mass; the reduced mass in a muonic molecule is slightly smaller.</dd>
+          <dt>$a_\mu$</dt><dd>The muonic Bohr radius: the deuterons in a ddμ molecule sit ~500 fm apart instead of 74,000 fm.</dd>
+        </dl>
+      </aside>
+
+      <p>Squeezing the tunneling gap two-hundred-fold collapses the WKB action, and the in-molecule fusion rate rockets from $10^{-64}\ \mathrm{s^{-1}}$ to of order $10^{8}$–$10^{9}\ \mathrm{s^{-1}}$ for ddμ and ~$10^{12}\ \mathrm{s^{-1}}$ for dtμ (Ponomarev's canonical review, Contemporary Physics 31, 219 (1990)). Read that again: <em>a factor of ~200 in one length converts the age-of-the-universe into a nanosecond — about seventy orders of magnitude.</em> Muon catalysis is the existence proof that "chemistry-scale" rearrangement of the lepton cloud can close the entire Gamow gap. It is also, not coincidentally, the template every "heavy electron" theory in this chapter tries to imitate.</p>
+
+      <p>But the muon also teaches the field's hardest economics lesson. A muon lives 2.2 μs, and each catalytic loop takes time, so the number of fusions one muon delivers obeys a simple budget:</p>
+
+      <div class="equation-block">
+        $$ \frac{1}{X_\mu} \;\approx\; \omega_s \;+\; \frac{\lambda_0}{\phi\,\lambda_c}\,, \qquad \lambda_0 = \frac{1}{\tau_\mu} = 4.55\times10^{5}\ \mathrm{s^{-1}}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$X_\mu$</dt><dd>Fusions per muon (dimensionless) — the catalyst's total career.</dd>
+          <dt>$\omega_s$</dt><dd>Effective <dfn title="the probability per fusion that the muon binds to the outgoing helium nucleus and is lost">alpha-sticking</dfn> probability, measured ≈ 0.45–0.6% for d–t cycles after in-flight stripping is credited.</dd>
+          <dt>$\lambda_c$</dt><dd>Density-normalized cycling rate: up to $\approx 1.45\times10^{8}\ \mathrm{s^{-1}}$ in dense d–t mixtures.</dd>
+          <dt>$\phi$</dt><dd>Target density in units of liquid-hydrogen density ($4.25\times10^{22}$ atoms/cm³).</dd>
+          <dt>$\tau_\mu$</dt><dd>The muon lifetime, 2.197 μs (constant): the clock that ends every career.</dd>
+        </dl>
+      </aside>
+
+      <p>At high density the lifetime term shrinks and sticking rules: $X_\mu \approx 1/\omega_s \approx 150$, which is what experiment found — Steven Jones (the same Jones of Chapter IV) reported ~150 d–t fusions per muon at LAMPF (Nature 321, 127 (1986)), still roughly the record. One hundred fifty fusions at 17.6 MeV each is ~2.6 GeV of output; making one muon at an accelerator costs ~5 GeV. Nature permits cold fusion and then, with measured numbers, denies it a profit. For this chapter the muon's real gift is calibration: it fixes the exchange rate between lepton mass and fusion rate. All electron-screening effects in metals combined behave like a lepton of perhaps $1.01$–$1.1\,m_e$ at the relevant separations. The distance from there to $207\,m_e$ — from a few eV of extra binding to a few keV — <em>is</em> the explanatory gap, made flesh. Hold that thought through the widget in §3.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§3</span>Static screening: real physics, audited to the electronvolt</h2>
+
+      <p>The most respectable mechanism is the one Chapter VI measured: electrons crowd around and between two approaching deuterons and cancel part of their repulsion, worth a <dfn title="the effective collision-energy boost provided by electronic shielding of the nuclear charges">screening energy</dfn> $\Ue$. Everyone agrees screening exists; the audit is about magnitudes, and it has three lines. <em>What consistent theory delivers:</em> treating palladium's conduction electrons honestly — as a degenerate quantum gas, via Thomas–Fermi, <dfn title="the idealized uniform-electron-gas model of a metal used in many-body calculations">jellium</dfn>, or dielectric-function methods — gives $\Ue \approx 100$–$150\,\eV$; the Berlin–Szczecin group's careful dielectric calculation gives 134 eV for Pd (Huke et al., Phys. Rev. C 78, 015803 (2008)). <em>What beams measure:</em> more. The same paper's re-measurement finds $296\pm15\,\eV$ in Pd; Kasagi's group at Tohoku found ≈310 eV in Pd and ≈600 eV in PdO (J. Phys. Soc. Jpn. 71, 2881 (2002)); Raiola and the Bochum collaboration reported ≈800 eV in Pd (Eur. Phys. J. A 19, 283 (2004)); a Berkeley plasma-discharge experiment fit $1000\pm250\,\eV$ (Schenkel et al., J. Appl. Phys. 126, 203302 (2019)). The groups disagree with one another by factors of 2–3 — far outside quoted errors — and the one model that "fit" the material trend, classical Debye screening of quasi-free electrons, is physically inadmissible: conduction electrons at room temperature are degenerate, and Boltzmann statistics simply do not apply to them (the standing critique in Huke et al. and in later reviews).</p>
+
+      <aside class="note">
+        <h4>Ahead of theory</h4>
+        <p>Sit with the strangeness of this: an <em>uncontested, replicated-in-kind accelerator measurement</em> — screening energies in metals two to four times larger than the best available calculation, with a periodic-table pattern (large in Pd, Ta, PdO; absent in Cu, Ag, Au) no model reproduces — has stood unexplained since 2001. It is the only entry in this chapter's ledger (§7) that is mainstream physics by every sociological measure. It licenses nothing about excess heat; it does prove our quantitative command of electrons-near-fusing-nuclei is imperfect at the factor-of-a-few level.</p>
+      </aside>
+
+      <p><em>What would be needed:</em> this is where the widget below earns its place, because the arithmetic is exponential and intuition fails. Model the pair with the chapter's one formula — the semiclassical tunneling rate through a screened Coulomb barrier:</p>
+
+      <div class="equation-block">
+        $$ \lam \;=\; C\,\nu_0\, \exp\!\left[-\frac{2}{\hbar}\int_{r_n}^{r_t}\!\sqrt{\,2\mu\big(V(r)-E\big)}\;\dd r\right], \qquad V(r) \;=\; \frac{1.44\ \eV\!\cdot\!\mathrm{nm}}{r} \;-\; \Ue\,\frac{m^*}{m_e}\,. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\nu_0,\ C$</dt><dd>Attempt frequency ($10^{16}$ s⁻¹ here) and a dimensionless calibration constant ($C \approx 3.5\times10^{2}$) absorbing the nuclear physics the exponent omits; fixed once by matching the D₂ anchor.</dd>
+          <dt>$\mu$</dt><dd>Reduced mass of the deuteron pair, $\mu c^2 = 937.81\MeV$ (constant).</dd>
+          <dt>$r_n,\ r_t$</dt><dd>Nuclear channel radius (4 fm) and the classical turning point where $V=E$ — the ends of the forbidden region.</dd>
+          <dt>$V(r),\ E$</dt><dd>The screened pair potential and the pair's energy ($E\approx 0$ at room temperature).</dd>
+          <dt>$\Ue$</dt><dd>The static screening energy (eV). The model is deliberately <em>generous</em>: it grants the pair the entire $\Ue$ as if it were collision energy, everywhere along the path.</dd>
+          <dt>$m^*$</dt><dd>The effective lepton mass. Raising it compresses the whole screened geometry, $r \to r\,(m_e/m^*)$ — the muon dial.</dd>
+        </dl>
+      </aside>
+
+      <p>Calibrated so that $\Ue = 27\,\eV$, $m^* = m_e$ reproduces Koonin–Nauenberg's $3\times10^{-64}\ \mathrm{s^{-1}}$, this model computes the whole ladder. Consistent static screening, 100–150 eV, lifts the rate to $10^{-24}$–$10^{-16}\ \mathrm{s^{-1}}$: an astonishing forty-orders gift, and still five to thirteen orders short of the watt line — <em>in a model rigged in screening's favor</em>. Careful equilibrium treatments that keep the pair in its molecular well rather than crediting the full shift as collision energy find far less: of order $10^{-45}\ \mathrm{s^{-1}}$ at the theoretically consistent $\Ue$, at least thirty-four orders short, consistent with the Leggett–Baym ceiling. And the beam-measured values must not be transplanted at all — the widget shows why with a reductio. Dial in Raiola's 800 eV as if it were a static potential and the model roars <em>past</em> the watt line: every gram of PdD on Earth would melt itself. Palladium deuteride sits quietly on shelves; therefore a beam-derived $\Ue$ — the dynamic response of the electron gas to a keV projectile passing through — is not an equilibrium potential energy available to two thermal deuterons parked 0.2 nm apart. That distinction is stated explicitly in the accelerator literature itself (Huke et al., PRC 78; Metzler et al., NJP 26). The verdict on static screening: real physics, the largest single legitimate rate multiplier known in a solid, quantitatively short by tens of orders of magnitude, and — per the aside above — itself imperfectly understood at the factor-of-a-few level.</p>
+
+      <section class="interactive" data-widget="rate-ladder" aria-label="Interactive WKB rate ladder: screening and lepton mass versus the fifty-order gap">
+        <header>
+          <h4>Interactive · The fifty-order ladder</h4>
+          <span class="hint">slide Uₑ · grow the lepton · jump the presets</span>
+        </header>
+        <div class="widget-mount"></div>
+        <p class="caption">The chapter's equation computed live: the WKB action $G = \frac{2}{\hbar}\int_{r_n}^{r_t}\sqrt{2\mu(V-E)}\,\dd r$ is integrated numerically for $V(r) = 1.44\,\eV\cdot\mathrm{nm}/r - \Ue\,m^*/m_e$ from $r_n = 4$ fm to the turning point, and $\lam = C\nu_0 e^{-G}$ is calibrated ($\nu_0 = 10^{16}$ s⁻¹, $C \approx 3.5\times10^{2}$) so the D₂ case ($\Ue = 27\,\eV$) reproduces Koonin–Nauenberg's $3\times10^{-64}\ \mathrm{s^{-1}}$. Rungs mark the D₂ molecule, the Leggett–Baym equilibrium ceiling, the Jones neutron claim ($10^{-23}$), the watt line ($10^{-11.1}$), and measured ddμ fusion ($10^{8}$–$10^{9}$ s⁻¹). Two honesty notes: the model hands the pair the full $\Ue$ as collision energy, so it <em>over</em>states what static screening does — careful equilibrium treatments reach only ~$10^{-45}$ s⁻¹ at the theoretically consistent 100–150 eV; and at $m^* = 207$ the crude fixed prefactor overshoots the measured ddμ rung by a few orders, a reminder of what a one-line WKB model ignores. That beam-measured screening values (296–1000 eV) drive the model absurdly past the watt line is the point: they cannot be static potentials, or palladium deuteride would glow.</p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§4</span>Coherence: fractionating a nuclear quantum</h2>
+
+      <p>The second family of theories aims not at the barrier but at requirement two — the exit channel. Its central figure is Peter Hagelstein of MIT, who has spent three decades constructing variants of a <dfn title="a model of two-level quantum systems coupled to an oscillator bath, with strong dissipation added">lossy spin–boson model</dfn> in which many d+d pairs, coherently coupled to a highly excited lattice vibrational mode, transfer their reaction energy <em>collectively</em> to the lattice. The required miracle has a name — <dfn title="the coherent splitting of one large energy quantum into a very large number of small ones">downconversion</dfn> — and a size:</p>
+
+      <div class="equation-block">
+        $$ N_{\mathrm{quanta}} \;\sim\; \frac{23.85\ \MeV}{\hbar\omega_{\mathrm{ph}}} \;\sim\; \frac{2.4\times10^{7}\ \eV}{\sim\!2.5\times10^{-2}\ \eV} \;\sim\; 10^{9}. $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\hbar\omega_{\mathrm{ph}}$</dt><dd>The energy of one THz-scale optical phonon, a few tens of meV — the largest coin the lattice accepts.</dd>
+          <dt>$N_{\mathrm{quanta}}$</dt><dd>How many phonons must absorb one fusion quantum: about a billion, coherently, before any competing radiative or particle channel fires.</dd>
+        </dl>
+      </aside>
+
+      <p>Multiphoton processes of order ten are laboratory physics; order $10^9$ is not, and Hagelstein does not claim otherwise — his papers derive conditions under which "lossy" dynamics (fast decay of intermediate states) breaks the destructive interference that normally forbids such transfers. The mechanism is aimed with impressive precision at the missing-gamma problem, and it is constrained by his own mainstream result from §1: any successful version must deliver the helium below ~20 keV. The audit, in register: the <em>constraint</em> paper is peer-reviewed and widely accepted conditional on the heat–helium data (Naturwissenschaften 97, 345 (2010)); the <em>constructive</em> theory lives almost entirely in the field's own Journal of Condensed Matter Nuclear Science and on the arXiv — including a recent book-length restatement as a "generalized nuclear Dicke model" with proposed validation experiments (arXiv:2501.08338, 2025, preprint) — and the phonon–nuclear coupling matrix elements it needs have never been independently verified; its supporting experiments (Karabut's collimated X-rays, claimed non-exponential Co-57 decay) are single-group and unreplicated. <em>Falls short by: no accepted derivation of a coupling within ~many orders of the required strength; status a research program, not a mechanism.</em></p>
+
+      <p>Two other coherence programs deserve their line. Giuliano Preparata's "QED coherence in matter" claimed that ordinary condensed matter spontaneously forms macroscopic phase-locked electromagnetic domains, which could concentrate energy and catalyze nuclear processes; the framework's foundational claims were never accepted by condensed-matter theory, its fusion applications produced no independently checked rates, and it survives today mainly in the Italian LENR school's internal literature. Akito Takahashi's <dfn title="Takahashi's proposed transient cluster of four deuterons and four electrons at a tetrahedral lattice site">4D/TSC condensate</dfn> posits four deuterons plus four electrons collapsing, in about a femtosecond, to a ~10–20 fm cluster that fuses with near-unit probability into two $\nuc{4}{He}$. The published critique-in-absentia is that the required "bosonized" four-electron state is not an eigenstate of any Coulomb Hamiltonian: localizing electrons at femtometer-to-picometer scales costs keV-to-MeV of kinetic energy — the same variational physics behind Leggett–Baym — and no mainstream venue has ever scrutinized the calculation because it has not been submitted to one (its home venues are JCMNS, ICCF proceedings, and an ACS symposium volume). Its predicted pair of ~24 MeV alphas also collides head-on with the §1 constraint. <em>Falls short by: unfalsifiable as published — the central collapsed state has no independent quantum-mechanical derivation to check.</em></p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§5</span>Neutrons without the barrier: Widom–Larsen</h2>
+
+      <p>The boldest strategy concedes the Coulomb barrier entirely: if you cannot get charged nuclei together, manufacture <em>neutrons</em>, which face no barrier at all. The Widom–Larsen theory (Eur. Phys. J. C 46, 107 (2006)) — unusual among insider theories for appearing in a real particle-physics journal — proposes a chain: enormous local electric fields from <dfn title="collective oscillations of surface electrons on a metal">surface plasmons</dfn> on a loaded hydride surface renormalize the effective electron mass upward; heavy electrons are captured by protons via <dfn title="the weak-interaction reaction converting a proton and an electron into a neutron and a neutrino">inverse beta decay</dfn>; the resulting <dfn title="a neutron born nearly at rest, with a huge quantum wavelength and capture cross section">ultra-low-momentum neutrons</dfn> are devoured by nearby nuclei, driving transmutation chains and beta-decay heat; and patches of the same heavy electrons absorb the capture gamma rays. Every step is standard physics <em>in kind</em>; the audit is entirely about magnitudes. The gate is the weak-interaction threshold:</p>
+
+      <div class="equation-block">
+        $$ \beta \;\equiv\; \frac{\tilde m_e}{m_e} \;\geq\; \frac{m_n - m_p}{m_e} \;=\; \frac{1.2933\ \MeV}{0.5110\ \MeV} \;=\; 2.531, $$
+      </div>
+
+      <aside class="where">
+        <h4>Where</h4>
+        <dl>
+          <dt>$\beta,\ \tilde m_e$</dt><dd>The mass-renormalization ratio and the field-dressed electron mass. The electron's total energy must supply the neutron–proton mass difference.</dd>
+          <dt>$m_n - m_p$</dt><dd>Neutron–proton mass difference, 1.2933 MeV (constant). Counting the electron's own rest mass, the reaction $e^- + p \to n + \nu_e$ is endothermic by $m_n - m_p - m_e = 0.78\MeV$ per neutron — an energy bill paid up front, before any heat is returned.</dd>
+        </dl>
+      </aside>
+
+      <p>Widom and Larsen assert that hydride surfaces reach $\beta$ above threshold — a 153% mass increase — via sustained local fields of order $10^{11}$ V/m. The published critiques, all peer-reviewed and all quantitative, attack each link. Hagelstein and Chaudhary (J. Phys. B 41, 125001 (2008)) redid the quantum electrodynamics and found the genuine mass shift orders of magnitude below threshold, arguing the original estimate mistakes a ponderomotive average for a true threshold-crossing mass. Ciuchi, Maiani, Polosa and coauthors (Eur. Phys. J. C 72, 2193 (2012), with a follow-up at Eur. Phys. J. C 74, 2843 (2014)) found the neutron-production rate "largely overestimated," leaving "little room for such a remarkable effect." Tennfors (Eur. Phys. J. Plus 128, 15 (2013)) computed the fields actually available from proton oscillations in a lattice — known from neutron scattering — and got a mass enhancement below 1% against the 153% required. Beyond the threshold problem: the chain is endothermic by 0.78 MeV per neutron before returning anything; the predicted neutron-capture chains should light up surrounding material with activation products and delayed gammas that are not observed; and the gamma-absorbing "heavy-electron patches" — the step that would make the theory safe to stand next to — exist only in an unpublished preprint and a patent. Widom and collaborators posted rebuttals (arXiv:0802.0466, arXiv:1210.5212, neither journal-published); no independent group has published quantitative support.</p>
+
+      <aside class="note">
+        <h4>Note</h4>
+        <p>Venue asymmetry is itself evidence here, and it cuts against the usual direction: the <em>critiques</em> of Widom–Larsen sit in journals at least as strong as the original (J. Phys. B, EPJ C, EPJ Plus vs. EPJ C), and even most LENR insiders — Storms, Hagelstein — reject the theory. Its persistence in popular accounts owes more to advocacy than to any surviving calculation. <em>Falls short by: a factor ≳100 in electron mass shift at step one (equivalently ≳10⁴ in field energy density), plus unobserved activation and gamma signatures at step three.</em></p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§6</span>The exotica, each with its one-line killer</h2>
+
+      <p>A field starved of an accepted mechanism grows exotic proposals at its edges. The reader should be able to recognize the recurring ones in the wild, along with the standard refutation each carries.</p>
+
+      <p><em>Deep Dirac levels.</em> Maly and Vávra (Fusion Technology, 1993 and 1995) proposed that the Dirac equation admits extra, ultra-tight electron orbits — binding ~500 keV, picometers from the nucleus — which would let an electron chaperone nuclei through the barrier. The killer: those "anomalous" solutions are rejected in standard quantum mechanics because their wavefunctions are singular at the origin and the Hamiltonian ceases to be self-adjoint; they are mathematical debris, not states. The cousin claim of below-ground-state hydrogen — Mills's <dfn title="a claimed state of hydrogen below the quantum-mechanical ground state">hydrino</dfn> — was refuted in the mainstream literature on the same grounds (Rathke, New J. Phys. 7, 127 (2005); Dombey, Phys. Lett. A, 2006). <em>Exotic-particle catalysis.</em> Proposals of hypothetical stable heavy particles ("erzions" in the Russian literature, among others) that would catalyze fusion like super-heavy muons; the killer is that accelerator searches, cosmic-ray data, and the muon benchmark itself constrain such particles' existence and abundance to levels that cannot supply laboratory-scale rates. <em>Casimir-cavity and zero-point-energy schemes.</em> Proposals to harvest vacuum energy in nanocavities (Moddel and colleagues; Physics Procedia 38, 8 (2012)) sit outside standard QED's energy accounting; their own gas-loading heat tests traced signals to ordinary hydrogen chemistry, and the cavity test was inconclusive — and in any case this is not a nuclear mechanism at all. At the respectable end of this section: Kálmán and Keszthelyi's peer-reviewed proposals (Phys. Rev. C 69, 031606 (2004); 99, 054620 (2019)) that third-body electrons or lattice recoil open normally forbidden channels — genuine physics, published in a real nuclear journal, whose computed rates remain far too small to explain any heat claim, and whose predicted radiation has not been observed. Even the respectable exotica fall short by their own arithmetic.</p>
+
+      <aside class="jargon">
+        <h4>A cautionary tale: the Holmlid corpus</h4>
+        <p>From roughly 2015 to 2023, Leif Holmlid published dozens of papers (Physica Scripta, International Journal of Hydrogen Energy, and elsewhere) claiming "ultra-dense hydrogen" — hydrogen spontaneously condensed to picometer spacings — that emits muons under laser pulses, implying tabletop fusion and even muon production far cheaper than accelerators. The corpus is large, internally cross-citing, and was taken up by at least one startup. Independent scrutiny arrived through the peer-reviewed literature in 2023–2024: analyses in <em>Energy, Sustainability and Society</em> (DOI 10.1186/s13705-024-00470-3) concluded the claims conflict with baryon-number conservation and basic quantum mechanics, that instrumental-artifact explanations fit the data, and that no independent confirmation exists. No retraction; a criticism-only record. The lesson generalizes: publication volume in venues outside a claim's core discipline is not replication — the same lesson the Dias room-temperature-superconductivity retractions taught adjacent to Chapter X's materials story.</p>
+      </aside>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§7</span>The ledger: results ahead of theory</h2>
+
+      <p>This book was commissioned to keep score honestly, and here is the score. The table below collects every experimental result flagged "ahead of theory" in Chapters III–VIII: claims that, <em>if real</em>, no accepted mechanism explains — plus one that is real by any standard and unexplained anyway. Each row carries its claim status in this book's register, its theory status after this chapter's audit, and the one measurement a follow-up must nail. Each is hereby flagged for future research follow-up, per the book's commission.</p>
+
+      <div style="overflow-x: auto; margin: 1.5rem 0;">
+        <table style="border-collapse: collapse; font-family: var(--sans); font-size: 0.78rem; line-height: 1.45; min-width: 680px;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--rule, #e6ddcb); text-align: left;">
+              <th style="padding: 0.5rem 0.75rem 0.5rem 0;">Result ahead of theory</th>
+              <th style="padding: 0.5rem 0.75rem;">Claim status</th>
+              <th style="padding: 0.5rem 0.75rem;">Theory status</th>
+              <th style="padding: 0.5rem 0 0.5rem 0.75rem;">What a follow-up must nail</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--rule, #e6ddcb); vertical-align: top;">
+              <td style="padding: 0.5rem 0.75rem 0.5rem 0;"><strong>Heat–⁴He at ~24 MeV per helium, no gammas</strong> (Ch. IV)</td>
+              <td style="padding: 0.5rem 0.75rem;">Contested — peer-reviewed core (Miles 1993); tightest numbers conference-grade; near-ambient He levels</td>
+              <td style="padding: 0.5rem 0.75rem;">No accepted exit channel: helium must be born ≲20 keV (Hagelstein 2010); downconversion unproven at 10⁹ quanta</td>
+              <td style="padding: 0.5rem 0 0.5rem 0.75rem;">Closed-system, blinded heat + helium runs with modern mass spectrometry, replicated across independent labs</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--rule, #e6ddcb); vertical-align: top;">
+              <td style="padding: 0.5rem 0.75rem 0.5rem 0;"><strong>Tritium with t/n ~10⁶–10⁹</strong> (Ch. IV)</td>
+              <td style="padding: 0.5rem 0.75rem;">Contested — journal positives (Will 1993; BARC) against demonstrated contamination episodes</td>
+              <td style="padding: 0.5rem 0.75rem;">No accepted inversion of few-body branching by ~8 orders</td>
+              <td style="padding: 0.5rem 0 0.5rem 0.75rem;">Closed-cell tritium generation with continuous assay and simultaneous neutron spectroscopy on the same cell</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--rule, #e6ddcb); vertical-align: top;">
+              <td style="padding: 0.5rem 0.75rem 0.5rem 0;"><strong>Beam screening 2–4× above best theory</strong> (Ch. VI, §3)</td>
+              <td style="padding: 0.5rem 0.75rem;"><em>Uncontested</em> — accelerator physics, four-plus groups; magnitudes disagree 2–3× between groups</td>
+              <td style="padding: 0.5rem 0.75rem;">No model fits magnitude, material pattern, and temperature trend; the Debye fit is physically inadmissible</td>
+              <td style="padding: 0.5rem 0 0.5rem 0.75rem;">A round-robin: identical targets across accelerators, with operando deuteron-density profiling to kill the dominant systematic</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--rule, #e6ddcb); vertical-align: top;">
+              <td style="padding: 0.5rem 0.75rem 0.5rem 0;"><strong>Nanocomposite gas-loading heat, 10–100+ eV per H</strong> (Ch. VIII)</td>
+              <td style="padding: 0.5rem 0.75rem;">Contested — multi-lab Japanese program reports; one group claims &gt;10 keV/H (Iwamura et al., Jpn. J. Appl. Phys. 63, 037001 (2024)); calorimetry-dependent</td>
+              <td style="padding: 0.5rem 0.75rem;">Beyond any chemical bond energy if real; no commensurate nuclear ash reported</td>
+              <td style="padding: 0.5rem 0 0.5rem 0.75rem;">Same material, independent laboratory, calorimetry and particle diagnostics running simultaneously</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--rule, #e6ddcb); vertical-align: top;">
+              <td style="padding: 0.5rem 0.75rem 0.5rem 0;"><strong>Permeation transmutation in +4p/+8n jumps</strong> (Cs→Pr, Sr→Mo; Ch. IV)</td>
+              <td style="padding: 0.5rem 0.75rem;">Contested — JJAP 2002 + partial Toyota replication (2013); NRL contamination critique never journal-published</td>
+              <td style="padding: 0.5rem 0.75rem;">No accepted 8-nucleon coherent transfer; even field-internal theories predict different products</td>
+              <td style="padding: 0.5rem 0 0.5rem 0.75rem;">Isotopically anomalous Mo confirmed by two independent mass-spec methods on exchanged samples</td>
+            </tr>
+            <tr style="vertical-align: top;">
+              <td style="padding: 0.5rem 0.75rem 0.5rem 0;"><strong>NASA lattice-confinement channels</strong> (screened d–d and Oppenheimer–Phillips; Ch. VII)</td>
+              <td style="padding: 0.5rem 0.75rem;">Peer-reviewed (Phys. Rev. C 101, 044609 &amp; 044610 (2020)); beam-driven, not excess heat; unreplicated</td>
+              <td style="padding: 0.5rem 0.75rem;">Fitted screening values and screened stripping rates lack quantitative theory in metals</td>
+              <td style="padding: 0.5rem 0 0.5rem 0.75rem;">Independent replication of the neutron spectra; first-principles screened Oppenheimer–Phillips calculation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Note what the ledger is and is not. It is not a list of confirmed miracles — five of six rows are contested, and every contested row may yet dissolve into artifact, as so many of its ancestors did in Chapters II–IV. It is a to-do list: the minimal set of loose threads that a rigorous program (Chapter VIII's ARPA-E cohort and its successors) should either tie off or pull hard. Row three is the odd one out and the most instructive: it shows that "ahead of theory" is not a euphemism for "fringe" — sometimes the mainstream's own instruments produce a number its own models cannot yet reproduce.</p>
+
+      <hr class="section-rule" />
+
+      <h2><span class="sec-num">§8</span>An honest synthesis</h2>
+
+      <p>The audit's bottom line can be stated without hedging: <strong>as of 2026, no published mechanism quantitatively explains claimed excess-heat magnitudes within accepted physics.</strong> Each serious candidate fails at a specific, identifiable step, by a computable amount: static screening by tens of orders in rate (§3); coherent downconversion by an unverified coupling spanning many orders (§4); Widom–Larsen by two orders in electron mass at its first step and by its unobserved radiation at its third (§5); the exotica by consistency with quantum mechanics itself (§6). The most useful mainstream-published summary agrees: the topical review of Metzler, Hunt, Hagelstein and Galvanetto (New J. Phys. 26, 101202 (2024)) catalogues every known solid-state fusion enhancer and concludes that observable fusion needs more than forty orders of magnitude, that known, uncontroversial mechanisms deliver perhaps twenty-five to thirty when optimistically combined, and that the remainder is hypothesis — coherent dynamics, resonances, cascade effects — awaiting demonstration. The muon (§2) stands as both the proof that catalysis is possible and the measure of what it costs: two hundred electron masses, or five GeV a particle.</p>
+
+      <p>Where does that leave a rational reader? Three positions are defensible, and this book has met serious people holding each. The <em>artifact hypothesis:</em> every excess-heat claim is measurement error (Chapter III's calorimetry pathologies), every ash claim contamination or misidentification (Chapter IV); the theory gap is empty because there is nothing to explain. It predicts that Chapter VIII's instrumented programs will keep returning nulls as error bars tighten — as the Google program's did (Nature 570, 45 (2019)). The <em>rare-real-effect hypothesis:</em> somewhere in the anomalies hides a genuine but sporadic condensed-matter nuclear effect — perhaps tied to the unexplained screening physics of the ledger's row three — too small and material-fussy for 1989-era labs to pin down. It predicts occasional small, replicable signals that correlate with material state, of the kind the NASA and Berkeley beam programs already report at keV energies, extending downward. The <em>new-physics hypothesis:</em> the heat–helium correlation is real at ~24 MeV per atom, and something like coherent downconversion operates. It predicts that at least one ledger row will convert into an on-demand demonstration — and it must also explain, someday, why the effect hid from every accelerator, reactor, and refinery of the twentieth century. What is not defensible, after this chapter, is a fourth position common in popular coverage: that some published theory already explains the claims and the mainstream merely refuses to read it. No such theory exists. The Gamow factor and the error bar remain undefeated; the only question — Chapter X's question — is where a breakthrough against either could plausibly come from.</p>
+
+      <section class="further-reading">
+        <h2><span class="sec-num"></span>Further reading</h2>
+        <ul>
+          <li><span class="src-title">Koonin, S. E. &amp; Nauenberg, M.</span> <em>Calculated fusion rates in isotopic hydrogen molecules</em>, Nature 339, 690–691 (1989) — the molecular baseline rate and the effective-mass sensitivity every theory here trades on; DOI 10.1038/339690a0.</li>
+          <li><span class="src-title">Leggett, A. J. &amp; Baym, G.</span> <em>Exact upper bound on barrier penetration probabilities in many-body systems: Application to "cold fusion"</em>, Physical Review Letters 63, 191–194 (1989) — the equilibrium no-go theorem that forces all surviving theories into non-equilibrium; DOI 10.1103/PhysRevLett.63.191.</li>
+          <li><span class="src-title">Ponomarev, L. I.</span> <em>Muon catalysed fusion</em>, Contemporary Physics 31, 219–245 (1990) — the canonical review of the one proven cold-fusion catalyst, cycle kinetics and sticking economics; DOI 10.1080/00107519008222019.</li>
+          <li><span class="src-title">Hagelstein, P. L.</span> <em>Constraints on energetic particles in the Fleischmann–Pons experiment</em>, Naturwissenschaften 97, 345–352 (2010) — the peer-reviewed exit-channel constraint (helium birth energy ≲20 keV) that frames §1 and §4; DOI 10.1007/s00114-009-0644-4.</li>
+          <li><span class="src-title">Widom, A. &amp; Larsen, L.</span> <em>Ultra low momentum neutron catalyzed nuclear reactions on metallic hydride surfaces</em>, European Physical Journal C 46, 107–111 (2006) — the weak-interaction theory of §5, best read alongside its critiques; DOI 10.1140/epjc/s2006-02479-8.</li>
+          <li><span class="src-title">Ciuchi, S., Maiani, L., Polosa, A. D., Riquer, V., Ruocco, G. &amp; Vignati, M.</span> <em>Low energy neutron production by inverse β decay in metallic hydride surfaces</em>, European Physical Journal C 72, 2193 (2012) — the quantitative refutation of Widom–Larsen's neutron rates; DOI 10.1140/epjc/s10052-012-2193-9.</li>
+          <li><span class="src-title">Metzler, F., Hunt, C., Hagelstein, P. L. &amp; Galvanetto, N.</span> <em>Known mechanisms that increase nuclear fusion rates in the solid state</em>, New Journal of Physics 26, 101202 (2024) — the mainstream-published map of the whole gap: what is known, what it is worth in orders of magnitude, and what remains hypothesis; DOI 10.1088/1367-2630/ad091c.</li>
+        </ul>
+      </section>
+
+      <p class="colophon-note" style="font-family: var(--sans); font-size: 0.78rem; color: var(--text-faint); margin-top: 1.5rem;">Chapter production note: researched and drafted by Claude subagents (draft agent: <code>claude-fable-5</code>; adversarial verification pass by <code>claude-fable-5</code> scheduled — see STATUS.md), orchestrated by <code>claude-fable-5</code>. See the <a href="appendix-methods.html">methods appendix</a> for the full research process.</p>
+    </article>
+
+    <footer class="chapter-nav">
+      <a class="prev" href="08-new-programs.html"><span class="label">← Previous</span>New Programs: Japan, Europe, ARPA-E</a>
+      <a class="next" href="10-next-breakthroughs.html"><span class="label">Next chapter</span>Where the Breakthroughs May Come From →</a>
+    </footer>
+  </main>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.js" integrity="sha384-CwjPRVHTvLiMBFjEoij+QZViMV5rhTOIp7CJzl24JEqpRDA1sJFHVXXLURktbYYp" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/contrib/auto-render.min.js" integrity="sha384-bjyGPfbij8/NDKJhSGZNP/khQVgtHUE5exjm4Ydllo42FwIgYsdLO2lXGmRBf5Mz" crossorigin="anonymous"></script>
+  <script defer src="../book.js"></script>
+  <script defer src="../interactive/rate-ladder.js"></script>
+</body>
+</html>
